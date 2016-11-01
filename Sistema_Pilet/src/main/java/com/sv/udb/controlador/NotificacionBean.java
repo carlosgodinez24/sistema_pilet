@@ -81,8 +81,8 @@ public class NotificacionBean implements Serializable{
     {
         this.limpForm();
         this.consTodo();
-        log = new LOG4J();
-        log.debug("Se inicializa el modelo de Notificacion");
+        //log = new LOG4J();
+        //log.debug("Se inicializa el modelo de Notificacion");
     }
     /**
      * Método que limpia el formulario reiniciando las variables
@@ -112,13 +112,13 @@ public class NotificacionBean implements Serializable{
             FCDENotificacion.create(this.objeNoti);
             this.listNoti.add(this.objeNoti);
             this.guardar = false;
-            log.info("Notificación: "+this.objeNoti.getMensNoti());
+            //log.info("Notificación: "+this.objeNoti.getMensNoti());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error("Error creando pagina: "+getRootCause(ex).getMessage());
+            //log.error("Error creando pagina: "+getRootCause(ex).getMessage());
         }
         finally
         {
@@ -137,13 +137,13 @@ public class NotificacionBean implements Serializable{
             this.listNoti.remove(this.objeNoti); //Limpia el objeto viejo
             FCDENotificacion.edit(this.objeNoti);
             this.listNoti.add(this.objeNoti); //Agrega el objeto modificado
-            log.info("Notificacion modificada: "+this.objeNoti.getCodiNoti());
+            //log.info("Notificacion modificada: "+this.objeNoti.getCodiNoti());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error("Error modificando pagina: "+getRootCause(ex).getMessage());
+            //log.error("Error modificando pagina: "+getRootCause(ex).getMessage());
         }
         finally
         {

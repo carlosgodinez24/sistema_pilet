@@ -6,9 +6,11 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.UsuarioRol;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,12 @@ public class UsuarioRolFacade extends AbstractFacade<UsuarioRol> implements Usua
         super(UsuarioRol.class);
     }
     
+    @Override
+    public UsuarioRol findByUsuaAndRole(Object usua, Object codiRole) {
+        Query q = getEntityManager().createQuery("SELECT u FROM UsuarioRol u WHERE u.codiUsua = :codiUsua AND u.codiRole = :codiRole", UsuarioRol.class);        
+        q.setParameter("codiUsua", usua);
+        q.setParameter("codiRole", codiRole);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (UsuarioRol)resu.get(0);
+    }
 }

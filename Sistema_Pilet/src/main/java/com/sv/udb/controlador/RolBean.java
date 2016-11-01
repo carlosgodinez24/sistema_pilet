@@ -81,8 +81,8 @@ public class RolBean implements Serializable {
     {
         this.listRole = FCDERoles.findAll();
         this.limpForm();
-        log = new LOG4J();
-        log.debug("Se inicializa el modelo de Rol");
+        //log = new LOG4J();
+        //log.debug("Se inicializa el modelo de Rol");
     }
     
     /**
@@ -105,13 +105,13 @@ public class RolBean implements Serializable {
             FCDERoles.create(this.objeRole);
             this.listRole.add(this.objeRole);
             this.guardar = false;
-            log.info("Rol creado: "+this.objeRole.getNombRole());
+            //log.info("Rol creado: "+this.objeRole.getNombRole());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error("Error creando rol: "+getRootCause(ex).getMessage());
+            //log.error("Error creando rol: "+getRootCause(ex).getMessage());
         }
         finally
         {
@@ -130,13 +130,13 @@ public class RolBean implements Serializable {
             this.listRole.remove(this.objeRole); //Limpia el objeto viejo
             FCDERoles.edit(this.objeRole);
             this.listRole.add(this.objeRole); //Agrega el objeto modificado
-            log.info("Rol modificado: "+this.objeRole.getCodiRole());
+            //log.info("Rol modificado: "+this.objeRole.getCodiRole());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error("Error modificando rol: "+getRootCause(ex).getMessage());
+            //log.error("Error modificando rol: "+getRootCause(ex).getMessage());
         }
         finally
         {

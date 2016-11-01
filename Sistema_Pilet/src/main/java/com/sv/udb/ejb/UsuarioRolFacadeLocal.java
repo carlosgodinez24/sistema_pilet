@@ -23,6 +23,8 @@ public interface UsuarioRolFacadeLocal {
     void remove(UsuarioRol usuarioRol);
 
     UsuarioRol find(Object id);
+    
+    UsuarioRol findByUsuaAndRole(Object usua, Object codiRole);
 
     List<UsuarioRol> findAll();
 

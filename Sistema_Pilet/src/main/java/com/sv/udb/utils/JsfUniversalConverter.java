@@ -56,9 +56,7 @@ public class JsfUniversalConverter implements Converter, Serializable {
 			return null;
 		}
 		Object returnObject = getObjectCache(fc).get(string);
-		log.debug("User Selected " + string
-				+ " and we're returning this object from the cache: "
-				+ returnObject);
+		//log.debug("User Selected " + string + " and we're returning this object from the cache: " + returnObject);
 		return returnObject;
 	}
 
@@ -91,8 +89,7 @@ public class JsfUniversalConverter implements Converter, Serializable {
 			returnString = UUID.randomUUID().toString();
 			objectCache.put(returnString, o);
 		}
-		log.debug("We're converting " + o + " into this String: "
-				+ returnString);
+		//log.debug("We're converting " + o + " into this String: " + returnString);
 		return returnString;
 	}
 
