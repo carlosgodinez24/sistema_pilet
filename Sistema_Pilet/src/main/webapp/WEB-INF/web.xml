@@ -13,6 +13,10 @@
         <param-name>prefix</param-name>
         <param-value>poo</param-value>
     </context-param>
+    <context-param>  
+        <param-name>webservices.URL</param-name>  
+        <param-value>http://www.opensv.tk:8080/WebService/MiServicio</param-value>  
+    </context-param>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/poo/*</url-pattern>
