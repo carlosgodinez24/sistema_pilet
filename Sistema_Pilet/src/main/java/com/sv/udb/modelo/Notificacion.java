@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Carlos
+ * @author Adonay
  */
 @Entity
 @Table(name = "notificacion", catalog = "sistemas_pilet", schema = "")
@@ -56,9 +56,7 @@ public class Notificacion implements Serializable {
     @Size(max = 150)
     @Column(name = "path_noti")
     private String pathNoti;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
+    @Size(max = 75)
     @Column(name = "modu_noti")
     private String moduNoti;
     @JoinColumn(name = "codi_usua", referencedColumnName = "codi_usua")
@@ -72,11 +70,10 @@ public class Notificacion implements Serializable {
         this.codiNoti = codiNoti;
     }
 
-    public Notificacion(Integer codiNoti, String mensNoti, int estaNoti, String moduNoti) {
+    public Notificacion(Integer codiNoti, String mensNoti, int estaNoti) {
         this.codiNoti = codiNoti;
         this.mensNoti = mensNoti;
         this.estaNoti = estaNoti;
-        this.moduNoti = moduNoti;
     }
 
     public Integer getCodiNoti() {

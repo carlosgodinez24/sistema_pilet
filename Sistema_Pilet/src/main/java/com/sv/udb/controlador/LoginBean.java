@@ -5,9 +5,10 @@
  */
 package com.sv.udb.controlador;
 
+import com.sv.udb.ejb.NotificacionFacadeLocal;
 import com.sv.udb.ejb.UsuarioFacadeLocal;
 import com.sv.udb.modelo.Usuario;
-import com.sv.udb.utils.Notificacion;
+import com.sv.udb.modelo.Notificacion;
 import com.sv.udb.utils.UsuariosPojo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -33,6 +34,9 @@ public class LoginBean implements Serializable {
     //Campos de la clase
     @EJB
     private UsuarioFacadeLocal FCDEUsua;
+    
+    @EJB
+    private NotificacionFacadeLocal FCDENoti;
 
     private static final long serialVersionUID = 5074501358281220977L;
        
@@ -115,8 +119,9 @@ public class LoginBean implements Serializable {
                     //Cargar una imagen de usuario (Puede ser de una BD)
                     this.imagPerf = "images/userDemo.png";
                     //Llenar lista de notificaciones.... puede salir de la DB
-                    GlobalAppBean globAppBean =  new GlobalAppBean();
-                    globAppBean.setNotificacion(this.objeUsua, "Esta es prueba", "Modulo Usuarios", "");
+                    globalAppBean.addNotificacion(objeUsua, "Prueba", "Modu Prueba", "Path prueba");
+                    
+                    this.listNoti = FCDENoti.findByUsua(this.objeUsua.getCodiUsua());
                     //Redireccionar
                     facsCtxt.getExternalContext().redirect(globalAppBean.getUrl("index.xhtml"));
                 }

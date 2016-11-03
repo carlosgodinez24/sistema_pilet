@@ -32,26 +32,25 @@ and open the template in the editor.
                             <li class="dropdown notifications-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell-o"></i>
-                                    <span class="label label-warning">#{notificacionBean.listNoti.size()}</span>
+                                    <span class="label label-warning">#{loginBean.listNoti.size()}</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="header">Ud. tiene #{notificacionBean.listNoti.size()} notificaciones</li>
+                                    <li class="header">#{loginBean.listNoti.size()} notificaciones</li>
                                     <li>
                                         <ul class="menu">
-                                            <ui:repeat var="noti" varStatus="status" value="#{notificacionBean.listNoti}">
+                                            <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
                                                 <li>
                                                     <a href="#">
-                                                        <h:panelGroup rendered="#{noti.estaNoti}">
-                                                            <i class="fa fa-folder-open-o text-aqua"/> #{noti.mensNoti}
-                                                        </h:panelGroup>
-                                                        <h:panelGroup rendered="#{!noti.estaNoti}">
-                                                            <i class="fa fa-folder text-aqua"/> #{noti.mensNoti}
+                                                        <h:panelGroup rendered="#{noti.estaNoti eq '0'}">
+                                                            <i class="fa fa-folder text-aqua"/> #{noti.moduNoti}
+                                                            <p>#{noti.mensNoti.length() gt 35 ? noti.mensNoti.substring(0,32).concat('...') : noti.mensNoti}</p>
                                                         </h:panelGroup>
                                                     </a>
                                                 </li>
                                             </ui:repeat>
                                         </ul>
                                     </li>
+                                    <li class="header">Ver todas</li>
                                 </ul>
                             </li>
                             <!-- User Account: style can be found in dropdown.less -->

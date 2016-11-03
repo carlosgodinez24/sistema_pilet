@@ -11,7 +11,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author Carlos
+ * @author Adonay
  */
 @Local
 public interface NotificacionFacadeLocal {
@@ -23,6 +23,8 @@ public interface NotificacionFacadeLocal {
     void remove(Notificacion notificacion);
 
     Notificacion find(Object id);
+    
+    List<Notificacion> findByUsua(Object role);
 
     List<Notificacion> findAll();
 

@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.UsuarioRolFacadeLocal;
 import com.sv.udb.modelo.UsuarioRol;
 import com.sv.udb.utils.LOG4J;
+import com.sv.udb.utils.NotificacionPojo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -115,8 +116,6 @@ public class UsuarioRolBean implements Serializable {
                 FCDEUsuaRole.create(this.objeUsuaRole);
                 this.listUsuaRole.add(this.objeUsuaRole);
                 this.guardar = false;
-//                log.info("Usuariorol creado: "+this.objeUsuaRole.getAcceUsua()+" - "+this.objeUsuaRole.getCodiRole().getNombRole());
-                //this.limpForm(); //Omito para mantener los datos en la modal
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             }
             else

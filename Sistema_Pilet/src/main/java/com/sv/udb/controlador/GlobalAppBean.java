@@ -1,12 +1,11 @@
 package com.sv.udb.controlador;
 
+import com.sv.udb.ejb.NotificacionFacadeLocal;
 import com.sv.udb.ejb.UsuarioFacadeLocal;
 import com.sv.udb.modelo.Notificacion;
 import com.sv.udb.modelo.Usuario;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLConnection;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
@@ -28,7 +27,11 @@ import org.primefaces.model.StreamedContent;
 public class GlobalAppBean {
 
     @EJB
-    private UsuarioFacadeLocal FCDEUsua;   
+    private UsuarioFacadeLocal FCDEUsua;  
+    
+    @EJB
+    private NotificacionFacadeLocal FCDENoti;
+    
     @Inject
     private LoginBean logiBean; //Bean de session
     
@@ -94,14 +97,17 @@ public class GlobalAppBean {
         }
     }
     
-    public void setNotificacion(Usuario codi, String mens, String modu, String path)
+    public void addNotificacion(Usuario usua, String mens, String modu, String path)
     {
-        try {
-            
-            NotificacionBean obje = new NotificacionBean();
-            obje.guar(codi, mens, modu, path);
+        try {   
+            Notificacion obje = new Notificacion();
+            obje.setCodiUsua(usua);
+            obje.setMensNoti(mens);
+            obje.setModuNoti(modu);
+            obje.setPathNoti(path);
+            obje.setEstaNoti(0);
+            FCDENoti.create(obje);
         } catch (Exception e) {
-            
         }
     }
     
