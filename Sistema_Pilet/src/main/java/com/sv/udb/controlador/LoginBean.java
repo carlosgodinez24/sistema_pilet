@@ -5,10 +5,12 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.NotificacionFacadeLocal;
 import com.sv.udb.ejb.UsuarioFacadeLocal;
 import com.sv.udb.modelo.Usuario;
 import com.sv.udb.modelo.Notificacion;
+import com.sv.udb.utils.LOG4J;
 import com.sv.udb.utils.UsuariosPojo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -19,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
  /**
@@ -51,6 +54,9 @@ public class LoginBean implements Serializable {
     private String imagPerf;
     private List<Notificacion> listNoti;//Lista de Notificaciones
 
+    private LOG4J<LoginBean> lgs = new LOG4J<LoginBean>(LoginBean.class) {
+    };
+    private Logger log = lgs.getLog();
     public LoginBean() {
     }
     
@@ -114,6 +120,7 @@ public class LoginBean implements Serializable {
                 WebServicesBean ws = new WebServicesBean();
                 usuaPojo = ws.consLogi(usua, cont);
                 if(usuaPojo.getNomb() != null){
+                    log.info(this.objeUsua.getCodiUsua()+"-"+"Login"+"-"+"Incio de Sesion");
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Bienvenido)"); //No se muestra porque redirecciona
                     this.loge = true;
                     //Cargar una imagen de usuario (Puede ser de una BD)
@@ -156,10 +163,12 @@ public class LoginBean implements Serializable {
         {
             facsCtxt.getExternalContext().invalidateSession();
             facsCtxt.getExternalContext().redirect(globalAppBean.getUrl("login.xhtml")); 
+            log.info(this.objeUsua.getCodiUsua()+"-"+"Login"+"-"+"Fin de Sesion");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al finalizar la sesión')");
+            log.error(this.objeUsua.getCodiUsua()+"-"+"Login"+"-"+"Error cerrando Sesion: "+getRootCause(ex).getMessage());
         }
         finally
         {

@@ -13,6 +13,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.DatatypeConverter;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -23,12 +24,19 @@ import javax.xml.bind.DatatypeConverter;
 public class WebServicesBean implements Serializable {
 
     private static final long serialVersionUID = 1L;    
-    
+    private String nombUsua;
+    private String filt; //Filotro de búsqueda
+    //Lógica slider
+    private boolean showBusc = false;
     /**
      * Creates a new instance of WebServicesBean
      */
     public WebServicesBean() {
         
+    }
+
+    public boolean isShowBusc() {
+        return showBusc;
     }
     
     public UsuariosPojo consLogi(String acce, String cont)
@@ -65,5 +73,14 @@ public class WebServicesBean implements Serializable {
     
     private String  bytesToHex(byte[] hash) {
         return DatatypeConverter.printHexBinary(hash);
+    }
+    
+    /*
+    * Toogle buscador, cambia el valor del buscador
+    */
+    public void toogBusc()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        this.showBusc = !this.showBusc;
     }
 }

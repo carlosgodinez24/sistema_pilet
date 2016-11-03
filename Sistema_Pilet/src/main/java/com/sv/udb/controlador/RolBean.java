@@ -17,6 +17,8 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -28,6 +30,9 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 @ManagedBean
 public class RolBean implements Serializable {
+    //Bean de session
+    @Inject
+    private LoginBean logiBean; 
     //Campos de la clase
     @EJB
     private RolFacadeLocal FCDERoles;
@@ -35,7 +40,10 @@ public class RolBean implements Serializable {
     private List<Rol> listRole;
     private Rol objeRole;
     private boolean guardar;
-    private LOG4J log;
+    
+    private LOG4J<RolBean> lgs = new LOG4J<RolBean>(RolBean.class) {
+    };
+    private Logger log = lgs.getLog();
     
     //Encapsulamiento de los campos de la clase
     
@@ -105,13 +113,13 @@ public class RolBean implements Serializable {
             FCDERoles.create(this.objeRole);
             this.listRole.add(this.objeRole);
             this.guardar = false;
-            //log.info("Rol creado: "+this.objeRole.getNombRole());
+            log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"Roles"+"-"+"Rol creado: "+this.objeRole.getNombRole());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            //log.error("Error creando rol: "+getRootCause(ex).getMessage());
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"Roles"+"-"+"Error creando rol: "+getRootCause(ex).getMessage());
         }
         finally
         {
@@ -130,13 +138,13 @@ public class RolBean implements Serializable {
             this.listRole.remove(this.objeRole); //Limpia el objeto viejo
             FCDERoles.edit(this.objeRole);
             this.listRole.add(this.objeRole); //Agrega el objeto modificado
-            //log.info("Rol modificado: "+this.objeRole.getCodiRole());
+            log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"Roles"+"-"+"Rol modificado: "+this.objeRole.getCodiRole());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            //log.error("Error modificando rol: "+getRootCause(ex).getMessage());
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"Roles"+"-"+"Error modificando rol: "+getRootCause(ex).getMessage());
         }
         finally
         {

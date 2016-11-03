@@ -9,7 +9,6 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.UsuarioRolFacadeLocal;
 import com.sv.udb.modelo.UsuarioRol;
 import com.sv.udb.utils.LOG4J;
-import com.sv.udb.utils.NotificacionPojo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -17,6 +16,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -27,6 +28,9 @@ import org.primefaces.context.RequestContext;
 @Named(value = "usuarioRolBean")
 @SessionScoped
 public class UsuarioRolBean implements Serializable {
+    //Bean de session
+    @Inject
+    private LoginBean logiBean; 
     //Campos de la clase
     @EJB
     private UsuarioRolFacadeLocal FCDEUsuaRole;
@@ -36,7 +40,10 @@ public class UsuarioRolBean implements Serializable {
     private List<UsuarioRol> listUsuaRole;
     private List<UsuarioRol> listUsua;
     private boolean guardar;
-    private LOG4J log;
+    
+    private LOG4J<UsuarioRolBean> lgs = new LOG4J<UsuarioRolBean>(UsuarioRolBean.class) {
+    };
+    private Logger log = lgs.getLog();
 
     //Encapsulamiento de los campos de la clase
     
@@ -116,6 +123,7 @@ public class UsuarioRolBean implements Serializable {
                 FCDEUsuaRole.create(this.objeUsuaRole);
                 this.listUsuaRole.add(this.objeUsuaRole);
                 this.guardar = false;
+                log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol creado: "+this.objeUsuaRole.getCodiUsua()+"/"+this.objeUsuaRole.getCodiRole());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             }
             else
@@ -125,7 +133,7 @@ public class UsuarioRolBean implements Serializable {
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             ex.printStackTrace();
-            //log.error("Error creando Usuariorol: "+getRootCause(ex).getMessage());
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Error creando Usuariorol: "+getRootCause(ex).getMessage());
         }
         finally
         {
@@ -145,7 +153,7 @@ public class UsuarioRolBean implements Serializable {
                 this.listUsuaRole.remove(this.objeUsuaRole); //Limpia el objeto viejo
                 FCDEUsuaRole.edit(this.objeUsuaRole);
                 this.listUsuaRole.add(this.objeUsuaRole); //Agrega el objeto modificado
-                //log.info("Usuariorol modificado: "+this.objeUsuaRole.getCodiUsuaRole());
+                log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol modificado: "+this.objeUsuaRole.getCodiUsuaRole());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             }
             else
@@ -154,7 +162,7 @@ public class UsuarioRolBean implements Serializable {
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            //log.error("Error modificando Usuariorol: "+getRootCause(ex).getMessage());
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Error modificando Usuariorol: "+getRootCause(ex).getMessage());
         }
         finally
         {
@@ -198,7 +206,7 @@ public class UsuarioRolBean implements Serializable {
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            //log.error("Error consultando Usuariorol: "+getRootCause(ex).getMessage());
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Error consultando Usuariorol: "+getRootCause(ex).getMessage());
         }
         finally
         {

@@ -43,5 +43,5 @@ function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
     $("#FormRegi\\:fechNaci").initDatePick();
-    $("#FormRegi\\:gene").selectpicker();
+    $("#FormRegi\\:role").selectpicker();
 }

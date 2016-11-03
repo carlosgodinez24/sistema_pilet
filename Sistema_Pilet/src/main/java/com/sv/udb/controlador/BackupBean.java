@@ -16,7 +16,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -26,8 +28,12 @@ import javax.servlet.ServletContext;
 @ViewScoped
 @ManagedBean
 public class BackupBean implements Serializable{
-    private LOG4J log;
+    @Inject
+    private LoginBean logiBean; //Bean de session
     
+    private LOG4J<BackupBean> lgs = new LOG4J<BackupBean>(BackupBean.class) {
+    };
+    private Logger log = lgs.getLog();
     /**
      * Creates a new instance of BackupBean
      */
@@ -40,8 +46,7 @@ public class BackupBean implements Serializable{
     @PostConstruct
     public void init()
     {
-        log = new LOG4J();
-        log.debug("Se está creando una copia de respaldo.");
+        
     }
     
     public void creaBackUp()
@@ -73,15 +78,15 @@ public class BackupBean implements Serializable{
             p = runtime.exec(batchCommand);
             int processComplete = p.waitFor();
             if (processComplete == 0) {
-                log.info("Backup created successfully for with DB " + database + " in " + host + ":" + port);
+                log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"Backup"+"-"+"Backup created successfully for with DB " + database + " in " + host + ":" + port);
             } else {
-                log.info("Could not create the backup for with DB " + database + " in " + host + ":" + port);
+                log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"Backup"+"-"+"Could not create the backup for with DB " + database + " in " + host + ":" + port);
             }
  
         } catch (IOException ioe) {
-            log.error("ERROR AL CREAR BACKUP");
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"Backup"+"-"+"ERROR AL CREAR BACKUP");
         } catch (Exception e) {
-            log.error("ERROR AL CREAR BACKUP");
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"Backup"+"-"+"ERROR AL CREAR BACKUP");
         }
     }
 }
