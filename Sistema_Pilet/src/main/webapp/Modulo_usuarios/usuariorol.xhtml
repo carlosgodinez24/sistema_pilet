@@ -134,8 +134,9 @@ and open the template in the editor.
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                         </div>
+                                        <h:inputHidden id="oldRole" value="#{usuarioRolBean.objeOldUsuaRole.codiRole.nombRole}" />
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="role" value="Género: "/>
+                                            <h:outputLabel  for="role" value="Rol: "/>
                                             <h:message for="role" errorClass="field-error" />
                                             <h:selectOneMenu id="role" value="#{usuarioRolBean.objeUsuaRole.codiRole}" class="form-control" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>

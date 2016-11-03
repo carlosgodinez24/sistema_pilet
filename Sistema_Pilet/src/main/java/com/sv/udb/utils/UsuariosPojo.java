@@ -16,6 +16,8 @@ public class UsuariosPojo {
     String mail;
     String tipo;
     boolean resp;
+    String codiEmpl;
+    String codiAlum;
 
     public String getNomb() {
         return nomb;
@@ -56,7 +58,5 @@ public class UsuariosPojo {
     public void setResp(boolean resp) {
         this.resp = resp;
     }
-    
-    
     
 }

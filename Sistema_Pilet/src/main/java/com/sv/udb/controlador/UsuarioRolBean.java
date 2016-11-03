@@ -7,6 +7,7 @@ package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.UsuarioRolFacadeLocal;
+import com.sv.udb.modelo.Usuario;
 import com.sv.udb.modelo.UsuarioRol;
 import com.sv.udb.utils.LOG4J;
 import javax.inject.Named;
@@ -31,11 +32,14 @@ public class UsuarioRolBean implements Serializable {
     //Bean de session
     @Inject
     private LoginBean logiBean; 
+    @Inject
+    private GlobalAppBean globalAppBean;
     //Campos de la clase
     @EJB
     private UsuarioRolFacadeLocal FCDEUsuaRole;
     
     private UsuarioRol objeUsuaRole;
+    private UsuarioRol objeOldUsuaRole;
     private UsuarioRol objeVali;
     private List<UsuarioRol> listUsuaRole;
     private List<UsuarioRol> listUsua;
@@ -63,6 +67,14 @@ public class UsuarioRolBean implements Serializable {
         return listUsuaRole;
     }
 
+    public UsuarioRol getObjeOldUsuaRole() {
+        return objeOldUsuaRole;
+    }
+
+    public void setObjeOldUsuaRole(UsuarioRol objeOldUsuaRole) {
+        this.objeOldUsuaRole = objeOldUsuaRole;
+    }
+    
     public boolean isGuardar() {
         return guardar;
     }
@@ -95,6 +107,7 @@ public class UsuarioRolBean implements Serializable {
     public void limpForm()
     {
         this.objeUsuaRole = new UsuarioRol();
+        this.objeOldUsuaRole = new UsuarioRol();
         this.guardar = true;        
     }
     
@@ -123,6 +136,9 @@ public class UsuarioRolBean implements Serializable {
                 FCDEUsuaRole.create(this.objeUsuaRole);
                 this.listUsuaRole.add(this.objeUsuaRole);
                 this.guardar = false;
+                Usuario objeUsua = new Usuario();
+                objeUsua.setCodiUsua(this.objeUsuaRole.getCodiUsua().getCodiUsua());
+                globalAppBean.addNotificacion(objeUsua, "Se le ha asignado el rol de " + this.objeUsuaRole.getCodiRole().getNombRole(), "Modulo usuarios", "");
                 log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol creado: "+this.objeUsuaRole.getCodiUsua()+"/"+this.objeUsuaRole.getCodiRole());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             }
@@ -150,9 +166,13 @@ public class UsuarioRolBean implements Serializable {
         try
         {
             if(valiUsuaRole()){
+                String oldRole = this.objeOldUsuaRole.getCodiRole().getNombRole();
                 this.listUsuaRole.remove(this.objeUsuaRole); //Limpia el objeto viejo
                 FCDEUsuaRole.edit(this.objeUsuaRole);
                 this.listUsuaRole.add(this.objeUsuaRole); //Agrega el objeto modificado
+                Usuario objeUsua = new Usuario();
+                objeUsua.setCodiUsua(this.objeUsuaRole.getCodiUsua().getCodiUsua());
+                globalAppBean.addNotificacion(objeUsua, "Se ha modificado su rol de " + oldRole + " a " + this.objeUsuaRole.getCodiRole().getNombRole() , "Modulo usuarios", "");
                 log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol modificado: "+this.objeUsuaRole.getCodiUsuaRole());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             }
@@ -199,6 +219,7 @@ public class UsuarioRolBean implements Serializable {
         try
         {
             this.objeUsuaRole = FCDEUsuaRole.find(codi);
+            this.objeOldUsuaRole = FCDEUsuaRole.find(codi);
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeUsuaRole.getCodiUsua().getAcceUsua()) + "')");
