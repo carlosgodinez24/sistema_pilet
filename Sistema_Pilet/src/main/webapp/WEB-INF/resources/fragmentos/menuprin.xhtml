@@ -52,6 +52,13 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiUsuaRole}">
+                                    <h:link outcome="/Modulo_usuarios/usuarios" rendered="#{globalAppBean.getEstaPermByName('/Modulo_usuarios/usuarios.xhtml')}">
+                                        <i class="fa fa-user"></i> Habilitar Usuarios
+                                    </h:link>
+                                </li>
+                            </ul>
                         </li>
                     </ui:fragment>
                 </ul>
