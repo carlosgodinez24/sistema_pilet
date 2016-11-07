@@ -136,9 +136,7 @@ public class UsuarioRolBean implements Serializable {
                 FCDEUsuaRole.create(this.objeUsuaRole);
                 this.listUsuaRole.add(this.objeUsuaRole);
                 this.guardar = false;
-                Usuario objeUsua = new Usuario();
-                objeUsua.setCodiUsua(this.objeUsuaRole.getCodiUsua().getCodiUsua());
-                globalAppBean.addNotificacion(objeUsua, "Se le ha asignado el rol de " + this.objeUsuaRole.getCodiRole().getNombRole(), "Modulo usuarios", "");
+                globalAppBean.addNotificacion(this.objeOldUsuaRole.getCodiUsua().getCodiUsua(), "Se le ha asignado el rol de " + this.objeUsuaRole.getCodiRole().getNombRole(), "Modulo usuarios", "");
                 log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol creado: "+this.objeUsuaRole.getCodiUsua()+"/"+this.objeUsuaRole.getCodiRole());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             }
@@ -170,9 +168,7 @@ public class UsuarioRolBean implements Serializable {
                 this.listUsuaRole.remove(this.objeUsuaRole); //Limpia el objeto viejo
                 FCDEUsuaRole.edit(this.objeUsuaRole);
                 this.listUsuaRole.add(this.objeUsuaRole); //Agrega el objeto modificado
-                Usuario objeUsua = new Usuario();
-                objeUsua.setCodiUsua(this.objeUsuaRole.getCodiUsua().getCodiUsua());
-                globalAppBean.addNotificacion(objeUsua, "Se ha modificado su rol de " + oldRole + " a " + this.objeUsuaRole.getCodiRole().getNombRole() , "Modulo usuarios", "");
+                globalAppBean.addNotificacion(this.objeUsuaRole.getCodiUsua().getCodiUsua(), "Se ha modificado su rol de " + oldRole + " a " + this.objeUsuaRole.getCodiRole().getNombRole() , "Modulo usuarios", "");
                 log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol modificado: "+this.objeUsuaRole.getCodiUsuaRole());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             }

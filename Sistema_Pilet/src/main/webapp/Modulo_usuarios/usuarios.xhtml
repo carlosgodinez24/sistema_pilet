@@ -67,11 +67,7 @@ and open the template in the editor.
                                     <fieldset>
                                         <div class="input-group input-group-sm">
                                             <h:inputText id="Filt" value="#{webServicesBean.filt}" class="form-control" 
-                                                         pt:placeholder="Buscar por Nombres..." autocomplete="off"/>
-                                            <h:inputText id="Filt2" value="#{webServicesBean.filtApel}" class="form-control" 
-                                                         pt:placeholder="Buscar por Apellidos..." autocomplete="off"/>
-                                            <h:inputText id="Filt3" value="#{webServicesBean.filtTipo}" class="form-control" 
-                                                         pt:placeholder="Buscar por Tipo de Usuario..." autocomplete="off"/>
+                                                         pt:placeholder="Buscar por Usuario..." autocomplete="off"/>
                                             <span class="input-group-btn">
                                                 <h:commandLink id="btonBusc" class="btn btn-default">
                                                     <p:ajax listener="#{webServicesBean.consWebServ()}" process="@form" update="@form" global="true"/>
@@ -83,7 +79,7 @@ and open the template in the editor.
                                         <ul class="list-group">
                                             <li class="list-group-item list-group-item-success">Respuesta: #{webServicesBean.objeWebServ.resp}</li>
                                             <ui:repeat var="temp" value="#{webServicesBean.objeWebServ.resu}">
-                                                <li class="list-group-item">#{temp.mail} - #{temp.nomb} - #{temp.tipo}</li>
+                                                <li class="list-group-item">#{temp.nomb} #{temp.apel} - #{temp.tipo}</li>
                                             </ui:repeat>
                                         </ul>
                                     </fieldset>

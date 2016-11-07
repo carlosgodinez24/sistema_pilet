@@ -1,6 +1,7 @@
 package com.sv.udb.controlador;
 
 import com.sv.udb.utils.UsuariosPojo;
+import com.sv.udb.utils.pojos.DatosUsuarios;
 import com.sv.udb.utils.pojos.WSconsUsua;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -144,7 +145,8 @@ public class WebServicesBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         Client client = ClientBuilder.newClient();
         String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
-        url = String.format("%s/%s/%s/%s/%s", url, "consUsua", this.filt, this.filtApel, this.filtTipo);
+        url = String.format("%s/%s/%s/%s/%s", url, "consUsua", this.filt, "P", "alum");
+        System.out.println(url);
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
         request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));
@@ -152,10 +154,10 @@ public class WebServicesBean implements Serializable {
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
             this.objeWebServ = response.readEntity(WSconsUsua.class); //La respuesta de captura en un pojo que esta en el paquete utils
-//            for(DatosAlumnos temp : this.objeWebServ.getResu())
-//            {
-//                System.err.println(String.format("Carnet: %s Nombre: %s", temp.getCarn(), temp.getNomb()));
-//            }
+            for(DatosUsuarios temp : this.objeWebServ.getResu())
+            {
+                System.out.println(temp.getNomb());
+            }
         }
         else
         {

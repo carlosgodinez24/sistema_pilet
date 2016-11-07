@@ -97,11 +97,13 @@ public class GlobalAppBean {
         }
     }
     
-    public void addNotificacion(Usuario usua, String mens, String modu, String path)
+    public void addNotificacion(int usua, String mens, String modu, String path)
     {
         try {   
             Notificacion obje = new Notificacion();
-            obje.setCodiUsua(usua);
+            Usuario objeUsua = new Usuario();
+            objeUsua.setCodiUsua(usua);
+            obje.setCodiUsua(objeUsua);
             obje.setMensNoti(mens);
             obje.setModuNoti(modu);
             obje.setPathNoti(path);
