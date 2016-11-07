@@ -58,31 +58,35 @@ and open the template in the editor.
                     <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
-                            <h:form id="FormWebServ" class="form-horizontal">
+                            <h:panelGroup id="FormWebServ">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
                                     <h4 class="modal-title">Gestión de WebServices</h4>
                                 </div>
                                 <div class="modal-body" style="padding-top: 2px;">
-                                    <fieldset>
+                                    
+                                        <h:form id="FormBusc" class="form-horizontal">
                                         <div class="input-group input-group-sm">
                                             <h:inputText id="Filt" value="#{webServicesBean.filt}" class="form-control" 
-                                                         pt:placeholder="Buscar por Usuario..." autocomplete="off"/>
+                                                         pt:placeholder="Buscar por Usuario..." >
+                                            </h:inputText>
                                             <span class="input-group-btn">
                                                 <h:commandLink id="btonBusc" class="btn btn-default">
-                                                    <p:ajax listener="#{webServicesBean.consWebServ()}" process="@form" update="@form" global="true"/>
+                                                    <p:ajax listener="#{webServicesBean.consWebServ()}" process="Filt" update="Filt" global="true"/>
                                                     <i class="fa fa-search"/>
                                                 </h:commandLink>
                                             </span>
                                         </div>
                                         <br/>
+                                        </h:form>
+                                        <h:form id="resp">
                                         <ul class="list-group">
                                             <li class="list-group-item list-group-item-success">Respuesta: #{webServicesBean.objeWebServ.resp}</li>
                                             <ui:repeat var="temp" value="#{webServicesBean.objeWebServ.resu}">
                                                 <li class="list-group-item">#{temp.nomb} #{temp.apel} - #{temp.tipo}</li>
                                             </ui:repeat>
                                         </ul>
-                                    </fieldset>
+                                        </h:form>
                                 </div>
                                 <div class="modal-footer" style="padding-top: 0; padding-bottom: 5px;">
                                     <div class="input-group-btn right" style="padding-top: 5px;">
@@ -94,7 +98,7 @@ and open the template in the editor.
                                         </div>
                                     </div>
                                 </div>
-                            </h:form>
+                                </h:panelGroup>
                         </div>
                     </div>
                 </div>

@@ -69,6 +69,7 @@ public class WebServicesBean implements Serializable {
     }
 
     public WSconsUsua getObjeWebServ() {
+        consWebServ();
         return objeWebServ;
     }
 
