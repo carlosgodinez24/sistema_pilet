@@ -12,6 +12,7 @@ import com.sv.udb.modelo.Usuario;
 import com.sv.udb.modelo.Notificacion;
 import com.sv.udb.utils.LOG4J;
 import com.sv.udb.utils.UsuariosPojo;
+import com.sv.udb.utils.ConsultarCodiEmpleadoLogin;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -53,6 +54,7 @@ public class LoginBean implements Serializable {
     private String cont;
     private String imagPerf;
     private List<Notificacion> listNoti;//Lista de Notificaciones
+    private static int codiEmplSesi;
 
     private LOG4J<LoginBean> lgs = new LOG4J<LoginBean>(LoginBean.class) {
     };
@@ -103,6 +105,15 @@ public class LoginBean implements Serializable {
     public List<Notificacion> getListNoti() {
         return listNoti;
     }
+
+    public static int getCodiEmplSesi() {
+        return codiEmplSesi;
+    }
+
+    public static void setCodiEmplSesi(int codiEmplSesi) {
+        LoginBean.codiEmplSesi = codiEmplSesi;
+    }
+    
     
     /**
      * Método que crea la sesión
@@ -127,6 +138,7 @@ public class LoginBean implements Serializable {
                     this.imagPerf = "images/userDemo.png";
                     //Llenar lista de notificaciones.... puede salir de la DB
                     this.listNoti = FCDENoti.findByUsua(this.objeUsua.getCodiUsua());
+                    this.codiEmplSesi =  new ConsultarCodiEmpleadoLogin().consultarCodigo(usua, cont);
                     //Redireccionar
                     facsCtxt.getExternalContext().redirect(globalAppBean.getUrl("index.xhtml"));
                 }
