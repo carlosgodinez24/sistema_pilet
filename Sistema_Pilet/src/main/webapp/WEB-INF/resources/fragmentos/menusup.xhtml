@@ -32,22 +32,28 @@ and open the template in the editor.
                             <li class="dropdown notifications-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell-o"></i>
-                                    <span class="label label-warning">#{loginBean.listNoti.size()}</span>
+                                    <span id="spanNoti" class="label label-warning">#{loginBean.listNoti.size()}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="header">#{loginBean.listNoti.size()} notificaciones</li>
                                     <li>
-                                        <ul class="menu">
-                                            <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
-                                                <li>
-                                                    <a href="#">
-                                                        <h:panelGroup rendered="#{noti.estaNoti eq '0'}">
-                                                            <i class="fa fa-folder text-aqua"/> #{noti.moduNoti}
-                                                            <p>#{noti.mensNoti.length() gt 35 ? noti.mensNoti.substring(0,32).concat('...') : noti.mensNoti}</p>
-                                                        </h:panelGroup>
-                                                    </a>
-                                                </li>
-                                            </ui:repeat>
+                                        <ul id="resultado" class="menu">
+                                            <h:form>
+                                                <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
+                                                    <li>
+                                                        <!--<h:commandLink id="btonOpenModa">-->
+                                                            <h:panelGroup rendered="#{noti.estaNoti eq '0'}">
+                                                                <input type="hidden" id="codiNoti" value="#{noti.codiNoti}" />
+                                                                <input type="hidden" id="codiUsua" value="#{noti.codiUsua}" />
+                                                                <span class="fa fa-folder text-aqua">#{noti.moduNoti}</span>
+                                                                <p>#{noti.mensNoti.length() gt 35 ? noti.mensNoti.substring(0,32).concat('...') : noti.mensNoti}</p>
+                                                                <input type="hidden" id="mens" value="#{noti.mensNoti}" />
+                                                            </h:panelGroup>
+                                                           <!-- <p:ajax update=":FormNoti" oncomplete="$('#ModaFormNoti').modal('show');" global="true"/>
+                                                        </h:commandLink>-->
+                                                    </li>
+                                                </ui:repeat>
+                                            </h:form>
                                         </ul>
                                     </li>
                                     <li class="header">Ver todas</li>
@@ -88,5 +94,85 @@ and open the template in the editor.
                     </div>
                 </nav>
             </header>
+        <script type="text/javascript">
+                $(document).ready(function() {
+   var codi = 0;
+   var codiUsua = 0;
+   var mens = "";
+   var modu = "";
+   $("#resultado li").on("click", function(){
+        codi = $(this).find(":hidden#codiNoti").val();
+        codiUsua = $(this).find(":hidden#codiUsua").val();
+        $(this).find("span").attr('class','fa fa-folder-open-o text-aqua');
+        modu = $(this).find("span").text();
+         mens = $(this).find(":hidden#mens").val();
+         getVars();
+         $('#ModaFormNoti').modal('show');
+       /*$('formNoti:mensNoti').value(mens);
+       $('#codiNotimant').val(codi);
+       $('#codiUsuamant').val(codiUsua);
+       document.getElementById('formNoti:modu').value = modu;
+       var elem = document.getElementById('formNoti:mensNoti');
+       elem.value = mens;
+       var codis = document.getElementById('formNoti:codiNotimant');
+       codis.value = codi;
+       document.getElementById('formNoti:codiUsuamant').value = 1;
+       document.getElementById('formNoti:btonCanc').click();
+        // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+        console.log($('#codiNotimant').val());*/
+        
+        /*if(res[1])
+        {
+
+           
+        }
+        else
+        {
+            
+        }*/
+
+    });
+    function getVars() {
+        // ...
+        document.getElementById("formNoti:modu").value = modu;
+        document.getElementById("formNoti:mensNoti").value = mens;
+        document.getElementById('formNoti:codiNotimant').value = codi;
+        document.getElementById('formNoti:codiUsuamant').value = codiUsua;
+    }
+});
+  
+</script>
+            <!-- Modal -->
+            <div id="ModaFormNoti" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <h:form id="formNoti">
+                        <h:panelGroup id="Form">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                <h:outputText id="modu" class="modal-title">#{notificacionBean.objeNoti.moduNoti}</h:outputText>
+                            </div>
+                            <div class="modal-body" style="padding-top: 2px;">
+                                <h:outputText id="mensNoti">#{notificacionBean.objeNoti.mensNoti}</h:outputText>
+                            </div>
+                            <div class="modal-footer" style="padding-top: 0; padding-bottom: 5px;">
+                                <div class="input-group-btn right" style="padding-top: 5px;">
+                                    <div class="btn-group">
+                                        <h:inputHidden id="codiNotimant" value="#{notificacionBean.objeNoti.codiNoti}" />
+                                        <h:inputHidden id="codiUsuamant" value="#{notificacionBean.objeNoti.codiUsua}" />
+                                        <h:commandLink class="btn btn-default">
+                                            <p:ajax listener="#{notificacionBean.modi()}" process="@form" />
+                                            <i class="fa fa-mail-forward"/> Cerrar
+                                        </h:commandLink>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            
     </ui:composition>
 </html>

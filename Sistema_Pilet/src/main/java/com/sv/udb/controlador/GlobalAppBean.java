@@ -113,6 +113,14 @@ public class GlobalAppBean {
         }
     }
     
+    public void NotificacionView(int noti)
+    {
+        try {
+            System.out.println("sdsa "+noti);
+        } catch (Exception e) {
+        }
+    }
+    
     public boolean getEstaPermByName(String role)
     {
         this.logiBean = this.logiBean != null ? this.logiBean : new LoginBean();
