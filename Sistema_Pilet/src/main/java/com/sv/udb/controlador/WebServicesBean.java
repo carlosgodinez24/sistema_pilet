@@ -1,7 +1,11 @@
 package com.sv.udb.controlador;
 
 import com.sv.udb.utils.UsuariosPojo;
+import com.sv.udb.utils.pojos.DatosAlumnos;
+import com.sv.udb.utils.pojos.DatosDocentes;
 import com.sv.udb.utils.pojos.DatosUsuarios;
+import com.sv.udb.utils.pojos.WSconsAlumByDoce;
+import com.sv.udb.utils.pojos.WSconsDoceByAlum;
 import com.sv.udb.utils.pojos.WSconsUsua;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -174,4 +178,99 @@ public class WebServicesBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         this.showBusc = !this.showBusc;
     }
+    
+    private WSconsAlumByDoce objeWebServAlumByDoce;
+    private WSconsDoceByAlum objeWebServDoceByAlum;
+
+
+    public WSconsAlumByDoce getObjeWebServAlumByDoce() {
+        return objeWebServAlumByDoce;
+    }
+
+    public void setObjeWebServAlumByDoce(WSconsAlumByDoce objeWebServByDoce) {
+        this.objeWebServAlumByDoce = objeWebServByDoce;
+    }
+    
+    
+    public void consAlumPorCrit(String nombAlum, String apelAlum, String gradAlum, String espeAlum)
+    {
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        Client client = ClientBuilder.newClient();
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
+        url = String.format("%s/%s/%s/%s/%s/%s", url, "consAlum", nombAlum,apelAlum,gradAlum,espeAlum);
+        WebTarget resource = client.target(url);
+        Invocation.Builder request = resource.request();
+        request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));
+        Response response = request.get();
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
+        {
+            this.objeWebServAlumByDoce = response.readEntity(WSconsAlumByDoce.class); //La respuesta de captura en un pojo que esta en el paquete utils
+            for(DatosAlumnos temp : this.objeWebServAlumByDoce.getResu())
+            {
+                System.err.println(String.format("Carnet: %s Nombre: %s", temp.getCarn(), temp.getNomb()));
+            }
+        }
+        else
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
+        }
+    }
+    
+    public WSconsAlumByDoce consAlumPorDoce(String codiDoce)
+    {
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        Client client = ClientBuilder.newClient();
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
+        url = String.format("%s/%s/%s", url, "consAlumByDoce", codiDoce);
+        WebTarget resource = client.target(url);
+        Invocation.Builder request = resource.request();
+        request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));
+        Response response = request.get();
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
+        {
+            this.objeWebServAlumByDoce = response.readEntity(WSconsAlumByDoce.class); //La respuesta de captura en un pojo que esta en el paquete utils
+            for(DatosAlumnos temp : this.objeWebServAlumByDoce.getResu())
+            {
+                System.err.println(String.format("Carnet: %s Nombre: %s", temp.getCarn(), temp.getNomb()));
+            }
+        }
+        else
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
+        }
+        return this.objeWebServAlumByDoce;
+    }
+    
+    public WSconsDoceByAlum consDocePorAlum(String carnAlum)
+    {
+        System.out.println("ConsDocePorALUM");
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        Client client = ClientBuilder.newClient();
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
+        url = String.format("%s/%s/%s", url, "consAlum", carnAlum);
+        WebTarget resource = client.target(url);
+        Invocation.Builder request = resource.request();
+        request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));
+        Response response = request.get();
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
+        {
+            this.objeWebServDoceByAlum = response.readEntity(WSconsDoceByAlum.class); //La respuesta de captura en un pojo que esta en el paquete utils
+            if(this.objeWebServDoceByAlum.isResp())
+            {
+                for(DatosDocentes temp : this.objeWebServDoceByAlum.getDoce())
+                {
+                    System.err.println(String.format("Codigo: %s Nombre: %s", temp.getCodi(), temp.getNomb()));
+                }
+            }
+        }
+        else
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
+        }
+        return this.objeWebServDoceByAlum;
+    }
+    
 }
