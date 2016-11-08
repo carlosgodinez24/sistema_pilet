@@ -164,8 +164,8 @@ and open the template in the editor.
                                                         <i class="fa fa-plus"/> Nuevo
                                                     </h:commandLink>
                                                 </h:panelGroup>
-                                                <h:panelGroup >
-                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!rolBean.guardar and globalAppBean.getEstaPermByName('/Modulo_usuarios/roles.xhtml/modificar')}">
+                                                <h:panelGroup > 
+                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!rolBean.guardar and globalAppBean.getEstaPermByName('/Modulo_usuarios/roles.xhtml/Modificar')}">
                                                         <p:ajax listener="#{rolBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Modificar
                                                     </h:commandLink>

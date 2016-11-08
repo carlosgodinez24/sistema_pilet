@@ -60,7 +60,7 @@ public class GlobalAppBean {
      * @param file el nombre del archivo que se quiere encontrar
      * @return la ruta completa de la ubicación del archivo
      */
-    public String getResourcePath(String file)
+    public String getResourcePath(String file) 
     {
         String resp;      
         FacesContext facsCtxt = FacesContext.getCurrentInstance();
@@ -89,7 +89,7 @@ public class GlobalAppBean {
         */
         try
         {
-            return FCDEUsua.findPermByAcceAndDire(usua, page);
+            return FCDEUsua.findPermByAcceAndDire(usua, page); 
         }
         catch(Exception ex)
         {
@@ -102,7 +102,7 @@ public class GlobalAppBean {
         try {   
             Notificacion obje = new Notificacion();
             Usuario objeUsua = new Usuario();
-            objeUsua.setCodiUsua(usua);
+            objeUsua.setCodiUsua(usua); 
             obje.setCodiUsua(objeUsua);
             obje.setMensNoti(mens);
             obje.setModuNoti(modu);
