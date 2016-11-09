@@ -12,11 +12,11 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="../WEB-INF/resources/fragmentos/comun.xhtml">
-        <!-- Título de la página -->
+        <!-- TÃ­tulo de la pÃ¡gina -->
         <ui:param name="pageTitl" value="Citas Alumno"/>
         <ui:param name="pageNomb" value="Citas Alumno"/>
         <ui:param name="pageDesc" value="Gestionar Citas"/>
-        <!-- Activar el link del menú -->
+        <!-- Activar el link del menÃº -->
         <ui:param name="actiMenuCita" value="active"/>
         <ui:param name="actiCitaAlum" value="active"/>
         <!-- Scripts personalizados -->
@@ -67,7 +67,7 @@ and open the template in the editor.
                                    #{citasBean.consDepeListCitaUsua(fila)}
                                </h:column>
                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
-                                   <f:facet name="header">Código</f:facet>
+                                   <f:facet name="header">CÃ³digo</f:facet>
                                    <h:outputText value="#{fila.codiCita}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="carn">
@@ -127,11 +127,12 @@ and open the template in the editor.
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codi" value="#{horarioDisponibleBean.objeHoraDisp.codiHoraDisp}" />
                                         <div class="input-group col-xs-12">
-                                            <h:outputLabel  for="usua" value="¿A quién desea solicitarle una cita? "/>
+                                            <h:outputLabel  for="usua" value="Â¿A quiÃ©n desea solicitarle una cita? "/>
                                             <h:selectOneMenu id="usua" value="#{citasBean.objeCita.codiUsua}" class="form-control select" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{citasBean.consDoceAlum().doce}" var="lstDoce" itemLabel="#{lstDoce.nomb}" itemValue="#{Integer.parseInt(lstDoce.codi)}"/>
                                                 <f:converter converterId="PooConv"/>
+                                                <p:ajax listener="#{citasBean.consHorarios()}" process="@this" oncomplete="INIT_OBJE_MODA();" update="@form :FormRegi" />
                                             </h:selectOneMenu>
                                             <h:message for="usua" errorClass="field-error" />
                                         </div>
@@ -146,7 +147,7 @@ and open the template in the editor.
                                         </div>
                                         
                                         <div class="input-group col-xs-12">
-                                            <h:outputLabel  for="visi" value="¿Quién solicita esta cita?"/>
+                                            <h:outputLabel  for="visi" value="Â¿QuiÃ©n solicita esta cita?"/>
                                             <h:selectOneMenu id="visi" value="#{citasBean.alumVisiSelec}" class="form-control select" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{alumnoVisitanteBean.listAlumVisiCarne}" var="lstVisi" itemLabel="#{lstVisi.codiVisi.nombVisi} #{lstVisi.codiVisi.apelVisi}" itemValue="#{lstVisi}"/>
@@ -190,10 +191,10 @@ and open the template in the editor.
                                                     <i class="fa fa-edit"/> Modificar
                                                 </h:commandLink>
                                                 <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!horarioDisponibleBean.guardar}" value="#" pt:data-placement="left"
-                                                              pt:data-toggle="confirmation" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-toggle="confirmation" pt:data-btn-ok-label="SÃ­" pt:data-btn-ok-icon="fa fa-times"
                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
-                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
-                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="Â¿Esta seguro que desea eliminar?"
+                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin parÃ©ntesis)-->
                                                     <i class="fa fa-times"/> Eliminar
                                                 </h:outputLink>
                                             </div>

@@ -54,4 +54,30 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         return ((String)q.getSingleResult()).equals("true");
     }
     
+    @Override
+    public boolean findPermByAcceAndDesc(Object acce, Object role) {
+        String query = "SELECT CASE COUNT(*) WHEN 0 THEN 'false' ELSE 'true' END AS permiso FROM ( \n" +
+                        "SELECT u.acce_usua, p.desc_perm AS path FROM permiso p INNER JOIN permiso_rol pr ON p.codi_perm = pr.codi_perm \n" +
+                        "INNER JOIN rol r ON pr.codi_role = r.codi_role INNER JOIN usuario_rol ur ON r.codi_role = ur.codi_role \n" +
+                        "INNER JOIN usuario u ON ur.codi_usua = u.codi_usua \n" +
+                        "WHERE p.esta_perm = 1 AND pr.esta_perm_role = 1 AND r.esta_role = 1 AND ur.esta_usua_role = 1 AND u.esta_usua = 1) T  \n" +
+                        "WHERE T.acce_usua = ?1 AND T.path = ?2";
+        Query q = getEntityManager().createNativeQuery(query);
+        q.setParameter(1, acce);
+        q.setParameter(2, role);
+        return ((String)q.getSingleResult()).equals("true");
+    }
+    
+    @Override
+    public List<Usuario> findPermByCodiPerm(Object codi) {
+        String query = "SELECT u.acce_usua FROM permiso p INNER JOIN permiso_rol pr ON p.codi_perm = pr.codi_perm \n" +
+                        "INNER JOIN rol r ON pr.codi_role = r.codi_role INNER JOIN usuario_rol ur ON r.codi_role = ur.codi_role \n" +
+                        "INNER JOIN usuario u ON ur.codi_usua = u.codi_usua \n" +
+                        "WHERE p.esta_perm = 1 AND pr.esta_perm_role = 1 AND r.esta_role = 1 AND ur.esta_usua_role = 1 AND u.esta_usua = 1 AND pr.codi_perm = ?1";
+        Query q = getEntityManager().createNativeQuery(query, Usuario.class);
+        q.setParameter(1, codi);
+        List resu = q.getResultList();
+        return resu;
+    }
+    
 }

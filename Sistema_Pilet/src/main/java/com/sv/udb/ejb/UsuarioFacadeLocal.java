@@ -31,6 +31,10 @@ public interface UsuarioFacadeLocal {
     List<Usuario> findAll();
 
     List<Usuario> findRange(int[] range);
+    
+    boolean findPermByAcceAndDesc(Object acce, Object role);
+    
+    List<Usuario> findPermByCodiPerm(Object codi);
 
     int count();
     
