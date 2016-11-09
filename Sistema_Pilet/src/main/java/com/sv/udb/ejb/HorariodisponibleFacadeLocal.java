@@ -6,6 +6,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Horariodisponible;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,7 +30,7 @@ public interface HorariodisponibleFacadeLocal {
     List<Horariodisponible> findRange(int[] range);
 
     List<Horariodisponible> findByCodiUsua(Object codi);
-    
+        
     int count();
     
 }

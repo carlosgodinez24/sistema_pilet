@@ -8,6 +8,7 @@ package com.sv.udb.controlador;
 import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
 import com.sv.udb.ejb.CambiocitaFacadeLocal;
 import com.sv.udb.ejb.CitaFacadeLocal;
+import com.sv.udb.ejb.ExcepcionhorariodisponibleFacadeLocal;
 import com.sv.udb.ejb.HorariodisponibleFacadeLocal;
 import com.sv.udb.ejb.VisitanteFacadeLocal;
 import com.sv.udb.ejb.VisitantecitaFacadeLocal;
@@ -62,6 +63,8 @@ public class CitasBean implements Serializable{
     private AlumnovisitanteFacadeLocal FCDEAlumnoVisitante;
      @EJB
     private VisitanteFacadeLocal FCDEVisi; 
+    @EJB
+    private ExcepcionhorariodisponibleFacadeLocal FCDEExceHoraDisp;
     
     //OBJETOS
     private Cita objeCita;
@@ -78,8 +81,9 @@ public class CitasBean implements Serializable{
     private List<DatosAlumnos> listAlumnosWS;
     private List<Visitantecita> listVisiCitaRecep;
     private List<Horariodisponible> listHoraDisp;
-    private List<Cita> listCitaAlum;//--> ambas listas se pueden fusionar en una misma, revisar en el futuro...
-    private List<Cita> listCitaUsua;//-->
+    private List<Cita> listCitaAlum;
+    private List<Cita> listCitaAlumUsua;
+    private List<Cita> listCitaVisiUsua;
     private List<Visitante> listVisi;
     private List<Horariodisponible> listHoraDispUsua;
     private WSconsAlumByDoce objeWebServAlumByDoce;
@@ -103,6 +107,7 @@ public class CitasBean implements Serializable{
     private boolean ignoHoraDisp;
     private boolean isGrouVisi;
     private boolean LugaEven;
+    
     
     //Switch para formularios
     private boolean switFormCita=true;
@@ -213,6 +218,7 @@ public class CitasBean implements Serializable{
         return listVisiCitaRecep;
     }
 
+    
     
 
     public boolean isGuardar() {
@@ -335,12 +341,9 @@ public class CitasBean implements Serializable{
     public void setFechFina(String FechFina) {
         this.FechFina = FechFina;
     }
-
-    public List<Cita> getListCitaUsua() {
-        consListCitaUsua();
-        return listCitaUsua;
-    }
-
+    
+    
+    
     public WSconsDoceByAlum getObjeAlumDepe() {
         return objeAlumDepe;
     }
@@ -386,6 +389,16 @@ public class CitasBean implements Serializable{
     public List<Cita> getListVisiUsua() {
         consListVisiUsua();
         return listVisiUsua;
+    }
+
+    public List<Cita> getListCitaAlumUsua() {
+        consListCitaAlumUsua();
+        return listCitaAlumUsua;
+    }
+
+    public List<Cita> getListCitaVisiUsua() {
+        consListCitaVisiUsua();
+        return listCitaVisiUsua;
     }
 
     
@@ -473,7 +486,7 @@ public class CitasBean implements Serializable{
     public void soliCitaVisi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        if(valiDato())
+        if(valiDatoCitaVisi())
         {
             this.objeCita.setTipoCita(1);
             this.objeCita.setTipoVisi(2);
@@ -512,7 +525,7 @@ public class CitasBean implements Serializable{
         return ndia;
     }
     
-    private boolean valiDato(){
+    private boolean valiDatoCitaVisi(){
         boolean val = false;
         RequestContext ctx = RequestContext.getCurrentInstance();
             int diaHoraDisp = getDay(this.horaSeleCita.getDiaHoraDisp());
@@ -520,11 +533,16 @@ public class CitasBean implements Serializable{
             if(diaHoraDisp == diaExceHoraDisp){
                 if(this.fechSoliCita.after(new Date()))
                 {
-                    val = true;
+                    if(FCDEExceHoraDisp.findByDispHora(horaSeleCita, fechSoliCita)){
+                        val = true;
+                    }
+                    else
+                    {
+                        ctx.execute("setMessage('MESS_INFO', 'Atención', 'El Empleado Marco una Excepción para este día');");
+                    }
                 }
                 else
                 {
-                    val = false;
                     ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Fecha ya ha pasado');");
                 }
             }else{
@@ -759,12 +777,41 @@ public class CitasBean implements Serializable{
     }
     
     //consultar las citas del usuario
-    public void consListCitaUsua()
+    public void consListCitaAlumUsua()
     {
         try
         {
-            this.listCitaUsua = FCDECita.findCitaByCodiUsua(LoginBean.getCodiEmplSesi());
-            if(this.listCitaUsua == null)this.listCitaUsua = new ArrayList<Cita>();
+            this.listCitaAlumUsua = FCDECita.findCitaByCodiUsua(LoginBean.getCodiEmplSesi());
+            if(this.listCitaAlumUsua == null)this.listCitaAlumUsua = new ArrayList<Cita>();
+            List<Cita> listCitaAlumUsuaTemp = new ArrayList<Cita>(); 
+            listCitaAlumUsuaTemp.addAll(listCitaAlumUsua);
+            for(Cita obje : listCitaAlumUsuaTemp){
+               Alumnovisitante objeAlumVisiTemp = FCDEAlumnoVisitante.findByCita(obje).get(0);
+                if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Alumnovisitante();
+               if(objeAlumVisiTemp.getCarnAlum() != null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
+            }
+            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    
+    //consultar las citas del usuario
+    public void consListCitaVisiUsua()
+    {
+        try
+        {
+            this.listCitaVisiUsua = FCDECita.findCitaByCodiUsua(LoginBean.getCodiEmplSesi());
+            if(this.listCitaVisiUsua == null)this.listCitaVisiUsua = new ArrayList<Cita>();
+            List<Cita> listCitaVisiUsuaTemp = new ArrayList<Cita>(); 
+            listCitaVisiUsuaTemp.addAll(listCitaVisiUsuaTemp);
+            for(Cita obje : listCitaVisiUsuaTemp){
+                Alumnovisitante objeAlumVisiTemp = FCDEAlumnoVisitante.findByCita(obje).get(0);
+                if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Alumnovisitante();
+               if(objeAlumVisiTemp.getCarnAlum() == null && listCitaVisiUsua.contains(obje))listCitaVisiUsua.remove(obje);
+            }
             
         }
         catch(Exception ex)
@@ -782,7 +829,7 @@ public class CitasBean implements Serializable{
             }else{
                 listVisi = new ArrayList<Visitante>();
             }
-            consVisiCita();
+            consVisiCita(true);
             
         }
         catch(Exception ex)
@@ -804,33 +851,38 @@ public class CitasBean implements Serializable{
     }
     
     //consultar visitantes de una cita y los guardamos en una lista temporal
-    public void consVisiCita(){
+    public void consVisiCita(boolean padre){
         try{
             if(objeCita==null)objeCita=new Cita();
-            if(listVisiTemp==null){
-                listVisiTemp =FCDEAlumnoVisitante.findByCita(objeCita);
-                if(listVisiTemp==null)listVisiTemp = new ArrayList<Alumnovisitante>();
-            }else{
-                //tomamos registros anteriores en una nueva lista
-                List<Alumnovisitante> listTransac = listVisiTemp; 
-                listVisiTemp=FCDEAlumnoVisitante.findByCita(objeCita);
-                if(listVisiTemp==null )listVisiTemp = new ArrayList<Alumnovisitante>();
-                //agregamos los anteriores a los nuevos
-                listVisiTemp.addAll(listTransac);
-                //..eliminamos repetidos
-                HashSet<Alumnovisitante> hashSet = new HashSet<Alumnovisitante>(listVisiTemp);
-                listVisiTemp.clear();
-		listVisiTemp.addAll(hashSet);
-            }
-            if(listVisi==null)listVisi=new ArrayList<Visitante>();
-            for(Alumnovisitante visi : listVisiTemp){
-                for(Visitante visi2 : listVisi){
-                    if(Objects.equals(visi.getCodiVisi(), visi2)){
-                        listVisi.remove(visi2);//quitamos los visitantes que ya estan en la cita, del combobox (lista combobox)
+            if(padre){
+                if(listVisiTemp==null){
+                    listVisiTemp =FCDEAlumnoVisitante.findByCita(objeCita);
+                    if(listVisiTemp==null)listVisiTemp = new ArrayList<Alumnovisitante>();
+                }else{
+                    //tomamos registros anteriores en una nueva lista
+                    List<Alumnovisitante> listTransac = listVisiTemp; 
+                    listVisiTemp=FCDEAlumnoVisitante.findByCita(objeCita);
+                    if(listVisiTemp==null )listVisiTemp = new ArrayList<Alumnovisitante>();
+                    //agregamos los anteriores a los nuevos
+                    listVisiTemp.addAll(listTransac);
+                    //..eliminamos repetidos
+                    HashSet<Alumnovisitante> hashSet = new HashSet<Alumnovisitante>(listVisiTemp);
+                    listVisiTemp.clear();
+                    listVisiTemp.addAll(hashSet);
+                }
+                if(listVisi==null)listVisi=new ArrayList<Visitante>();
+                for(Alumnovisitante visi : listVisiTemp){
+                    for(Visitante visi2 : listVisi){
+                        if(Objects.equals(visi.getCodiVisi(), visi2)){
+                            listVisi.remove(visi2);//quitamos los visitantes que ya estan en la cita, del combobox (lista combobox)
+                        }
                     }
                 }
-                
+            }else{
+            listVisiVisiTemp = FCDEVisi.findByCita(objeCita);
+            if(listVisiVisiTemp == null)listVisiVisiTemp = new ArrayList<Visitante>();
             }
+            
         }catch(Exception e){
             System.out.println(e);
         }
@@ -872,7 +924,7 @@ public class CitasBean implements Serializable{
     
     
     //consultar una cita del usuario (de los que estan en la tabla de datos)
-    public void consObjeCitaUsua(){
+    public void consObjeCitaUsua(boolean padre){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
@@ -883,7 +935,7 @@ public class CitasBean implements Serializable{
             if(objeCambCita == null) objeCambCita = new Cambiocita();
             this.fechSoliCita = objeCambCita.getFechInicCitaNuev();
             listVisiTemp = null;
-            consVisiCita();//consultamos todos los visitantes de la cita
+            consVisiCita(padre);
             this.guardar = false;
             estaCita();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada')");
@@ -902,7 +954,7 @@ public class CitasBean implements Serializable{
         {
             RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
             if(listVisiTemp == null)listVisiTemp = new ArrayList<Alumnovisitante>();
-            consVisiCita();//consultamos si ya hay visitantes en la cita
+            consVisiCita(true);//consultamos si ya hay visitantes en la cita
             this.listVisiTemp.add(consObjeAlumVisi(objeVisi));//i agregamos al nuevo
             this.listVisi.remove(objeVisi);
             ctx.execute("setMessage('MESS_INFO', 'Atención', 'Visitante Agregado')");
@@ -931,7 +983,7 @@ public class CitasBean implements Serializable{
     
     
     //confirmar(1), rechazar(2), Reprogramar(3) cita
-    public void cambCita(int acci){
+    public void cambCita(int acci, boolean padre){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         
         try
@@ -958,7 +1010,11 @@ public class CitasBean implements Serializable{
                     objeCita.setEstaCita(2);
                 }
             }
-            listCitaUsua.remove(objeCita);
+            if(padre){
+                listCitaAlumUsua.remove(objeCita);
+            }else{
+                listCitaVisiUsua.remove(objeCita);
+            }
             objeCambCita.setCodiCita(objeCita);
             objeCambCita.setMotiCambCita(motivo);
             objeCambCita.setEstaCambCita(1);
@@ -968,7 +1024,11 @@ public class CitasBean implements Serializable{
             FCDECita.edit(objeCita);
             FCDECambCita.create(objeCambCita);
             objeCambCita.setCodiCita(objeCita);
-            listCitaUsua.add(objeCita);
+            if(padre){
+                listCitaAlumUsua.add(objeCita);
+            }else{
+                listCitaVisiUsua.add(objeCita);
+            }
             switch(acci){
                 case 1:
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Confirmada'); $('#ModaFormRegi').modal('hide');");
@@ -998,7 +1058,7 @@ public class CitasBean implements Serializable{
             int diaExceHoraDisp = this.fechSoliCita.getDay();
             DateFormat formatter = new SimpleDateFormat("hh:mm a");
             if(diaHoraDisp == diaExceHoraDisp || ignoHoraDisp){
-                if(listVisiTemp.size() > 0){
+                if(listVisiTemp.size() > 0 || listVisiVisiTemp.size() > 0){
                     if(!this.fechSoliCita.before(new Date())){
                         vali = true;
                     }else{
@@ -1015,8 +1075,8 @@ public class CitasBean implements Serializable{
         }
         return vali;
     }
-    //programar cita como usuario a "x" cantidad de visitantes
-    public void progCitaUsua(){
+    //programar cita, variable "padre" =  "true" -> padre de familia, "padre" = "false-> visitante particular
+    public void progCitaUsua(boolean padre){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         
         try
@@ -1051,16 +1111,32 @@ public class CitasBean implements Serializable{
                 //crear el objeto cambio Cita
                 FCDECambCita.create(objeCambCita);
                 
-                //registrando visitantes Cita
-                for(Alumnovisitante visi : listVisiTemp){
-                    objeVisiCita.setCodiCita(objeCita);
-                    objeVisiCita.setCarnAlum(visi.getCarnAlum());
-                    objeVisiCita.setCodiVisi(visi.getCodiVisi());
-                    FCDEVisiCita.create(objeVisiCita);
-                    
+                if(padre){
+                    //registrando visitantes desde lista AlumnoVisitante
+                    for(Alumnovisitante visi : listVisiTemp){
+                        objeVisiCita.setCodiCita(objeCita);
+                        objeVisiCita.setCarnAlum(visi.getCarnAlum());
+                        objeVisiCita.setCodiVisi(visi.getCodiVisi());
+                        FCDEVisiCita.create(objeVisiCita);
+
+                    }
+                }else{
+                    //registrando visitantes lista Visitante
+                    for(Visitante visi : listVisiVisiTemp){
+                        objeVisiCita.setCodiCita(objeCita);
+                        objeVisiCita.setCodiVisi(visi);
+                        FCDEVisiCita.create(objeVisiCita);
+
+                    }
                 }
-                if(this.listCitaUsua ==  null)this.listCitaUsua = new ArrayList<Cita>();
-                this.listCitaUsua.add(objeCita);
+                
+                if(padre){
+                    if(this.listCitaAlumUsua ==  null)this.listCitaAlumUsua = new ArrayList<Cita>();
+                    this.listCitaAlumUsua.add(objeCita);
+                }else{
+                    if(this.listCitaVisiUsua ==  null)this.listCitaVisiUsua = new ArrayList<Cita>();
+                    this.listCitaVisiUsua.add(objeCita);
+                }
                 this.limpForm();
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Programada');");
             }
@@ -1074,11 +1150,6 @@ public class CitasBean implements Serializable{
     }
     
     /*TERMINA SECCIÓN PARA CITAS (DOCENTE Y PERSONAL ADMIN.)*/
-    
-    
-   
-    
-    
     
     
     
@@ -1105,8 +1176,7 @@ public class CitasBean implements Serializable{
             this.fechSoliCita2 = objeCambCita.getFechFinCitaNuev();
             this.FechInic = objeCambCita.getHoraInicCitaNuev();
             this.FechFina = objeCambCita.getHoraFinCitaNuev();
-            listVisiVisiTemp = FCDEVisi.findByCita(objeCita);
-            if(listVisiVisiTemp == null)listVisiVisiTemp = new ArrayList<Visitante>();
+            consVisiCita(false);
             if(listVisiVisiTemp.size() == 1 && objeCita.getCantGrupCita() != null){
                 isGrouVisi = true;
             }else {
@@ -1207,7 +1277,6 @@ public class CitasBean implements Serializable{
                 objeCita.setTipoCita(2);
                 objeCita.setTipoDura(2);
                 objeCita.setTipoVisi(2);
-                objeCita.setCodiUsua(LoginBean.getCodiEmplSesi());
                 //crear el objeto cita
                 FCDECita.create(objeCita);
 
@@ -1234,8 +1303,8 @@ public class CitasBean implements Serializable{
                     FCDEVisiCita.create(objeVisiCita);
                     
                 }
-                if(this.listCitaUsua ==  null)this.listCitaUsua = new ArrayList<Cita>();
-                this.listCitaUsua.add(objeCita);
+                if(this.listVisiUsua ==  null)this.listVisiUsua = new ArrayList<Cita>();
+                this.listVisiUsua.add(objeCita);
                 this.limpForm();
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Programada');");
             }

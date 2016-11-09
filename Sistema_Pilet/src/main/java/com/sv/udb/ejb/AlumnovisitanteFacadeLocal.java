@@ -34,7 +34,7 @@ public interface AlumnovisitanteFacadeLocal {
     
     List<Alumnovisitante> findByCarnAlum(Object carnAlum);
     
-    List<Alumnovisitante> findByCita(Cita carnAlum);
+    List<Alumnovisitante> findByCita(Cita cita);
     
     Alumnovisitante findByAlumVisi(Visitante visi, String carn);
     

@@ -9,6 +9,7 @@ import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
 import com.sv.udb.utils.pojos.WSconsUsua;
 import com.sv.udb.controlador.LoginBean;
+import com.sv.udb.utils.pojos.WSconsEmplByCodi;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -42,6 +43,36 @@ public class WebServicesBean implements Serializable {
     //Lógica slider
     private boolean showBusc = false;
 
+    private WSconsAlumByDoce objeWebServAlumByDoce;
+    private WSconsDoceByAlum objeWebServDoceByAlum;
+    private WSconsEmplByCodi objeWebServConsEmplByCodi;
+
+    public WSconsDoceByAlum getObjeWebServDoceByAlum() {
+        return objeWebServDoceByAlum;
+    }
+
+    public void setObjeWebServDoceByAlum(WSconsDoceByAlum objeWebServDoceByAlum) {
+        this.objeWebServDoceByAlum = objeWebServDoceByAlum;
+    }
+
+    public WSconsEmplByCodi getObjeWebServConsEmplByCodi() {
+        return objeWebServConsEmplByCodi;
+    }
+
+    public void setObjeWebServConsEmplByCodi(WSconsEmplByCodi objeWebServConsEmplByCodi) {
+        this.objeWebServConsEmplByCodi = objeWebServConsEmplByCodi;
+    }
+    
+    
+
+    public WSconsAlumByDoce getObjeWebServAlumByDoce() {
+        return objeWebServAlumByDoce;
+    }
+
+    public void setObjeWebServAlumByDoce(WSconsAlumByDoce objeWebServByDoce) {
+        this.objeWebServAlumByDoce = objeWebServByDoce;
+    }
+    
     public String getFilt() {
         return filt;
     }
@@ -175,19 +206,6 @@ public class WebServicesBean implements Serializable {
         this.showBusc = !this.showBusc;
     }
     
-    private WSconsAlumByDoce objeWebServAlumByDoce;
-    private WSconsDoceByAlum objeWebServDoceByAlum;
-
-
-    public WSconsAlumByDoce getObjeWebServAlumByDoce() {
-        return objeWebServAlumByDoce;
-    }
-
-    public void setObjeWebServAlumByDoce(WSconsAlumByDoce objeWebServByDoce) {
-        this.objeWebServAlumByDoce = objeWebServByDoce;
-    }
-    
-    
     public void consAlumPorCrit(String nombAlum, String apelAlum, String gradAlum, String espeAlum)
     {
         FacesContext facsCtxt = FacesContext.getCurrentInstance();
@@ -269,4 +287,25 @@ public class WebServicesBean implements Serializable {
         return this.objeWebServDoceByAlum;
     }
     
+    public WSconsEmplByCodi consEmplPorCodi(String codiEmpl)
+    {
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        Client client = ClientBuilder.newClient();
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
+        url = String.format("%s/%s/%s", url, "consEmplByCodi", codiEmpl);
+        WebTarget resource = client.target(url);
+        Invocation.Builder request = resource.request();
+        request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));
+        Response response = request.get();
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
+        {
+            this.objeWebServConsEmplByCodi = response.readEntity(WSconsEmplByCodi.class); //La respuesta de captura en un pojo que esta en el paquete utils           
+        }
+        else
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
+        }
+        return this.objeWebServConsEmplByCodi;
+    }
 }

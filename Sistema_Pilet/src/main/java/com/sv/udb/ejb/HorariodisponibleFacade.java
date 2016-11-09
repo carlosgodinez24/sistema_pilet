@@ -6,6 +6,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Horariodisponible;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -45,5 +46,6 @@ public class HorariodisponibleFacade extends AbstractFacade<Horariodisponible> i
         List resu = q.getResultList();
         return resu.isEmpty() ? null : resu;
     }
+    
     
 }

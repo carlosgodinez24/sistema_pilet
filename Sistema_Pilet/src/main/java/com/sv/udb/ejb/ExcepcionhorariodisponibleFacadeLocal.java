@@ -6,6 +6,8 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Excepcionhorariodisponible;
+import com.sv.udb.modelo.Horariodisponible;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -27,7 +29,9 @@ public interface ExcepcionhorariodisponibleFacadeLocal {
     List<Excepcionhorariodisponible> findAll();
 
     List<Excepcionhorariodisponible> findRange(int[] range);
-
+    
+    public boolean findByDispHora(Horariodisponible hora, Date fech);
+    
     int count();
     
 }

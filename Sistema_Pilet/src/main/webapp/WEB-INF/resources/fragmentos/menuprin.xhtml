@@ -78,27 +78,6 @@ and open the template in the editor.
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li class="#{actiCitaAlum}">
-                                    <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
-                                        <i class="fa fa-user"></i> Cita Alumno
-                                    </h:link>
-                                </li>
-                            </ul>
-                            <ul class="treeview-menu">
-                                <li class="#{actiAlumVisi}">
-                                    <h:link outcome="/Modulo_citas/AlumnoVisitante" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/AlumnoVisitante.xhtml')}">
-                                        <i class="fa fa-user"></i> Alumno Visitante
-                                    </h:link>
-                                </li>
-                            </ul>
-                            <ul class="treeview-menu">
-                                <li class="#{actiCita}">
-                                    <h:link outcome="/Modulo_citas/Citas" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Citas.xhtml')}">
-                                        <i class="fa fa-user"></i> Cita Alumno
-                                    </h:link>
-                                </li>
-                            </ul>
-                            <ul class="treeview-menu">
                                 <li class="#{actiEven}">
                                     <h:link outcome="/Modulo_citas/Eventos" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Eventos.xhtml')}">
                                         <i class="fa fa-user"></i> Eventos
@@ -106,30 +85,9 @@ and open the template in the editor.
                                 </li>
                             </ul>
                             <ul class="treeview-menu">
-                                <li class="#{actiExceHoraDisp}">
-                                    <h:link outcome="/Modulo_citas/ExcepcionHorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/ExcepcionHorarioDisponible.xhtml')}">
-                                        <i class="fa fa-user"></i> Excepcion Horario
-                                    </h:link>
-                                </li>
-                            </ul>
-                            <ul class="treeview-menu">
-                                <li class="#{actiHoraDisp}">
-                                    <h:link outcome="/Modulo_citas/HorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/HorarioDisponible.xhtml')}">
-                                        <i class="fa fa-user"></i> Horario Disponible
-                                    </h:link>
-                                </li>
-                            </ul>
-                            <ul class="treeview-menu">
-                                <li class="#{actiRece}">
-                                    <h:link outcome="/Modulo_citas/Recepcion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Recepcion.xhtml')}">
-                                        <i class="fa fa-user"></i> Recepcion
-                                    </h:link>
-                                </li>
-                            </ul>
-                            <ul class="treeview-menu">
-                                <li class="#{actiRegiReprAlum}">
-                                    <h:link outcome="/Modulo_citas/RegistrarseRepresentanteAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/RegistrarseRepresentanteAlumno.xhtml')}">
-                                        <i class="fa fa-user"></i> Representante
+                                <li class="#{actiCitaAlum}">
+                                    <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
+                                        <i class="fa fa-user"></i> Cita Alumno
                                     </h:link>
                                 </li>
                             </ul>
@@ -141,6 +99,55 @@ and open the template in the editor.
                                 </li>
                             </ul>
                             <ul class="treeview-menu">
+                                <li class="#{actiAlumVisi}">
+                                    <h:link outcome="/Modulo_citas/AlumnoVisitante" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/AlumnoVisitante.xhtml')}">
+                                        <i class="fa fa-user"></i> Alumno Visitante
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiHoraDisp}">
+                                    <h:link outcome="/Modulo_citas/HorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/HorarioDisponible.xhtml')}">
+                                        <i class="fa fa-user"></i> Horario Disponible
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiExceHoraDisp}">
+                                    <h:link outcome="/Modulo_citas/ExcepcionHorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/ExcepcionHorarioDisponible.xhtml')}">
+                                        <i class="fa fa-user"></i> Excepcion Horario
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiCita}">
+                                    <h:link outcome="/Modulo_citas/Citas" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Citas.xhtml')}">
+                                        <i class="fa fa-user"></i> Cita Alumno
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiCitaVisi}">
+                                    <h:link outcome="/Modulo_citas/CitasVisitante" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitasVisitante.xhtml')}">
+                                        <i class="fa fa-user"></i> Cita Visitante
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiRece}">
+                                    <h:link outcome="/Modulo_citas/Recepcion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Recepcion.xhtml')}">
+                                        <i class="fa fa-user"></i> Recepción
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiRegiReprAlum}">
+                                    <h:link outcome="/Modulo_citas/RegistrarseRepresentanteAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/RegistrarseRepresentanteAlumno.xhtml')}">
+                                        <i class="fa fa-user"></i> Representantes
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
                                 <li class="#{actiCitaRecep}">
                                     <h:link outcome="/Modulo_citas/CitaRecepcion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaRecepcion.xhtml')}">
                                         <i class="fa fa-user"></i> Cita Recepción
@@ -148,7 +155,8 @@ and open the template in the editor.
                                 </li>
                             </ul>
                         </li>
-                    </ui:fragment>
+                    </ui:fragment>                    
+                    
                 </ul>
             </section>
             <!-- /.sidebar -->
