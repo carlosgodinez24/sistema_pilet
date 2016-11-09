@@ -68,7 +68,65 @@ and open the template in the editor.
                             </ul>
                         </li>
                     </ui:fragment>
-                    
+                    <ui:fragment  rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket')}">
+                        <li class="treeview #{actiMenuTicket}">
+                            <a href="#">
+                                <i class="fa fa-dashboard"></i> <span>Módulo de Ticket</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="#{actiDepartamentos}">
+                                    <h:link outcome="/Modulo_ticket/departamentos" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/departamentos.xhtml')}">
+                                        <i class="fa fa-user"></i> Departamentos
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiMantenimientos}">
+                                    <h:link outcome="/Modulo_ticket/mantenimientos" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/mantenimientos.xhtml')}">
+                                        <i class="fa fa-user"></i> Mantenimientos
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiTipoMant}">
+                                    <h:link outcome="/Modulo_ticket/tipoMantenimientos" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/tipoMantenimientos.xhtml')}">
+                                        <i class="fa fa-user"></i> Tipos de mantenimientos
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiNuevSoli}">
+                                    <h:link outcome="/Modulo_ticket/nuevaSolicitud" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/nuevaSolicitud.xhtml')}">
+                                        <i class="fa fa-user"></i> Solicitudes
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiAsigSoli}">
+                                    <h:link outcome="/Modulo_ticket/asignarSolicitud" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/asignarSolicitud.xhtml')}">
+                                        <i class="fa fa-user"></i> Asignar solicitud
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiProcSoli}">
+                                    <h:link outcome="/Modulo_ticket/procesoSolicitud" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/procesoSolicitud.xhtml')}">
+                                        <i class="fa fa-user"></i> Proceso solicitudes
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiEvalReso}">
+                                    <h:link outcome="/Modulo_ticket/evaluarResolucion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/evaluarResolucion.xhtml')}">
+                                        <i class="fa fa-user"></i> Evaluar resoluciones
+                                    </h:link>
+                                </li>
+                            </ul>
+                        </li>
+                    </ui:fragment>
                     <ui:fragment  rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas')}">
                         <li class="treeview #{actiMenuCita}">
                             <a href="#">

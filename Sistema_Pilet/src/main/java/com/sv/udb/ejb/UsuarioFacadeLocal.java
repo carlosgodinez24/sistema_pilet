@@ -35,6 +35,8 @@ public interface UsuarioFacadeLocal {
     boolean findPermByAcceAndDesc(Object acce, Object role);
     
     List<Usuario> findPermByCodiPerm(Object codi);
+    
+    List<Usuario> findTecn();
 
     int count();
     

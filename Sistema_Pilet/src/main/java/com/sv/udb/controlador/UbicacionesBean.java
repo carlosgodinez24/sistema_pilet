@@ -83,4 +83,20 @@ public class UbicacionesBean {
     {
         return FCDEUbic.findByDispEven();
     }
+    
+    public void consTodo()
+    {
+        try
+        {
+            this.listUbic = FCDEUbic.findAll();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            
+        }
+    }
 }
