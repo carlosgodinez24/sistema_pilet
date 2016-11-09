@@ -23,6 +23,7 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="toastr.min.css"/>
         <h:outputScript library="js" name="toastr.min.js"/>
         <h:outputScript library="js" name="custom/mens.js"/>
+        <h:outputScript library="js" name="bootstrap-loading.js"/>
     </h:head>
     <h:body class="hold-transition login-page">
         <div class="login-box">
@@ -57,5 +58,6 @@ and open the template in the editor.
             </div>
             <!-- /.login-box-body -->
         </div>
+        <p:ajaxStatus onstart="loadingDialog.show('Favor espere...', {dialogSize: 'sm', progressType: 'warning'});" oncomplete="loadingDialog.hide();" />
     </h:body>
 </html>

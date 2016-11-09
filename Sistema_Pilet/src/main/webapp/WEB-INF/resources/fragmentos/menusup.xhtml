@@ -12,12 +12,12 @@ and open the template in the editor.
     <ui:composition>
             <header class="main-header">
                 <!-- Logo -->
-                <a href="index2.html" class="logo">
+                <a href="index.html" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><p:graphicImage value="#{globalAppBean.getImage('images/logoitr.png')}" width="35px" class="user-image" alt="Usuario"/></span>
                     <!-- logo for regular state and mobile devices -->
                     <span class="logo-lg pull-left">
-                        <p:graphicImage value="#{globalAppBean.getImage('images/logoitr.png')}" width="35px" class="user-image" alt="Usuario"/> Mi Sistema
+                        <p:graphicImage value="#{globalAppBean.getImage('images/logoitr.png')}" width="35px" class="user-image" alt="Usuario"/> Sistema Pilet
                     </span>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
@@ -32,47 +32,61 @@ and open the template in the editor.
                             <li class="dropdown notifications-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell-o"></i>
-                                    <span class="label label-warning">#{loginBean.listNoti.size()}</span>
+                                    <span id="spanNoti" class="label label-warning">#{loginBean.listNoti.size()}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="header">#{loginBean.listNoti.size()} notificaciones</li>
                                     <li>
-                                        <ul class="menu">
-                                            <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
-                                                <li>
-                                                    <a href="#">
-                                                        <h:panelGroup rendered="#{noti.estaNoti eq '0'}">
-                                                            <i class="fa fa-folder text-aqua"/> #{noti.moduNoti}
-                                                            <p>#{noti.mensNoti.length() gt 35 ? noti.mensNoti.substring(0,32).concat('...') : noti.mensNoti}</p>
-                                                        </h:panelGroup>
-                                                    </a>
-                                                </li>
-                                            </ui:repeat>
+                                        <ul id="resultado" class="menu">
+                                            <h:form>
+                                                <p:remoteCommand name="cons" actionListener="#{notificacionBean.cons()}" update=":FormNoti" 
+                                                         oncomplete="$('#ModaFormNoti').modal('show');" global="true"/>
+                                                <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
+                                                    <li>
+                                                        <!--<h:commandLink id="btonOpenModa">-->
+                                                            <h:panelGroup rendered="#{noti.estaNoti eq '0'}">
+                                                                <input type="hidden" id="codiNoti" value="#{noti.codiNoti}" />
+                                                                <input type="hidden" id="codiUsua" value="#{noti.codiUsua}" />
+                                                                <span class="fa fa-folder text-aqua"> #{noti.moduNoti}</span>
+                                                                <p>#{noti.mensNoti.length() gt 35 ? noti.mensNoti.substring(0,32).concat('...') : noti.mensNoti}</p>
+                                                                <input type="hidden" id="mens" value="#{noti.mensNoti}" />
+                                                            </h:panelGroup>
+                                                            <h:panelGroup rendered="#{noti.estaNoti eq '1'}">
+                                                                <input type="hidden" id="codiNoti" value="#{noti.codiNoti}" />
+                                                                <input type="hidden" id="codiUsua" value="#{noti.codiUsua}" />
+                                                                <span class="fa fa-folder-open-o text-black"> #{noti.moduNoti}</span>
+                                                                <p>#{noti.mensNoti.length() gt 35 ? noti.mensNoti.substring(0,32).concat('...') : noti.mensNoti}</p>
+                                                                <input type="hidden" id="mens" value="#{noti.mensNoti}" />
+                                                            </h:panelGroup>
+                                                           <!-- <p:ajax update=":FormNoti" oncomplete="$('#ModaFormNoti').modal('show');" global="true"/>
+                                                        </h:commandLink>-->
+                                                    </li>
+                                                </ui:repeat>
+                                            </h:form>
                                         </ul>
                                     </li>
-                                    <li class="header">Ver todas</li>
                                 </ul>
                             </li>
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <p:graphicImage value="#{globalAppBean.getImage(loginBean.imagPerf)}" class="user-image" alt="Usuario"/>
-                                    <span class="hidden-xs"></span>
+                                    <span class="hidden-xs">#{loginBean.usuaPojo.nomb}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
                                         <p:graphicImage value="#{globalAppBean.getImage(loginBean.imagPerf)}" class="img-circle" alt="Usuario"/>
                                         <p>
-                                            
-                                            <small>Usuario</small>
+                                            #{loginBean.usuaPojo.nomb}
+                                            <small>Usuario: #{loginBean.objeUsua.acceUsua}</small>
                                         </p>
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
+                                        <!--<div class="pull-left">
                                             <a class="btn btn-default btn-flat" onclick="return false;">Perfil</a>
-                                        </div>
+                                        </div>-->
                                         <div class="pull-right">
                                             <h:form>
                                                 <h:commandLink id="btonSali" class="btn btn-default btn-flat">
@@ -88,5 +102,32 @@ and open the template in the editor.
                     </div>
                 </nav>
             </header>
+        <script type="text/javascript">
+        $(document).ready(function() {
+            $("#resultado li").on("click", function(){
+                $(this).find("span").attr("class","fa fa-folder-open-o text-black");
+                 codi = $(this).find(":hidden#codiNoti").val();
+                 cons([{name : 'codiObjePara', value : codi}]);
+             });
+        });
+        </script>
+            <!-- Modal -->
+            <div id="ModaFormNoti" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <h:form id="FormNoti">
+                            <div class="modal-header notih">
+                                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                <h2 id="modu" class="modal-title text-white">#{notificacionBean.objeNoti.moduNoti}</h2>
+                            </div>
+                            <div class="modal-body" style="padding-top: 2px;">
+                                <h6 id="mensNoti">#{notificacionBean.objeNoti.mensNoti}</h6>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            
     </ui:composition>
 </html>

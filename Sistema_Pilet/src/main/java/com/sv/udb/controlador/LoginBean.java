@@ -106,6 +106,14 @@ public class LoginBean implements Serializable {
         return listNoti;
     }
 
+    public UsuariosPojo getUsuaPojo() {
+        return usuaPojo;
+    }
+
+    public void setUsuaPojo(UsuariosPojo usuaPojo) {
+        this.usuaPojo = usuaPojo;
+    }
+
     public static int getCodiEmplSesi() {
         return codiEmplSesi;
     }
@@ -113,6 +121,8 @@ public class LoginBean implements Serializable {
     public static void setCodiEmplSesi(int codiEmplSesi) {
         LoginBean.codiEmplSesi = codiEmplSesi;
     }
+    
+    
     
     
     /**
@@ -138,7 +148,6 @@ public class LoginBean implements Serializable {
                     this.imagPerf = "images/userDemo.png";
                     //Llenar lista de notificaciones.... puede salir de la DB
                     this.listNoti = FCDENoti.findByUsua(this.objeUsua.getCodiUsua());
-                    this.codiEmplSesi =  new ConsultarCodiEmpleadoLogin().consultarCodigo(usua, cont);
                     //Redireccionar
                     facsCtxt.getExternalContext().redirect(globalAppBean.getUrl("index.xhtml"));
                 }

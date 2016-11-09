@@ -11,7 +11,7 @@ import java.sql.*;
  */
 public class ConsultarCodiEmpleadoLogin {
     
-    public int consultarCodigo(String acceUsua, String contUsua)
+    public int consultarCodigo(String acceUsua)
     {
         int id=0;
         try
@@ -24,7 +24,7 @@ public class ConsultarCodiEmpleadoLogin {
 
           // our SQL SELECT query. 
           // if you only need a few columns, specify them by name instead of using "*"
-          String query = "SELECT codi_empl FROM usuarios where acce_usua = '"+acceUsua+"' and cont_usua='"+contUsua+"'";
+          String query = "SELECT codi_empl FROM usuarios where acce_usua = '"+acceUsua+"'";
 
           // create the java statement
           Statement st = conn.createStatement();

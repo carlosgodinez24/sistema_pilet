@@ -6,7 +6,10 @@
 package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
+import com.sv.udb.ejb.PermisoRolFacadeLocal;
 import com.sv.udb.ejb.RolFacadeLocal;
+import com.sv.udb.modelo.Permiso;
+import com.sv.udb.modelo.PermisoRol;
 import com.sv.udb.modelo.Rol;
 import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
@@ -30,12 +33,15 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 @ManagedBean
 public class RolBean implements Serializable {
+
     //Bean de session
     @Inject
     private LoginBean logiBean; 
     //Campos de la clase
     @EJB
     private RolFacadeLocal FCDERoles;
+   @EJB
+    private PermisoRolFacadeLocal FCDPermisoRol;
    
     private List<Rol> listRole;
     private Rol objeRole;
@@ -111,6 +117,13 @@ public class RolBean implements Serializable {
         try
         {
             FCDERoles.create(this.objeRole);
+            PermisoRol objePermRole = new PermisoRol();
+            Permiso objePerm = new Permiso();
+            objePermRole.setCodiRole(objeRole);
+            objePerm.setCodiPerm(1);
+            objePermRole.setCodiPerm(objePerm);
+            objePermRole.setEstaPermRole(1);
+            FCDPermisoRol.create(objePermRole);
             this.listRole.add(this.objeRole);
             this.guardar = false;
             log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"Roles"+"-"+"Rol creado: "+this.objeRole.getNombRole());

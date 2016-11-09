@@ -54,7 +54,7 @@ public class BackupBean implements Serializable{
         try 
         {
             ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-            String dumpExePath = "C:\\xampp\\mysql\\bin\\mysqldump.exe";
+            String dumpExePath = "C:\\wamp\\bin\\mysql\\mysql5.5.17\\bin\\mysqldump.exe";
             //"C:\\wamp\\bin\\mysql\\mysql5.5.16\\bin\\mysqldump.exe"
             String host = "localhost";
             String port = "3306";
@@ -63,7 +63,7 @@ public class BackupBean implements Serializable{
             String database = "sistemas_pilet";
             String basePath = ctx.getRealPath("/");
             //String backupPath = basePath + "BackupsMySQLdb//";
-            String backupPath = "C:\\xampp\\mysql\\";
+            String backupPath = "C:\\wampp\\bin\\mysql\\";
             Process p = null;
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             Date date = new Date();

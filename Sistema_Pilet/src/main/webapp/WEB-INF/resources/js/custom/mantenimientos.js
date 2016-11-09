@@ -3,7 +3,7 @@ $(document).ready(function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            consObje([{name : 'codiObjePara', value : row.id.trim()}]);
+            cons([{name : 'codiObjePara', value : row.id.trim()}]);
         });
         return false;
     };
@@ -22,26 +22,27 @@ $(document).ready(function() {
             e.stopPropagation();
         });
     };
-    $.fn.initSelePick = function() {;
-        $(this).selectpicker();
-    };
     $('#ModaFormRegi').on('show.bs.modal', function() {
         INIT_OBJE_MODA();
     });
     $('#ModaFormRegi').on('hide.bs.modal', function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
     });
+
+    
     INIT_OBJE();
 });
+
 function INIT_OBJE()
 {
     $("#TablRegi").initBootTable();
-    $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
-    INIT_OBJE_MODA;
+    INIT_OBJE_MODA();
 }
+
 function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
+    $("#FormRegi\\:role").selectpicker();
     $(".datepicker").initDatePick();
     $(".select").initSelePick();
     $('.timepicker').timepicker({
@@ -53,5 +54,3 @@ function INIT_OBJE_MODA()
         template: 'modal'*/
     });
 }
-
-

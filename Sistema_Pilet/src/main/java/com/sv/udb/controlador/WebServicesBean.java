@@ -1,5 +1,6 @@
 package com.sv.udb.controlador;
 
+import com.sv.udb.utils.ConsultarCodiEmpleadoLogin;
 import com.sv.udb.utils.UsuariosPojo;
 import com.sv.udb.utils.pojos.DatosAlumnos;
 import com.sv.udb.utils.pojos.DatosDocentes;
@@ -7,12 +8,14 @@ import com.sv.udb.utils.pojos.DatosUsuarios;
 import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
 import com.sv.udb.utils.pojos.WSconsUsua;
+import com.sv.udb.controlador.LoginBean;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -30,23 +33,14 @@ import org.primefaces.context.RequestContext;
 @Named(value = "webServicesBean")
 @Dependent
 public class WebServicesBean implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;    
-    private String nombUsua;
     private String filt; //Filotro de búsqueda
     private String filtApel;
     private String filtTipo;
     private WSconsUsua objeWebServ;
     //Lógica slider
     private boolean showBusc = false;
-
-    public String getNombUsua() {
-        return nombUsua;
-    }
-
-    public void setNombUsua(String nombUsua) {
-        this.nombUsua = nombUsua;
-    }
 
     public String getFilt() {
         return filt;
@@ -73,7 +67,6 @@ public class WebServicesBean implements Serializable {
     }
 
     public WSconsUsua getObjeWebServ() {
-        consWebServ();
         return objeWebServ;
     }
 
@@ -104,7 +97,10 @@ public class WebServicesBean implements Serializable {
         Response response = request.get();
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
-            resp = response.readEntity(UsuariosPojo.class); //La respuesta de captura en un pojo que esta en el paquete utils
+            resp = response.readEntity(UsuariosPojo.class);//La respuesta de captura en un pojo que esta en el paquete utils
+            if(!resp.getTipo().equals("alum")){
+                LoginBean.setCodiEmplSesi(new ConsultarCodiEmpleadoLogin().consultarCodigo(acce));
+            }
         }
         else
         {
@@ -131,7 +127,7 @@ public class WebServicesBean implements Serializable {
     
     public void nuev()
     {
-        this.nombUsua = "";
+        
     }
     
     public void abri()
@@ -144,7 +140,7 @@ public class WebServicesBean implements Serializable {
         
     }
     
-    public void consWebServ()
+    public void consWebServHabiUsua()
     {
         FacesContext facsCtxt = FacesContext.getCurrentInstance();
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
