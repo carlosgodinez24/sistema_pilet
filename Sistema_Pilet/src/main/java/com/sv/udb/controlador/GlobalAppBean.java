@@ -120,18 +120,15 @@ public class GlobalAppBean {
         } catch (Exception e) {
         }
     }
-    
     public boolean getEstaPermByName(String role)
-    {
+    {   
+        boolean resp = false;
         this.logiBean = this.logiBean != null ? this.logiBean : new LoginBean();
         if(logiBean.isLoge())
         {
-            return getEstaPermByName(logiBean.getObjeUsua().getAcceUsua(), role);
+            resp = getEstaPermByName(logiBean.getObjeUsua().getAcceUsua(), role);
         }
-        else
-        {
-            return false;
-        }
+        return resp;
     }
     
     public boolean getEstaPermByName(String usua, String role)
@@ -143,8 +140,6 @@ public class GlobalAppBean {
         {
             HttpServletRequest requ = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String page = String.format("%s%s%s", requ.getContextPath(), requ.getServletPath(), role);
-            System.out.println(page);
-            System.out.println(usua);
             return FCDEUsua.findPermByAcceAndDire(usua, page);
         }
         catch(Exception ex)

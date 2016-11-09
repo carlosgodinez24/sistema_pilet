@@ -9,8 +9,10 @@ import com.sv.udb.ejb.NotificacionFacadeLocal;
 import com.sv.udb.modelo.Notificacion;
 import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -20,7 +22,9 @@ import org.primefaces.context.RequestContext;
 @Named(value = "notificacionBean")
 @ViewScoped
 public class NotificacionBean implements Serializable {
-
+    @Inject
+    private LoginBean logiBean; //Bean de session
+    
     @EJB
     private NotificacionFacadeLocal FCDENotificacion;
     private Notificacion objeNoti;
@@ -49,19 +53,21 @@ public class NotificacionBean implements Serializable {
     public NotificacionBean() {
     }
     
-    public void modi()
+    public void cons()
     {
-        RequestContext ctx = RequestContext.getCurrentInstance(); 
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {
-            System.out.println(" asd"+this.objeNoti);
+            this.objeNoti = FCDENotificacion.find(codi);
+            logiBean.getListNoti().remove(objeNoti);
             this.objeNoti.setEstaNoti(1);
+            logiBean.getListNoti().add(objeNoti);
             FCDENotificacion.edit(this.objeNoti);
-            //log.info("Notificacion modificada: "+this.objeNoti.getCodiNoti());
         }
         catch(Exception ex)
         {
-            //log.error("Error modificando pagina: "+getRootCause(ex).getMessage());
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
         finally
         {

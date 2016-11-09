@@ -12,12 +12,12 @@ and open the template in the editor.
     <ui:composition>
             <header class="main-header">
                 <!-- Logo -->
-                <a href="index2.html" class="logo">
+                <a href="index.html" class="logo">
                     <!-- mini logo for sidebar mini 50x50 pixels -->
                     <span class="logo-mini"><p:graphicImage value="#{globalAppBean.getImage('images/logoitr.png')}" width="35px" class="user-image" alt="Usuario"/></span>
                     <!-- logo for regular state and mobile devices -->
                     <span class="logo-lg pull-left">
-                        <p:graphicImage value="#{globalAppBean.getImage('images/logoitr.png')}" width="35px" class="user-image" alt="Usuario"/> Mi Sistema
+                        <p:graphicImage value="#{globalAppBean.getImage('images/logoitr.png')}" width="35px" class="user-image" alt="Usuario"/> Sistema Pilet
                     </span>
                 </a>
                 <!-- Header Navbar: style can be found in header.less -->
@@ -39,13 +39,22 @@ and open the template in the editor.
                                     <li>
                                         <ul id="resultado" class="menu">
                                             <h:form>
+                                                <p:remoteCommand name="cons" actionListener="#{notificacionBean.cons()}" update=":FormNoti" 
+                                                         oncomplete="$('#ModaFormNoti').modal('show');" global="true"/>
                                                 <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
                                                     <li>
                                                         <!--<h:commandLink id="btonOpenModa">-->
                                                             <h:panelGroup rendered="#{noti.estaNoti eq '0'}">
                                                                 <input type="hidden" id="codiNoti" value="#{noti.codiNoti}" />
                                                                 <input type="hidden" id="codiUsua" value="#{noti.codiUsua}" />
-                                                                <span class="fa fa-folder text-aqua">#{noti.moduNoti}</span>
+                                                                <span class="fa fa-folder text-aqua"> #{noti.moduNoti}</span>
+                                                                <p>#{noti.mensNoti.length() gt 35 ? noti.mensNoti.substring(0,32).concat('...') : noti.mensNoti}</p>
+                                                                <input type="hidden" id="mens" value="#{noti.mensNoti}" />
+                                                            </h:panelGroup>
+                                                            <h:panelGroup rendered="#{noti.estaNoti eq '1'}">
+                                                                <input type="hidden" id="codiNoti" value="#{noti.codiNoti}" />
+                                                                <input type="hidden" id="codiUsua" value="#{noti.codiUsua}" />
+                                                                <span class="fa fa-folder-open-o text-black"> #{noti.moduNoti}</span>
                                                                 <p>#{noti.mensNoti.length() gt 35 ? noti.mensNoti.substring(0,32).concat('...') : noti.mensNoti}</p>
                                                                 <input type="hidden" id="mens" value="#{noti.mensNoti}" />
                                                             </h:panelGroup>
@@ -56,29 +65,28 @@ and open the template in the editor.
                                             </h:form>
                                         </ul>
                                     </li>
-                                    <li class="header">Ver todas</li>
                                 </ul>
                             </li>
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <p:graphicImage value="#{globalAppBean.getImage(loginBean.imagPerf)}" class="user-image" alt="Usuario"/>
-                                    <span class="hidden-xs"></span>
+                                    <span class="hidden-xs">#{loginBean.usuaPojo.nomb}</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
                                         <p:graphicImage value="#{globalAppBean.getImage(loginBean.imagPerf)}" class="img-circle" alt="Usuario"/>
                                         <p>
-                                            
-                                            <small>Usuario</small>
+                                            #{loginBean.usuaPojo.nomb}
+                                            <small>Usuario: #{loginBean.objeUsua.acceUsua}</small>
                                         </p>
                                     </li>
                                     <!-- Menu Footer-->
                                     <li class="user-footer">
-                                        <div class="pull-left">
+                                        <!--<div class="pull-left">
                                             <a class="btn btn-default btn-flat" onclick="return false;">Perfil</a>
-                                        </div>
+                                        </div>-->
                                         <div class="pull-right">
                                             <h:form>
                                                 <h:commandLink id="btonSali" class="btn btn-default btn-flat">
@@ -95,80 +103,27 @@ and open the template in the editor.
                 </nav>
             </header>
         <script type="text/javascript">
-                $(document).ready(function() {
-   var codi = 0;
-   var codiUsua = 0;
-   var mens = "";
-   var modu = "";
-   $("#resultado li").on("click", function(){
-        codi = $(this).find(":hidden#codiNoti").val();
-        codiUsua = $(this).find(":hidden#codiUsua").val();
-        $(this).find("span").attr('class','fa fa-folder-open-o text-aqua');
-        modu = $(this).find("span").text();
-         mens = $(this).find(":hidden#mens").val();
-         getVars();
-         $('#ModaFormNoti').modal('show');
-       /*$('formNoti:mensNoti').value(mens);
-       $('#codiNotimant').val(codi);
-       $('#codiUsuamant').val(codiUsua);
-       document.getElementById('formNoti:modu').value = modu;
-       var elem = document.getElementById('formNoti:mensNoti');
-       elem.value = mens;
-       var codis = document.getElementById('formNoti:codiNotimant');
-       codis.value = codi;
-       document.getElementById('formNoti:codiUsuamant').value = 1;
-       document.getElementById('formNoti:btonCanc').click();
-        // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
-        console.log($('#codiNotimant').val());*/
-        
-        /*if(res[1])
-        {
-
-           
-        }
-        else
-        {
-            
-        }*/
-
-    });
-    function getVars() {
-        // ...
-        document.getElementById("formNoti:modu").value = modu;
-        document.getElementById("formNoti:mensNoti").value = mens;
-        document.getElementById('formNoti:codiNotimant').value = codi;
-        document.getElementById('formNoti:codiUsuamant').value = codiUsua;
-    }
-});
-  
-</script>
+        $(document).ready(function() {
+            $("#resultado li").on("click", function(){
+                $(this).find("span").attr("class","fa fa-folder-open-o text-black");
+                 codi = $(this).find(":hidden#codiNoti").val();
+                 cons([{name : 'codiObjePara', value : codi}]);
+             });
+        });
+        </script>
             <!-- Modal -->
             <div id="ModaFormNoti" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
                     <div class="modal-content">
-                        <h:form id="formNoti">
-                        <h:panelGroup id="Form">
-                            <div class="modal-header">
+                        <h:form id="FormNoti">
+                            <div class="modal-header notih">
                                 <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
-                                <h:outputText id="modu" class="modal-title">#{notificacionBean.objeNoti.moduNoti}</h:outputText>
+                                <h2 id="modu" class="modal-title text-white">#{notificacionBean.objeNoti.moduNoti}</h2>
                             </div>
                             <div class="modal-body" style="padding-top: 2px;">
-                                <h:outputText id="mensNoti">#{notificacionBean.objeNoti.mensNoti}</h:outputText>
+                                <h6 id="mensNoti">#{notificacionBean.objeNoti.mensNoti}</h6>
                             </div>
-                            <div class="modal-footer" style="padding-top: 0; padding-bottom: 5px;">
-                                <div class="input-group-btn right" style="padding-top: 5px;">
-                                    <div class="btn-group">
-                                        <h:inputHidden id="codiNotimant" value="#{notificacionBean.objeNoti.codiNoti}" />
-                                        <h:inputHidden id="codiUsuamant" value="#{notificacionBean.objeNoti.codiUsua}" />
-                                        <h:commandLink class="btn btn-default">
-                                            <p:ajax listener="#{notificacionBean.modi()}" process="@form" />
-                                            <i class="fa fa-mail-forward"/> Cerrar
-                                        </h:commandLink>
-                                    </div>
-                                </div>
-                            </div>
-                        </h:panelGroup>
                         </h:form>
                     </div>
                 </div>
