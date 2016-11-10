@@ -786,9 +786,9 @@ public class CitasBean implements Serializable{
             List<Cita> listCitaAlumUsuaTemp = new ArrayList<Cita>(); 
             listCitaAlumUsuaTemp.addAll(listCitaAlumUsua);
             for(Cita obje : listCitaAlumUsuaTemp){
-               Alumnovisitante objeAlumVisiTemp = FCDEAlumnoVisitante.findByCita(obje).get(0);
-                if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Alumnovisitante();
-               if(objeAlumVisiTemp.getCarnAlum() != null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
+                Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
+                if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Visitantecita();
+               if(objeAlumVisiTemp.getCarnAlum() == null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
             }
             
         }
@@ -806,11 +806,11 @@ public class CitasBean implements Serializable{
             this.listCitaVisiUsua = FCDECita.findCitaByCodiUsua(LoginBean.getCodiEmplSesi());
             if(this.listCitaVisiUsua == null)this.listCitaVisiUsua = new ArrayList<Cita>();
             List<Cita> listCitaVisiUsuaTemp = new ArrayList<Cita>(); 
-            listCitaVisiUsuaTemp.addAll(listCitaVisiUsuaTemp);
+            listCitaVisiUsuaTemp.addAll(listCitaVisiUsua);
             for(Cita obje : listCitaVisiUsuaTemp){
-                Alumnovisitante objeAlumVisiTemp = FCDEAlumnoVisitante.findByCita(obje).get(0);
-                if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Alumnovisitante();
-               if(objeAlumVisiTemp.getCarnAlum() == null && listCitaVisiUsua.contains(obje))listCitaVisiUsua.remove(obje);
+               Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
+               if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Visitantecita();
+               if(objeAlumVisiTemp.getCarnAlum() != null && listCitaVisiUsua.contains(obje))listCitaVisiUsua.remove(obje);
             }
             
         }
