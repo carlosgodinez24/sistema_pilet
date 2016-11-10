@@ -39,7 +39,7 @@ and open the template in the editor.
                                     <li>
                                         <ul id="resultado" class="menu">
                                             <h:form>
-                                                <p:remoteCommand name="cons" actionListener="#{notificacionBean.cons()}" update=":FormNoti" 
+                                                <p:remoteCommand name="consNoti" actionListener="#{notificacionBean.cons()}" update=":FormNoti" 
                                                          oncomplete="$('#ModaFormNoti').modal('show');" global="true"/>
                                                 <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
                                                     <li>
@@ -107,7 +107,7 @@ and open the template in the editor.
             $("#resultado li").on("click", function(){
                 $(this).find("span").attr("class","fa fa-folder-open-o text-black");
                  codi = $(this).find(":hidden#codiNoti").val();
-                 cons([{name : 'codiObjePara', value : codi}]);
+                 consNoti([{name : 'codiObjePara', value : codi}]);
              });
         });
         </script>

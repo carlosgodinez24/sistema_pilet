@@ -48,6 +48,7 @@ public class HorarioDisponibleBean implements Serializable{
     private boolean guardar;
     
     public List<Horariodisponible> getListHoraDispTodo() {
+        consTodo();
         return listHoraDispTodo;
     }
 
@@ -64,6 +65,7 @@ public class HorarioDisponibleBean implements Serializable{
     }
 
     public List<Horariodisponible> getListHoraDisp() {
+        consPorUsua();
         return listHoraDisp;
     }
 
@@ -75,10 +77,6 @@ public class HorarioDisponibleBean implements Serializable{
     public void init()
     {
         this.limpForm();
-        this.consPorUsua();
-        this.consTodo();
-        consTodo();
-        consPorUsua();
     }
     //Limpiar el formulario
     public void limpForm()
