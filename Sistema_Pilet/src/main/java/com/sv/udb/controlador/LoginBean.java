@@ -48,7 +48,7 @@ public class LoginBean implements Serializable {
     @Inject
     private GlobalAppBean globalAppBean; //Bean de aplicación
     
-    private Usuario objeUsua;
+    private static Usuario objeUsua;
     private UsuariosPojo usuaPojo;
     private boolean loge;
     private String usua;
