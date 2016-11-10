@@ -45,10 +45,8 @@ and open the template in the editor.
                                 <div id="toolTablRegi">
                                     <h:form>
                                         
-                                        <p:remoteCommand name="consObje" actionListener="#{citasBean.cons()}" update=":FormRegi" 
+                                        <p:remoteCommand name="consObje" actionListener="#{citasBean.consObjeCitaAlum()}" update=":FormRegi" 
                                                          oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA();" global="true"/>
-                                        <p:remoteCommand name="elimObje" actionListener="#{horarioDisponibleBean.elim()}" update=":FormRegi :ContRegi" 
-                                                         oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
                                             <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegi" global="true" 
                                                     oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA;"/>
@@ -126,7 +124,7 @@ and open the template in the editor.
                                 </div>
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
-                                        <h:inputHidden id="codi" value="#{horarioDisponibleBean.objeHoraDisp.codiHoraDisp}" />
+                                        <h:inputHidden id="codi" value="#{citasBean.objeCita.codiCita}" />
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="usua" value="¿A quién desea solicitarle una cita? "/>
                                             <h:selectOneMenu id="usua" value="#{citasBean.objeCita.codiUsua}" class="form-control select" pt:data-live-search="true">

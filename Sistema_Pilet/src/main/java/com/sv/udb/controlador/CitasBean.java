@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.SessionBean;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -154,7 +155,7 @@ public class CitasBean implements Serializable{
     }
     
     public List<Cita> getListCitaAlum() {
-        this.consCitaPorAlum();
+        this.consListCitaAlum();
         return listCitaAlum;
     }
 
@@ -442,17 +443,7 @@ public class CitasBean implements Serializable{
     
     
     
-    public void consCitaPorAlum()
-    {
-        try
-        {
-            this.listCitaAlum = FCDECita.findByCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }   
+      
     public void consHorarios()
     {
         try
@@ -467,19 +458,37 @@ public class CitasBean implements Serializable{
     
     
     
-    public void cons()
+    /* SECCIÓN DESTINADA A LA PROGRAMACIÓN DE CITAS PARA VISITANTES */
+    
+    public void consObjeCitaAlum()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {
             this.objeCita = FCDECita.find(codi);
+            this.objeCambCita = FCDECambCita.findByCita(objeCita);
+            fechSoliCita = objeCambCita.getFechInicCitaNuev();
+            this.listVisiTemp = FCDEAlumnoVisitante.findByCarnAlum(logiBean.getObjeUsua().getAcceUsua());//--> Variable session carnet alumno
+            alumVisiSelec= listVisiTemp.get(0);
             this.guardar = false;
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada"+ objeCita.getDescCita()+"')");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+        }
+    }
+    
+     public void consListCitaAlum()
+    {
+        try
+        {
+            this.listCitaAlum = FCDECita.findByCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
         }
     }
     
@@ -552,7 +561,7 @@ public class CitasBean implements Serializable{
     }
     
     
-    
+    /* TERMINA SECCIÓN DESTINADA A LA PROGRAMACIÓN DE CITAS PARA VISITANTES */
     
     
     
