@@ -44,7 +44,7 @@ function INIT_OBJE_MODA()
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
     $("#FormRegi\\:role").selectpicker();
     $(".datepicker").initDatePick();
-    $(".select").initSelePick();
+    $(".select").selectpicker();
     $('.timepicker').timepicker({
         icons: {
                 up:"fa fa-sort-desc",
