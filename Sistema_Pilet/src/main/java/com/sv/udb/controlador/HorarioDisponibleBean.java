@@ -146,6 +146,7 @@ public class HorarioDisponibleBean implements Serializable{
                 FCDEHoraDisp.create(this.objeHoraDisp);
                 //logger.info("Se ha guardado un horario: " + this.objeHoraDisp.getDiaHoraDisp() + " " + this.objeHoraDisp.getHoraInicHoraDisp() + " " + this.objeHoraDisp.getAnioHoraDisp() );
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                if(this.listHoraDisp.isEmpty()) this.listHoraDisp = new ArrayList<Horariodisponible>();
                 this.listHoraDisp.add(objeHoraDisp);
             }
         }

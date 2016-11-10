@@ -62,7 +62,7 @@ public class LoginBean implements Serializable {
     }
 
     public void setObjeWSconsEmplByAcce(WSconsEmplByUser objeWSconsEmplByAcce) {
-        LoginBean.objeWSconsEmplByAcce = objeWSconsEmplByAcce;
+        this.objeWSconsEmplByAcce = objeWSconsEmplByAcce;
     }
     
     private LOG4J<LoginBean> lgs = new LOG4J<LoginBean>(LoginBean.class) {
