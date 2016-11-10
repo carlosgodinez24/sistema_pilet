@@ -108,7 +108,7 @@ public class CitasBean implements Serializable{
     private boolean ignoHoraDisp;
     private boolean isGrouVisi;
     private boolean LugaEven;
-    
+    private String nombProf;
     
     //Switch para formularios
     private boolean switFormCita=true;
@@ -402,6 +402,14 @@ public class CitasBean implements Serializable{
         return listCitaVisiUsua;
     }
 
+    public String getNombProf() {
+        return nombProf;
+    }
+
+    public void setNombProf(String nombProf) {
+        this.nombProf = nombProf;
+    }
+
     
 
     
@@ -439,6 +447,7 @@ public class CitasBean implements Serializable{
         this.objeCambCita  = new Cambiocita();
         this.listVisiVisiTemp = new ArrayList<Visitante>();
         this.LugaEven = true;
+        this.nombProf = null;
     }
     
     
@@ -449,6 +458,17 @@ public class CitasBean implements Serializable{
         try
         {
             this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(this.objeCita.getCodiUsua());
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    public void consListHoraDispProf(int codi)
+    {
+        try
+        {
+            this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(codi);
         }
         catch(Exception ex)
         {
@@ -471,7 +491,9 @@ public class CitasBean implements Serializable{
             fechSoliCita = objeCambCita.getFechInicCitaNuev();
             this.listVisiTemp = FCDEAlumnoVisitante.findByCarnAlum(logiBean.getObjeUsua().getAcceUsua());//--> Variable session carnet alumno
             alumVisiSelec= listVisiTemp.get(0);
-            this.guardar = false;
+            consListHoraDispProf(objeCita.getCodiUsua());
+            this.nombProf = new WebServicesBean().consEmplPorCodi(String.valueOf(objeCita.getCodiUsua())).getNomb();
+            estaCita();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada"+ objeCita.getDescCita()+"')");
         }
         catch(Exception ex)

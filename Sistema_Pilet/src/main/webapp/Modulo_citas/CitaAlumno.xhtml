@@ -125,15 +125,25 @@ and open the template in the editor.
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codi" value="#{citasBean.objeCita.codiCita}" />
-                                        <div class="input-group col-xs-12">
-                                            <h:outputLabel  for="usua" value="¿A quién desea solicitarle una cita? "/>
-                                            <h:selectOneMenu id="usua" value="#{citasBean.objeCita.codiUsua}" class="form-control select" pt:data-live-search="true">
-                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{citasBean.consDoceAlum().doce}" var="lstDoce" itemLabel="#{lstDoce.nomb}" itemValue="#{Integer.parseInt(lstDoce.codi)}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="usua" errorClass="field-error" />
-                                        </div>
+                                        <h:panelGroup rendered="#{citasBean.programar}">
+                                            <div class="input-group col-xs-12">
+                                                <h:outputLabel  for="profeCita" value="¿A quién desea solicitarle una cita? "/>
+                                                <h:message for="profeCita" errorClass="field-error" />
+                                                <h:selectOneMenu id="profeCita" value="#{citasBean.objeCita.codiUsua}" class="form-control select" pt:data-live-search="true">
+                                                    <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                    <f:selectItems value="#{citasBean.consDoceAlum().doce}" var="lstDoce" itemLabel="#{lstDoce.nomb}" itemValue="#{lstDoce.codi}"/>
+                                                    <p:ajax  update="@form" process="@this,profeCita" global="true" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{citasBean.reprogramar}">
+                                            <div class="input-group col-xs-12">
+                                                <h:outputLabel  for="nombProf" value="Profesor "/>
+                                                <h:inputText id="nombProf" value="#{citasBean.nombProf}" class="form-control disabled" disabled="true"/>
+                                                <h:message for="nombProf" errorClass="field-error" />
+                                            </div>
+                                        </h:panelGroup>
+                                        
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="hora" value="Horario comunmente disponible"/>
                                             <h:selectOneMenu id="hora" value="#{citasBean.horaSeleCita}" class="form-control select" pt:data-live-search="true">
