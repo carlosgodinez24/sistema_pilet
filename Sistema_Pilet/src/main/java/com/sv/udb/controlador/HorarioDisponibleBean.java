@@ -90,7 +90,7 @@ public class HorarioDisponibleBean implements Serializable{
     {
         try
         {
-            this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
+            this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(new LoginBean().getObjeWSconsEmplByAcce().getCodi());
             if(listHoraDisp == null)listHoraDisp = new ArrayList<Horariodisponible>();
         }
         catch(Exception ex)
