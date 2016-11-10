@@ -493,6 +493,11 @@ public class CitasBean implements Serializable{
             alumVisiSelec= listVisiTemp.get(0);
             consListHoraDispProf(objeCita.getCodiUsua());
             this.nombProf = new WebServicesBean().consEmplPorCodi(String.valueOf(objeCita.getCodiUsua())).getNomb();
+            //si la cita involucra otro alumno, no se podrá solicitar reprogramación
+            List<Visitantecita> listVisiCitaTemp = FCDEVisiCita.findByCodiCita(objeCita);
+            for(Visitantecita obje: listVisiCitaTemp){
+                if(!obje.getCarnAlum().equals(String.valueOf(logiBean.getObjeUsua().getAcceUsua())))reprogramar = false;
+            }
             estaCita();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada"+ objeCita.getDescCita()+"')");
         }
