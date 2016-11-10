@@ -34,7 +34,6 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
     private Excepcionhorariodisponible objeExceHoraDisp;
     private List<Excepcionhorariodisponible> listExceHoraDisp;
     private boolean guardar;
-    private Logger logger = Logger.getLogger(ExcepcionHorarioDisponibleBean.class);
     
     public Excepcionhorariodisponible getObjeExceHoraDisp() {
         return objeExceHoraDisp;
@@ -87,16 +86,10 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
             this.guardar = false;
             
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " +this.objeExceHoraDisp.getFechExceHoraDisp()+ "')");
-            logger.info("Se ha consultado una excepcion horario: " + this.objeExceHoraDisp.getFechExceHoraDisp());
         }
         catch(Exception ex)
         {
-            logger.error("Error al consultar registro",ex);
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-        }
-        finally
-        {
-            
         }
     }
      /**
@@ -141,7 +134,6 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
             if(validar()){
               FCDEExceHoraDisp.create(this.objeExceHoraDisp);
               this.listExceHoraDisp.add(this.objeExceHoraDisp);
-              logger.info("Se ha guardado una excepcion horario: " + this.objeExceHoraDisp.getCodiHoraDisp()+ " fecha: " + this.objeExceHoraDisp.getFechExceHoraDisp());
               ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");  
             }
         }
@@ -165,14 +157,12 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
               this.listExceHoraDisp.remove(this.objeExceHoraDisp); //Limpia el objeto viejo
               FCDEExceHoraDisp.edit(this.objeExceHoraDisp);
               this.listExceHoraDisp.add(this.objeExceHoraDisp); //Agrega el objeto modificado
-              logger.info("Se ha modificado una excepcion horario");
               ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
               this.listExceHoraDisp.add(this.objeExceHoraDisp); 
             }
         }
         catch(Exception ex)
         {
-            logger.error("Error al modificar: ",ex);
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
@@ -188,12 +178,10 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
         {
             FCDEExceHoraDisp.remove(this.objeExceHoraDisp);
             this.listExceHoraDisp.remove(this.objeExceHoraDisp);
-            logger.info("Se ha eliminado una excepcion horario: " + this.objeExceHoraDisp.getCodiHoraDisp()+ " fecha: " + this.objeExceHoraDisp.getFechExceHoraDisp());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
         catch(Exception ex)
         {
-            logger.error("Error al eliminar: ", ex);
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }

@@ -132,7 +132,7 @@ and open the template in the editor.
                                                 <h:selectOneMenu id="profeCita" value="#{citasBean.objeCita.codiUsua}" class="form-control select" pt:data-live-search="true">
                                                     <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                     <f:selectItems value="#{citasBean.consDoceAlum().doce}" var="lstDoce" itemLabel="#{lstDoce.nomb}" itemValue="#{lstDoce.codi}"/>
-                                                    <p:ajax  update="@form" process="@this,profeCita" global="true" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
+                                                    <p:ajax listener="#{citasBean.consHorarios()}" process="@this" oncomplete="INIT_OBJE_MODA();" update="@form :FormRegi" />
                                                 </h:selectOneMenu>
                                             </div>
                                         </h:panelGroup>

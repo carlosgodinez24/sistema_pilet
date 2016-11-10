@@ -306,7 +306,7 @@ public class CitasBean implements Serializable{
         int permCita = 26;
         if(permCita==26)
         {
-            this.objeWebServAlumByDoce = new WebServicesBean().consAlumPorDoce(String.valueOf(LoginBean.getCodiEmplSesi()));
+            this.objeWebServAlumByDoce = new WebServicesBean().consAlumPorDoce(String.valueOf(LoginBean.getObjeWSconsEmplByAcce().getCodi()));
             this.listAlumnosWS = this.objeWebServAlumByDoce.getResu();
         }
         else if(permCita==27)
@@ -812,7 +812,7 @@ public class CitasBean implements Serializable{
     {
         try
         {
-            this.listCitaAlumUsua = FCDECita.findCitaByCodiUsua(LoginBean.getCodiEmplSesi());
+            this.listCitaAlumUsua = FCDECita.findCitaByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
             if(this.listCitaAlumUsua == null)this.listCitaAlumUsua = new ArrayList<Cita>();
             List<Cita> listCitaAlumUsuaTemp = new ArrayList<Cita>(); 
             listCitaAlumUsuaTemp.addAll(listCitaAlumUsua);
@@ -834,7 +834,7 @@ public class CitasBean implements Serializable{
     {
         try
         {
-            this.listCitaVisiUsua = FCDECita.findCitaByCodiUsua(LoginBean.getCodiEmplSesi());
+            this.listCitaVisiUsua = FCDECita.findCitaByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
             if(this.listCitaVisiUsua == null)this.listCitaVisiUsua = new ArrayList<Cita>();
             List<Cita> listCitaVisiUsuaTemp = new ArrayList<Cita>(); 
             listCitaVisiUsuaTemp.addAll(listCitaVisiUsua);
@@ -873,7 +873,7 @@ public class CitasBean implements Serializable{
     private void consListHoraDispUsua(){
         try
         {
-            this.listHoraDispUsua = FCDEHoraDisp.findByCodiUsua(LoginBean.getCodiEmplSesi());
+            this.listHoraDispUsua = FCDEHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }
         catch(Exception ex)
         {
@@ -1118,7 +1118,7 @@ public class CitasBean implements Serializable{
                 objeCita.setTipoCita(1);
                 objeCita.setTipoDura(2);
                 objeCita.setTipoVisi(2);
-                objeCita.setCodiUsua(LoginBean.getCodiEmplSesi());
+                objeCita.setCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
                 //crear el objeto cita
                 FCDECita.create(objeCita);
 
@@ -1189,7 +1189,7 @@ public class CitasBean implements Serializable{
     //consultar una lisata de visitas por usuario
     public void consListVisiUsua(){
         try{
-            listVisiUsua = FCDECita.findVisiByCodiUsua(LoginBean.getCodiEmplSesi());
+            listVisiUsua = FCDECita.findVisiByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }catch(Exception e){
             e.printStackTrace();
         }

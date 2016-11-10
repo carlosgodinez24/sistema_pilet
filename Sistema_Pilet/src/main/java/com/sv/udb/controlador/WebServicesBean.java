@@ -10,6 +10,7 @@ import com.sv.udb.utils.pojos.WSconsDoceByAlum;
 import com.sv.udb.utils.pojos.WSconsUsua;
 import com.sv.udb.controlador.LoginBean;
 import com.sv.udb.utils.pojos.WSconsEmplByCodi;
+import com.sv.udb.utils.pojos.WSconsEmplByUser;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -34,8 +35,13 @@ import org.primefaces.context.RequestContext;
 @Named(value = "webServicesBean")
 @Dependent
 public class WebServicesBean implements Serializable {
+    @Inject
+    private LoginBean logiBean; //Bean de session
     
     private static final long serialVersionUID = 1L;    
+    
+   
+    
     private String filt; //Filotro de búsqueda
     private String filtApel;
     private String filtTipo;
@@ -46,6 +52,15 @@ public class WebServicesBean implements Serializable {
     private WSconsAlumByDoce objeWebServAlumByDoce;
     private WSconsDoceByAlum objeWebServDoceByAlum;
     private WSconsEmplByCodi objeWebServConsEmplByCodi;
+    private WSconsEmplByUser objeWebServConsEmplByUser;
+
+    public WSconsEmplByUser getObjeWebServConsEmplByUser() {
+        return objeWebServConsEmplByUser;
+    }
+
+    public void setObjeWebServConsEmplByUser(WSconsEmplByUser objeWebServConsEmplByUser) {
+        this.objeWebServConsEmplByUser = objeWebServConsEmplByUser;
+    }    
 
     public WSconsDoceByAlum getObjeWebServDoceByAlum() {
         return objeWebServDoceByAlum;
@@ -130,7 +145,7 @@ public class WebServicesBean implements Serializable {
         {
             resp = response.readEntity(UsuariosPojo.class);//La respuesta de captura en un pojo que esta en el paquete utils
             if(!resp.getTipo().equals("alum")){
-                LoginBean.setCodiEmplSesi(new ConsultarCodiEmpleadoLogin().consultarCodigo(acce));
+                new LoginBean().setObjeWSconsEmplByAcce(consEmplByUser(acce));
             }
         }
         else
@@ -257,6 +272,8 @@ public class WebServicesBean implements Serializable {
         return this.objeWebServAlumByDoce;
     }
     
+    
+    
     public WSconsDoceByAlum consDocePorAlum(String carnAlum)
     {
         System.out.println("ConsDocePorALUM");
@@ -307,5 +324,29 @@ public class WebServicesBean implements Serializable {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
         }
         return this.objeWebServConsEmplByCodi;
+    }
+    
+    public WSconsEmplByUser consEmplByUser(String user)
+    {
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        Client client = ClientBuilder.newClient();
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
+        url = String.format("%s/%s/%s", url, "consEmpl", user);
+        WebTarget resource = client.target(url);
+        Invocation.Builder request = resource.request();
+        request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));
+        Response response = request.get();
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
+        {
+            this.objeWebServConsEmplByUser = response.readEntity(WSconsEmplByUser.class); //La respuesta de captura en un pojo que esta en el paquete utils
+            System.out.println("Código Empleado: " + this.objeWebServConsEmplByUser.getCodi());
+            return this.objeWebServConsEmplByUser;
+        }
+        else
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
+        }
+        return this.objeWebServConsEmplByUser;
     }
 }

@@ -9,10 +9,11 @@ import java.util.List;
 
 /**
  *
- * @author Mauricio
+ * @author Alvin
  */
-public class WSconsEmplByCodi {
+public class WSconsEmplByUser {
     private boolean resp;
+    private int codi;
     private String nomb;
     private byte[] foto;
     private String mail;
@@ -20,9 +21,14 @@ public class WSconsEmplByCodi {
     private String grupGuia;
     private int esta;
     private List<DatosGrupos> grup;
+    
+    public WSconsEmplByUser() {
+        
+    }
 
-    public WSconsEmplByCodi(boolean resp, String nomb, byte[] foto, String mail, String tipo, String grupGuia, int esta, List<DatosGrupos> grup) {
+    public WSconsEmplByUser(boolean resp, int codi, String nomb, byte[] foto, String mail, String tipo, String grupGuia, int esta, List<DatosGrupos> grup) {
         this.resp = resp;
+        this.codi = codi;
         this.nomb = nomb;
         this.foto = foto;
         this.mail = mail;
@@ -32,12 +38,13 @@ public class WSconsEmplByCodi {
         this.grup = grup;
     }
     
-    
-
-    public WSconsEmplByCodi()
-    {
-        
+    public int getCodi() {
+        return codi;
     }
+
+    public void setCodi(int codi) {
+        this.codi = codi;
+    }    
 
     public boolean isResp() {
         return resp;
