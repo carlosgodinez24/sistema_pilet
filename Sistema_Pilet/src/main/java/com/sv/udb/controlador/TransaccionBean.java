@@ -320,7 +320,7 @@ public class TransaccionBean implements Serializable{
             switch (objeTran.getCodiDetaBeca().getCodiTipoBeca().getTipoTipoBeca()) {
                 case 1:
                     //Obtener el monto que pagó el alumno
-                    this.objeDeta.setMontAlum(objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca().getCodiGrad().getMatrGrac().subtract(objeTran.getMontTran()));
+                    this.objeDeta.setMontAlum(objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca().getCodiGrad().getMatrGrad().subtract(objeTran.getMontTran()));
                     this.guardar = true;
                     break;
                 case 2:

@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="WEB-INF/resources/fragmentos/comun.xhtml">
+    <ui:composition template="../WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
         <ui:param name="pageTitl" value="::: Página Grados :::"/>
         <ui:param name="pageNomb" value="Página Grados"/>
@@ -93,7 +93,7 @@ and open the template in the editor.
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Mensualidad:</f:facet>
-                                        <h:outputText value="#{fila.matrGrac}"/>
+                                        <h:outputText value="#{fila.matrGrad}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Mensualidad:</f:facet>
@@ -135,7 +135,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="matr" value="Matrícula: "/>
                                             <h:message for="matr" errorClass="field-error" />
-                                            <h:inputText id="matri" value="#{gradoBean.objeGrad.matrGrac}" class="form-control" />
+                                            <h:inputText id="matri" value="#{gradoBean.objeGrad.matrGrad}" class="form-control" />
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="mens" value="Mensualidad: "/>

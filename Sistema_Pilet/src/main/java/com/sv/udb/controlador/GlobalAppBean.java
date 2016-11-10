@@ -140,6 +140,8 @@ public class GlobalAppBean {
         {
             HttpServletRequest requ = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String page = String.format("%s%s%s", requ.getContextPath(), requ.getServletPath(), role);
+            System.out.println("GlobalAppBean:   " + page);
+            System.out.println("GlobalAppBean:   " + usua);
             return FCDEUsua.findPermByAcceAndDire(usua, page);
         }
         catch(Exception ex)
