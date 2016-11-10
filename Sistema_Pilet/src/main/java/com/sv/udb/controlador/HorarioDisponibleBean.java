@@ -7,15 +7,18 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.HorariodisponibleFacadeLocal;
 import com.sv.udb.modelo.Horariodisponible;
+import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import org.apache.log4j.Logger;
 
@@ -27,6 +30,10 @@ import org.apache.log4j.Logger;
 @Named(value = "horarioDisponibleBean")
 @ViewScoped
 public class HorarioDisponibleBean implements Serializable{
+    
+    //Bean Sesion
+    @Inject
+    private LoginBean logiBean; 
    
     
     public HorarioDisponibleBean() {
@@ -36,11 +43,10 @@ public class HorarioDisponibleBean implements Serializable{
     @EJB
     private HorariodisponibleFacadeLocal FCDEHoraDisp;    
     private Horariodisponible objeHoraDisp;
-    private List<Horariodisponible> listHoraDisp;
-    private List<Horariodisponible> listHoraDispTodo;
+    private List<Horariodisponible> listHoraDisp = new ArrayList<Horariodisponible>();
+    private List<Horariodisponible> listHoraDispTodo = new ArrayList<Horariodisponible>();
     private boolean guardar;
-    private Logger logger = Logger.getLogger(HorarioDisponibleBean.class);
-
+    
     public List<Horariodisponible> getListHoraDispTodo() {
         return listHoraDispTodo;
     }
@@ -86,7 +92,7 @@ public class HorarioDisponibleBean implements Serializable{
     {
         try
         {
-            this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(LoginBean.getCodiEmplSesi());
+            this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }
         catch(Exception ex)
         {
@@ -114,13 +120,13 @@ public class HorarioDisponibleBean implements Serializable{
         {
             this.objeHoraDisp = FCDEHoraDisp.find(codi);
             this.guardar = false;
-            logger.info("Se ha consultado un horario: " + this.objeHoraDisp.getDiaHoraDisp()+" "+this.objeHoraDisp.getHoraInicHoraDisp() + " "+this.objeHoraDisp.getAnioHoraDisp());
+            //logger.info("Se ha consultado un horario: " + this.objeHoraDisp.getDiaHoraDisp()+" "+this.objeHoraDisp.getHoraInicHoraDisp() + " "+this.objeHoraDisp.getAnioHoraDisp());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s %s", this.objeHoraDisp.getDiaHoraDisp(), this.objeHoraDisp.getHoraInicHoraDisp()) + "')");
         }
         catch(Exception ex)
         {
-            logger.error("Error al consultar registro",ex);
+            //logger.error("Error al consultar registro",ex);
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
     }
@@ -135,10 +141,10 @@ public class HorarioDisponibleBean implements Serializable{
         try
         {
             if(validar()){
-                this.objeHoraDisp.setCodiUsua(LoginBean.getCodiEmplSesi());
+                this.objeHoraDisp.setCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
                 objeHoraDisp.setEstaHoraDisp(1);
                 FCDEHoraDisp.create(this.objeHoraDisp);
-                logger.info("Se ha guardado un horario: " + this.objeHoraDisp.getDiaHoraDisp() + " " + this.objeHoraDisp.getHoraInicHoraDisp() + " " + this.objeHoraDisp.getAnioHoraDisp() );
+                //logger.info("Se ha guardado un horario: " + this.objeHoraDisp.getDiaHoraDisp() + " " + this.objeHoraDisp.getHoraInicHoraDisp() + " " + this.objeHoraDisp.getAnioHoraDisp() );
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                 this.listHoraDisp.add(objeHoraDisp);
             }
@@ -146,7 +152,7 @@ public class HorarioDisponibleBean implements Serializable{
         catch(Exception ex)
         {
             ex.printStackTrace();
-            logger.error("Error al guardar: ", ex);
+            //logger.error("Error al guardar: ", ex);
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
         }
     }
@@ -162,17 +168,16 @@ public class HorarioDisponibleBean implements Serializable{
         try
         {
             if(validar()){
-                this.objeHoraDisp.setCodiUsua(LoginBean.getCodiEmplSesi());
+                this.objeHoraDisp.setCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
                 this.listHoraDisp.remove(this.objeHoraDisp); //Limpia el objeto viejo
                 FCDEHoraDisp.edit(this.objeHoraDisp);
-                logger.info("Se ha modificado un horario: " + this.objeHoraDisp.getDiaHoraDisp() + " " + this.objeHoraDisp.getHoraInicHoraDisp() + " a " + this.objeHoraDisp.getHoraFinaHoraDisp() + " " + this.objeHoraDisp.getAnioHoraDisp() );
+                //logger.info("Se ha modificado un horario: " + this.objeHoraDisp.getDiaHoraDisp() + " " + this.objeHoraDisp.getHoraInicHoraDisp() + " a " + this.objeHoraDisp.getHoraFinaHoraDisp() + " " + this.objeHoraDisp.getAnioHoraDisp() );
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
                 this.listHoraDisp.add(objeHoraDisp);
             }
         }
         catch(Exception ex)
         {
-            logger.error("Error al modificar: ",ex);
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
@@ -190,12 +195,12 @@ public class HorarioDisponibleBean implements Serializable{
             objeHoraDisp.setEstaHoraDisp(0);
             FCDEHoraDisp.edit(this.objeHoraDisp);
             this.listHoraDisp.remove(this.objeHoraDisp);
-            logger.info("Se ha eliminado un horario: " + this.objeHoraDisp.getDiaHoraDisp() + " " + this.objeHoraDisp.getHoraInicHoraDisp() + " " + this.objeHoraDisp.getHoraFinaHoraDisp() + " " + this.objeHoraDisp.getAnioHoraDisp() );
+            //logger.info("Se ha eliminado un horario: " + this.objeHoraDisp.getDiaHoraDisp() + " " + this.objeHoraDisp.getHoraInicHoraDisp() + " " + this.objeHoraDisp.getHoraFinaHoraDisp() + " " + this.objeHoraDisp.getAnioHoraDisp() );
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
         catch(Exception ex)
         {
-            logger.error("Error al eliminar: ", ex);
+            //logger.error("Error al eliminar: ", ex);
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }

@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="WEB-INF/resources/fragmentos/comun.xhtml">
+    <ui:composition template="../WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
         <ui:param name="pageTitl" value="Visitantes"/>
         <ui:param name="pageNomb" value="Visitantes"/>
@@ -44,7 +44,7 @@ and open the template in the editor.
                                                          oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
                                             <p:ajax listener="#{visitantesBean.limpForm()}" update=":FormRegi" global="true" 
-                                                    oncomplete="$('#ModaFormRegi').modal('show');"/>
+                                                    oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE(); INIT_OBJE_MODA(); "/>
                                             <i class="fa fa-plus"/> Nuevo
                                         </h:commandLink>
                                         
@@ -144,7 +144,6 @@ and open the template in the editor.
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItem itemValue="1" itemLabel="Encargado Alumno"/>
                                                 <f:selectItem itemValue="2" itemLabel="Particular"/>
-                                                <f:selectItem itemValue="3" itemLabel="Grupo"/>
                                             </h:selectOneMenu>
                                         </div>
                                     </fieldset>

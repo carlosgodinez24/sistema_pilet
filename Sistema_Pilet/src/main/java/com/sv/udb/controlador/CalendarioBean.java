@@ -131,8 +131,9 @@ public class CalendarioBean implements Serializable{
         Date fecha = null;
         if (date != null){
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy h:mm aa");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
                 fecha = sdf.parse(date);
+                System.out.println(fecha);
             } catch (Exception e) {
                 fecha = null;
             }

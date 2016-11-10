@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.ejb.SessionBean;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -107,7 +108,7 @@ public class CitasBean implements Serializable{
     private boolean ignoHoraDisp;
     private boolean isGrouVisi;
     private boolean LugaEven;
-    
+    private String nombProf;
     
     //Switch para formularios
     private boolean switFormCita=true;
@@ -154,7 +155,7 @@ public class CitasBean implements Serializable{
     }
     
     public List<Cita> getListCitaAlum() {
-        this.consCitaPorAlum();
+        this.consListCitaAlum();
         return listCitaAlum;
     }
 
@@ -305,7 +306,7 @@ public class CitasBean implements Serializable{
         int permCita = 26;
         if(permCita==26)
         {
-            this.objeWebServAlumByDoce = new WebServicesBean().consAlumPorDoce(String.valueOf(LoginBean.getCodiEmplSesi()));
+            this.objeWebServAlumByDoce = new WebServicesBean().consAlumPorDoce(String.valueOf(LoginBean.getObjeWSconsEmplByAcce().getCodi()));
             this.listAlumnosWS = this.objeWebServAlumByDoce.getResu();
         }
         else if(permCita==27)
@@ -401,6 +402,14 @@ public class CitasBean implements Serializable{
         return listCitaVisiUsua;
     }
 
+    public String getNombProf() {
+        return nombProf;
+    }
+
+    public void setNombProf(String nombProf) {
+        this.nombProf = nombProf;
+    }
+
     
 
     
@@ -438,21 +447,12 @@ public class CitasBean implements Serializable{
         this.objeCambCita  = new Cambiocita();
         this.listVisiVisiTemp = new ArrayList<Visitante>();
         this.LugaEven = true;
+        this.nombProf = null;
     }
     
     
     
-    public void consCitaPorAlum()
-    {
-        try
-        {
-            this.listCitaAlum = FCDECita.findByCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }   
+      
     public void consHorarios()
     {
         try
@@ -464,22 +464,53 @@ public class CitasBean implements Serializable{
             ex.printStackTrace();
         }
     }
+    public void consListHoraDispProf(int codi)
+    {
+        try
+        {
+            this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(codi);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
     
     
     
-    public void cons()
+    /* SECCIÓN DESTINADA A LA PROGRAMACIÓN DE CITAS PARA VISITANTES */
+    
+    public void consObjeCitaAlum()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {
             this.objeCita = FCDECita.find(codi);
-            this.guardar = false;
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada')");
+            this.objeCambCita = FCDECambCita.findByCita(objeCita);
+            fechSoliCita = objeCambCita.getFechInicCitaNuev();
+            this.listVisiTemp = FCDEAlumnoVisitante.findByCarnAlum(logiBean.getObjeUsua().getAcceUsua());//--> Variable session carnet alumno
+            alumVisiSelec= listVisiTemp.get(0);
+            consListHoraDispProf(objeCita.getCodiUsua());
+            this.nombProf = new WebServicesBean().consEmplPorCodi(String.valueOf(objeCita.getCodiUsua())).getNomb();
+            estaCita();
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada"+ objeCita.getDescCita()+"')");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+        }
+    }
+    
+     public void consListCitaAlum()
+    {
+        try
+        {
+            this.listCitaAlum = FCDECita.findByCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
         }
     }
     
@@ -552,7 +583,7 @@ public class CitasBean implements Serializable{
     }
     
     
-    
+    /* TERMINA SECCIÓN DESTINADA A LA PROGRAMACIÓN DE CITAS PARA VISITANTES */
     
     
     
@@ -781,14 +812,14 @@ public class CitasBean implements Serializable{
     {
         try
         {
-            this.listCitaAlumUsua = FCDECita.findCitaByCodiUsua(LoginBean.getCodiEmplSesi());
+            this.listCitaAlumUsua = FCDECita.findCitaByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
             if(this.listCitaAlumUsua == null)this.listCitaAlumUsua = new ArrayList<Cita>();
             List<Cita> listCitaAlumUsuaTemp = new ArrayList<Cita>(); 
             listCitaAlumUsuaTemp.addAll(listCitaAlumUsua);
             for(Cita obje : listCitaAlumUsuaTemp){
-               Alumnovisitante objeAlumVisiTemp = FCDEAlumnoVisitante.findByCita(obje).get(0);
-                if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Alumnovisitante();
-               if(objeAlumVisiTemp.getCarnAlum() != null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
+                Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
+                if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Visitantecita();
+               if(objeAlumVisiTemp.getCarnAlum() == null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
             }
             
         }
@@ -803,14 +834,14 @@ public class CitasBean implements Serializable{
     {
         try
         {
-            this.listCitaVisiUsua = FCDECita.findCitaByCodiUsua(LoginBean.getCodiEmplSesi());
+            this.listCitaVisiUsua = FCDECita.findCitaByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
             if(this.listCitaVisiUsua == null)this.listCitaVisiUsua = new ArrayList<Cita>();
             List<Cita> listCitaVisiUsuaTemp = new ArrayList<Cita>(); 
-            listCitaVisiUsuaTemp.addAll(listCitaVisiUsuaTemp);
+            listCitaVisiUsuaTemp.addAll(listCitaVisiUsua);
             for(Cita obje : listCitaVisiUsuaTemp){
-                Alumnovisitante objeAlumVisiTemp = FCDEAlumnoVisitante.findByCita(obje).get(0);
-                if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Alumnovisitante();
-               if(objeAlumVisiTemp.getCarnAlum() == null && listCitaVisiUsua.contains(obje))listCitaVisiUsua.remove(obje);
+               Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
+               if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Visitantecita();
+               if(objeAlumVisiTemp.getCarnAlum() != null && listCitaVisiUsua.contains(obje))listCitaVisiUsua.remove(obje);
             }
             
         }
@@ -842,7 +873,7 @@ public class CitasBean implements Serializable{
     private void consListHoraDispUsua(){
         try
         {
-            this.listHoraDispUsua = FCDEHoraDisp.findByCodiUsua(LoginBean.getCodiEmplSesi());
+            this.listHoraDispUsua = FCDEHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }
         catch(Exception ex)
         {
@@ -1087,7 +1118,7 @@ public class CitasBean implements Serializable{
                 objeCita.setTipoCita(1);
                 objeCita.setTipoDura(2);
                 objeCita.setTipoVisi(2);
-                objeCita.setCodiUsua(LoginBean.getCodiEmplSesi());
+                objeCita.setCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
                 //crear el objeto cita
                 FCDECita.create(objeCita);
 
@@ -1158,7 +1189,7 @@ public class CitasBean implements Serializable{
     //consultar una lisata de visitas por usuario
     public void consListVisiUsua(){
         try{
-            listVisiUsua = FCDECita.findVisiByCodiUsua(LoginBean.getCodiEmplSesi());
+            listVisiUsua = FCDECita.findVisiByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }catch(Exception e){
             e.printStackTrace();
         }

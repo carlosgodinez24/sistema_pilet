@@ -85,4 +85,5 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         List resu = q.getResultList();
         return resu;
     }
+    
 }
