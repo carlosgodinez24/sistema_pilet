@@ -26,9 +26,9 @@ import javax.ejb.EJB;
  *
  * @author REGISTRO
  */
-@Named(value = "calendarioBean")
+@Named(value = "calendarioBecasBean")
 @ViewScoped
-public class CalendarioBean_1 implements Serializable{
+public class CalendarioBecasBean implements Serializable{
     private static final long serialVersionUID = 6527333208194203406L;
     private ScheduleModel objeCale;
     private List<Seguimiento> listSegu;
@@ -37,7 +37,7 @@ public class CalendarioBean_1 implements Serializable{
     /**
      * Creates a new instance of CalendarioBean
      */
-    public CalendarioBean_1() {
+    public CalendarioBecasBean() {
     }
 
     @PostConstruct
