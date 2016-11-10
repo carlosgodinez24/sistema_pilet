@@ -32,6 +32,8 @@ public class ProcesoSolicitudesBean implements Serializable{
     private ProcesoSolicitudes objeProcSoli;
     private List<ProcesoSolicitudes> listProcSoli;
     private boolean guardar;
+    private String estado = "Resolución";
+    private boolean reso = false;
 
     /**
      * Función para obtener  el objeto objeProcSoli
@@ -39,6 +41,14 @@ public class ProcesoSolicitudesBean implements Serializable{
      */
     public ProcesoSolicitudes getObjeProcSoli() {
         return objeProcSoli;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public boolean isReso() {
+        return reso;
     }
 
     /**
@@ -49,6 +59,7 @@ public class ProcesoSolicitudesBean implements Serializable{
         this.objeProcSoli = objeProcSoli;
     }
 
+    
     /**
      * Función que retorna el valor de la variable guardar para saber si se está guardando o no actualmente
      * @return Boolean guardar
@@ -117,6 +128,21 @@ public class ProcesoSolicitudesBean implements Serializable{
         finally
         {
             
+        }
+    }
+    
+    public void cambEsta() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            if (this.estado.equals("Resolución")) {
+                this.estado = "Procesos";
+                this.reso = true;
+            } else if (this.estado.equals("Procesos")) {
+                this.estado = "Resolución";
+                this.reso = false;
+            }
+        } catch (Exception ex) {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
     

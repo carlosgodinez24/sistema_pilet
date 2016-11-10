@@ -13,13 +13,16 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
- * Esta clase se encuentran los metodos para el manejo de los datos (CRUD) del objeto objeEvalReso
+ * Esta clase se encuentran los metodos para el manejo de los datos (CRUD) del
+ * objeto objeEvalReso
+ *
  * @author Alexander
  * @version 1.2
  */
@@ -32,9 +35,10 @@ public class EvaluacionResolucionesBean implements Serializable {
     private EvaluacionResoluciones objeEvalReso;
     private List<EvaluacionResoluciones> listEvalReso;
     private boolean guardar;
-    
+
     /**
-     * Función para obtener  el objeto objeEvalReso
+     * Función para obtener el objeto objeEvalReso
+     *
      * @return EvaluacionResoluciones objeEvalReso
      */
     public EvaluacionResoluciones getObjeEvalReso() {
@@ -43,6 +47,7 @@ public class EvaluacionResolucionesBean implements Serializable {
 
     /**
      * Función para definir el objeto objeEvalReso
+     *
      * @param objeEvalReso
      */
     public void setObjeEvalReso(EvaluacionResoluciones objeEvalReso) {
@@ -51,6 +56,7 @@ public class EvaluacionResolucionesBean implements Serializable {
 
     /**
      * Función que retorna la lista de objetos de EvaluacionResoluciones
+     *
      * @return List listEvalReso
      */
     public List<EvaluacionResoluciones> getListEvalReso() {
@@ -59,6 +65,7 @@ public class EvaluacionResolucionesBean implements Serializable {
 
     /**
      * Función para definir la lista de objetos de EvaluacionResoluciones
+     *
      * @param listEvalReso
      */
     public void setListEvalReso(List<EvaluacionResoluciones> listEvalReso) {
@@ -66,7 +73,9 @@ public class EvaluacionResolucionesBean implements Serializable {
     }
 
     /**
-     * Función que retorna el valor de la variable guardar para saber si se está guardando o no actualmente
+     * Función que retorna el valor de la variable guardar para saber si se está
+     * guardando o no actualmente
+     *
      * @return Boolean guardar
      */
     public boolean isGuardar() {
@@ -75,6 +84,7 @@ public class EvaluacionResolucionesBean implements Serializable {
 
     /**
      * Función para definir si se esta guardando o no
+     *
      * @param guardar
      */
     public void setGuardar(boolean guardar) {
@@ -105,6 +115,7 @@ public class EvaluacionResolucionesBean implements Serializable {
 
     /**
      * Función para guardar
+     *
      * @param reso
      */
     public void guar(ResolucionSolicitudes reso) {
@@ -114,7 +125,6 @@ public class EvaluacionResolucionesBean implements Serializable {
             this.objeEvalReso.setFechEvalReso(new Date());
             this.objeEvalReso.setCodiResoSoli(reso);
             FCDEEvalReso.create(this.objeEvalReso);
-            this.listEvalReso.add(this.objeEvalReso);
             this.guardar = false;
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
@@ -122,5 +132,15 @@ public class EvaluacionResolucionesBean implements Serializable {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             ex.printStackTrace();
         }
+    }
+    
+    public List<EvaluacionResoluciones> cons(){
+        try{
+            this.listEvalReso = FCDEEvalReso.findEvalUsua();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return this.listEvalReso;
     }
 }

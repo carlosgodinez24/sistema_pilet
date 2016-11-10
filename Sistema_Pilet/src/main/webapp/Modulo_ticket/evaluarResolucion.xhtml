@@ -65,8 +65,6 @@ and open the template in the editor.
                                         <!--Form exclusivo para los remotos-->
                                         <p:remoteCommand name="consTicket" actionListener="#{solicitudesBean.cons()}" update=":FormTicket" 
                                                          oncomplete="$('#ModaFormTicket').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimTicket" actionListener="#{solicitudesBean.elim()}" update=":FormTicket :ContTicket" 
-                                                         oncomplete="INIT_OBJE_TICKET();" global="true"/>                                        
                                     </h:form>
                                 </div>                               
                                 <h:dataTable pt:data-id="TablTicket" id="TablTicket" value="#{solicitudesBean.consAsigFina()}"

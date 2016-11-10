@@ -5,7 +5,9 @@
  */
 package com.sv.udb.ejb;
 
+import com.sv.udb.controlador.LoginBean;
 import com.sv.udb.modelo.ResolucionSolicitudes;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +36,15 @@ public class ResolucionSolicitudesFacade extends AbstractFacade<ResolucionSolici
         Query q = getEntityManager().createQuery("SELECT u FROM ResolucionSolicitudes u WHERE u.codiSoli.codiSoli = :codiSoli", ResolucionSolicitudes.class);
         q.setParameter("codiSoli", codi);
         ResolucionSolicitudes resu = (ResolucionSolicitudes)q.getSingleResult();
+        return resu;
+    }
+    
+    @Override
+    public List<ResolucionSolicitudes> findResoUsua(int cant) {
+        Query q = getEntityManager().createQuery("SELECT rs FROM ResolucionSolicitudes rs INNER JOIN Solicitudes s ON rs.codiSoli.codiSoli = s.codiSoli WHERE s.codiEnca = :codiEnca ORDER BY rs.codiResoSoli DESC", ResolucionSolicitudes.class);
+        LoginBean login = new LoginBean();
+        q.setParameter("codiEnca", login.getObjeUsua().getCodiUsua());
+        List resu = q.setMaxResults(cant).getResultList();
         return resu;
     }
 }

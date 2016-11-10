@@ -29,10 +29,12 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class ResolucionSolicitudBean implements Serializable{
     @EJB
-    private ResolucionSolicitudesFacadeLocal FCDEResoSoli; 
+    private ResolucionSolicitudesFacadeLocal FCDEResoSoli;
+    private SolicitudesFacadeLocal FCDESoli;
     private ResolucionSolicitudes objeResoSoli;
     private List<ResolucionSolicitudes> listResoSoli;
     private boolean guardar;
+    private int cant = 0;
 
     /**
      * Función para obtener  el objeto objeResoSoli
@@ -80,7 +82,6 @@ public class ResolucionSolicitudBean implements Serializable{
     public void init()
     {
         this.limpForm();
-        this.consTodo();
     }
     
     /**
@@ -103,11 +104,10 @@ public class ResolucionSolicitudBean implements Serializable{
             Solicitudes soli = new Solicitudes(SolicitudesBean.codiSoli);
             this.objeResoSoli.setCodiSoli(soli);
             this.objeResoSoli.setFechResoSoli(new Date());
+            this.objeResoSoli.setEstaResoSoli(1);
             FCDEResoSoli.create(this.objeResoSoli);
-            this.listResoSoli.add(this.objeResoSoli);
+            FCDESoli.reso(SolicitudesBean.codiSoli);
             this.limpForm();
-            this.guardar = false;
-            //this.limpForm(); //Omito para mantener los datos en la modal
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             ctx.execute("location.reload()");
         }
@@ -145,49 +145,7 @@ public class ResolucionSolicitudBean implements Serializable{
             
         }
     }
-    
-    /**
-     * Función para dar de baja un registro
-     */
-    public void elim()
-    {
-        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        try
-        {
-            this.listResoSoli.remove(this.objeResoSoli); //Limpia el objeto viejo
-            FCDEResoSoli.remove(this.objeResoSoli);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
-        }
-        catch(Exception ex)
-        {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
-        }
-        finally
-        {
-            
-        }
-    }
-    
-    /**
-     * Función para consultar todos los registros de la tabla
-     */
-    public void consTodo()
-    {
-        try
-        {
-            this.listResoSoli = FCDEResoSoli.findAll();
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        finally
-        {
-            
-        }
-    }
-    
+        
     /**
      * Función para consultar un registro en específico
      */
@@ -220,5 +178,22 @@ public class ResolucionSolicitudBean implements Serializable{
             ex.printStackTrace();
         }
         return this.objeResoSoli;
+    }
+    
+    public List<ResolucionSolicitudes> consResoUsua(){
+        try{
+            if(this.cant == 0){
+                this.cant = 25;
+            }
+            this.listResoSoli = FCDEResoSoli.findResoUsua(this.cant);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return this.listResoSoli;
+    }
+    
+    public void consCant(int cant){
+        this.cant = cant;
     }
 }

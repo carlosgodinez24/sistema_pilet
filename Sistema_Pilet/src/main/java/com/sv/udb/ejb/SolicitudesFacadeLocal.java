@@ -43,6 +43,8 @@ public interface SolicitudesFacadeLocal {
     List<Solicitudes> findRange(int[] range);
     
     void asig(int codiSoli, int codiUsua);
+    
+    void reso(int codiSoli);
 
     int count();
     
