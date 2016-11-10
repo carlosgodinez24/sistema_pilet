@@ -3,7 +3,7 @@ $(document).ready(function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            cons([{name : 'codiObjePara', value : row.id.trim()}]);
+            consObje([{name : 'codiObjePara', value : row.id.trim()}]);
         });
         return false;
     };
