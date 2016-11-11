@@ -78,7 +78,7 @@ public class CalendarioBean implements Serializable{
     {
         try
         {
-            this.listCita = FCDECita.findByEstaProg();
+            this.listCita = FCDECita.findCitaCale(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }
         catch(Exception ex)
         {

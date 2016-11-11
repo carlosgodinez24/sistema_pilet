@@ -40,6 +40,8 @@ public interface CitaFacadeLocal {
     
     List<Cita> findByCarnAlum(String carnAlum);
     
+    List<Cita> findCitaCale(int codiUsua);
+    
     int count();
     
 }
