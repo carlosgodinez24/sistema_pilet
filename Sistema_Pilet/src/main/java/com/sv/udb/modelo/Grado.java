@@ -7,7 +7,9 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,14 +17,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Ariel
+ * @author Owner
  */
 @Entity
 @Table(name = "grado", catalog = "sistemas_pilet", schema = "")
@@ -31,10 +35,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Grado.findAll", query = "SELECT g FROM Grado g"),
     @NamedQuery(name = "Grado.findByCodiGrad", query = "SELECT g FROM Grado g WHERE g.codiGrad = :codiGrad"),
     @NamedQuery(name = "Grado.findByNombGrad", query = "SELECT g FROM Grado g WHERE g.nombGrad = :nombGrad"),
+    @NamedQuery(name = "Grado.findByMatrGrad", query = "SELECT g FROM Grado g WHERE g.matrGrad = :matrGrad"),
     @NamedQuery(name = "Grado.findByMensGrad", query = "SELECT g FROM Grado g WHERE g.mensGrad = :mensGrad"),
-    @NamedQuery(name = "Grado.findByEstaGrad", query = "SELECT g FROM Grado g WHERE g.estaGrad = :estaGrad"),
-    @NamedQuery(name = "Grado.findByMatrGrad", query = "SELECT g FROM Grado g WHERE g.matrGrad = :matrGrad")})
+    @NamedQuery(name = "Grado.findByEstaGrad", query = "SELECT g FROM Grado g WHERE g.estaGrad = :estaGrad")})
 public class Grado implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiGrad")
+    private Collection<SolicitudBeca> solicitudBecaCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,14 +57,14 @@ public class Grado implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
+    @Column(name = "matr_grad")
+    private BigDecimal matrGrad;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "mens_grad")
     private BigDecimal mensGrad;
     @Column(name = "esta_grad")
     private Integer estaGrad;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "matr_grad")
-    private BigDecimal matrGrad;
 
     public Grado() {
     }
@@ -66,11 +73,11 @@ public class Grado implements Serializable {
         this.codiGrad = codiGrad;
     }
 
-    public Grado(Integer codiGrad, String nombGrad, BigDecimal mensGrad, BigDecimal matrGrad) {
+    public Grado(Integer codiGrad, String nombGrad, BigDecimal matrGrad, BigDecimal mensGrad) {
         this.codiGrad = codiGrad;
         this.nombGrad = nombGrad;
-        this.mensGrad = mensGrad;
         this.matrGrad = matrGrad;
+        this.mensGrad = mensGrad;
     }
 
     public Integer getCodiGrad() {
@@ -89,6 +96,14 @@ public class Grado implements Serializable {
         this.nombGrad = nombGrad;
     }
 
+    public BigDecimal getMatrGrad() {
+        return matrGrad;
+    }
+
+    public void setMatrGrad(BigDecimal matrGrad) {
+        this.matrGrad = matrGrad;
+    }
+
     public BigDecimal getMensGrad() {
         return mensGrad;
     }
@@ -103,14 +118,6 @@ public class Grado implements Serializable {
 
     public void setEstaGrad(Integer estaGrad) {
         this.estaGrad = estaGrad;
-    }
-
-    public BigDecimal getMatrGrad() {
-        return matrGrad;
-    }
-
-    public void setMatrGrad(BigDecimal matrGrad) {
-        this.matrGrad = matrGrad;
     }
 
     @Override
@@ -136,6 +143,15 @@ public class Grado implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Grado[ codiGrad=" + codiGrad + " ]";
+    }
+
+    @XmlTransient
+    public Collection<SolicitudBeca> getSolicitudBecaCollection() {
+        return solicitudBecaCollection;
+    }
+
+    public void setSolicitudBecaCollection(Collection<SolicitudBeca> solicitudBecaCollection) {
+        this.solicitudBecaCollection = solicitudBecaCollection;
     }
     
 }
