@@ -24,6 +24,7 @@ import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1163,19 +1164,20 @@ public class CitasBean implements Serializable{
         }
     }
     
-    private boolean valiDatoProgVisiUsua(){
+    private boolean valiDatoProgVisiUsua() throws ParseException{
         boolean vali = false;
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         if((horaSeleCita != null || ignoHoraDisp) && fechSoliCita!= null && objeCita.getCodiUbic() != null){
             int diaHoraDisp = (horaSeleCita == null)? 0 : getDay(this.horaSeleCita.getDiaHoraDisp());
             int diaExceHoraDisp = this.fechSoliCita.getDay();
-            DateFormat formatter = new SimpleDateFormat("hh:mm a");
             if(diaHoraDisp == diaExceHoraDisp || ignoHoraDisp){
                 if(listVisiTemp.size() > 0 || listVisiVisiTemp.size() > 0){
-                    if(!this.fechSoliCita.before(new Date())){
+                    DateFormat formatter = new SimpleDateFormat("hh:mm a");
+                    if((this.fechSoliCita2.after(this.fechSoliCita))||(this.fechSoliCita2.equals(this.fechSoliCita)&&formatter.parse(this.FechFina).after(formatter.parse(this.FechInic)))){
                         vali = true;
-                    }else{
-                        ctx.execute("setMessage('MESS_INFO', 'Atención', 'Esta fecha ya pasó, debe solicitar con anticipación');");
+                    }
+                    else{
+                        ctx.execute("setMessage('MESS_INFO', 'Atención', 'Fecha Final no debe ser antes de la Inicial');");
                     }
                 }else{
                     ctx.execute("setMessage('MESS_INFO', 'Atención', 'Ningun Visitante Agregado a la Cita');");
