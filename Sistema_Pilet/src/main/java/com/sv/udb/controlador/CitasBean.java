@@ -494,7 +494,7 @@ public class CitasBean implements Serializable{
             consListHoraDispProf(objeCita.getCodiUsua());
             this.nombProf = new WebServicesBean().consEmplPorCodi(String.valueOf(objeCita.getCodiUsua())).getNomb();
             estaCita();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada"+ objeCita.getDescCita()+"')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada')");
         }
         catch(Exception ex)
         {
