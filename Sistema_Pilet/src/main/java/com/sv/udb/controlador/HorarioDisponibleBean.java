@@ -48,6 +48,7 @@ public class HorarioDisponibleBean implements Serializable{
     private boolean guardar;
     
     public List<Horariodisponible> getListHoraDispTodo() {
+        consTodo();
         return listHoraDispTodo;
     }
 
@@ -64,6 +65,7 @@ public class HorarioDisponibleBean implements Serializable{
     }
 
     public List<Horariodisponible> getListHoraDisp() {
+        consPorUsua();
         return listHoraDisp;
     }
 
@@ -75,10 +77,6 @@ public class HorarioDisponibleBean implements Serializable{
     public void init()
     {
         this.limpForm();
-        this.consPorUsua();
-        this.consTodo();
-        consTodo();
-        consPorUsua();
     }
     //Limpiar el formulario
     public void limpForm()
@@ -92,7 +90,8 @@ public class HorarioDisponibleBean implements Serializable{
     {
         try
         {
-            this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
+            this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(new LoginBean().getObjeWSconsEmplByAcce().getCodi());
+            if(listHoraDisp == null)listHoraDisp = new ArrayList<Horariodisponible>();
         }
         catch(Exception ex)
         {
@@ -146,6 +145,7 @@ public class HorarioDisponibleBean implements Serializable{
                 FCDEHoraDisp.create(this.objeHoraDisp);
                 //logger.info("Se ha guardado un horario: " + this.objeHoraDisp.getDiaHoraDisp() + " " + this.objeHoraDisp.getHoraInicHoraDisp() + " " + this.objeHoraDisp.getAnioHoraDisp() );
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                if(this.listHoraDisp.isEmpty()) this.listHoraDisp = new ArrayList<Horariodisponible>();
                 this.listHoraDisp.add(objeHoraDisp);
             }
         }

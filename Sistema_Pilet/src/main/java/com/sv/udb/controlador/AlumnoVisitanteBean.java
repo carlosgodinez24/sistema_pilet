@@ -276,7 +276,8 @@ public class AlumnoVisitanteBean implements Serializable{
     public void asigAlumVisi(){
         try{
             RequestContext ctx = RequestContext.getCurrentInstance();
-            objeAlumVisi.setCarnAlum(String.valueOf(new LoginBean().getObjeUsua().getAcceUsua()));
+            System.out.println("ACCE CARNET ");
+            objeAlumVisi.setCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
             //System.out.println("CODIGO VISI: "+objeVisi.getCodiVisi()+" NOMBRE VISI: "+objeVisi.getNombVisi());
             objeAlumVisi.setCodiVisi(objeVisi);
             objeAlumVisi.setEstaAlumVisi(1);

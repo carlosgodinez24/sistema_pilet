@@ -143,7 +143,7 @@ public class WebServicesBean implements Serializable {
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
             resp = response.readEntity(UsuariosPojo.class);//La respuesta de captura en un pojo que esta en el paquete utils
-            if(!resp.getTipo().equals("alum")){
+            if(!resp.getTipo().equals("alum") && !resp.getTipo().equals(null)){
                 new LoginBean().setObjeWSconsEmplByAcce(consEmplByUser(acce));
             }
         }
