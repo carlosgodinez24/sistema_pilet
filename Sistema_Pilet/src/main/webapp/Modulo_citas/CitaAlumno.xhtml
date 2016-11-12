@@ -95,6 +95,10 @@ and open the template in the editor.
                                    <f:facet name="header">Motivo ó Descripción</f:facet>
                                    <h:outputText value="#{fila.descCita}"/>   
                                </h:column>
+                               <h:column pt:data-sortable="true" pt:data-field="desc">
+                                    <f:facet name="header">Ultimo Cambio </f:facet>
+                                    <h:outputText value="#{citasBean.objeCambCitaDepe.motiCambCita}"/>
+                               </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="esta">
                                    <f:facet name="header">Estado</f:facet>
                                    <h:panelGroup class="label label-info" rendered="#{fila.estaCita eq '1'}">
@@ -204,6 +208,10 @@ and open the template in the editor.
                                                 <h:commandLink id="btonSoliCance" class="btn btn-danger" rendered="#{citasBean.reprogramar|| (citasBean.objeCita.estaCita eq '4')}">
                                                     <p:ajax listener="#{citasBean.soliCambCita(2)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
                                                     <i class="fa fa-trash-o"/> Solicitar Cancelación
+                                                </h:commandLink>
+                                                <h:commandLink id="btonReSoliCance" class="btn btn-danger" rendered="#{citasBean.objeCita.estaCita eq '5'}">
+                                                    <p:ajax listener="#{citasBean.soliCambCita(2)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
+                                                    <i class="fa fa-trash-o"/> Cambiar Motivo de cancelación
                                                 </h:commandLink>
                                             </div>
                                         </div>
