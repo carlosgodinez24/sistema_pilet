@@ -78,11 +78,20 @@ public class TipoTipoDonacionBean implements Serializable {
         try
         {
             this.objeTipo.setEstaDona(1);
-            FCDETipoDona.create(this.objeTipo);
+            if(this.objeTipo.getRecaTipoDona()==null ||this.objeTipo.getRecaTipoDona().equals("") )
+            {
+                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Elige un tipo de doanción')");
+            
+            }
+            else
+            {
+                FCDETipoDona.create(this.objeTipo);
             this.listTipo.add(this.objeTipo);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Tipo Documento Guardado");
+            
+            }    
         }
         catch(Exception ex)
         {
