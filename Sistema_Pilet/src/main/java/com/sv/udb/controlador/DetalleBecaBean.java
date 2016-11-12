@@ -8,6 +8,9 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.DetalleBeca;
 import com.sv.udb.ejb.DetalleBecaFacadeLocal;
+import com.sv.udb.ejb.TipoBecaFacadeLocal;
+import com.sv.udb.modelo.SolicitudBeca;
+import com.sv.udb.modelo.TipoBeca;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -27,6 +30,8 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class DetalleBecaBean implements Serializable{
 
+    @EJB
+    private TipoBecaFacadeLocal FCDETipoBeca;
     @EJB
     private DetalleBecaFacadeLocal FCDEDetaBeca;
     private DetalleBeca objeDetaBeca;
@@ -58,6 +63,30 @@ public class DetalleBecaBean implements Serializable{
         this.guardar = guardar;
     }
     
+    
+    //Manejo de combobox
+    private SolicitudBeca objeCombPadr;
+    private List<TipoBeca> listTipoBeca;
+
+    public SolicitudBeca getObjeCombPadr() {
+        return objeCombPadr;
+    }
+
+    public void setObjeCombPadr(SolicitudBeca objeCombPadr) {
+        this.objeCombPadr = objeCombPadr;
+    }
+
+    public List<TipoBeca> getListTipoBeca() {
+        return listTipoBeca;
+    }
+
+    public void setListTipoBeca(List<TipoBeca> listTipoBeca) {
+        this.listTipoBeca = listTipoBeca;
+    }
+    
+    public void onAlumBecaSelect(){
+        
+    }
     
     /**
      * Creates a new instance of DetalleBecaBean
