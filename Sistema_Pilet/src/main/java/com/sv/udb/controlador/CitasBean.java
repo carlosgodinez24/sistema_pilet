@@ -493,13 +493,13 @@ public class CitasBean implements Serializable{
             alumVisiSelec= listVisiTemp.get(0);
             consListHoraDispProf(objeCita.getCodiUsua());
             this.nombProf = new WebServicesBean().consEmplPorCodi(String.valueOf(objeCita.getCodiUsua())).getNomb();
+            estaCita();
             //si la cita involucra otro alumno, no se podrá solicitar reprogramación
             List<Visitantecita> listVisiCitaTemp = FCDEVisiCita.findByCodiCita(objeCita);
             for(Visitantecita obje: listVisiCitaTemp){
                 if(!obje.getCarnAlum().equals(String.valueOf(logiBean.getObjeUsua().getAcceUsua())))reprogramar = false;
             }
-            estaCita();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada"+ objeCita.getDescCita()+"')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Consultada')");
         }
         catch(Exception ex)
         {
@@ -541,7 +541,7 @@ public class CitasBean implements Serializable{
             objeCambCita.setHoraInicCitaNuev(this.getHoraSeleCita().getHoraInicHoraDisp());
             objeCambCita.setHoraFinCitaNuev(this.getHoraSeleCita().getHoraFinaHoraDisp());
             objeCambCita.setMotiCambCita(this.motivo);
-            objeCambCita.setEstaCambCita(0);
+            objeCambCita.setEstaCambCita(objeCita.getEstaCita());
             FCDECambCita.create(objeCambCita);
             objeVisiCita.setCodiCita(this.objeCita);
             objeVisiCita.setCodiVisi(alumVisiSelec.getCodiVisi());
@@ -550,8 +550,59 @@ public class CitasBean implements Serializable{
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Se ha solicitado la cita, espere por la respuesta.')");
             this.limpForm();
         }
+        
     }
-    
+    //solicitar Reprogramación(1), Solicitar Cancelación(2)
+    public void soliCambCita(int acci){
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        
+        try
+        {
+            if(valiDatoCitaVisi() || acci == 2){
+                switch(acci){
+                    case 1:
+                        objeCambCita.setFechInicCitaNuev(fechSoliCita);
+                        objeCambCita.setFechFinCitaNuev(fechSoliCita);
+                        DateFormat df = new SimpleDateFormat("K:mm a");
+                        objeCambCita.setHoraCambCita(df.format(new Date()));
+                        objeCambCita.setHoraInicCitaNuev(horaSeleCita.getHoraInicHoraDisp());
+                        objeCambCita.setHoraFinCitaNuev(horaSeleCita.getHoraFinaHoraDisp());
+                    break;
+                    case 2:
+                        objeCita.setEstaCita(5);
+                    break;
+                }
+                listCitaAlum.remove(objeCita);
+
+                objeCambCita.setCodiCita(objeCita);
+                objeCambCita.setMotiCambCita(motivo);
+                objeCambCita.setEstaCambCita(objeCita.getEstaCita());
+                objeCambCita.setFechCambCita(new Date());
+                DateFormat df = new SimpleDateFormat("K:mm a");
+                objeCambCita.setHoraCambCita(df.format(new Date()));
+                FCDECita.edit(objeCita);
+                FCDECambCita.create(objeCambCita);
+
+                listCitaAlum.add(objeCita);
+
+                switch(acci){
+                    case 1:
+                        ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reprogramación Solicitada'); $('#ModaFormRegi').modal('hide');");
+                        this.limpForm();
+                    break;
+                    case 2:
+                        ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cancelación Solicitada');");
+                    break;
+                }
+                estaCita();
+            }
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al realizar la acción')");
+            ex.printStackTrace();
+        }
+    }
     private int getDay(String dia){
         int ndia = 0;
         String dias[] = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};
@@ -560,29 +611,33 @@ public class CitasBean implements Serializable{
         }
         return ndia;
     }
-    
+    //1 solicitar, 2, soli repro, 3 
     private boolean valiDatoCitaVisi(){
         boolean val = false;
         RequestContext ctx = RequestContext.getCurrentInstance();
-            int diaHoraDisp = getDay(this.horaSeleCita.getDiaHoraDisp());
-            int diaExceHoraDisp = this.fechSoliCita.getDay();
-            if(diaHoraDisp == diaExceHoraDisp){
-                if(this.fechSoliCita.after(new Date()))
-                {
-                    if(FCDEExceHoraDisp.findByDispHora(horaSeleCita, fechSoliCita)){
-                        val = true;
+            if(horaSeleCita!= null  && horaSeleCita != null){
+                int diaHoraDisp = getDay(this.horaSeleCita.getDiaHoraDisp());
+                int diaExceHoraDisp = this.fechSoliCita.getDay();
+                if(diaHoraDisp == diaExceHoraDisp){
+                    if(this.fechSoliCita.after(new Date()))
+                    {
+                        if(FCDEExceHoraDisp.findByDispHora(horaSeleCita, fechSoliCita)){
+                            val = true;
+                        }
+                        else
+                        {
+                            ctx.execute("setMessage('MESS_INFO', 'Atención', 'El Empleado Marco una Excepción para este día');");
+                        }
                     }
                     else
                     {
-                        ctx.execute("setMessage('MESS_INFO', 'Atención', 'El Empleado Marco una Excepción para este día');");
+                        ctx.execute("setMessage('MESS_INFO', 'Atención', 'Fecha ya ha pasado');");
                     }
-                }
-                else
-                {
-                    ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Fecha ya ha pasado');");
+                }else{
+                    ctx.execute("setMessage('MESS_INFO', 'Atención', 'Fecha Inválida para el Horario Seleccionado');");
                 }
             }else{
-                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Fecha Inválida para el Horario Seleccionado');");
+                ctx.execute("setMessage('MESS_INFO', 'Atención', 'No se ha seleccionado Fecha ú Horario Disponible');");
             }
         return val;
     }
@@ -738,6 +793,18 @@ public class CitasBean implements Serializable{
             case 3:
                 this.reprogramar = true;
                 this.confirmar = false;
+                this.programar = false;
+            break;
+            //cuando se solicitó una reprogramación
+            case 4:
+                this.reprogramar = false;
+                this.confirmar = true;
+                this.programar = false;
+            break;
+            //cuando se solicitó una cancelación
+            case 5:
+                this.reprogramar = false;
+                this.confirmar = true;
                 this.programar = false;
             break;
         }
@@ -1026,12 +1093,18 @@ public class CitasBean implements Serializable{
         {
             switch(acci){
                 case 1:
-                    objeCita.setEstaCita(2);
+                    //confirmar cancelación
+                    if(objeCita.getEstaCita() == 5){
+                        objeCita.setEstaCita(0);
+                    }else{
+                        //confirmar reprogramación, confirmar cita etc...
+                        objeCita.setEstaCita(2);
+                    }
                 break;
                 case 2:
                     objeCita.setEstaCita(3);
                 break;
-                case 3:{
+                case 3:
                     objeCambCita.setFechInicCitaNuev(fechSoliCita);
                     objeCambCita.setFechFinCitaNuev(fechSoliCita);
                     DateFormat df = new SimpleDateFormat("K:mm:a");
@@ -1044,7 +1117,7 @@ public class CitasBean implements Serializable{
                         objeCambCita.setHoraFinCitaNuev(horaSeleCita.getHoraFinaHoraDisp());
                     }
                     objeCita.setEstaCita(2);
-                }
+                break;
             }
             if(padre){
                 listCitaAlumUsua.remove(objeCita);
@@ -1053,17 +1126,19 @@ public class CitasBean implements Serializable{
             }
             objeCambCita.setCodiCita(objeCita);
             objeCambCita.setMotiCambCita(motivo);
-            objeCambCita.setEstaCambCita(1);
+            objeCambCita.setEstaCambCita(objeCita.getEstaCita());
             objeCambCita.setFechCambCita(new Date());
             DateFormat df = new SimpleDateFormat("K:mm:a");
             objeCambCita.setHoraCambCita(df.format(new Date()));
             FCDECita.edit(objeCita);
             FCDECambCita.create(objeCambCita);
             objeCambCita.setCodiCita(objeCita);
-            if(padre){
-                listCitaAlumUsua.add(objeCita);
-            }else{
-                listCitaVisiUsua.add(objeCita);
+            if(objeCita.getEstaCita() != 0){
+                if(padre){
+                    listCitaAlumUsua.add(objeCita);
+                }else{
+                    listCitaVisiUsua.add(objeCita);
+                }
             }
             switch(acci){
                 case 1:
@@ -1128,7 +1203,7 @@ public class CitasBean implements Serializable{
                 FCDECita.create(objeCita);
 
                 objeCambCita.setCodiCita(objeCita);
-                objeCambCita.setEstaCambCita(1);
+                objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                 objeCambCita.setFechCambCita(new Date());
 
                 objeCambCita.setFechInicCitaNuev(fechSoliCita);
@@ -1142,7 +1217,7 @@ public class CitasBean implements Serializable{
                     objeCambCita.setHoraInicCitaNuev(horaSeleCita.getHoraInicHoraDisp());
                     objeCambCita.setHoraFinCitaNuev(horaSeleCita.getHoraFinaHoraDisp());
                 }
-                objeCambCita.setEstaCambCita(1);
+                objeCambCita.setEstaCambCita(objeCita.getEstaCita());
 
                 //crear el objeto cambio Cita
                 FCDECambCita.create(objeCambCita);
@@ -1317,7 +1392,7 @@ public class CitasBean implements Serializable{
                 FCDECita.create(objeCita);
 
                 objeCambCita.setCodiCita(objeCita);
-                objeCambCita.setEstaCambCita(1);
+                objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                 objeCambCita.setFechCambCita(new Date());
 
                 objeCambCita.setFechInicCitaNuev(fechSoliCita);
@@ -1326,7 +1401,7 @@ public class CitasBean implements Serializable{
                 objeCambCita.setHoraCambCita(df.format(new Date()));
                 objeCambCita.setHoraInicCitaNuev(FechInic);
                 objeCambCita.setHoraFinCitaNuev(FechFina);
-                objeCambCita.setEstaCambCita(1);
+                objeCambCita.setEstaCambCita(objeCita.getEstaCita());
 
                 //crear el objeto cambio Cita
                 FCDECambCita.create(objeCambCita);
@@ -1371,7 +1446,7 @@ public class CitasBean implements Serializable{
             objeCambCita.setHoraFinCitaNuev(FechFina);
             objeCambCita.setCodiCita(objeCita);
             objeCambCita.setMotiCambCita(motivo);
-            objeCambCita.setEstaCambCita(1);
+            objeCambCita.setEstaCambCita(objeCita.getEstaCita());
             FCDECita.edit(objeCita);
             FCDECambCita.create(objeCambCita);
             listVisiUsua.add(objeCita);

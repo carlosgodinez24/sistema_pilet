@@ -121,6 +121,10 @@ and open the template in the editor.
                                        <i class="fa fa-calendar-o"/> Programada</h:panelGroup> 
                                    <h:panelGroup class="label label-danger" rendered="#{fila.estaCita eq '3'}">
                                        <i class="fa fa-calendar-o"/> Rechazada</h:panelGroup>
+                                   <h:panelGroup class="label label-warning" rendered="#{fila.estaCita eq '4'}">
+                                       <i class="fa fa-calendar-o"/> Reprogramación Solicitada</h:panelGroup>
+                                   <h:panelGroup class="label label-danger" rendered="#{fila.estaCita eq '5'}">
+                                       <i class="fa fa-calendar-o"/> Cancelación Solicitada</h:panelGroup>
                                </h:column>
                             </h:dataTable>
                             </h:panelGroup>
@@ -176,7 +180,7 @@ and open the template in the editor.
                                                 </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="alum">
                                                     <f:facet name="header">Alumno</f:facet>
-                                                    <h:outputText value="#{citasBean.consObjeAlumno(fila.carnAlum).nomb} #{citasBean.consObjeAlumno(fila.carnAlum).apel}"/>   
+                                                    <h:outputText value="#{citasBean.consObjeAlumno(fila.carnAlum).nomb}"/>   
                                                 </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="paren">
                                                     <f:facet name="header">Parentesco</f:facet>
