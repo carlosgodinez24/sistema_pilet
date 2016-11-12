@@ -50,11 +50,24 @@ and open the template in the editor.
                                         
                                         <p:remoteCommand name="consObje" actionListener="#{citasBean.consObjeVisiCitaRecep()}" update=":FormRegi" 
                                                          oncomplete="$('#ModaFormRegi').modal('show');" global="true"/>
-                                        <h:commandLink id="btonNuev" class="btn btn-success">
-                                            <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegi" global="true" 
-                                                    oncomplete="$('#ModaFormRegi').modal('show');"/>
-                                            <i class="fa fa-plus"/> Registrar Visita
-                                        </h:commandLink>
+                                        
+                                        <div class="btn-group">
+                                            <h:commandLink id="btonRegiVisi" class="btn btn-success">
+                                                <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegiVisi" global="true" 
+                                                        oncomplete="$('#ModaFormRegiVisi').modal('show');"/>
+                                                <i class="fa fa-user"/> Registrar Visitante
+                                            </h:commandLink>
+                                            <h:commandLink id="btonSoliCita" class="btn btn-default">
+                                                <p:ajax listener="#{citasBean.limpForm()}" update=":FormSoliCita" global="true" 
+                                                        oncomplete="$('#ModaFormSoliCita').modal('show');"/>
+                                                <i class="fa fa-users"/> Solicitar Cita
+                                            </h:commandLink>  
+                                            <h:commandLink id="btonRegiVisiCita" class="btn btn-success">
+                                                <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegiVisiCita" global="true" 
+                                                        oncomplete="$('#ModaFormRegiVisiCita').modal('show');"/>
+                                                <i class="fa fa-calendar-o"/> Registrar Visita
+                                            </h:commandLink>  
+                                        </div>
                                     </h:form>
                                 </div>
                                 <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{citasBean.listVisiCitaRecep}"
@@ -176,6 +189,81 @@ and open the template in the editor.
                                     <h:panelGroup rendered="#{citasBean.objeVisiCita.estaVisi eq '2'}">
                                         <h3>Esta Cita o Visita ha terminado.</h3>
                                     </h:panelGroup>
+                                </div>
+                                <div class="modal-footer">
+                                        <div class="input-group-btn right" style="padding-top: 5px;">
+                                            <div class="btn-group">
+                                            </div>
+                                        </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Modal -->
+                <div id="ModaFormRegiVisi" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <h:form id="FormRegiVisi" class="form-horizontal">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                    <h4 class="modal-title">Registrar Visitante</h4>
+                                </div>
+                                <div class="modal-body" style="padding-top: 2px;">
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                        <div class="input-group-btn right" style="padding-top: 5px;">
+                                            <div class="btn-group">
+                                            </div>
+                                        </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Modal -->
+                <div id="ModaFormSoliCita" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <h:form id="FormSoliCita" class="form-horizontal">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                    <h4 class="modal-title">Solicitar Cita</h4>
+                                </div>
+                                <div class="modal-body" style="padding-top: 2px;">
+                                    
+                                </div>
+                                <div class="modal-footer">
+                                        <div class="input-group-btn right" style="padding-top: 5px;">
+                                            <div class="btn-group">
+                                            </div>
+                                        </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Modal -->
+                <div id="ModaFormRegiVisiCita" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <h:form id="FormRegiVisiCita" class="form-horizontal">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                    <h4 class="modal-title">Registrar Visita</h4>
+                                </div>
+                                <div class="modal-body" style="padding-top: 2px;">
+                                    
                                 </div>
                                 <div class="modal-footer">
                                         <div class="input-group-btn right" style="padding-top: 5px;">

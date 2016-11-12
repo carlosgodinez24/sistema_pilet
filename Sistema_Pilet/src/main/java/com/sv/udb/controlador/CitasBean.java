@@ -522,7 +522,7 @@ public class CitasBean implements Serializable{
     public void soliCitaVisi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        if(valiDatoCitaVisi())
+        if(valiDatoCitaVisi(1))
         {
             this.objeCita.setTipoCita(1);
             this.objeCita.setTipoVisi(2);
@@ -558,7 +558,7 @@ public class CitasBean implements Serializable{
         
         try
         {
-            if(valiDatoCitaVisi() || acci == 2){
+            if(valiDatoCitaVisi(acci) || acci == 2){
                 switch(acci){
                     case 1:
                         objeCambCita.setFechInicCitaNuev(fechSoliCita);
@@ -612,7 +612,7 @@ public class CitasBean implements Serializable{
         return ndia;
     }
     //1 solicitar, 2, soli repro, 3 
-    private boolean valiDatoCitaVisi(){
+    private boolean valiDatoCitaVisi(int acci){
         boolean val = false;
         RequestContext ctx = RequestContext.getCurrentInstance();
             if(horaSeleCita!= null  && horaSeleCita != null){
@@ -637,7 +637,9 @@ public class CitasBean implements Serializable{
                     ctx.execute("setMessage('MESS_INFO', 'Atención', 'Fecha Inválida para el Horario Seleccionado');");
                 }
             }else{
-                ctx.execute("setMessage('MESS_INFO', 'Atención', 'No se ha seleccionado Fecha ú Horario Disponible');");
+                if(acci != 2){
+                    ctx.execute("setMessage('MESS_INFO', 'Atención', 'No se ha seleccionado Fecha ú Horario Disponible');");
+                }
             }
         return val;
     }
