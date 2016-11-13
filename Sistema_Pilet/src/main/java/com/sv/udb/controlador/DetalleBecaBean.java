@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.DetalleBeca;
 import com.sv.udb.ejb.DetalleBecaFacadeLocal;
 import com.sv.udb.ejb.TipoBecaFacadeLocal;
+import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoBeca;
 import java.io.Serializable;
@@ -102,6 +103,16 @@ public class DetalleBecaBean implements Serializable{
         this.objeDetaBeca = new DetalleBeca();
         this.guardar = true;
         this.consTodo();
+        
+        if( FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean") != null)
+        {
+            BecaSoliBean asd = (BecaSoliBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean");
+           Beca a = new Beca();
+         
+            this.objeDetaBeca.setCodiBeca(asd.getObjeBeca());
+            System.out.println(this.objeDetaBeca.getCodiBeca().getCodiBeca());
+        }
+         
     }
     
     public void limpForm()

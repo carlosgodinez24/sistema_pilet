@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.ApplicationException;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -154,7 +155,6 @@ public class BecaSoliBean implements Serializable {
         this.empresa = false;
         this.filt = "";
     }
-    
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -197,6 +197,7 @@ public class BecaSoliBean implements Serializable {
         }
         catch(Exception ex)
         {
+          
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             log.error(getRootCause(ex).getMessage());
         }
