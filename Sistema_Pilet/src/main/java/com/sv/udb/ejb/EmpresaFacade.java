@@ -5,10 +5,13 @@
  */
 package com.sv.udb.ejb;
 
+import com.sv.udb.modelo.Donacion;
 import com.sv.udb.modelo.Empresa;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +30,15 @@ public class EmpresaFacade extends AbstractFacade<Empresa> implements EmpresaFac
 
     public EmpresaFacade() {
         super(Empresa.class);
+    }
+    
+    @Override
+    public List<Empresa> findAllActive()  {        
+        String consulta = "select * from empresa where empresa.esta_empr = 1";
+        Query q = getEntityManager().createNativeQuery(consulta, Empresa.class);         
+                  
+        List resu = q.getResultList(); 
+        return resu.isEmpty() ? null : resu;
     }
     
 }

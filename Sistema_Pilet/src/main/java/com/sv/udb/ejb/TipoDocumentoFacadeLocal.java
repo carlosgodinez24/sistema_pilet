@@ -25,6 +25,9 @@ public interface TipoDocumentoFacadeLocal {
     TipoDocumento find(Object id);
 
     List<TipoDocumento> findAll();
+    
+    List<TipoDocumento> findAllActive();
+
 
     List<TipoDocumento> findRange(int[] range);
 

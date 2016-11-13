@@ -130,7 +130,7 @@ public class TipoBecaBean implements Serializable{
             this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
             this.objeTipo.setEstaTipoBeca(0);
             FCDETipo.edit(this.objeTipo);
-            this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+           // this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Tipo Beca Eliminado");
         }
@@ -152,7 +152,7 @@ public class TipoBecaBean implements Serializable{
     {
         try
         {
-            this.listTipo = FCDETipo.findAll();
+            this.listTipo = FCDETipo.findAllActive();
             log.info("Tipos de Becas Consultados");
         }
         catch(Exception ex)

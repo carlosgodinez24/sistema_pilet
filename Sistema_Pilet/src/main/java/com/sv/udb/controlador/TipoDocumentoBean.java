@@ -130,7 +130,7 @@ public class TipoDocumentoBean implements Serializable{
             this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
             this.objeTipo.setEstaTipoDocu(0);
             FCDETipo.edit(this.objeTipo);
-            this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+           // this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Tipo Documento Eliminado");
         }
@@ -152,7 +152,7 @@ public class TipoDocumentoBean implements Serializable{
     {
         try
         {
-            this.listTipo = FCDETipo.findAll();
+            this.listTipo = FCDETipo.findAllActive();
             log.info("Tipos de Documentos Consultados");
         }
         catch(Exception ex)

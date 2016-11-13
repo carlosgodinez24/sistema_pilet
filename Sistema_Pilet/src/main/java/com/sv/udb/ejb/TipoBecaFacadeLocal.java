@@ -25,6 +25,7 @@ public interface TipoBecaFacadeLocal {
     TipoBeca find(Object id);
 
     List<TipoBeca> findAll();
+    List<TipoBeca> findAllActive();
 
     List<TipoBeca> findRange(int[] range);
 

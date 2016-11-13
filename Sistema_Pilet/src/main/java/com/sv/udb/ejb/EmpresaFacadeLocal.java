@@ -25,6 +25,9 @@ public interface EmpresaFacadeLocal {
     Empresa find(Object id);
 
     List<Empresa> findAll();
+    
+    List<Empresa> findAllActive();
+
 
     List<Empresa> findRange(int[] range);
 
