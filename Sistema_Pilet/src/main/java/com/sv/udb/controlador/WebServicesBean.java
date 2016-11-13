@@ -13,6 +13,7 @@ import com.sv.udb.utils.pojos.WSconsEmplByUser;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.util.List;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
@@ -220,7 +221,7 @@ public class WebServicesBean implements Serializable {
         this.showBusc = !this.showBusc;
     }
     
-    public void consAlumPorCrit(String nombAlum, String apelAlum, String gradAlum, String espeAlum)
+    public List<DatosAlumnos> consAlumPorCrit(String nombAlum, String apelAlum, String gradAlum, String espeAlum)
     {
         FacesContext facsCtxt = FacesContext.getCurrentInstance();
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -243,6 +244,7 @@ public class WebServicesBean implements Serializable {
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
         }
+        return this.objeWebServAlumByDoce.getResu();
     }
     
     public WSconsAlumByDoce consAlumPorDoce(String codiDoce)

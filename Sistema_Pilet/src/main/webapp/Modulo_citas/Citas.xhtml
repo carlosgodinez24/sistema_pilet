@@ -318,7 +318,9 @@ and open the template in the editor.
                                         <div class="modal-body" style="padding-top: 2px;">
                                             <br/>
                                             <h4>Seleccionar Alumno:</h4>
-                                            <h:dataTable pt:data-id="TablAlum" id="TablAlum" value="#{citasBean.listAlumnosWS}"
+                                            <ui:fragment id="FragAlumIsDoce" rendered="#{citasBean.isUsuaDoce}">
+                                            <h:panelGroup id = "gpTablAlum">
+                                                <h:dataTable pt:data-id="TablAlum" id="TablAlum" value="#{citasBean.listAlumnosWS}"
                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablAlum"
                                                     styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                     pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -343,8 +345,52 @@ and open the template in the editor.
                                                     <f:facet name="header">Epecialidad</f:facet>
                                                     <h:outputText value="#{fila.espe}"/>   
                                                 </h:column>
-
                                             </h:dataTable>
+                                            </h:panelGroup>
+                                            </ui:fragment>
+                                            
+                                            <ui:fragment id="FragAlumNoDoce" rendered="#{!citasBean.isUsuaDoce}">
+                                                <div style="width: 100%">
+                                                    <h:form style="float: right">
+                                                        <h:inputText style="float: right; width: 100%;" id="cadeText" value="#{citasBean.buscAlum}" class="form-control" />
+                                                        <br/><br/>
+                                                        <h:commandLink style="float: right; " id="btonBusc" class="btn btn-success">
+                                                            <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_TABL();" update="@form :ContRegi :gpTablAlumNoDoce"  global="true" />
+                                                            Buscar
+                                                        </h:commandLink>
+                                                        <br/><br/>
+                                                    </h:form>
+                                                </div>
+                                                
+                                                <h:panelGroup id="gpTablAlumNoDoce">
+                                                <h:dataTable pt:data-id="TablAlumNoDoce" id="TablAlumNoDoce" value="#{citasBean.listAlumnosWS}"
+                                                    var="fila" class="boottable" pt:data-toolbar="#toolTablAlumNoDoce"
+                                                    styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                    pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                    pt:data-search="false" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                    pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                    pt:data-single-select="true">                                
+                                                <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                </h:column>
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                                                    <f:facet name="header">Carnet</f:facet>
+                                                    <h:outputText value="#{fila.carn}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                                    <f:facet name="header">Nombre</f:facet>
+                                                    <h:outputText value="#{fila.nomb}"/>   
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="niv">
+                                                    <f:facet name="header">Nivel</f:facet>
+                                                    <h:outputText value="#{fila.grad}"/>   
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="espe">
+                                                    <f:facet name="header">Epecialidad</f:facet>
+                                                    <h:outputText value="#{fila.espe}"/>   
+                                                </h:column>
+                                            </h:dataTable>
+                                                    </h:panelGroup>
+                                            </ui:fragment>
                                             <hr/>
                                             <br/>
                                             <h4>Seleccionar Encargados del Alumno:</h4>

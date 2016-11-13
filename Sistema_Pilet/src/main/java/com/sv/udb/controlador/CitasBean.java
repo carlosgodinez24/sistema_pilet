@@ -111,6 +111,16 @@ public class CitasBean implements Serializable{
     private boolean LugaEven;
     private String nombProf;
     private boolean ignoExceHora;
+    private boolean isUsuaDoce;
+    private String buscAlum="";
+
+    public String getBuscAlum() {
+        return buscAlum;
+    }
+
+    public void setBuscAlum(String buscAlum) {
+        this.buscAlum = buscAlum;
+    }
     
     //Switch para formularios
     private boolean switFormCita=true;
@@ -265,6 +275,22 @@ public class CitasBean implements Serializable{
         this.programar = programar;
     }
 
+    public boolean isIsUsuaDoce() {
+        if(LoginBean.getObjeWSconsEmplByAcce().getTipo().equals("doceTecn")||LoginBean.getObjeWSconsEmplByAcce().getTipo().equals("doceAcad"))
+        {
+            this.isUsuaDoce = true;
+        }
+        else
+        {
+            this.isUsuaDoce = false;
+        }
+        return isUsuaDoce;
+    }
+
+    public void setIsUsuaDoce(boolean isUsuaDoce) {
+        this.isUsuaDoce = isUsuaDoce;
+    }
+
     
 
     public boolean isReprogramar() {
@@ -300,25 +326,19 @@ public class CitasBean implements Serializable{
 
     private void consAlumWS()
     {
-        /*
-            26 = Permitir Recibir Solicitud de Citas por parte de sus Alumnos
-            27 = Permitir Recibir Solicitud de Citas por parte de cualquier Alumno
-            28 = Recibir Citas de Visitantes
-        */
-        int permCita = 26;
-        if(permCita==26)
+        if(isUsuaDoce)
         {
             this.objeWebServAlumByDoce = new WebServicesBean().consAlumPorDoce(String.valueOf(LoginBean.getObjeWSconsEmplByAcce().getCodi()));
             this.listAlumnosWS = this.objeWebServAlumByDoce.getResu();
-        }
-        else if(permCita==27)
+        }  
+        else
         {
-            
+            System.out.println(this.buscAlum);
+            if(!(this.buscAlum.equals(null)||this.buscAlum.equals("")))
+            {
+                this.listAlumnosWS = new WebServicesBean().consAlumPorCrit(this.buscAlum, this.buscAlum, this.buscAlum, this.buscAlum);
+            }
         }
-        else if(permCita==28)
-        {
-            
-        }        
     }
 
     public boolean isIgnoHoraDisp() {
