@@ -52,7 +52,7 @@ and open the template in the editor.
                                         <p:remoteCommand name="consObjeVisi" actionListener="#{citasBean.setVisi()}" update=":paneTabl :ContRegi :paneClose" 
                                                          oncomplete="INIT_OBJE_TABL(); INIT_OBJE_MODA(); INIT_OBJE_CITA();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
-                                            <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegi :tablPart :paneClose" global="true" 
+                                            <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegi :tablPart :paneClose :paneTabl" global="true" 
                                                     oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA; INIT_OBJE_CITA(); INIT_OBJE_TABL();"/>
                                             <i class="fa fa-plus"/> Programar
                                         </h:commandLink>

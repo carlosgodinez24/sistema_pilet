@@ -77,8 +77,8 @@ public class CitaFacade extends AbstractFacade<Cita> implements CitaFacadeLocal 
         return (resu.isEmpty()) ? new ArrayList<Cita>() : resu;
     }
     @Override
-    public List<Cita> findByCarnAlum(String carnAlum) {
-        TypedQuery<Cita> q = (TypedQuery<Cita>) getEntityManager().createQuery("SELECT c FROM Cita c, Visitantecita vc where c = vc.codiCita and vc.carnAlum = :carnAlum and c.estaCita != 0");
+    public List<Cita> findByCarnAlum(String carnAlum) {//SELECT c FROM Cita c, Visitantecita vc where c = vc.codiCita and vc.carnAlum = :carnAlum and c.estaCita != 0
+        TypedQuery<Cita> q = (TypedQuery<Cita>) getEntityManager().createQuery("SELECT c FROM Cita c where c in(select vc.codiCita from Visitantecita vc where vc.carnAlum = :carnAlum) and c.estaCita != 0");
         q.setParameter("carnAlum", carnAlum);
         List resu = q.getResultList();
         return (resu.isEmpty()) ? new ArrayList<Cita>() : resu;

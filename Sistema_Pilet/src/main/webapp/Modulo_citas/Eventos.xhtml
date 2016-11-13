@@ -112,7 +112,7 @@ and open the template in the editor.
 			                                <h:outputLabel  for="luga" value="Lugar: "/>
 			                                <h:selectOneMenu id="luga" value="#{eventosBean.objeEven.codiUbic}" class="form-control select" pt:data-live-search="true">
                                                             <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                            <f:selectItems value="#{ubicacionesBean.listUbic}" var="lst" itemLabel="#{lst.nombUbic}" itemValue="#{lst}"/>
+                                                            <f:selectItems value="#{ubicacionesBean.consListUbicPorDisEven()}" var="lst" itemLabel="#{lst.nombUbic}" itemValue="#{lst}"/>
                                                             <f:converter converterId="PooConv"/>
                                                         </h:selectOneMenu>
 			                                <h:message for="luga" errorClass="field-error" />

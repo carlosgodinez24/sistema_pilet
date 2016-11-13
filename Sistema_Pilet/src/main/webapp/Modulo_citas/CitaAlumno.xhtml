@@ -49,7 +49,7 @@ and open the template in the editor.
                                                          oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
                                             <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegi" global="true" 
-                                                    oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA;"/>
+                                                    oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA();"/>
                                             <i class="fa fa-plus"/> Solicitar
                                         </h:commandLink>
                                     </h:form>
@@ -147,7 +147,7 @@ and open the template in the editor.
                                                 </h:selectOneMenu>
                                             </div>
                                         </h:panelGroup>
-                                        <h:panelGroup rendered="#{citasBean.reprogramar}">
+                                        <h:panelGroup rendered="#{citasBean.reprogramar or citasBean.objeCita.estaCita eq '4' or citasBean.objeCita.estaCita eq '5'}">
                                             <div class="input-group col-xs-12">
                                                 <h:outputLabel  for="nombProf" value="Profesor "/>
                                                 <h:inputText id="nombProf" value="#{citasBean.nombProf}" class="form-control disabled" disabled="true"/>

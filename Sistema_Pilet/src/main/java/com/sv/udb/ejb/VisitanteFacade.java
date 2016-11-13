@@ -54,7 +54,7 @@ public class VisitanteFacade extends AbstractFacade<Visitante> implements Visita
     }
     @Override
     public List<Visitante> findByCarnAlum(String carnAlum) {
-        TypedQuery<Visitante> q = (TypedQuery<Visitante>) getEntityManager().createQuery("SELECT v FROM Visitante v, Alumnovisitante ac WHERE v.codiVisi = ac.codiVisi.codiVisi and ac.carnAlum = :carnAlum AND v.estaVisi = 1");       
+        TypedQuery<Visitante> q = (TypedQuery<Visitante>) getEntityManager().createQuery("SELECT v FROM Visitante v, Alumnovisitante ac WHERE v.codiVisi = ac.codiVisi.codiVisi and ac.carnAlum = :carnAlum AND v.estaVisi = 1 and ac.estaAlumVisi = 1");       
         q.setParameter("carnAlum", carnAlum);
         List resu = q.getResultList();
         return resu.isEmpty() ? new ArrayList<Visitante>() : resu;
