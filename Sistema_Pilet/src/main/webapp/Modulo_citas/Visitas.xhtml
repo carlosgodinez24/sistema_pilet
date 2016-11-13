@@ -333,17 +333,15 @@ and open the template in the editor.
                                             <h:panelGroup rendered="#{!citasBean.isGrouVisi}">
                                                 <h4 style="">Seleccionar Visitantes:</h4>
                                             </h:panelGroup>
-                                            <div style="width: 100%">
-                                                <h:form style="float: right">
-                                                    <h:inputText style="float: right; width: 100%;" id="cadeText" value="#{visitantesBean.cadeText}" class="form-control" />
-                                                    <br/><br/>
-                                                    <h:commandLink style="float: right; " id="btonBusc" class="btn btn-success">
-                                                        <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :TablVisi"  global="true" />
-                                                        Buscar
+                                            <h:form>
+                                                <div class="cutom_search">
+                                                    <h:inputText id="cadeText" value="#{visitantesBean.cadeText}" class="form-control cutom_search_text" />
+                                                    <h:commandLink id="btonBusc" class="btn btn-success cutom_search_button">
+                                                        <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :ContRegi :TablVisi"  global="true" />
+                                                        <i class="fa fa-search"/>
                                                     </h:commandLink>
-                                                    <br/><br/>
-                                                </h:form>
-                                            </div>
+                                                </div>
+                                            </h:form>
 
                                             <h:dataTable pt:data-id="TablVisi" id="TablVisi" value="#{visitantesBean.listVisi}"
                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablVisi"

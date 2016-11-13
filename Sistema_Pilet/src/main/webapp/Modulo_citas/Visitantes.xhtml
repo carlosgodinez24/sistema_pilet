@@ -35,7 +35,7 @@ and open the template in the editor.
                         <div class="panel-heading">Tabla de Datos</div>
                         <div class="panel-body">
                             <h:panelGroup id="ContRegi">
-                                <div id="toolTablRegi" >
+                                <div id="toolTablRegi"  >
                                     <h:form>
                                         
                                         <p:remoteCommand name="consObje" actionListener="#{visitantesBean.cons()}" update=":FormRegi" 
@@ -50,18 +50,15 @@ and open the template in the editor.
                                         
                                     </h:form>
                                 </div>
-                                
-                                <div style="width: 100%">
-                                    <h:form style="float: right">
-                                        <h:inputText style="float: right; width: 100%;" id="cadeText" value="#{visitantesBean.cadeText}" class="form-control" />
-                                        <br/><br/>
-                                        <h:commandLink style="float: right; " id="btonBusc" class="btn btn-success">
+                                <h:form>
+                                    <div class="cutom_search">
+                                        <h:inputText id="cadeText" value="#{visitantesBean.cadeText}" class="form-control cutom_search_text" />
+                                        <h:commandLink id="btonBusc" class="btn btn-success cutom_search_button">
                                             <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :ContRegi"  global="true" />
-                                            Buscar
+                                            <i class="fa fa-search"/>
                                         </h:commandLink>
-                                        <br/><br/>
-                                    </h:form>
-                                </div>
+                                    </div>
+                                </h:form>
                                 
                                 <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{visitantesBean.listVisi}"
                                         var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"

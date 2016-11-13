@@ -91,3 +91,31 @@
 #notis{
     background-color: #BDBDBD;
 }
+.RegDiv{
+    margin-right: 20px;
+}
+.cutom_search{
+    width: 200px;
+    float: right;
+    margin: 10px 0px 10px 10px;
+    position: relative;
+}
+.cutom_search_text{
+    height: 35px !important;
+    width: calc(100% - 35px) !important;
+    display: inline-block !important;
+    border-radius: 5px 0px 0px 5px;
+    vertical-align: top;
+}
+.cutom_search_button{
+    width: 35px !important;
+    height: 35px !important;
+    display: inline-block !important;
+    border-radius: 0px 5px 5px 0px;
+    vertical-align: top;
+}
+@media (max-width: 600px) {
+    .cutom_search {
+      width: calc(100% - 100px);
+    }
+}
