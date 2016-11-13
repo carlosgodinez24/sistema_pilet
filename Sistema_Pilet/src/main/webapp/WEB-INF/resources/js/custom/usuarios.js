@@ -43,14 +43,4 @@ function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
     $("#FormRegi\\:role").selectpicker();
-    $(".datepicker").initDatePick();
-    $(".select").initSelePick();
-    $('.timepicker').timepicker({
-        icons: {
-                up:"fa fa-sort-desc",
-                down:"fa fa-sort-asc"
-                },
-        disableMousewheel:true/*,
-        template: 'modal'*/
-    });
 }

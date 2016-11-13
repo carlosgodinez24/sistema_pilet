@@ -29,7 +29,7 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="bootstrap-select.css"/>
         <h:outputScript library="js" name="bootstrap-select.js"/>
         <!--Plugins custom-->
-            <h:outputScript library="js" name="custom/mantenimientos.js"/>
+            <h:outputScript library="js" name="custom/usuarios.js"/>
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
@@ -134,7 +134,6 @@ and open the template in the editor.
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                         </div>
-                                        <h:inputHidden id="oldRole" value="#{usuarioRolBean.objeOldUsuaRole.codiRole.nombRole}" />
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="role" value="Rol: "/>
                                             <h:message for="role" errorClass="field-error" />
