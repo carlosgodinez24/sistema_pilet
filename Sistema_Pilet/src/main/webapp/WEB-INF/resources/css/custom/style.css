@@ -92,7 +92,7 @@
     background-color: #BDBDBD;
 }
 .RegDiv{
-    margin-right: 20px;
+    margin-right: 0px !important;
 }
 .cutom_search{
     width: 200px;
