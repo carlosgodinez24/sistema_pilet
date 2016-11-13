@@ -7,6 +7,7 @@ package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Empresa;
 import com.sv.udb.modelo.TipoBeca;
+import java.util.Arrays;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -37,6 +38,19 @@ public class TipoBecaFacade extends AbstractFacade<TipoBeca> implements TipoBeca
         Query q = getEntityManager().createNativeQuery(consulta, TipoBeca.class);         
                   
         List resu = q.getResultList(); 
+        return resu.isEmpty() ? null : resu;
+    }
+    
+    @Override
+    public List<TipoBeca> findTipos(Object id)  {        
+        String consulta = "SELECT t.codi_tipo_beca, t.nomb_tipo_beca, t.desc_tipo_beca, t.esta_tipo_beca, t.tipo_tipo_beca, t.nivel_tipo_beca "
+                + "FROM tipo_beca t INNER JOIN grado ON grado.nivel_grad = t.nivel_tipo_beca "
+                + "WHERE grado.nivel_grad = ?1 AND grado.esta_grad = 1";
+        Query q = getEntityManager().createNativeQuery(consulta, TipoBeca.class);           
+        //Query q = getEntityManager().createNativeQuery("select * from detalle_beca", DetalleBeca.class);           
+        q.setParameter(1, id);
+        List resu = q.getResultList();
+        System.out.println(Arrays.toString(resu.toArray()));
         return resu.isEmpty() ? null : resu;
     }
 }

@@ -84,9 +84,11 @@ public class DetalleBecaBean implements Serializable{
         this.listTipoBeca = listTipoBeca;
     }
     
+   
     public void onAlumBecaSelect(){
-        
+        listTipoBeca = FCDETipoBeca.findTipos(objeCombPadr.getCodiGrad().getNivelGrad());
     }
+
     
     /**
      * Creates a new instance of DetalleBecaBean
