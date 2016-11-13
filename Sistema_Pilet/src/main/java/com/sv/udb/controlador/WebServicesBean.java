@@ -4,14 +4,11 @@ import com.sv.udb.utils.ConsultarCodiEmpleadoLogin;
 import com.sv.udb.utils.UsuariosPojo;
 import com.sv.udb.utils.pojos.DatosUsuarios;
 import com.sv.udb.utils.pojos.WSconsUsua;
-import com.sv.udb.controlador.LoginBean;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
+import javax.faces.view.ViewScoped;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -27,23 +24,23 @@ import org.primefaces.context.RequestContext;
  * @author Adonay
  */
 @Named(value = "webServicesBean")
-@Dependent
+@ViewScoped
 public class WebServicesBean implements Serializable {
     
     private static final long serialVersionUID = 1L;    
-    private String filt; //Filotro de búsqueda
-    private String filtApel;
-    private String filtTipo;
+    private String filtNomb = null; //Filtro de búsqueda
+    private String filtApel = null;
+    private String filtTipo = null;
     private WSconsUsua objeWebServ;
     //Lógica slider
     private boolean showBusc = false;
 
-    public String getFilt() {
-        return filt;
+    public String getFiltNomb() {
+        return filtNomb;
     }
 
-    public void setFilt(String filt) {
-        this.filt = filt;
+    public void setFiltNomb(String filtNomb) {
+        this.filtNomb = filtNomb;
     }
 
     public String getFiltApel() {
@@ -85,11 +82,14 @@ public class WebServicesBean implements Serializable {
     public UsuariosPojo consLogi(String acce, String cont)
     {
         UsuariosPojo resp;
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         Client client = ClientBuilder.newClient();
-        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consLogi/%s/%s", acce,getSHA256Hash(cont));
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
+        url = String.format("%s/%s/%s/%s", url, "consLogi", acce, getHash(cont));
+        System.out.println(url);
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
-        request.accept(MediaType.APPLICATION_JSON);
         Response response = request.get();
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
@@ -105,7 +105,7 @@ public class WebServicesBean implements Serializable {
         return resp;
     }
     
-    private String getSHA256Hash(String data) {
+    private String getHash(String data) {
         String result = null;
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -123,7 +123,7 @@ public class WebServicesBean implements Serializable {
     
     public void nuev()
     {
-        
+        this.objeWebServ = new WSconsUsua();
     }
     
     public void abri()
@@ -133,7 +133,7 @@ public class WebServicesBean implements Serializable {
     
     public void limpForm()
     {
-        
+        this.objeWebServ = new WSconsUsua();
     }
     
     public void consWebServHabiUsua()
@@ -142,7 +142,7 @@ public class WebServicesBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         Client client = ClientBuilder.newClient();
         String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
-        url = String.format("%s/%s/%s/%s/%s", url, "consUsua", this.filt, "P", "alum");
+        url = String.format("%s/%s/%s/%s/%s", url, "consUsua", this.filtNomb.equals("") ? null : this.filtNomb, this.filtApel.equals("") ? null : this.filtApel, this.filtTipo.equals("") ? null : this.filtTipo);
         System.out.println(url);
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
@@ -170,4 +170,5 @@ public class WebServicesBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         this.showBusc = !this.showBusc;
     }
+    
 }
