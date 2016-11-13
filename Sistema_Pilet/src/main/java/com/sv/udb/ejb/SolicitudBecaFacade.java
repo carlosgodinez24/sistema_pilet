@@ -38,4 +38,10 @@ public class SolicitudBecaFacade extends AbstractFacade<SolicitudBeca> implement
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (SolicitudBeca)resu.get(0);
     }
+    public SolicitudBeca findCarnet(String algo)
+    {
+        Query q = getEntityManager().createNativeQuery("select * from solicitud_beca where solicitud_beca.carn_alum ="+algo, SolicitudBeca.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (SolicitudBeca)resu.get(0);
+    }
 }

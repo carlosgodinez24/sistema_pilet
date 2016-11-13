@@ -23,6 +23,8 @@ public interface SolicitudBecaFacadeLocal {
     void remove(SolicitudBeca solicitudBeca);
 
     SolicitudBeca find(Object id);
+    
+    SolicitudBeca findCarnet(String id);
 
     List<SolicitudBeca> findAll();
 

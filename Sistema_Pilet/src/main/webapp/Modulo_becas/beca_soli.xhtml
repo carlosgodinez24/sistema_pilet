@@ -62,6 +62,11 @@ and open the template in the editor.
                 border-left: 6px solid grey;
                 background-color: white;
             }  
+            .btonTabl
+            {
+                
+                padding-left: 2cm;
+            }
         </style>
             <div class="row">
                 <h:panelGroup id="esto">
@@ -79,11 +84,14 @@ and open the template in the editor.
                                                                  oncomplete="$('#ModaForm').modal('show');" global="true"/>
                                                 <p:remoteCommand name="elimObje" actionListener="#{becaSoliBean.desa()}" update=":FormRegi :ContRegi" 
                                                                  oncomplete="INIT_OBJE();" global="true"/>
+                                                
+                                  
                                                 <h:commandLink id="btonNuev" class="btn btn-success">
                                                     <p:ajax listener="#{becaSoliBean.limpForm()}" update=":FormRegi" global="true" 
                                                             oncomplete="$('#ModaForm').modal('show');"/>
                                                     <i class="fa fa-plus"/> Nuevo
                                                 </h:commandLink>
+                                                
                                                 <h:commandLink id="btonTabl" class="btn btn-primary"><!--se trabo -_- xD -->
                                                     <p:ajax listener="#{becaSoliBean.hist()}" process="@form" update="@form :esto" oncomplete="INIT_OBJE();" />
                                                 <i class="fa fa-edit"/> Historial
@@ -250,32 +258,39 @@ and open the template in the editor.
                                         </fieldset>
                                     </ui:fragment>
                                     <ui:fragment id="FragForm" rendered="#{!becaSoliBean.beca}">
-                                        <fieldset class="col-md-12">
+                                        <fieldset>
                                             <h:inputHidden id="codiSoli" value="#{becaSoliBean.objeSoli.codiSoliBeca}" />
                                             <h:inputHidden id="codiBeca" value="#{becaSoliBean.objeBeca.codiBeca}" />
-                                            <div class="form-group input-group-xs col-md-10">
-                                                <h:outputLabel  for="Empr" value="Empresa: "/>
-                                                <h:selectOneMenu id="Empr" value="#{becaSoliBean.objeSoli.codiEmpr}" class="form-control" pt:data-live-search="true">
-                                                    <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                    <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
-                                                    <f:converter converterId="PooConv"/>
-                                                </h:selectOneMenu>                             
-                                                <h:message for="Empr" errorClass="field-error" />
+                                            <div class="form-group input-group-xs col-md-12">
+                                                
+                                                <div class="form-group input-group-xs col-md-11">                                                   
+                                                
+                                                        <h:outputLabel  for="Empr" value="Empresa: "/>
+                                                        
+                                                </div>
+                                                
+                                                 <div class="form-group input-group-xs col-md-11">                                                
+                                                    <h:selectOneMenu id="Empr" value="#{becaSoliBean.objeSoli.codiEmpr}" class="form-control" pt:data-live-search="true">
+                                                        <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                        <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
+                                                        <f:converter converterId="PooConv"/>
+                                                    </h:selectOneMenu>                             
+                                                    <h:message for="Empr" errorClass="field-error" />
+                                                </div>
+                                                <div class="form-group input-group-xs col-md-1">                                                    
+                                                    <span class="input-group-btn">
+                                                        <h:commandLink id="btonAgreEmpr" class="btn btn-default">
+                                                            <p:ajax listener="#{becaSoliBean.empr()}"  process="@this" update="@form" oncomplete="INIT_OBJE();" global="true"/>
+                                                            <i class="fa fa-plus"/>
+                                                        </h:commandLink>
+                                                    </span>                                                     
+                                                </div>
                                             </div>
-                                            <br/>
-                                            <div class="form-group input-group-xs col-md-1">
-                                                <span class="input-group-btn">
-                                                    <h:commandLink id="btonAgreEmpr" class="btn btn-default">
-                                                        <p:ajax listener="#{becaSoliBean.empr()}"  process="@this" update="@form" oncomplete="" global="true"/>
-                                                        <p:ajax listener="#{becaBean.limpForm()}" update=":FormRegi" global="true" 
-                                                    oncomplete="$('#ModaForm').modal('show');"/>
-                                                        <i class="fa fa-plus"/>
-                                                    </h:commandLink>
-                                                </span>  
-                                            </div>
+                                            
                                             <br/>
                                             <h:outputLabel value="Informacion Alumno"/>
-                                            <div class="form-group col-xs-12 simple">
+                                            
+                                            <div class="form-group col-md-12">
                                                 <div class="form-group col-md-11 input-group-xs">
                                                         <h:outputLabel value="Carnet:"/>
                                                         <h:inputText id="Filt" value="#{becaSoliBean.filt}" class="form-control" 
@@ -290,42 +305,47 @@ and open the template in the editor.
                                                             </h:commandLink>
                                                         </span>
                                                 </div>
-                                                <div class="input-group-xs col-xs-12">
-                                                    <div class="form-group input-group-xs col-xs-11">
-                                                    <h:outputLabel  for="Grad" value="Grado: "/>
-                                                    
-                                                    <h:selectOneMenu id="Grad" value="#{becaSoliBean.objeSoli.codiGrad}" class="form-control" pt:data-live-search="true">
-                                                        <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                        <f:selectItems value="#{gradoBean.listGrad}" var="lst" itemLabel="#{lst.nombGrad}" itemValue="#{lst}"/>
-                                                        <f:converter converterId="PooConv"/>
-                                                    </h:selectOneMenu>
-                                                    <h:message for="Grad" errorClass="field-error" /></div>
+                                                
+                                            </div>    
+                                                <div class="form-group col-md-12" >
+                                                    <div class="form-group col-md-11 input-group-xs">
+                                                        <h:outputLabel  for="Grad" value="Grado: "/>
+
+                                                        <h:selectOneMenu id="Grad" disabled="true" value="#{becaSoliBean.objeSoli.codiGrad}" class="form-control" pt:data-live-search="true" >
+                                                            <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                            <f:selectItems value="#{gradoBean.listGrad}" var="lst" itemLabel="#{lst.nombGrad}" itemValue="#{lst}"/>
+                                                            <f:converter converterId="PooConv"/>
+                                                        </h:selectOneMenu>
+                                                        <h:message for="Grad" errorClass="field-error" />
+                                                    </div>
                                                     <br/>
-                                            <div class="form-group input-group-xs col-xs-1">
-                                                <span class="input-group-btn">
-                                                    <h:commandLink id="btonAgreGrad" class="btn btn-default">
-                                                        <p:ajax listener="#{becaBean.limpForm()}" update=":FormRegi" global="true" 
-                                                    oncomplete="$('#ModaForm').modal('show');"/>
-                                                        <p:ajax listener="#{becaSoliBean.grad()}"  process="@this" update="@form" oncomplete="" global="true"/>
-                                                        
-                                                        <i class="fa fa-plus"/>
-                                                    </h:commandLink>
-                                                </span>  
-                                            </div>  
+                                                    <div class="form-group col-md-1 input-group-xs">
+                                                        <span class="input-group-btn">
+                                                            <h:commandLink id="btonAgreGrad" class="btn btn-default" >
+                                                                <p:ajax listener="#{becaBean.limpForm()}" update=":FormRegi" global="true" 
+                                                            oncomplete="$('#ModaForm').modal('show');"/>
+                                                                <p:ajax listener="#{becaSoliBean.grad()}"  process="@this" update="@form" oncomplete="" global="true"/>
+
+                                                                <i class="fa fa-plus"/>
+                                                            </h:commandLink>
+                                                        </span>  
+                                                    </div>  
                                                 </div>
-                                                 <div class="input-group-xs col-xs-12">
-                                                    <h:outputLabel  for="nomb" value="Nombre Alumno: "/>
-                                                    <h:message for="nomb" errorClass="field-error" />
-                                                    <h:inputText id="nomb" value="#{becaSoliBean.objeSoli.nombAlum}" class="form-control" />
+                                                <div class="form-group col-md-12">
+                                                    
+                                                    <div class="form-group col-md-11 input-group-xs">
+                                                        <h:outputLabel  for="nomb" value="Nombre Alumno: "/>
+                                                        <h:message for="nomb" errorClass="field-error" />
+                                                        <h:inputText id="nomb" disabled="true" value="#{becaSoliBean.objeSoli.nombAlum}" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group col-md-11 input-group-xs">
+                                                        <h:outputLabel  for="fech" value="Fecha Solicitud: "/>
+                                                        <h:inputText  id="fech" value="#{becaSoliBean.objeSoli.fechSoliBeca}" class="form-control">
+                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6" />
+                                                        </h:inputText>
+                                                        <h:message for="fech" errorClass="field-error" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="from-group input-group-xs">
-                                                <h:outputLabel  for="fech" value="Fecha Solicitud: "/>
-                                                <h:inputText  id="fech" value="#{becaSoliBean.objeSoli.fechSoliBeca}" class="form-control">
-                                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6" />
-                                                </h:inputText>
-                                                <h:message for="fech" errorClass="field-error" />
-                                            </div>
                                             <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta == 2}">
                                             <h:panelGroup rendered="#{!becaSoliBean.guardar}">
                                                 <div class="form-group input-group-xs">
@@ -349,9 +369,10 @@ and open the template in the editor.
                                                         <span class="input-group-btn">
                                                             <h:commandLink id="btonAgreEstado" class="btn btn-default">
                                                                 <p:ajax listener="#{becaSoliBean.esta()}"  process="@this" update="@form" oncomplete="" global="true"/>
-                                                                <p:ajax listener="#{tipoEstadoBean.limpForm()}" update=":FormRegi" global="true" 
+                                                                <p:ajax listener="#{tipoEstadoBean.limpForm()}" update=":FormRegi" global="true"/>
+
                                                             oncomplete="$('#ModaForm').modal('show');"/>
-                                                                <i class="fa fa-plus"/>
+                                                               <i class="fa fa-plus"/>
                                                             </h:commandLink>
                                                         </span>                                                             
                                                     </div>

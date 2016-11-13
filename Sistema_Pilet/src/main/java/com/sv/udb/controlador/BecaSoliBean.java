@@ -14,6 +14,7 @@ import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.utils.AlumnosPojo;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -159,21 +160,40 @@ public class BecaSoliBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            TipoEstado a = new TipoEstado();
-            a.setCodiTipoEsta(1);
-            this.objeSoli.setEstaSoliBeca(1);
-            FCDESoli.create(objeSoli);
-            this.objeSoli2 = FCDESoli.findLast();
-            this.objeBeca.setCodiSoliBeca(objeSoli);
-            this.objeBeca.setCodiTipoEsta(a);
-            this.objeBeca.setFechInic(new Date());
-            this.FCDEBeca.create(objeBeca);
-            this.listSoli.add(this.objeSoli);
-            System.out.println(this.objeBeca);
-            this.listBeca.add(objeBeca);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Beca Guardada");
+            
+            if(objeSoli.getCarnAlum() == null || objeSoli.getNombAlum() == null)
+            {
+           
+            
+            
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Busque un alumno')");
+            
+            }
+            else
+            {
+                
+                     TipoEstado a = new TipoEstado();
+                    a.setCodiTipoEsta(0);
+                    this.objeSoli.setEstaSoliBeca(0);
+                    FCDESoli.create(objeSoli);
+                    this.objeSoli2 = FCDESoli.findLast();
+                    this.objeBeca.setCodiSoliBeca(objeSoli);
+                    this.objeBeca.setCodiTipoEsta(a);
+                    this.objeBeca.setFechInic(new Date());
+                    this.FCDEBeca.create(objeBeca);
+                    this.listSoli.add(this.objeSoli);
+                   if(this.listBeca == null)
+                    {
+                        this.listBeca = new ArrayList<>();
+                    }
+                    System.out.println(this.objeBeca);
+                    this.listBeca.add(objeBeca);
+                    this.limpForm();
+                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                    log.info("Beca Guardada");
+            
+            }
+            
         }
         catch(Exception ex)
         {
@@ -342,7 +362,42 @@ public class BecaSoliBean implements Serializable {
             
         }
     }
+    public boolean cons(SolicitudBeca obje)
+    {
+        boolean variable=false;
+        try
+        {
+           SolicitudBeca s = new SolicitudBeca();
+            s = FCDESoli.find(obje);
+            if(s!=null)
+            {variable=true;}
+           
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        return variable;
+    }
     
+    public boolean cons(String obje)
+    {
+        boolean variable=false;
+        try
+        {
+           
+           SolicitudBeca s1 = new SolicitudBeca();
+            s1 = FCDESoli.findCarnet(obje);
+            if(s1 != null)
+            {variable=true;}
+           
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        return variable;
+    }
     public void consTodo()
     {
         try
@@ -384,31 +439,45 @@ public class BecaSoliBean implements Serializable {
     {
         RequestContext ctx = RequestContext.getCurrentInstance();
         Client client = ClientBuilder.newClient();
-        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consAlum/%s", this.filt);
-        WebTarget resource = client.target(url);
-        Builder request = resource.request();
-        request.accept(MediaType.APPLICATION_JSON);
-        Response response = request.get();
-        if (response.getStatusInfo().getFamily() == Family.SUCCESSFUL)
-        {
-            AlumnosPojo resp = response.readEntity(AlumnosPojo.class); //La respuesta de captura en un pojo que esta en el paquete utils
-            this.objeSoli.setCarnAlum(filt);
-            this.objeSoli.setNombAlum(resp.getNomb());
-            System.out.println(this.objeSoli.getNombAlum());
-            Grado grad = new Grado();
-            String cortado= resp.getGrad().substring(0,1);
-            grad.setCodiGrad(Integer.parseInt(cortado));
-            this.objeSoli.setCodiGrad(grad);
-            System.out.println(grad.getCodiGrad());
-            if(resp.getNomb() == null || resp.getNomb().equals(""))
+        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consAlum/%s", this.filt.trim());
+        
+       if(this.cons(filt.trim()))
+       {
+           
+         ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El Alumno ya se encuentra')");
+       }
+       else
+       {
+           WebTarget resource = client.target(url);
+            Builder request = resource.request();
+            request.accept(MediaType.APPLICATION_JSON);
+            Response response = request.get();
+            if (response.getStatusInfo().getFamily() == Family.SUCCESSFUL)
             {
-                ctx.execute("setMessage('MESS_WARN', 'Atención', 'Alumno no encontrado.')");
+                AlumnosPojo resp = response.readEntity(AlumnosPojo.class); //La respuesta de captura en un pojo que esta en el paquete utils
+                this.objeSoli.setCarnAlum(filt.trim());
+                this.objeSoli.setNombAlum(resp.getNomb());
+                System.out.println(this.objeSoli.getNombAlum());
+                Grado grad = new Grado();
+                String cortado= resp.getGrad().substring(0,1);
+                grad.setCodiGrad(Integer.parseInt(cortado));
+                this.objeSoli.setCodiGrad(grad);
+                System.out.println(grad.getCodiGrad());
+                if(resp.getNomb() == null || resp.getNomb().equals(""))
+                {
+                    ctx.execute("setMessage('MESS_WARN', 'Atención', 'Alumno no encontrado.')");
+                }
             }
-        }
-        else
-        {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar alumno')");
-        }
+            else
+            {
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar alumno')");
+            }
+       
+       }
+                
+                
+                
+        
     }
     
     //Lógica slider
@@ -463,7 +532,7 @@ public class BecaSoliBean implements Serializable {
     public void empr()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        EmpresaBean asd = new EmpresaBean();
+        EmpresaBean asd = (EmpresaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean");
         asd.limpForm();
         this.empresa = !this.empresa;
         this.beca = !this.beca;
