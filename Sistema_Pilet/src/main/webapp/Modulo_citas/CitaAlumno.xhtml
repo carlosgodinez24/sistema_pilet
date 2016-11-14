@@ -168,7 +168,7 @@ and open the template in the editor.
                                             <h:message for="hora" errorClass="field-error" />
                                             <h:selectOneMenu id="hora" value="#{citasBean.horaSeleSoliCita}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar una horario Disponible">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{citasBean.listHoraCitaDoce}" var="lstHora" itemLabel="#{lstHora.objeHoraDisp.diaHoraDisp} #{lstHora.fecha} de (#{lstHora.horaInic} a #{lstHora.horaFina})" itemValue="#{lstHora}"/>
+                                                <f:selectItems value="#{citasBean.listHoraCitaDoce}" var="lstHora" itemLabel="#{lstHora.diaDisp} #{lstHora.fecha} de (#{lstHora.horaInic} a #{lstHora.horaFina})" itemValue="#{lstHora}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                         </div>

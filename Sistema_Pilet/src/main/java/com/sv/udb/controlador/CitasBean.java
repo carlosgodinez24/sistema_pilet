@@ -503,7 +503,7 @@ public class CitasBean implements Serializable{
     }
     
     
-    private void consHoraCitaDoce()
+     private void consHoraCitaDoce()
     {
         consHorarios(); 
         this.listHoraCitaDoce = new ArrayList<HorarioCitas>();
@@ -516,24 +516,24 @@ public class CitasBean implements Serializable{
             if(this.listHoraDisp!=null)
             {
                 
-                for(Horariodisponible obje : listHoraDisp )
+                for(Horariodisponible obje : this.listHoraDisp )
                 {
                     if(getDay(obje.getDiaHoraDisp())==c.getTime().getDay())
                     {
                         if(FCDEExceHoraDisp.findByDispHora(obje,c.getTime())){
                             if(FCDECambCita.findCambioCitaByParams(sdf.format(c.getTime()), obje.getHoraInicHoraDisp(), obje.getHoraFinaHoraDisp(), this.objeCita.getCodiUsua()))
                             {
-                                System.out.println(obje.getDiaHoraDisp() + " " +c.getTime() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") Disponible");
-                                this.listHoraCitaDoce.add(new HorarioCitas(sdf.format(c.getTime()),obje.getHoraInicHoraDisp(),obje.getHoraFinaHoraDisp(), obje));
+                                //System.out.println(obje.getDiaHoraDisp() + " " +c.getTime() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") Disponible");
+                                this.listHoraCitaDoce.add(new HorarioCitas(sdf.format(c.getTime()),obje.getHoraInicHoraDisp(),obje.getHoraFinaHoraDisp(),obje.getDiaHoraDisp()));
                             }
                             else
                             {
-                                System.out.println(obje.getDiaHoraDisp() + " " +c.getTime() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") No Disponible");
+                                //System.out.println(obje.getDiaHoraDisp() + " " +c.getTime() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") No Disponible");
                             }                            
                         }
                         else
                         {
-                            System.out.println(obje.getDiaHoraDisp() + " " +c.getTime().getDay() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") No Disponible");
+                            //System.out.println(obje.getDiaHoraDisp() + " " +c.getTime().getDay() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") No Disponible");
                         }
                     }
                 }                
@@ -630,14 +630,14 @@ public class CitasBean implements Serializable{
                 objeCambCita.setFechCambCita(new Date());
                 
                 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 objeCambCita.setFechInicCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
                 objeCambCita.setFechFinCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
 
                 DateFormat df = new SimpleDateFormat("hh:mm a");
                 objeCambCita.setHoraCambCita(df.format(new Date()));
-                objeCambCita.setHoraInicCitaNuev(this.horaSeleCita.getHoraInicHoraDisp());
-                objeCambCita.setHoraFinCitaNuev(this.horaSeleCita.getHoraFinaHoraDisp());
+                objeCambCita.setHoraInicCitaNuev(this.horaSeleSoliCita.getHoraInic());
+                objeCambCita.setHoraFinCitaNuev(this.horaSeleSoliCita.getHoraFina());
                 objeCambCita.setMotiCambCita(this.motivo);
                 objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                 FCDECambCita.create(objeCambCita);
@@ -659,15 +659,16 @@ public class CitasBean implements Serializable{
         
         try
         {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             if(valiDatoCitaVisi(acci) || acci == 2){
                 switch(acci){
                     case 1:
-                        objeCambCita.setFechInicCitaNuev(fechSoliCita);
-                        objeCambCita.setFechFinCitaNuev(fechSoliCita);
+                        objeCambCita.setFechInicCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
+                        objeCambCita.setFechFinCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
                         DateFormat df = new SimpleDateFormat("hh:mm a");
                         objeCambCita.setHoraCambCita(df.format(new Date()));
-                        objeCambCita.setHoraInicCitaNuev(horaSeleCita.getHoraInicHoraDisp());
-                        objeCambCita.setHoraFinCitaNuev(horaSeleCita.getHoraFinaHoraDisp());
+                        objeCambCita.setHoraInicCitaNuev(this.horaSeleSoliCita.getHoraInic());
+                        objeCambCita.setHoraFinCitaNuev(this.horaSeleSoliCita.getHoraFina());
                         objeCita.setEstaCita(4);
                     break;
                     case 2:
@@ -721,31 +722,15 @@ public class CitasBean implements Serializable{
     private boolean valiDatoCitaVisi(int acci){
         boolean val = false;
         RequestContext ctx = RequestContext.getCurrentInstance();
-            if(horaSeleCita!= null  && horaSeleCita != null){
-                int diaHoraDisp = getDay(this.horaSeleCita.getDiaHoraDisp());
-                int diaExceHoraDisp = this.fechSoliCita.getDay();
-                if(diaHoraDisp == diaExceHoraDisp){
-                    if(this.fechSoliCita.after(new Date()))
-                    {
-                        if(FCDEExceHoraDisp.findByDispHora(horaSeleCita, fechSoliCita)){
-                            val = true;
-                        }
-                        else
-                        {
-                            ctx.execute("setMessage('MESS_INFO', 'Atención', 'El Empleado Marco una Excepción para este día');");
-                        }
-                    }
-                    else
-                    {
-                        ctx.execute("setMessage('MESS_INFO', 'Atención', 'Fecha ya ha pasado');");
-                    }
-                }else{
-                    ctx.execute("setMessage('MESS_INFO', 'Atención', 'Fecha Inválida para el Horario Seleccionado');");
-                }
-            }else{
-                if(acci != 2){
+            if(this.horaSeleSoliCita== null && acci!=2)
+            {
+               if(acci != 2){
                     ctx.execute("setMessage('MESS_INFO', 'Atención', 'No se ha seleccionado Fecha ú Horario Disponible');");
                 }
+            }
+            else
+            {
+                val=true;
             }
         return val;
     }
@@ -1045,7 +1030,7 @@ public class CitasBean implements Serializable{
         }
         catch(Exception ex)
         {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
     
@@ -1095,7 +1080,7 @@ public class CitasBean implements Serializable{
             }
             
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
     
