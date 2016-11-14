@@ -30,6 +30,8 @@ public interface TransaccionFacadeLocal {
     List<Transaccion> findAll();
     
     BigDecimal findMonto(Object id);
+    
+    BigDecimal findMontoEmpr(Object id);
 
     List<Transaccion> findRange(int[] range);
 

@@ -6,9 +6,11 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +18,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DetalleBeca.findByCantMese", query = "SELECT d FROM DetalleBeca d WHERE d.cantMese = :cantMese"),
     @NamedQuery(name = "DetalleBeca.findByEstaDetaBeca", query = "SELECT d FROM DetalleBeca d WHERE d.estaDetaBeca = :estaDetaBeca")})
 public class DetalleBeca implements Serializable {
+
+    @OneToMany(mappedBy = "codiDetaBeca", fetch = FetchType.LAZY)
+    private List<Transaccion> transaccionList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -128,6 +135,15 @@ public class DetalleBeca implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.DetalleBeca[ codiDetaBeca=" + codiDetaBeca + " ]";
+    }
+
+    @XmlTransient
+    public List<Transaccion> getTransaccionList() {
+        return transaccionList;
+    }
+
+    public void setTransaccionList(List<Transaccion> transaccionList) {
+        this.transaccionList = transaccionList;
     }
     
 }
