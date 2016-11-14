@@ -7,18 +7,23 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,6 +41,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TipoBeca.findByTipoTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.tipoTipoBeca = :tipoTipoBeca"),
     @NamedQuery(name = "TipoBeca.findByNivelTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.nivelTipoBeca = :nivelTipoBeca")})
 public class TipoBeca implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoBeca", fetch = FetchType.LAZY)
+    private List<DetalleBeca> detalleBecaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -144,6 +152,15 @@ public class TipoBeca implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.TipoBeca[ codiTipoBeca=" + codiTipoBeca + " ]";
+    }
+
+    @XmlTransient
+    public List<DetalleBeca> getDetalleBecaList() {
+        return detalleBecaList;
+    }
+
+    public void setDetalleBecaList(List<DetalleBeca> detalleBecaList) {
+        this.detalleBecaList = detalleBecaList;
     }
     
 }

@@ -129,18 +129,21 @@ and open the template in the editor.
                                         <h:inputHidden id="codi" value="#{detalleBecaBean.objeDetaBeca.codiDetaBeca}" />
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="alumBeca" value="Alumno becado: "/>
+                                             
+                                            
                                             <h:selectOneMenu id="alumBeca"  value="#{detalleBecaBean.objeCombPadr }" class="form-control" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{becaBean.listBeca}" var="lst" itemLabel="#{lst.codiSoliBeca.nombAlum}" itemValue="#{lst}"/>
                                                 <p:ajax update="detaBeca" listener="#{detalleBecaBean.onAlumBecaSelect()}" process="@this"/>  
                                                 <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
+                                            </h:selectOneMenu> 
+                                           
                                           <h:outputLabel  for="detaBeca" value="Tipo de beca: "/>
                                           <h:selectOneMenu id="detaBeca" value="#{detalleBecaBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
                                               <f:selectItems value="#{detalleBecaBean.listTipoBeca}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>                                      
-                                            <h:message for="becaSali" errorClass="field-error" />           
+                                            <h:message for="detaBeca" errorClass="field-error" />           
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="cant" value="Meses"/>

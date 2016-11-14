@@ -55,11 +55,11 @@ public class TransaccionFacade extends AbstractFacade<Transaccion> implements Tr
         System.out.println("Id:" +id);
         BigDecimal montEmpr =new BigDecimal(0);
         try {
-            String query = "SELECT t.mont_empr FROM transaccion t, donacion d WHERE t.codi_dona = d.codi_dona AND d.codi_empr = ?1 ORDER BY t.fech_tran DESC LIMIT 1";
+            String query = "SELECT e.mont_empr FROM empresa e WHERE e.codi_empr = ?1";
             Query q = getEntityManager().createNativeQuery(query);
             q.setParameter(1, id);
             Object  obj = q.getSingleResult();
-             montEmpr = (BigDecimal) obj;
+            montEmpr = (BigDecimal) obj;
              
             System.out.println("Monto empresa: " +montEmpr);
             

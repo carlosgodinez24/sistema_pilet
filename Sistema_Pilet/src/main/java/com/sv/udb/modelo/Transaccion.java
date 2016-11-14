@@ -38,8 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Transaccion.findByFechTran", query = "SELECT t FROM Transaccion t WHERE t.fechTran = :fechTran"),
     @NamedQuery(name = "Transaccion.findByMontTota", query = "SELECT t FROM Transaccion t WHERE t.montTota = :montTota"),
     @NamedQuery(name = "Transaccion.findByTipoTran", query = "SELECT t FROM Transaccion t WHERE t.tipoTran = :tipoTran"),
-    @NamedQuery(name = "Transaccion.findByEstaTran", query = "SELECT t FROM Transaccion t WHERE t.estaTran = :estaTran"),
-    @NamedQuery(name = "Transaccion.findByMontEmpr", query = "SELECT t FROM Transaccion t WHERE t.montEmpr = :montEmpr")})
+    @NamedQuery(name = "Transaccion.findByEstaTran", query = "SELECT t FROM Transaccion t WHERE t.estaTran = :estaTran")})
 public class Transaccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,8 +59,6 @@ public class Transaccion implements Serializable {
     private Integer tipoTran;
     @Column(name = "esta_tran")
     private Integer estaTran;
-    @Column(name = "mont_empr")
-    private BigDecimal montEmpr;
     @JoinColumn(name = "codi_deta_beca", referencedColumnName = "codi_deta_beca")
     @ManyToOne(fetch = FetchType.LAZY)
     private DetalleBeca codiDetaBeca;
@@ -122,14 +119,6 @@ public class Transaccion implements Serializable {
 
     public void setEstaTran(Integer estaTran) {
         this.estaTran = estaTran;
-    }
-
-    public BigDecimal getMontEmpr() {
-        return montEmpr;
-    }
-
-    public void setMontEmpr(BigDecimal montEmpr) {
-        this.montEmpr = montEmpr;
     }
 
     public DetalleBeca getCodiDetaBeca() {

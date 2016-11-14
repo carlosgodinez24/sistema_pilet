@@ -101,7 +101,6 @@ and open the template in the editor.
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
                                          <f:facet name="header">Nombre empresa</f:facet>
                                        <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr ne null}">
-                                      
                                         <h:outputText value="#{fila.codiDona.codiEmpr.nombEmpr}"/>  
                                         </h:panelGroup>
                                        <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr eq null}">                                       
@@ -121,10 +120,6 @@ and open the template in the editor.
                                    <h:column pt:data-sortable="true" pt:data-field="mont">
                                         <f:facet name="header">Monto </f:facet>
                                         <h:outputText value="#{fila.montTran}"/>   
-                                    </h:column>
-                                    <h:column pt:data-sortable="true" pt:data-field="montEmpr">
-                                        <f:facet name="header">Monto empresa</f:facet>
-                                        <h:outputText value="#{fila.montEmpr}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="montTotal">
                                         <f:facet name="header">Monto total</f:facet>
@@ -188,15 +183,6 @@ and open the template in the editor.
                                             </h:selectOneMenu>                                      
                                             <h:message for="becaSali" errorClass="field-error" />           
                                         </div>
-                                        
-                                        <!--<div class="form-group input-group-xs">
-                                            <h:outputLabel  for="soli" value="Nombre empresa "/>
-                                            <h:selectOneMenu id="soli" value="#{transaccionBean.objeTran.codiDona}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{donacionBean.listDona}" var="lst" itemLabel="#{lst.codiEmpr.nombEmpr.concat(' ').concat(lst.nombDona)}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="soli" errorClass="field-error" />           
-                                        </div>-->
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="mont" value="Monto:"/>
                                             <h:message for="mont" errorClass="field-error" />

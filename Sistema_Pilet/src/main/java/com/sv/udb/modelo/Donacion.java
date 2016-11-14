@@ -48,9 +48,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Donacion.findByEstaDona", query = "SELECT d FROM Donacion d WHERE d.estaDona = :estaDona")})
 public class Donacion implements Serializable {
 
-    @OneToMany(mappedBy = "codiDona", fetch = FetchType.LAZY)
-    private List<Transaccion> transaccionList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,6 +83,8 @@ public class Donacion implements Serializable {
     @NotNull
     @Column(name = "esta_dona")
     private int estaDona;
+    @OneToMany(mappedBy = "codiDona", fetch = FetchType.LAZY)
+    private List<Transaccion> transaccionList;
     @JoinColumn(name = "codi_tipo_dona", referencedColumnName = "codi_tipo_dona")
     @ManyToOne(fetch = FetchType.LAZY)
     private TipoDonacion codiTipoDona;
@@ -174,6 +173,15 @@ public class Donacion implements Serializable {
         this.estaDona = estaDona;
     }
 
+    @XmlTransient
+    public List<Transaccion> getTransaccionList() {
+        return transaccionList;
+    }
+
+    public void setTransaccionList(List<Transaccion> transaccionList) {
+        this.transaccionList = transaccionList;
+    }
+
     public TipoDonacion getCodiTipoDona() {
         return codiTipoDona;
     }
@@ -213,15 +221,6 @@ public class Donacion implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Donacion[ codiDona=" + codiDona + " ]";
-    }
-
-    @XmlTransient
-    public List<Transaccion> getTransaccionList() {
-        return transaccionList;
-    }
-
-    public void setTransaccionList(List<Transaccion> transaccionList) {
-        this.transaccionList = transaccionList;
     }
     
 }
