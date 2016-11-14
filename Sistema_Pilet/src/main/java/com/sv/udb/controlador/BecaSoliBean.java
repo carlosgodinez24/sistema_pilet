@@ -171,8 +171,8 @@ public class BecaSoliBean implements Serializable {
         this.consTodoH();
         if (this.objeSoli.getCodiSoliBeca() != null) {
             DetalleBecaBean asd = (DetalleBecaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("detalleBecaBean");
-        asd.setObjeCombPadr(objeSoli);
-        asd.onAlumBecaSelect();
+            /*asd.setObjeCombPadr(objeSoli);
+            asd.onAlumBecaSelect();*/
         }
         
     }
