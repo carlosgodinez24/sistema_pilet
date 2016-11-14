@@ -66,17 +66,17 @@ public class DetalleBecaBean implements Serializable{
     
     
     //Manejo de combobox
-    private SolicitudBeca objeCombPadr;
+    private Beca objeCombPadr;
+    //private SolicitudBeca objeCombPadr;
     private List<TipoBeca> listTipoBeca;
 
-    public SolicitudBeca getObjeCombPadr() {
+    public Beca getObjeCombPadr() {
         return objeCombPadr;
     }
 
-    public void setObjeCombPadr(SolicitudBeca objeCombPadr) {
+    public void setObjeCombPadr(Beca objeCombPadr) {
         this.objeCombPadr = objeCombPadr;
     }
-
     public List<TipoBeca> getListTipoBeca() {
         return listTipoBeca;
     }
@@ -85,9 +85,9 @@ public class DetalleBecaBean implements Serializable{
         this.listTipoBeca = listTipoBeca;
     }
     
-   
     public void onAlumBecaSelect(){
-        listTipoBeca = FCDETipoBeca.findTipos(objeCombPadr.getCodiGrad().getNivelGrad());
+        
+        listTipoBeca = FCDETipoBeca.findTipos(objeCombPadr.getCodiSoliBeca().getCodiGrad().getNivelGrad());
     }
 
     
@@ -126,6 +126,7 @@ public class DetalleBecaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeDetaBeca.setCodiBeca(objeCombPadr);
             this.objeDetaBeca.setEstaDetaBeca(1);
             FCDEDetaBeca.create(this.objeDetaBeca);
             this.listDetaBeca.add(this.objeDetaBeca);
