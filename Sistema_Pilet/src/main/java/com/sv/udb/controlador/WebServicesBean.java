@@ -1,6 +1,5 @@
 package com.sv.udb.controlador;
 
-import com.sv.udb.ejb.UsuarioFacadeLocal;
 import com.sv.udb.modelo.Usuario;
 import com.sv.udb.utils.ConsultarCodiEmpleadoLogin;
 import com.sv.udb.utils.UsuariosPojo;
@@ -9,7 +8,6 @@ import com.sv.udb.utils.pojos.WSconsUsua;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -93,7 +91,6 @@ public class WebServicesBean implements Serializable {
         Client client = ClientBuilder.newClient();
         String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
         url = String.format("%s/%s/%s/%s", url, "consLogi", acce, getHash(cont));
-        System.out.println(url);
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
         Response response = request.get();
@@ -157,11 +154,11 @@ public class WebServicesBean implements Serializable {
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
             this.objeWebServ = response.readEntity(WSconsUsua.class); //La respuesta de captura en un pojo que esta en el paquete utils
-            List<Usuario> listUsua = new UsuarioBean().cons();
+            UsuarioBean usua = new UsuarioBean();
             for(DatosUsuarios temp : objeWebServ.getResu()){ 
-                Usuario usua = new Usuario();
-                usua.setAcceUsua(temp.getUsua());
-                if(listUsua.contains(usua)){
+                Usuario objeUsua = new Usuario();
+                objeUsua.setAcceUsua(temp.getUsua());
+                if(usua.getListUsua().contains(objeUsua)){
                     this.objeWebServ.getResu().remove(temp);
                 }
             }

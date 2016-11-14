@@ -100,31 +100,14 @@ public class UsuarioBean implements Serializable{
         }
         catch(Exception ex)
         {
-            ex.printStackTrace();
+            ex.getMessage();
         }
         finally
         {
             
         }
     }
-
-    public List<Usuario> cons()
-    {
-        try
-        {
-            this.listUsua = FCDEUsuario.findAll();
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        finally
-        {
-            
-        }
-        return this.listUsua;
-    }
-    
+   
     public void guar(DatosUsuarios obje)
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
