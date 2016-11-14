@@ -35,8 +35,9 @@ $(document).ready(function() {
 
 function INIT_OBJE()
 {
+    
     $("#TablRegi").initBootTable();
-    INIT_OBJE_MODA();
+    INIT_OBJE_MODA();    
 }
 
 function INIT_OBJE_MODA()

@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.UsuarioFacadeLocal;
 import com.sv.udb.modelo.Usuario;
 import com.sv.udb.utils.LOG4J;
+import com.sv.udb.utils.pojos.DatosUsuarios;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.ManagedBean;
@@ -46,6 +47,10 @@ public class UsuarioBean implements Serializable{
      * Creates a new instance of UsuarioBean
      */
     
+    /**
+     * Creates a new instance of UsuarioBean
+     * @return
+     */
     public List<Usuario> getListUsua() {
         return listUsua;
     }
@@ -102,14 +107,32 @@ public class UsuarioBean implements Serializable{
             
         }
     }
+
+    public List<Usuario> cons()
+    {
+        try
+        {
+            this.listUsua = FCDEUsuario.findAll();
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            
+        }
+        return this.listUsua;
+    }
     
-    public void guar()
+    public void guar(DatosUsuarios obje)
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
-        {
+        {            
+            this.objeUsua.setAcceUsua(obje.getUsua());
             this.objeUsua.setEstaUsua(1);
-            FCDEUsuario.create(this.objeUsua);
+            FCDEUsuario.create(this.objeUsua);            
             this.guardar = false;
             log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"Usuario"+"-"+"Usuario habilitado: "+this.objeUsua.getAcceUsua());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");

@@ -21,14 +21,13 @@ and open the template in the editor.
         <ui:param name="actiWebServ" value="active"/>
         <!-- Scripts personalizados -->
         <ui:define name="CustomScripts">
-        <!--Plugins Selector de Fecha-->
-        <h:outputStylesheet library="css" name="datepicker3.css"/>
-        <h:outputScript library="js" name="bootstrap-datepicker.js"/>
-        <h:outputScript library="js" name="bootstrap-datepicker.es.js"/>
-        <!--Plugins Select-->
-        <h:outputStylesheet library="css" name="bootstrap-select.css"/>
-        <h:outputScript library="js" name="bootstrap-select.js"/>
-        <!--Plugins custom-->
+            <!--Plugins Selector de Fecha-->
+            <h:outputStylesheet library="css" name="bootstrap-switch.min.css"/>
+            <h:outputScript library="js" name="bootstrap-switch.min.js"/>
+            <!--Plugins Select-->
+            <h:outputStylesheet library="css" name="bootstrap-select.css"/>
+            <h:outputScript library="js" name="bootstrap-select.js"/>
+            <!--Plugins custom-->
             <h:outputScript library="js" name="custom/mantenimientos.js"/>
         </ui:define>
         <!-- Elementos propios del boby -->
@@ -64,27 +63,46 @@ and open the template in the editor.
                                     <h:form id="habiUsua">
                                         <!--Form exclusivo para los remotos-->
                                         <fieldset class="col-md-12">
-                                                <h:inputText id="FiltNomb" value="#{webServicesBean.filtNomb}" class="form-control" 
-                                                             pt:placeholder="Usuario" autocomplete="off"/>
-                                                <h:inputText id="FiltApel" value="#{webServicesBean.filtApel}" class="form-control" 
-                                                             pt:placeholder="Apellido" autocomplete="off"/>
-                                                <h:inputText id="FiltTipo" value="#{webServicesBean.filtTipo}" class="form-control" 
-                                                             pt:placeholder="Tipo" autocomplete="off"/>
-                                                <span class="input-group-btn">
-                                                    <h:commandLink id="btonBusc" class="btn btn-default">
-                                                        <p:ajax listener="#{webServicesBean.consWebServHabiUsua()}" process="@form" update="@form" global="true"/>
-                                                        <i class="fa fa-search"/>
-                                                    </h:commandLink>
-                                                </span>
-                                        </fieldset>    
+                                            <div class="col-md-4">
+                                                <div class="form-group input-group-s">
+                                                    <h:inputText id="FiltNomb" value="#{webServicesBean.filtNomb}" class="form-control" 
+                                                                 pt:placeholder="Usuario" autocomplete="off"/>                                                    
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-group input-group-s">                                                    
+                                                    <h:inputText id="FiltApel" value="#{webServicesBean.filtApel}" class="form-control" 
+                                                                 pt:placeholder="Apellido" autocomplete="off"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group input-group-s">
+                                                    <h:selectOneMenu id="FiltTipo" value="#{webServicesBean.filtTipo}" class="form-control">
+                                                        <f:selectItem itemValue="alum" itemLabel="Alumno"/>
+                                                        <f:selectItem itemValue="doceTecn" itemLabel="Docente Técnico"/>
+                                                        <f:selectItem itemValue="doceAcad" itemLabel="Docente Academico"/>
+                                                        <f:selectItem itemValue="emplAdmi" itemLabel="Empleado Administración"/>
+                                                        <f:selectItem itemValue="emplRece" itemLabel="Empleado Recepción"/>
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <span class="input-group-btn">
+                                                <h:commandLink id="btonBusc" class="btn btn-default">
+                                                    <p:ajax listener="#{webServicesBean.consWebServHabiUsua()}" process="@form" update=":TablRegi" global="true"/>
+                                                    <i class="fa fa-search"/>
+                                                </h:commandLink>
+                                            </span>
+                                        </fieldset>
+                                    </h:form>
                                         
                                         <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{webServicesBean.objeWebServ.resu}"
                                                      var="fila" class="boottable" pt:data-toolbar="#toolTablPagi"
                                                      styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
-                                                     pt:data-show-refresh="true" pt:data-show-toggle="false" pt:data-show-columns="true" 
+                                                     pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
                                                      pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
-                                                     pt:data-click-to-select="true"  pt:data-select-item-name="radio"
-                                                     pt:data-single-select="true">                                
+                                                     pt:data-click-to-select="false"  pt:data-select-item-name="radio"
+                                                     pt:data-single-select="false">                                
                                             <h:column pt:data-field="state" pt:data-checkbox="true">
                                             </h:column>
                                             <h:column pt:data-sortable="true" pt:data-field="nomb">
@@ -102,17 +120,28 @@ and open the template in the editor.
                                                 </h:outputText>                            
                                             </h:column>
                                             <h:column pt:data-sortable="true">
-                                                <f:facet name="header">Tipo</f:facet>
-                                                <h:outputText value="#{fila.tipo}">
-                                                </h:outputText>                            
+                                                <f:facet name="header">Tipo</f:facet> 
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'alum'}">
+                                                    Alumno</h:panelGroup>
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'doceTecn'}">
+                                                    Docente Tecnico</h:panelGroup>
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'doceAcad'}">
+                                                    Docente Academico</h:panelGroup>
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'emplAdmi'}">
+                                                    Administrativo</h:panelGroup>
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'emplRece'}">
+                                                    Recepcionista</h:panelGroup>
                                             </h:column>
-                                            <h:column pt:data-sortable="true">
-                                                <f:facet name="header">Tipo</f:facet>
-                                                <h:outputText value="#{fila.tipo}">
-                                                </h:outputText>                            
+                                            <h:column>
+                                                <f:facet name="header">Estado</f:facet>
+                                                <h:form>
+                                                    <h:commandLink id="btonGuar" class="btn btn-success">
+                                                        <p:ajax listener="#{usuarioBean.guar(fila)}" process="@form" update="@form" />
+                                                        <i class="fa fa-plus"/> Habilitar
+                                                    </h:commandLink>
+                                                </h:form>
                                             </h:column>
-                                        </h:dataTable>
-                                    </h:form>
+                                        </h:dataTable>                                    
                                 </div>
                             </h:panelGroup>
                         </div>

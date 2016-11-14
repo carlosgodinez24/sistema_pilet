@@ -1,11 +1,15 @@
 package com.sv.udb.controlador;
 
+import com.sv.udb.ejb.UsuarioFacadeLocal;
+import com.sv.udb.modelo.Usuario;
 import com.sv.udb.utils.ConsultarCodiEmpleadoLogin;
 import com.sv.udb.utils.UsuariosPojo;
 import com.sv.udb.utils.pojos.DatosUsuarios;
 import com.sv.udb.utils.pojos.WSconsUsua;
 import java.io.Serializable;
 import java.security.MessageDigest;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -34,6 +38,8 @@ public class WebServicesBean implements Serializable {
     private WSconsUsua objeWebServ;
     //Lógica slider
     private boolean showBusc = false;
+    
+    
 
     public String getFiltNomb() {
         return filtNomb;
@@ -151,10 +157,15 @@ public class WebServicesBean implements Serializable {
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
             this.objeWebServ = response.readEntity(WSconsUsua.class); //La respuesta de captura en un pojo que esta en el paquete utils
-            for(DatosUsuarios temp : this.objeWebServ.getResu())
-            {
-                System.out.println(temp.getNomb());
+            List<Usuario> listUsua = new UsuarioBean().cons();
+            for(DatosUsuarios temp : objeWebServ.getResu()){ 
+                Usuario usua = new Usuario();
+                usua.setAcceUsua(temp.getUsua());
+                if(listUsua.contains(usua)){
+                    this.objeWebServ.getResu().remove(temp);
+                }
             }
+            
         }
         else
         {
