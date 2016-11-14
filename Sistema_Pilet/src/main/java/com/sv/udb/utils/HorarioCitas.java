@@ -13,31 +13,31 @@ import com.sv.udb.modelo.Horariodisponible;
  */
 public class HorarioCitas {
     private String fecha;
+    private String diaDisp;
     private String horaInic;
     private String horaFina;
-    private Horariodisponible objeHoraDisp;
     
     public HorarioCitas()
     {
         
     }
 
-    public HorarioCitas(String fecha, String horaInic, String horaFina, Horariodisponible objeHoraDisp) {
+    public String getDiaDisp() {
+        return diaDisp;
+    }
+
+    public void setDiaDisp(String diaDisp) {
+        this.diaDisp = diaDisp;
+    }
+    
+    
+
+    public HorarioCitas(String fecha, String horaInic, String horaFina, String diaDisp) {
         this.fecha = fecha;
         this.horaInic = horaInic;
         this.horaFina = horaFina;
-        this.objeHoraDisp=objeHoraDisp;
+        this.diaDisp = diaDisp;
     }    
-
-    public Horariodisponible getObjeHoraDisp() {
-        return objeHoraDisp;
-    }
-
-    public void setObjeHoraDisp(Horariodisponible objeHoraDisp) {
-        this.objeHoraDisp = objeHoraDisp;
-    }
-
-    
     
     public String getFecha() {
         return fecha;
@@ -61,6 +61,18 @@ public class HorarioCitas {
 
     public void setHoraFina(String horaFina) {
         this.horaFina = horaFina;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof HorarioCitas)) {
+            return false;
+        }
+        HorarioCitas other = (HorarioCitas) object;
+        if ((this.diaDisp == null && other.diaDisp != null) || (this.diaDisp != null && !this.diaDisp.equals(other.diaDisp))) {
+            return false;
+        }
+        return true;
     }
     
     

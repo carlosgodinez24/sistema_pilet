@@ -6,6 +6,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Horariodisponible;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -41,8 +42,9 @@ public class HorariodisponibleFacade extends AbstractFacade<Horariodisponible> i
     }
     @Override
     public List<Horariodisponible> findByCodiUsua(Object codi) {
-        TypedQuery<Horariodisponible> q = (TypedQuery<Horariodisponible>) getEntityManager().createQuery("SELECT h FROM Horariodisponible h WHERE h.codiUsua = :codiUsua and h.estaHoraDisp = 1 order by H.anioHoraDisp desc, H.diaHoraDisp asc, H.horaInicHoraDisp asc ");       
+        TypedQuery<Horariodisponible> q = (TypedQuery<Horariodisponible>) getEntityManager().createQuery("SELECT h FROM Horariodisponible h WHERE h.codiUsua = :codiUsua and h.estaHoraDisp = 1 and H.anioHoraDisp = :anioHoraDisp order by H.anioHoraDisp desc, H.diaHoraDisp asc, H.horaInicHoraDisp asc ");       
         q.setParameter("codiUsua", codi);
+        q.setParameter("anioHoraDisp", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         List resu = q.getResultList();
         return resu.isEmpty() ? null : resu;
     }
