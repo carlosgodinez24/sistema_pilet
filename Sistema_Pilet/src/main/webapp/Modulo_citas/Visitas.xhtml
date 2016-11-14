@@ -70,7 +70,7 @@ and open the template in the editor.
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                    #{citasBean.consDepeListCitaUsua(fila)}
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiCita}"/>
                                </h:column>
@@ -228,13 +228,13 @@ and open the template in the editor.
                                                 <h:panelGroup rendered="#{citasBean.isGrouVisi}">
                                                     <div class="input-group col-xs-12">
                                                         <h:outputLabel  for="nombGrup" value="Nombre del Grupo: "/>
-                                                        <h:inputText  id="nombGrup" value="#{citasBean.objeCita.nombGrupCita}" class="form-control" required="true"/>
                                                         <h:message for="nombGrup" errorClass="field-error" />
+                                                        <h:inputText  id="nombGrup" value="#{citasBean.objeCita.nombGrupCita}" class="form-control" required="true" requiredMessage="Debe registrar el nombre del Grupo"/>
                                                     </div>
                                                     <div class="input-group col-xs-12">
                                                         <h:outputLabel  for="cantGrup" value="Cantidad de Personas en el Grupo: "/>
-                                                        <h:inputText  id="cantGrup" value="#{citasBean.objeCita.cantGrupCita}" class="form-control" required="true"/>
                                                         <h:message for="cantGrup" errorClass="field-error" />
+                                                        <h:inputText  id="cantGrup" value="#{citasBean.objeCita.cantGrupCita}" class="form-control" required="true" requiredMessage="Debe Especificar la cantidad de personas"/>
                                                     </div>
                                                 </h:panelGroup>
                                                 <h:panelGroup id="combLugaEven">
@@ -251,19 +251,19 @@ and open the template in the editor.
                                                     <h:panelGroup rendered="#{citasBean.lugaEven}">
                                                         <div class="input-group col-xs-12">
                                                             <h:outputLabel  for="lugaCita" value="Lugar: "/>
-                                                            <h:selectOneMenu id="lugaCita" value="#{citasBean.objeCita.codiUbic}" class="form-control select" pt:data-live-search="true">
+                                                            <h:message for="lugaCita" errorClass="field-error" />
+                                                            <h:selectOneMenu id="lugaCita" value="#{citasBean.objeCita.codiUbic}" class="form-control select" pt:data-live-search="true" required='true' requiredMessage="Debe Seleccionar un Lugar">
                                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                                 <f:selectItems value="#{ubicacionesBean.consListUbicPorDispCita()}" var="lst" itemLabel="#{lst.nombUbic}" itemValue="#{lst}"/>
                                                                 <f:converter converterId="PooConv"/>
                                                             </h:selectOneMenu>
-                                                            <h:message for="lugaCita" errorClass="field-error" />
                                                         </div>
                                                     </h:panelGroup>
                                                     <h:panelGroup rendered="#{!citasBean.lugaEven}">
                                                         <div class="input-group col-xs-12">
                                                             <h:outputLabel  for="evenCita" value="Evento: "/>
                                                             <h:message for="evenCita" errorClass="field-error" />
-                                                            <h:selectOneMenu id="evenCita" value="#{citasBean.objeCita.codiEven}" class="form-control select" pt:data-live-search="true">
+                                                            <h:selectOneMenu id="evenCita" value="#{citasBean.objeCita.codiEven}" class="form-control select" pt:data-live-search="true" required='true' requiredMessage="Debe Seleccionar un Evento">
                                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                                 <f:selectItems value="#{eventosBean.listEven}" var="lst" itemLabel="#{lst.nombEven}" itemValue="#{lst}"/>
                                                                 <f:converter converterId="PooConv"/>
@@ -275,32 +275,32 @@ and open the template in the editor.
                                                     <h:outputLabel  for="fechInic" value="Fecha Inicio: "/>
                                                     
                                                     <h:message for="fechInic" errorClass="field-error" />
-                                                    <h:inputText id="fechInic" value="#{citasBean.fechSoliCita}" class="form-control datepicker" required="true">
+                                                    <h:inputText id="fechInic" value="#{citasBean.fechSoliCita}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha de Inicio">
                                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                                     </h:inputText> 
                                                 </div>
                                                 <div class="input-group col-xs-12">
                                                     <h:outputLabel  for="fechFina" value="Fecha Final: "/>
-                                                    <h:inputText id="fechFina" value="#{citasBean.fechSoliCita2}" class="form-control datepicker" required="true">
+                                                    <h:message for="fechFina" errorClass="field-error" />
+                                                    <h:inputText id="fechFina" value="#{citasBean.fechSoliCita2}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha de Finalización">
                                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                                     </h:inputText> 
-                                                    <h:message for="fechFina" errorClass="field-error" />
                                                 </div>
                                                 <div class="input-group col-xs-12">
                                                     <h:outputLabel  for="horaInicCita" value="Hora de Inicio: "/>
-                                                    <h:inputText id="horaInicCita" value="#{citasBean.fechInic}" class="form-control timepicker" required="true"/>
                                                     <h:message for="horaInicCita" errorClass="field-error" />
+                                                    <h:inputText id="horaInicCita" value="#{citasBean.fechInic}" class="form-control timepicker" required="true" requiredMessage="Debe Seleccionar una Hora de Inicio"/>
                                                 </div>
                                                 <div class="input-group col-xs-12">
                                                     <h:outputLabel  for="horaFinaCita" value="Hora de Finalización: "/>
-                                                    <h:inputText id="horaFinaCita" value="#{citasBean.fechFina}" class="form-control timepicker" required="true"/>
                                                     <h:message for="horaFinaCita" errorClass="field-error" />
+                                                    <h:inputText id="horaFinaCita" value="#{citasBean.fechFina}" class="form-control timepicker" required="true" requiredMessage="Debe Seleccionar una Hora de Finalización"/>
                                                 </div>
                                             </h:panelGroup>
                                             <div class="input-group col-xs-12">
-                                                <h:outputLabel  for="descCita" value="Descripción: "/>
-                                                <h:inputTextarea  id="descCita" value="#{citasBean.motivo}" class="form-control"/>
+                                                <h:outputLabel  for="descCita" value="Motivo: "/>
                                                 <h:message for="descCita" errorClass="field-error" />
+                                                <h:inputTextarea  id="descCita" value="#{citasBean.motivo}" class="form-control" required="true" requiredMessage="Debe Especificar El Motivo"/>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -333,17 +333,15 @@ and open the template in the editor.
                                             <h:panelGroup rendered="#{!citasBean.isGrouVisi}">
                                                 <h4 style="">Seleccionar Visitantes:</h4>
                                             </h:panelGroup>
-                                            <div style="width: 100%">
-                                                <h:form style="float: right">
-                                                    <h:inputText style="float: right; width: 100%;" id="cadeText" value="#{visitantesBean.cadeText}" class="form-control" />
-                                                    <br/><br/>
-                                                    <h:commandLink style="float: right; " id="btonBusc" class="btn btn-success">
-                                                        <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :TablVisi"  global="true" />
-                                                        Buscar
+                                            <h:form>
+                                                <div class="cutom_search">
+                                                    <h:inputText id="cadeText" value="#{visitantesBean.cadeText}" class="form-control cutom_search_text" />
+                                                    <h:commandLink id="btonBusc" class="btn btn-success cutom_search_button">
+                                                        <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :ContRegi :TablVisi"  global="true" />
+                                                        <i class="fa fa-search"/>
                                                     </h:commandLink>
-                                                    <br/><br/>
-                                                </h:form>
-                                            </div>
+                                                </div>
+                                            </h:form>
 
                                             <h:dataTable pt:data-id="TablVisi" id="TablVisi" value="#{visitantesBean.listVisi}"
                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablVisi"
@@ -354,7 +352,7 @@ and open the template in the editor.
                                                     pt:data-single-select="true">                                
                                                 <h:column pt:data-field="state" pt:data-checkbox="true">
                                                 </h:column>
-                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                                     <f:facet name="header">Código</f:facet>
                                                     <h:outputText value="#{fila.codiVisi}"/>
                                                 </h:column>

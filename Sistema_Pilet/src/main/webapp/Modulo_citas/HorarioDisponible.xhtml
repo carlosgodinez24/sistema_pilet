@@ -65,29 +65,17 @@ and open the template in the editor.
                                         pt:data-single-select="true">                                
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column  pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiHoraDisp}"/>
+                               </h:column>
+                               <h:column pt:data-sortable="true" pt:data-field="dui">
+                                   <f:facet name="header">Horario</f:facet>
+                                   <h:outputText value="#{fila.diaHoraDisp} (#{fila.horaInicHoraDisp} - #{fila.horaFinaHoraDisp})"/>   
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="nomb">
                                    <f:facet name="header">Año Disponible</f:facet>
                                    <h:outputText value="#{fila.anioHoraDisp}"/>   
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="dui">
-                                   <f:facet name="header">Dia</f:facet>
-                                   <h:outputText value="#{fila.diaHoraDisp}"/>   
-                               </h:column>
-                               <h:column pt:data-sortable="true">
-                                   <f:facet name="header">Hora Inic.</f:facet>
-                                   <h:outputText value="#{fila.horaInicHoraDisp}">
-                                       <f:convertDateTime pattern="hh:mm a" timeZone="GMT-6"/>
-                                   </h:outputText>
-                               </h:column>
-                                <h:column pt:data-sortable="true">
-                                   <f:facet name="header">Hora Fin</f:facet>
-                                   <h:outputText value="#{fila.horaFinaHoraDisp}">
-                                       <f:convertDateTime pattern="hh:mm a" timeZone="GMT-6"/>
-                                   </h:outputText>
                                </h:column>
                             </h:dataTable>
                             </h:panelGroup>
@@ -111,7 +99,8 @@ and open the template in the editor.
                                         <h:inputHidden id="codi" value="#{horarioDisponibleBean.objeHoraDisp.codiHoraDisp}" />
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="dia" value="Dia: "/>
-                                            <h:selectOneMenu id="dia" value="#{horarioDisponibleBean.objeHoraDisp.diaHoraDisp}" class="form-control select" pt:data-live-search="true">
+                                            <h:message for="dia"  errorClass="field-error" />
+                                            <h:selectOneMenu id="dia" value="#{horarioDisponibleBean.objeHoraDisp.diaHoraDisp}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana" >
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItem itemValue="Lunes" itemLabel="Lunes"/>
                                                 <f:selectItem itemValue="Martes" itemLabel="Martes"/>
@@ -120,22 +109,23 @@ and open the template in the editor.
                                                 <f:selectItem itemValue="Viernes" itemLabel="Viernes"/>
                                                 <f:selectItem itemValue="Sabado" itemLabel="Sábado"/>
                                             </h:selectOneMenu>
-                                            <h:message for="dia" errorClass="field-error" />
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="horaInicHoraDisp" value="Hora Inicio: "/>
-                                            <h:inputText id="horaInicHoraDisp" value="#{horarioDisponibleBean.objeHoraDisp.horaInicHoraDisp}" class="form-control timepicker"/>
                                             <h:message for="horaInicHoraDisp" errorClass="field-error" />
+                                            <h:inputText id="horaInicHoraDisp" value="#{horarioDisponibleBean.objeHoraDisp.horaInicHoraDisp}" class="form-control timepicker"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="horaFinaHoraDisp" value="Hora Fin: "/>
-                                            <h:inputText id="horaFinaHoraDisp" value="#{horarioDisponibleBean.objeHoraDisp.horaFinaHoraDisp}" class="form-control timepicker"/>
-                                            <h:message for="horaFinaHoraDisp" errorClass="field-error" />	
+                                            <h:message for="horaFinaHoraDisp" errorClass="field-error" />
+                                            <h:inputText id="horaFinaHoraDisp" value="#{horarioDisponibleBean.objeHoraDisp.horaFinaHoraDisp}" class="form-control timepicker"/>	
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="anioDisp" value="Año disponible: "/>
-                                            <p:inputMask id="anioDisp" value="#{horarioDisponibleBean.objeHoraDisp.anioHoraDisp}" mask="9999" class="form-control"/>
                                             <h:message for="anioDisp" errorClass="field-error" />
+                                            <p:tooltip for="anioDisp" class="toolTipPrime" value="Tiene que ser en formato 'AAAA' (4 numeros enteros)" position="right"/>
+                                            <p:inputMask id="anioDisp"  value="#{horarioDisponibleBean.objeHoraDisp.anioHoraDisp}" mask="9999" class="form-control" validatorMessage="Tiene que ser un año en formato de 4 números"/>
+                                            
                                         </div>
                                     </fieldset>
                                 </div>

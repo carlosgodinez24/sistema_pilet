@@ -59,7 +59,7 @@ and open the template in the editor.
                                         pt:data-single-select="true">                                
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiAlumVisi}"/>
                                </h:column>
@@ -78,7 +78,9 @@ and open the template in the editor.
                                    <h:panelGroup rendered="#{fila.pareAlumVisi eq '3'}">Abuelo/Abuela</h:panelGroup>
                                    <h:panelGroup rendered="#{fila.pareAlumVisi eq '4'}">Hermano/Hermana</h:panelGroup>
                                    <h:panelGroup rendered="#{fila.pareAlumVisi eq '5'}">Primo/Prima</h:panelGroup>
-                                   <h:panelGroup rendered="#{fila.pareAlumVisi eq '6'}">Otro</h:panelGroup>
+                                   <h:panelGroup rendered="#{fila.pareAlumVisi eq '6'}">
+                                       <h:outputText value="#{fila.espeAlumVisi}"/>  
+                                   </h:panelGroup>
                                    
                                </h:column>
                             </h:dataTable>
@@ -104,7 +106,7 @@ and open the template in the editor.
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="seleAlum" value="Alumno: "/>
                                             <h:message for="seleAlum" errorClass="field-error" />
-                                            <h:selectOneMenu id="seleAlum" value="#{alumnoVisitanteBean.objeAlumVisi.carnAlum}" class="form-control select" pt:data-live-search="true">
+                                            <h:selectOneMenu id="seleAlum" value="#{alumnoVisitanteBean.objeAlumVisi.carnAlum}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar Un Alumno">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{alumnosBean.consTodoAlum()}" var="lst" itemLabel="#{lst.nombAlum} #{lst.apelAlum}" itemValue="#{lst.carnAlum}"/>
                                                 <f:converter converterId="PooConv"/>
@@ -113,7 +115,7 @@ and open the template in the editor.
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="seleVisi" value="Visitante: "/>
                                             <h:message for="seleVisi" errorClass="field-error" />
-                                            <h:selectOneMenu id="seleVisi" value="#{alumnoVisitanteBean.objeAlumVisi.codiVisi}" class="form-control select" pt:data-live-search="true">
+                                            <h:selectOneMenu id="seleVisi" value="#{alumnoVisitanteBean.objeAlumVisi.codiVisi}" class="form-control select" pt:data-live-search="true" required="True" requiredMessage="Debe Seleccionar Un Visitante">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{visitantesBean.listVisi}" var="lst" itemLabel="#{lst.nombVisi.concat(' ').concat(lst.apelVisi)}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
@@ -122,7 +124,7 @@ and open the template in the editor.
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="seleParen" value="Parentesco: "/>
                                             <h:message for="seleParen" errorClass="field-error" />
-                                            <h:selectOneMenu id="seleParen" value="#{alumnoVisitanteBean.objeAlumVisi.pareAlumVisi}" class="form-control select" pt:data-live-search="true">
+                                            <h:selectOneMenu id="seleParen" value="#{alumnoVisitanteBean.objeAlumVisi.pareAlumVisi}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar un Parentesco">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItem itemValue="1" itemLabel="Padre/Madre"/>
                                                 <f:selectItem itemValue="2" itemLabel="Tio/Tia"/>

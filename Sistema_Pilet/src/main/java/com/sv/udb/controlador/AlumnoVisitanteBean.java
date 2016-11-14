@@ -159,8 +159,7 @@ public class AlumnoVisitanteBean implements Serializable{
             this.guardar = false;
             this.Disabled=false;
             this.contForm = false;
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s %s", this.objeAlumVisi.getPareAlumVisi(), this.objeAlumVisi.getCarnAlum()) + "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
             //por alguna razón, al consultar con cambia el select... asi que se hace manualmente....
             ctx.execute("selectedItem("+this.objeAlumVisi.getPareAlumVisi()+")");
         }

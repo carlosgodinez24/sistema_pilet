@@ -35,7 +35,7 @@ and open the template in the editor.
                         <div class="panel-heading">Tabla de Datos</div>
                         <div class="panel-body">
                             <h:panelGroup id="ContRegi">
-                                <div id="toolTablRegi" >
+                                <div id="toolTablRegi"  >
                                     <h:form>
                                         
                                         <p:remoteCommand name="consObje" actionListener="#{visitantesBean.cons()}" update=":FormRegi" 
@@ -50,18 +50,15 @@ and open the template in the editor.
                                         
                                     </h:form>
                                 </div>
-                                
-                                <div style="width: 100%">
-                                    <h:form style="float: right">
-                                        <h:inputText style="float: right; width: 100%;" id="cadeText" value="#{visitantesBean.cadeText}" class="form-control" />
-                                        <br/><br/>
-                                        <h:commandLink style="float: right; " id="btonBusc" class="btn btn-success">
+                                <h:form>
+                                    <div class="cutom_search">
+                                        <h:inputText id="cadeText" value="#{visitantesBean.cadeText}" class="form-control cutom_search_text" />
+                                        <h:commandLink id="btonBusc" class="btn btn-success cutom_search_button">
                                             <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :ContRegi"  global="true" />
-                                            Buscar
+                                            <i class="fa fa-search"/>
                                         </h:commandLink>
-                                        <br/><br/>
-                                    </h:form>
-                                </div>
+                                    </div>
+                                </h:form>
                                 
                                 <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{visitantesBean.listVisi}"
                                         var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
@@ -72,7 +69,7 @@ and open the template in the editor.
                                         pt:data-single-select="true">                                
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiVisi}"/>
                                </h:column>
@@ -85,12 +82,16 @@ and open the template in the editor.
                                    <h:outputText value="#{fila.duiVisi}"/>   
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="tele">
-                                   <f:facet name="header">Teléfono</f:facet>
-                                   <h:outputText value="#{fila.teleVisi}"/>
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="mail">
-                                   <f:facet name="header">Email</f:facet>
-                                   <h:outputText value="#{fila.corrVisi}"/>
+                                   <f:facet name="header">Contacto</f:facet>
+                                   <h:panelGroup rendered="#{fila.corrVisi != null}">
+                                       <span class='fa fa-envelope' style="margin-right: 10px;"></span>
+                                        <h:outputText value="#{fila.corrVisi}"/>
+                                        <br/>
+                                    </h:panelGroup>
+                                   <h:panelGroup rendered="#{fila.teleVisi != null}">
+                                       <span class='fa fa-phone' style="margin-right: 10px;"></span>
+                                        <h:outputText value="#{fila.teleVisi}"/>
+                                    </h:panelGroup>
                                </h:column>
                             </h:dataTable>
                             </h:panelGroup>
@@ -114,33 +115,33 @@ and open the template in the editor.
                                         <h:inputHidden id="codi" value="#{visitantesBean.objeVisi.codiVisi}" />
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="nomb" value="Nombre: "/>
-                                            <h:inputText id="nomb" value="#{visitantesBean.objeVisi.nombVisi}" class="form-control" />
                                             <h:message for="nomb" errorClass="field-error" />
+                                            <h:inputText id="nomb" value="#{visitantesBean.objeVisi.nombVisi}" class="form-control" required="true" requiredMessage="Debe Registrar Un Nombre"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="apel" value="Apellido: "/>
-                                            <h:inputText id="apel" value="#{visitantesBean.objeVisi.apelVisi}" class="form-control" />
                                             <h:message for="apel" errorClass="field-error" />
+                                            <h:inputText id="apel" value="#{visitantesBean.objeVisi.apelVisi}" class="form-control" required="true" requiredMessage="Debe Registrar Un Apellido"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="dui" value="DUI: "/>
-                                            <p:inputMask id="dui" value="#{visitantesBean.objeVisi.duiVisi}" class="form-control" mask="99999999-9"/>
                                             <h:message for="dui" errorClass="field-error" />
+                                            <p:inputMask id="dui" value="#{visitantesBean.objeVisi.duiVisi}" class="form-control" mask="99999999-9" requiredMessage="DUI"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="tel" value="Teléfono: "/>
-                                            <p:inputMask id="tel" value="#{visitantesBean.objeVisi.teleVisi}" mask="9999-9999" class="form-control"/>
                                             <h:message for="tel" errorClass="field-error" />
+                                            <p:inputMask id="tel" value="#{visitantesBean.objeVisi.teleVisi}" mask="9999-9999" class="form-control" required="true" requiredMessage="Debe Registrar un Número Telefónico"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="mail" value="E-mail: "/>
-                                            <h:inputText id="mail" value="#{visitantesBean.objeVisi.corrVisi}" class="form-control" />
                                             <h:message for="mail" errorClass="field-error" />
+                                            <h:inputText id="mail" value="#{visitantesBean.objeVisi.corrVisi}" class="form-control" required="true" requiredMessage="Debe Registrar un Correo Electrónico" validatorMessage="Formato Inválido" />
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="tipo" value="Tipo Visitante: "/>
                                             <h:message for="tipo" errorClass="field-error" />
-                                            <h:selectOneMenu id="tipo" value="#{visitantesBean.objeVisi.tipoVisi}" class="form-control select" pt:data-live-search="true">
+                                            <h:selectOneMenu id="tipo" value="#{visitantesBean.objeVisi.tipoVisi}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar el Tipo de Visitante">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItem itemValue="1" itemLabel="Encargado Alumno"/>
                                                 <f:selectItem itemValue="2" itemLabel="Particular"/>

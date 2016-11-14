@@ -121,8 +121,7 @@ public class VisitantesBean implements Serializable{
         {
             this.objeVisi = FCDEVisi.find(codi);
             this.guardar = false;
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s %s", this.objeVisi.getNombVisi(), this.objeVisi.getApelVisi()) + "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
@@ -148,6 +147,7 @@ public class VisitantesBean implements Serializable{
             FCDEVisi.create(this.objeVisi);
             this.listVisi.add(this.objeVisi);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            limpForm();
         }
         catch(Exception ex)
         {

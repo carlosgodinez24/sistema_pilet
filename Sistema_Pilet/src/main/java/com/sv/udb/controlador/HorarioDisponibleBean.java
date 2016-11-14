@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -103,7 +104,7 @@ public class HorarioDisponibleBean implements Serializable{
     {
         try
         {
-            this.listHoraDispTodo = FCDEHoraDisp.findAll();
+            this.listHoraDispTodo = FCDEHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }
         catch(Exception ex)
         {
@@ -120,8 +121,7 @@ public class HorarioDisponibleBean implements Serializable{
             this.objeHoraDisp = FCDEHoraDisp.find(codi);
             this.guardar = false;
             //logger.info("Se ha consultado un horario: " + this.objeHoraDisp.getDiaHoraDisp()+" "+this.objeHoraDisp.getHoraInicHoraDisp() + " "+this.objeHoraDisp.getAnioHoraDisp());
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s %s", this.objeHoraDisp.getDiaHoraDisp(), this.objeHoraDisp.getHoraInicHoraDisp()) + "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
@@ -147,6 +147,7 @@ public class HorarioDisponibleBean implements Serializable{
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                 if(this.listHoraDisp.isEmpty()) this.listHoraDisp = new ArrayList<Horariodisponible>();
                 this.listHoraDisp.add(objeHoraDisp);
+                limpForm();
             }
         }
         catch(Exception ex)
@@ -222,7 +223,8 @@ public class HorarioDisponibleBean implements Serializable{
             }
             else
             {
-                ctx.execute("setMessage('MESS_INFO', 'Atención', 'La hora Final no puede ser antes de la Inicial');");
+                FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicHoraDisp", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora Final no puede ser antes de la Inicial",  null));
+                FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaHoraDisp", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora Final no puede ser antes de la Inicial",  null));
             }
         }
         catch(Exception err)

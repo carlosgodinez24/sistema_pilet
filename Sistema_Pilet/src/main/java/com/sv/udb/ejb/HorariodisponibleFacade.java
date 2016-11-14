@@ -41,7 +41,7 @@ public class HorariodisponibleFacade extends AbstractFacade<Horariodisponible> i
     }
     @Override
     public List<Horariodisponible> findByCodiUsua(Object codi) {
-        TypedQuery<Horariodisponible> q = (TypedQuery<Horariodisponible>) getEntityManager().createQuery("SELECT h FROM Horariodisponible h WHERE h.codiUsua = :codiUsua and h.estaHoraDisp = 1");       
+        TypedQuery<Horariodisponible> q = (TypedQuery<Horariodisponible>) getEntityManager().createQuery("SELECT h FROM Horariodisponible h WHERE h.codiUsua = :codiUsua and h.estaHoraDisp = 1 order by H.anioHoraDisp desc, H.diaHoraDisp asc, H.horaInicHoraDisp asc ");       
         q.setParameter("codiUsua", codi);
         List resu = q.getResultList();
         return resu.isEmpty() ? null : resu;
