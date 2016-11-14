@@ -106,7 +106,7 @@ and open the template in the editor.
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="dia" value="Horario: "/>
                                             <h:message for="dia" errorClass="field-error" />
-                                            <h:selectOneMenu id="dia" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.codiHoraDisp}" class="form-control select" pt:data-live-search="true" requiredMessage="Debe seleccionar un Horario Disponible">
+                                            <h:selectOneMenu id="dia" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.codiHoraDisp}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe seleccionar un Horario Disponible Existente">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{horarioDisponibleBean.listHoraDisp}" var="lst" itemLabel="#{lst.diaHoraDisp.concat(' (').concat(lst.horaInicHoraDisp.concat(' - ').concat(lst.horaFinaHoraDisp).concat(') '))}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
@@ -115,7 +115,7 @@ and open the template in the editor.
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="fech" value="Fecha: "/>
                                             <h:message for="fech" errorClass="field-error" />
-                                            <h:inputText id="fech" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.fechExceHoraDisp}" class="form-control datepicker">
+                                            <h:inputText id="fech" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.fechExceHoraDisp}" class="form-control datepicker" required="true" requiredMessage="Debe Registrar la fecha de la Excepción">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText> 
                                         </div>
