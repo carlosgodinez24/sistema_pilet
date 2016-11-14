@@ -638,7 +638,6 @@ public class CitasBean implements Serializable{
                 objeCambCita.setHoraCambCita(df.format(new Date()));
                 objeCambCita.setHoraInicCitaNuev(this.horaSeleSoliCita.getHoraInic());
                 objeCambCita.setHoraFinCitaNuev(this.horaSeleSoliCita.getHoraFina());
-                objeCambCita.setMotiCambCita(this.motivo);
                 objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                 FCDECambCita.create(objeCambCita);
                 objeVisiCita.setCodiCita(this.objeCita);
