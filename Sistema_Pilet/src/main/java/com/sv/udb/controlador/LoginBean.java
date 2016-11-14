@@ -146,7 +146,7 @@ public class LoginBean implements Serializable {
                     this.loge = true;
                     //Cargar una imagen de usuario (Puede ser de una BD)
                     this.imagPerf = "images/userDemo.png";
-                    //Llenar lista de notificaciones.... puede salir de la DB
+                    //Llenar lista de notif icaciones.... puede salir de la DB
                     this.listNoti = FCDENoti.findByUsua(this.objeUsua.getCodiUsua());
                     //Redireccionar
                     
