@@ -156,10 +156,11 @@ and open the template in the editor.
                                         </h:panelGroup>
                                         
                                         <div class="input-group col-xs-12">
+                                            
                                             <h:outputLabel  for="hora" value="Horario comunmente disponible"/>
-                                            <h:selectOneMenu id="hora" value="#{citasBean.horaSeleCita}" class="form-control select" pt:data-live-search="true">
+                                            <h:selectOneMenu id="hora" value="#{citasBean.horaSeleSoliCita}" class="form-control select" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{citasBean.listHoraDisp}" var="lstHora" itemLabel="#{lstHora.diaHoraDisp} (#{lstHora.horaInicHoraDisp} - #{lstHora.horaFinaHoraDisp})" itemValue="#{lstHora}"/>
+                                                <f:selectItems value="#{citasBean.listHoraCitaDoce}" var="lstHora" itemLabel="#{lstHora.objeHoraDisp.diaHoraDisp} #{lstHora.fecha} de (#{lstHora.horaInic} a #{lstHora.horaFina})" itemValue="#{lstHora}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="hora" errorClass="field-error" />
@@ -174,13 +175,7 @@ and open the template in the editor.
                                             </h:selectOneMenu>
                                             <h:message for="visi" errorClass="field-error" />                                            
                                         </div>
-                                        <div class="input-group col-xs-12">
-                                            <h:outputLabel  for="fech" value="Fecha: "/>
-                                            <h:inputText id="fech" value="#{citasBean.fechSoliCita}" class="form-control datepicker">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:inputText> 
-                                            <h:message for="fech" errorClass="field-error" />
-                                        </div>
+                                        
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="moti" value="Motivo: "/>
                                             <h:inputText id="moti" value="#{citasBean.motivo}" class="form-control"/>

@@ -51,7 +51,7 @@ and open the template in the editor.
                 <div class="col-md-12 col-xs-12">
                     <div class="panel panel-default">
                         
-                        <p:schedule value="#{calendarioBean.objeCale}" ignoreTimezone="false" locale="es" columnFormat="dddd DD/MM"/>
+                        <p:schedule value="#{calendarioBean.objeCale}" clientTimeZone="local" locale="es" columnFormat="dddd DD/MM"/>
                         <script type="text/javascript">
                             PrimeFaces.locales['es'] = {
                                 closeText: 'Cerrar',

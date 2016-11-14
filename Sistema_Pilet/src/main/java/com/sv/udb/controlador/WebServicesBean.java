@@ -261,10 +261,6 @@ public class WebServicesBean implements Serializable {
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
             this.objeWebServAlumByDoce = response.readEntity(WSconsAlumByDoce.class); //La respuesta de captura en un pojo que esta en el paquete utils
-            for(DatosAlumnos temp : this.objeWebServAlumByDoce.getResu())
-            {
-                System.err.println(String.format("Carnet: %s Nombre: %s", temp.getCarn(), temp.getNomb()));
-            }
         }
         else
         {
@@ -277,7 +273,6 @@ public class WebServicesBean implements Serializable {
     
     public WSconsDoceByAlum consDocePorAlum(String carnAlum)
     {
-        System.out.println("ConsDocePorALUM");
         FacesContext facsCtxt = FacesContext.getCurrentInstance();
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         Client client = ClientBuilder.newClient();
@@ -290,13 +285,6 @@ public class WebServicesBean implements Serializable {
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
             this.objeWebServDoceByAlum = response.readEntity(WSconsDoceByAlum.class); //La respuesta de captura en un pojo que esta en el paquete utils
-            if(this.objeWebServDoceByAlum.isResp())
-            {
-                for(DatosDocentes temp : this.objeWebServDoceByAlum.getDoce())
-                {
-                    System.err.println(String.format("Codigo: %s Nombre: %s", temp.getCodi(), temp.getNomb()));
-                }
-            }
         }
         else
         {

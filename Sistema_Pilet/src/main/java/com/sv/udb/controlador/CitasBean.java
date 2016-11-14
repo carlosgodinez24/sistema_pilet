@@ -19,6 +19,7 @@ import com.sv.udb.modelo.Cita;
 import com.sv.udb.modelo.Horariodisponible;
 import com.sv.udb.modelo.Visitante;
 import com.sv.udb.modelo.Visitantecita;
+import com.sv.udb.utils.HorarioCitas;
 import com.sv.udb.utils.pojos.DatosAlumnos;
 import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
@@ -27,6 +28,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -88,6 +90,7 @@ public class CitasBean implements Serializable{
     private List<Cita> listCitaVisiUsua;
     private List<Visitante> listVisi;
     private List<Horariodisponible> listHoraDispUsua;
+   
     private WSconsAlumByDoce objeWebServAlumByDoce;
     private List<Alumnovisitante> listVisiTemp;
     private List<Visitantecita> listVisiCitaDepe;
@@ -113,7 +116,27 @@ public class CitasBean implements Serializable{
     private boolean ignoExceHora;
     private boolean isUsuaDoce;
     private String buscAlum="";
+    private List<HorarioCitas> listHoraCitaDoce;
+    private HorarioCitas horaSeleSoliCita;
 
+    public HorarioCitas getHoraSeleSoliCita() {
+        return horaSeleSoliCita;
+    }
+
+    public void setHoraSeleSoliCita(HorarioCitas horaSeleSoliCita) {
+        this.horaSeleSoliCita = horaSeleSoliCita;
+    }
+    
+
+    public List<HorarioCitas> getListHoraCitaDoce() {
+        consHoraCitaDoce();
+        return listHoraCitaDoce;
+    }
+
+    public void setListHoraCitaDoce(List<HorarioCitas> listHoraCitaDoce) {
+        this.listHoraCitaDoce = listHoraCitaDoce;
+    }
+    
     public String getBuscAlum() {
         return buscAlum;
     }
@@ -333,7 +356,6 @@ public class CitasBean implements Serializable{
         }  
         else
         {
-            System.out.println(this.buscAlum);
             if(!(this.buscAlum.equals(null)||this.buscAlum.equals("")))
             {
                 this.listAlumnosWS = new WebServicesBean().consAlumPorCrit(this.buscAlum, this.buscAlum, this.buscAlum, this.buscAlum);
@@ -481,7 +503,43 @@ public class CitasBean implements Serializable{
     }
     
     
-    
+    private void consHoraCitaDoce()
+    {
+        consHorarios(); 
+        this.listHoraCitaDoce = new ArrayList<HorarioCitas>();
+        for(int x=2; x<=7; x++)
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, x);            
+            if(this.listHoraDisp!=null)
+            {
+                
+                for(Horariodisponible obje : listHoraDisp )
+                {
+                    if(getDay(obje.getDiaHoraDisp())==c.getTime().getDay())
+                    {
+                        if(FCDEExceHoraDisp.findByDispHora(obje,c.getTime())){
+                            if(FCDECambCita.findCambioCitaByParams(sdf.format(c.getTime()), obje.getHoraInicHoraDisp(), obje.getHoraFinaHoraDisp(), this.objeCita.getCodiUsua()))
+                            {
+                                System.out.println(obje.getDiaHoraDisp() + " " +c.getTime() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") Disponible");
+                                this.listHoraCitaDoce.add(new HorarioCitas(sdf.format(c.getTime()),obje.getHoraInicHoraDisp(),obje.getHoraFinaHoraDisp(), obje));
+                            }
+                            else
+                            {
+                                System.out.println(obje.getDiaHoraDisp() + " " +c.getTime() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") No Disponible");
+                            }                            
+                        }
+                        else
+                        {
+                            System.out.println(obje.getDiaHoraDisp() + " " +c.getTime().getDay() + "( " +  obje.getHoraInicHoraDisp()+ " - "+obje.getHoraFinaHoraDisp()+ ") No Disponible");
+                        }
+                    }
+                }                
+            }
+        }
+    }
       
     public void consHorarios()
     {
@@ -567,14 +625,19 @@ public class CitasBean implements Serializable{
                 this.listCitaAlum.add(this.objeCita);
                 objeCambCita = new Cambiocita();
                 objeCambCita.setCodiCita(this.objeCita);
+                
+                
                 objeCambCita.setFechCambCita(new Date());
-                objeCambCita.setFechInicCitaNuev(fechSoliCita);
-                objeCambCita.setFechFinCitaNuev(fechSoliCita);
+                
+                
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                objeCambCita.setFechInicCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
+                objeCambCita.setFechFinCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
 
-                DateFormat df = new SimpleDateFormat("K:mm a");
+                DateFormat df = new SimpleDateFormat("hh:mm a");
                 objeCambCita.setHoraCambCita(df.format(new Date()));
-                objeCambCita.setHoraInicCitaNuev(this.getHoraSeleCita().getHoraInicHoraDisp());
-                objeCambCita.setHoraFinCitaNuev(this.getHoraSeleCita().getHoraFinaHoraDisp());
+                objeCambCita.setHoraInicCitaNuev(this.horaSeleCita.getHoraInicHoraDisp());
+                objeCambCita.setHoraFinCitaNuev(this.horaSeleCita.getHoraFinaHoraDisp());
                 objeCambCita.setMotiCambCita(this.motivo);
                 objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                 FCDECambCita.create(objeCambCita);
@@ -601,7 +664,7 @@ public class CitasBean implements Serializable{
                     case 1:
                         objeCambCita.setFechInicCitaNuev(fechSoliCita);
                         objeCambCita.setFechFinCitaNuev(fechSoliCita);
-                        DateFormat df = new SimpleDateFormat("K:mm a");
+                        DateFormat df = new SimpleDateFormat("hh:mm a");
                         objeCambCita.setHoraCambCita(df.format(new Date()));
                         objeCambCita.setHoraInicCitaNuev(horaSeleCita.getHoraInicHoraDisp());
                         objeCambCita.setHoraFinCitaNuev(horaSeleCita.getHoraFinaHoraDisp());
@@ -617,7 +680,7 @@ public class CitasBean implements Serializable{
                 objeCambCita.setMotiCambCita(motivo);
                 objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                 objeCambCita.setFechCambCita(new Date());
-                DateFormat df = new SimpleDateFormat("K:mm a");
+                DateFormat df = new SimpleDateFormat("hh:mm a");
                 objeCambCita.setHoraCambCita(df.format(new Date()));
                 FCDECita.edit(objeCita);
                 FCDECambCita.create(objeCambCita);
@@ -650,6 +713,10 @@ public class CitasBean implements Serializable{
         }
         return ndia;
     }
+    
+    
+    
+    
     //1 solicitar, 2, soli repro, 3 
     private boolean valiDatoCitaVisi(int acci){
         boolean val = false;
@@ -763,7 +830,7 @@ public class CitasBean implements Serializable{
             listVisiCitaRecep.remove(objeVisiCita);
             objeVisiCita.setEstaVisi(estado);
             
-            DateFormat dfh = new SimpleDateFormat("K:mm a");
+            DateFormat dfh = new SimpleDateFormat("hh:mm a");
             switch(estado){
                 case 1:
                     objeVisiCita.setFechLlegCita(new Date());
@@ -1042,7 +1109,6 @@ public class CitasBean implements Serializable{
             this.objeCambCitaDepe = FCDECambCita.findByCita(cita);
             if(objeCambCitaDepe==null)objeCambCitaDepe = new Cambiocita();
             //consultamos el alumno 
-            System.out.println(listVisiCitaDepe.get(0).getCarnAlum());
             this.objeAlumDepe = consObjeAlumno(listVisiCitaDepe.get(0).getCarnAlum());
             if(objeAlumDepe==null)objeAlumDepe= new WSconsDoceByAlum();
             
@@ -1148,7 +1214,7 @@ public class CitasBean implements Serializable{
                 case 3:
                     objeCambCita.setFechInicCitaNuev(fechSoliCita);
                     objeCambCita.setFechFinCitaNuev(fechSoliCita);
-                    DateFormat df = new SimpleDateFormat("K:mm:a");
+                    DateFormat df = new SimpleDateFormat("hh:mm:a");
                     objeCambCita.setHoraCambCita(df.format(new Date()));
                     if(ignoHoraDisp){
                         objeCambCita.setHoraInicCitaNuev(FechInic);
@@ -1169,7 +1235,7 @@ public class CitasBean implements Serializable{
             objeCambCita.setMotiCambCita(motivo);
             objeCambCita.setEstaCambCita(objeCita.getEstaCita());
             objeCambCita.setFechCambCita(new Date());
-            DateFormat df = new SimpleDateFormat("K:mm:a");
+            DateFormat df = new SimpleDateFormat("hh:mm:a");
             objeCambCita.setHoraCambCita(df.format(new Date()));
             FCDECita.edit(objeCita);
             FCDECambCita.create(objeCambCita);
@@ -1247,10 +1313,10 @@ public class CitasBean implements Serializable{
                 objeCambCita.setCodiCita(objeCita);
                 objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                 objeCambCita.setFechCambCita(new Date());
-
+                
                 objeCambCita.setFechInicCitaNuev(fechSoliCita);
                 objeCambCita.setFechFinCitaNuev(fechSoliCita);
-                DateFormat df = new SimpleDateFormat("K:mm a");
+                DateFormat df = new SimpleDateFormat("hh:mm a");
                 objeCambCita.setHoraCambCita(df.format(new Date()));
                 if(ignoHoraDisp){
                     objeCambCita.setHoraInicCitaNuev(FechInic);
@@ -1439,7 +1505,7 @@ public class CitasBean implements Serializable{
 
                 objeCambCita.setFechInicCitaNuev(fechSoliCita);
                 objeCambCita.setFechFinCitaNuev(fechSoliCita2);
-                DateFormat df = new SimpleDateFormat("K:mm:a");
+                DateFormat df = new SimpleDateFormat("hh:mm:a");
                 objeCambCita.setHoraCambCita(df.format(new Date()));
                 objeCambCita.setHoraInicCitaNuev(FechInic);
                 objeCambCita.setHoraFinCitaNuev(FechFina);
@@ -1478,7 +1544,7 @@ public class CitasBean implements Serializable{
             objeCita.setEstaCita(2);
             listVisiUsua.remove(objeCita);
             
-            DateFormat df = new SimpleDateFormat("K:mm a");
+            DateFormat df = new SimpleDateFormat("hh:mm a");
             
             objeCambCita.setFechCambCita(new Date());
             objeCambCita.setFechInicCitaNuev(fechSoliCita);
