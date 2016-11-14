@@ -8,6 +8,7 @@ package com.sv.udb.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,12 +20,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,6 +47,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Donacion.findByFechDona", query = "SELECT d FROM Donacion d WHERE d.fechDona = :fechDona"),
     @NamedQuery(name = "Donacion.findByEstaDona", query = "SELECT d FROM Donacion d WHERE d.estaDona = :estaDona")})
 public class Donacion implements Serializable {
+
+    @OneToMany(mappedBy = "codiDona", fetch = FetchType.LAZY)
+    private List<Transaccion> transaccionList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -207,6 +213,15 @@ public class Donacion implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Donacion[ codiDona=" + codiDona + " ]";
+    }
+
+    @XmlTransient
+    public List<Transaccion> getTransaccionList() {
+        return transaccionList;
+    }
+
+    public void setTransaccionList(List<Transaccion> transaccionList) {
+        this.transaccionList = transaccionList;
     }
     
 }

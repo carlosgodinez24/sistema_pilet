@@ -173,9 +173,7 @@ public class TransaccionBean implements Serializable{
             //Seteamos el monto de la transacción, en este caso será, la cantidad $$ cuotas de donación
             if (objeTran.getMontTran()==null) {
                 objeTran.setMontTran(objeDona.getCantCuot());
-            }
-            //tipo de tansacción 1
-            objeTran.setTipoTran(1);         
+            }  
             
             //consultamos el tipo de donación, es de tipo caracter xd
             char recaudacion=  this.objeDona.getCodiTipoDona().getRecaTipoDona();
@@ -210,22 +208,36 @@ public class TransaccionBean implements Serializable{
                    objeDona.setEstaDona(0);
                 }
             }
-            //La donación es de tipo recaudación y no cuenta con monto pendiente po
+            //La donación es de tipo recaudación y no cuenta con monto pendiente
             else{
                 this.objeDona.setEstaDona(0);
             }
             //Suma al monto total 
             this.objeTranTemp = FCDETran.findLast();
-            
+            //Si es la primera vez que hacen registro en el sistema
             if(this.objeTranTemp==null)
             {
                 this.objeTran.setMontTota(this.objeTran.getMontTran());
             }
             else
             {
+                //No es la primera vez, toma el monto que ya existía y lo suma con la transaccion
                 this.objeTran.setMontTota(this.objeTranTemp.getMontTota().add(this.objeTran.getMontTran()));
             }
             
+            //Si es la primera vez que la empresa hace una donación
+            System.out.println("Lo que manda al método: " +this.objeTran.getCodiDona().getCodiEmpr().getCodiEmpr());
+            
+            BigDecimal montEmpr = FCDETran.findMontoEmpr(this.objeTran.getCodiDona().getCodiEmpr().getCodiEmpr());
+            if (montEmpr == null) {
+                this.objeTran.setMontEmpr(this.objeTran.getMontTran());
+            } else {
+                this.objeTran.setMontEmpr(montEmpr.add(this.objeTran.getMontTran()));
+            }
+            
+            
+            //Setear el tipo de transaccion
+            this.objeTran.setTipoTran(1);
             //setear el estado de tran xd
             this.objeTran.setEstaTran(1);
             //Para cuando edite la donación
@@ -258,6 +270,7 @@ public class TransaccionBean implements Serializable{
         //Comprobar que la cantidad de meses sea mayor a cero o que el estado sea activo
         //Setear monto de transacción
         this.objeTran.setMontTran(this.objeTran.getCodiDetaBeca().getCodiTipoBeca().getDescTipoBeca());
+        //Desde aquí tengo que empezar a cambiar xdddddddddddddddddddddddddddddddddd
         //Obtener el monto total disponible en el fondo
         this.objeTranTemp = FCDETran.findLast();
           

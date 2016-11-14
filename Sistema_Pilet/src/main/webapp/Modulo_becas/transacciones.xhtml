@@ -122,6 +122,10 @@ and open the template in the editor.
                                         <f:facet name="header">Monto </f:facet>
                                         <h:outputText value="#{fila.montTran}"/>   
                                     </h:column>
+                                    <h:column pt:data-sortable="true" pt:data-field="montEmpr">
+                                        <f:facet name="header">Monto empresa</f:facet>
+                                        <h:outputText value="#{fila.montEmpr}"/>   
+                                    </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="montTotal">
                                         <f:facet name="header">Monto total</f:facet>
                                         <h:outputText value="#{fila.montTota}"/>   
