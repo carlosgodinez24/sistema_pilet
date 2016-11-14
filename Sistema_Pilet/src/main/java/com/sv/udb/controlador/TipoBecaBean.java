@@ -36,6 +36,10 @@ public class TipoBecaBean implements Serializable{
         return objeTipo;
     }
 
+    public void setListTipo(List<TipoBeca> listTipo) {
+        this.listTipo = listTipo;
+    }
+
     public void setObjeTipo(TipoBeca objeTipo) {
         this.objeTipo = objeTipo;
     }
