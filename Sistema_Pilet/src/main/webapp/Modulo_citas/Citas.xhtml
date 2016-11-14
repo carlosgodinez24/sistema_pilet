@@ -92,26 +92,25 @@ and open the template in the editor.
                                     </h:panelGroup>  
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="fech">
-                                   <f:facet name="header">Fecha</f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}">
-                                       <f:convertDateTime pattern="dd/MM/yyyy (EEEEE)" />
-                                   </h:outputText>   
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="hora">
-                                   <f:facet name="header">Hora </f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} - #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
+                                   <f:facet name="header">Fecha y Hora</f:facet>
+                                   <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}"> 
+                                    <f:convertDateTime pattern="EEEE dd/MM/yyyy" timeZone="GMT-6"/>
+                                   </h:outputText><br/>de
+                                   <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} a #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="luga">
                                    <f:facet name="header">Lugar </f:facet>
                                    <h:outputText value="#{fila.codiUbic.nombUbic}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="moti">
-                                   <f:facet name="header">Motivo </f:facet>
-                                   <h:outputText value="#{fila.descCita}"/>
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="desc">
-                                   <f:facet name="header">Ultimo Cambio </f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.motiCambCita}"/>
+                                   <f:facet name="header">Motivo ó Descripción</f:facet>
+                                   <span style="font-weight: bold;">Motivo: </span><br/>
+                                   <h:outputText value="#{fila.descCita}"/>   
+                                   <h:panelGroup rendered="#{citasBean.objeCambCitaDepe.motiCambCita ne null}">
+                                       <hr style="margin: 3px 1px 3px 1px;" />
+                                       <span style="font-weight: bold;">Ultimo Cambio: </span><br/>
+                                       <h:outputText value="#{citasBean.objeCambCitaDepe.motiCambCita}"/>
+                                   </h:panelGroup>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="esta">
                                    <f:facet name="header">Estado</f:facet>
@@ -174,9 +173,17 @@ and open the template in the editor.
                                                     <f:facet name="header">DUI</f:facet>
                                                     <h:outputText value="#{fila.codiVisi.duiVisi}"/>   
                                                 </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="espe">
-                                                    <f:facet name="header">Teléfono</f:facet>
-                                                    <h:outputText value="#{fila.codiVisi.teleVisi}"/>   
+                                                <h:column pt:data-sortable="true" pt:data-field="tele">
+                                                    <f:facet name="header">Contacto</f:facet>
+                                                     <h:panelGroup rendered="#{fila.codiVisi.corrVisi != null}">
+                                                         <span class='fa fa-envelope' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.codiVisi.corrVisi}"/>
+                                                          <br/>
+                                                      </h:panelGroup>
+                                                     <h:panelGroup rendered="#{fila.codiVisi.teleVisi != null}">
+                                                         <span class='fa fa-phone' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.codiVisi.teleVisi}"/>
+                                                     </h:panelGroup>
                                                 </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="alum">
                                                     <f:facet name="header">Alumno</f:facet>
@@ -426,10 +433,18 @@ and open the template in the editor.
                                                     <f:facet name="header">DUI</f:facet>
                                                     <h:outputText value="#{fila.codiVisi.duiVisi}"/>   
                                                 </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="espe">
-                                                    <f:facet name="header">Teléfono</f:facet>
-                                                    <h:outputText value="#{fila.codiVisi.teleVisi}"/>   
-                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="tele">
+                                                    <f:facet name="header">Contacto</f:facet>
+                                                     <h:panelGroup rendered="#{fila.codiVisi.corrVisi != null}">
+                                                         <span class='fa fa-envelope' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.codiVisi.corrVisi}"/>
+                                                          <br/>
+                                                      </h:panelGroup>
+                                                     <h:panelGroup rendered="#{fila.codiVisi.teleVisi != null}">
+                                                         <span class='fa fa-phone' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.codiVisi.teleVisi}"/>
+                                                     </h:panelGroup>
+                                                  </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="alum">
                                                     <f:facet name="header">Alumno</f:facet>
                                                     <h:outputText value="#{citasBean.consObjeAlumno(fila.carnAlum).nomb}"/>   

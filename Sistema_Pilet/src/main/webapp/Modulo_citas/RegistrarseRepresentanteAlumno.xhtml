@@ -72,13 +72,17 @@ and open the template in the editor.
                                    <h:outputText value="#{fila.codiVisi.duiVisi}"/>   
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="tele">
-                                   <f:facet name="header">Teléfono</f:facet>
-                                   <h:outputText value="#{fila.codiVisi.teleVisi}"/>
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="mail">
-                                   <f:facet name="header">Email</f:facet>
-                                   <h:outputText value="#{fila.codiVisi.corrVisi}"/>
-                               </h:column>
+                                   <f:facet name="header">Contacto</f:facet>
+                                    <h:panelGroup rendered="#{fila.codiVisi.corrVisi != null}">
+                                        <span class='fa fa-envelope' style="margin-right: 10px;"></span>
+                                         <h:outputText value="#{fila.codiVisi.corrVisi}"/>
+                                         <br/>
+                                     </h:panelGroup>
+                                    <h:panelGroup rendered="#{fila.codiVisi.teleVisi != null}">
+                                        <span class='fa fa-phone' style="margin-right: 10px;"></span>
+                                         <h:outputText value="#{fila.codiVisi.teleVisi}"/>
+                                    </h:panelGroup>
+                                 </h:column>
                             </h:dataTable>
                             </h:panelGroup>
                         </div>

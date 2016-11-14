@@ -72,32 +72,39 @@ and open the template in the editor.
                                    <f:facet name="header">Citador</f:facet>
                                    <h:outputText value="#{webServicesBean.consEmplPorCodi(fila.codiUsua.toString()).nomb}"/>   
                                </h:column>
+                               <h:column pt:data-sortable="true" pt:data-field="contUsuaCita">
+                                   <f:facet name="header">Contactos del Citador</f:facet>
+                                   <h:panelGroup rendered="#{webServicesBean.consEmplPorCodi(fila.codiUsua.toString()).mail != null}">
+                                       <span class='fa fa-envelope'><h:outputText style="margin-left: 4px;font-family: calibri;" value="#{webServicesBean.consEmplPorCodi(fila.codiUsua.toString()).mail}"/></span>
+                                        
+                                        <br/>
+                                    </h:panelGroup> 
+                               </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="visi">
                                    <f:facet name="header">Personas Citadas</f:facet>
                                    <ui:repeat value="#{citasBean.listVisiCitaDepe}" var="lstCita">
                                         <h:panelGroup rendered="#{(lstCita.carnAlum.equals(loginBean.objeUsua.acceUsua))?true:false}"><!--PONER CONDICIONAL PARA QUE SOLO SE MUESTREN REPRESENTANTES DE ESTE ALUMNO-->
                                             <span class="fa fa-user" style="margin-right: 5px;"></span><h:outputText value="#{lstCita.codiVisi.nombVisi} #{lstCita.codiVisi.apelVisi}"/>
+                                            <br/>
                                         </h:panelGroup>
-                                        <br/>
                                     </ui:repeat>    
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="fech">
-                                   <f:facet name="header">Fecha</f:facet>
+                                   <f:facet name="header">Fecha y Hora</f:facet>
                                    <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}"> 
-                                    <f:convertDateTime pattern="dd/MM/yyyy (EEEEE)" timeZone="GMT-6"/>
-                                   </h:outputText>
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="hora">
-                                   <f:facet name="header">Hora</f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} - #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
+                                    <f:convertDateTime pattern="EEEE dd/MM/yyyy" timeZone="GMT-6"/>
+                                   </h:outputText><br/>de
+                                   <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} a #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="moti">
-                                   <f:facet name="header">Motivo ó Descripción</f:facet>
+                                   <f:facet name="header">Motivo ó Descripción</f:facet>]
+                                   <span style="font-weight: bold;">Motivo: </span><br/>
                                    <h:outputText value="#{fila.descCita}"/>   
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="desc">
-                                    <f:facet name="header">Ultimo Cambio </f:facet>
-                                    <h:outputText value="#{citasBean.objeCambCitaDepe.motiCambCita}"/>
+                                   <h:panelGroup rendered="#{citasBean.objeCambCitaDepe.motiCambCita ne null}">
+                                       <hr style="margin: 3px 1px 3px 1px;" />
+                                       <span style="font-weight: bold;">Ultimo Cambio: </span><br/>
+                                       <h:outputText value="#{citasBean.objeCambCitaDepe.motiCambCita}"/>
+                                   </h:panelGroup>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="esta">
                                    <f:facet name="header">Estado</f:facet>
