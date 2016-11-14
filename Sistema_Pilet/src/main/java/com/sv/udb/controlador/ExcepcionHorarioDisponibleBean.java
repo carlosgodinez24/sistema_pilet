@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -68,7 +69,7 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
     {
         try
         {
-            this.listExceHoraDisp = FCDEExceHoraDisp.findAll();
+            this.listExceHoraDisp = FCDEExceHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }
         catch(Exception ex)
         {
@@ -116,8 +117,7 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
             if(diaHoraDisp == diaExceHoraDisp){
                 val = true;
             }else{
-                ctx.execute("setMessage('MESS_INFO', 'Atención', 'La excepción seleccionada "
-                        + "no coincide con la fecha ingresada');");
+                FacesContext.getCurrentInstance().addMessage("FormRegi:fech", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Esta fecha no coincide con el Horario Disponible",  null));
             }
         return val;
     }

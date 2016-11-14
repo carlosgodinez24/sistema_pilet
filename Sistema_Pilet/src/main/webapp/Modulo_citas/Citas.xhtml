@@ -69,11 +69,11 @@ and open the template in the editor.
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                    #{citasBean.consDepeListCitaUsua(fila)}
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id"  pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiCita}"/>
                                </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="carn">
+                               <h:column pt:data-sortable="true" pt:data-field="alum">
                                    <f:facet name="header">Alumno</f:facet>
                                    <h:panelGroup rendered="#{citasBean.listVisiCitaDepe.size() eq '1'}">
                                        #{citasBean.objeAlumDepe.nomb}</h:panelGroup>

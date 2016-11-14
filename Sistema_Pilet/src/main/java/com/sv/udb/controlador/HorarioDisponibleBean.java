@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -103,7 +104,7 @@ public class HorarioDisponibleBean implements Serializable{
     {
         try
         {
-            this.listHoraDispTodo = FCDEHoraDisp.findAll();
+            this.listHoraDispTodo = FCDEHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }
         catch(Exception ex)
         {
@@ -222,7 +223,8 @@ public class HorarioDisponibleBean implements Serializable{
             }
             else
             {
-                ctx.execute("setMessage('MESS_INFO', 'Atención', 'La hora Final no puede ser antes de la Inicial');");
+                FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicHoraDisp", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora Final no puede ser antes de la Inicial",  null));
+                FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaHoraDisp", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora Final no puede ser antes de la Inicial",  null));
             }
         }
         catch(Exception err)

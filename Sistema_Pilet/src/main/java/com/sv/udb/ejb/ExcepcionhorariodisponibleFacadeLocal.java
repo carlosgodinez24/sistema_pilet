@@ -32,6 +32,8 @@ public interface ExcepcionhorariodisponibleFacadeLocal {
     
     public boolean findByDispHora(Horariodisponible hora, Date fech);
     
+    List<Excepcionhorariodisponible> findByCodiUsua(int codi);
+    
     int count();
     
 }

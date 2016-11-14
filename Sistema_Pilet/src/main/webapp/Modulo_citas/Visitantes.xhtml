@@ -69,7 +69,7 @@ and open the template in the editor.
                                         pt:data-single-select="true">                                
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiVisi}"/>
                                </h:column>
@@ -82,12 +82,16 @@ and open the template in the editor.
                                    <h:outputText value="#{fila.duiVisi}"/>   
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="tele">
-                                   <f:facet name="header">Teléfono</f:facet>
-                                   <h:outputText value="#{fila.teleVisi}"/>
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="mail">
-                                   <f:facet name="header">Email</f:facet>
-                                   <h:outputText value="#{fila.corrVisi}"/>
+                                   <f:facet name="header">Contacto</f:facet>
+                                   <h:panelGroup rendered="#{fila.corrVisi != null}">
+                                       <span class='fa fa-envelope' style="margin-right: 10px;"></span>
+                                        <h:outputText value="#{fila.corrVisi}"/>
+                                        <br/>
+                                    </h:panelGroup>
+                                   <h:panelGroup rendered="#{fila.teleVisi != null}">
+                                       <span class='fa fa-phone' style="margin-right: 10px;"></span>
+                                        <h:outputText value="#{fila.teleVisi}"/>
+                                    </h:panelGroup>
                                </h:column>
                             </h:dataTable>
                             </h:panelGroup>

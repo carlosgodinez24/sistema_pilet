@@ -81,7 +81,7 @@ and open the template in the editor.
                                    #{citasBean.consDepeListCitaUsua(fila.codiCita)}
                                    #{citasBean.objeAlumDepe = citasBean.consObjeAlumno(fila.carnAlum)}
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiVisiCita}"/>
                                </h:column>

@@ -34,11 +34,18 @@ public class ExcepcionhorariodisponibleFacade extends AbstractFacade<Excepcionho
     }
     @Override
     public boolean findByDispHora(Horariodisponible hora, Date fech) {
-        TypedQuery<Horariodisponible> q = (TypedQuery<Horariodisponible>) getEntityManager().createQuery("SELECT e FROM Horariodisponible h, Excepcionhorariodisponible e WHERE h = :horaDisp and e.codiHoraDisp = h and h.estaHoraDisp = 1 and e.fechExceHoraDisp = :fech");       
+        TypedQuery<Horariodisponible> q = (TypedQuery<Horariodisponible>) getEntityManager().createQuery("SELECT e FROM Excepcionhorariodisponible e WHERE e.codiHoraDisp in(select h from Horariodisponible h where h = :horaDisp and h.estaHoraDisp = 1) and e.fechExceHoraDisp = :fech");       
         q.setParameter("fech", fech);
         q.setParameter("horaDisp", hora);
         List resu = q.getResultList();
         return resu.isEmpty();
+    }
+    @Override
+    public List<Excepcionhorariodisponible> findByCodiUsua(int codiUsua) {
+        TypedQuery<Excepcionhorariodisponible> q = (TypedQuery<Excepcionhorariodisponible>) getEntityManager().createQuery("SELECT e FROM Excepcionhorariodisponible e WHERE e.codiHoraDisp in(Select h from Horariodisponible h where h.codiUsua = :codiUsua and h.estaHoraDisp = 1)");       
+        q.setParameter("codiUsua", codiUsua);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null: resu;
     }
     
 }

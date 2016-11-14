@@ -94,6 +94,12 @@
 .RegDiv{
     margin-right: 0px !important;
 }
+.field-error{
+    font-weight: bold;
+    color: #b71c1c;
+    float: right;
+    font-size: 12pt;
+}
 .cutom_search{
     width: 200px;
     float: right;
@@ -113,6 +119,12 @@
     display: inline-block !important;
     border-radius: 0px 5px 5px 0px;
     vertical-align: top;
+}
+.toolTipPrime{
+    z-index: 9999999 !important;
+}
+.nonDisplay{
+    display: none;
 }
 @media (max-width: 600px) {
     .cutom_search {

@@ -65,17 +65,21 @@ and open the template in the editor.
                                         pt:data-single-select="true">                                
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiExceHoraDisp}"/>
                                </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="nomb">
-                                   <f:facet name="header">Fecha de Exepción</f:facet>
+                               <h:column pt:data-sortable="true" pt:data-field="fech">
+                                   <f:facet name="header">Fecha de la Exepción</f:facet>
                                    <h:outputText value="#{fila.fechExceHoraDisp}">
-                                       <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                       <f:convertDateTime pattern="dd/MM/yyyy (EEEEE)" timeZone="GMT-6"/>
                                    </h:outputText>   
                                </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="dui">
+                               <h:column pt:data-sortable="true" pt:data-field="hora">
+                                   <f:facet name="header">Hora de la Exepción</f:facet>
+                                   <h:outputText value="#{fila.codiHoraDisp.horaInicHoraDisp} - #{fila.codiHoraDisp.horaInicHoraDisp}"/>
+                               </h:column>
+                               <h:column pt:data-sortable="true" pt:data-field="razo">
                                    <f:facet name="header">Razón de Excepción</f:facet>
                                    <h:outputText value="#{fila.razoExceHoraDisp}"/>   
                                </h:column>
@@ -101,24 +105,24 @@ and open the template in the editor.
                                         <h:inputHidden id="codi" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.codiExceHoraDisp}" />
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="dia" value="Horario: "/>
-                                            <h:selectOneMenu id="dia" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.codiHoraDisp}" class="form-control select" pt:data-live-search="true">
+                                            <h:message for="dia" errorClass="field-error" />
+                                            <h:selectOneMenu id="dia" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.codiHoraDisp}" class="form-control select" pt:data-live-search="true" requiredMessage="Debe seleccionar un Horario Disponible">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{horarioDisponibleBean.listHoraDisp}" var="lst" itemLabel="#{lst.diaHoraDisp.concat(' (').concat(lst.horaInicHoraDisp.concat(' - ').concat(lst.horaFinaHoraDisp).concat(') '))}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
-                                            <h:message for="dia" errorClass="field-error" />
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="fech" value="Fecha: "/>
+                                            <h:message for="fech" errorClass="field-error" />
                                             <h:inputText id="fech" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.fechExceHoraDisp}" class="form-control datepicker">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText> 
-                                            <h:message for="fech" errorClass="field-error" />
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="razo" value="Razón: "/>
-                                            <h:inputText id="razo" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.razoExceHoraDisp}" class="form-control"/>
-                                            <h:message for="razo" errorClass="field-error" />	
+                                            <h:message for="razo" errorClass="field-error" />
+                                            <h:inputText id="razo" value="#{excepcionHorarioDisponiblesBean.objeExceHoraDisp.razoExceHoraDisp}" class="form-control" required="true" requiredMessage="Debe definir una razón"/>	
                                         </div>
                                     </fieldset>
                                 </div>

@@ -69,7 +69,7 @@ and open the template in the editor.
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                    #{citasBean.consDepeListCitaUsua(fila)}
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiCita}"/>
                                </h:column>
@@ -304,7 +304,7 @@ and open the template in the editor.
                                                     pt:data-single-select="true">                                
                                                 <h:column pt:data-field="state" pt:data-checkbox="true">
                                                 </h:column>
-                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                                     <f:facet name="header">Código</f:facet>
                                                     <h:outputText value="#{fila.codiVisi}"/>
                                                 </h:column>
