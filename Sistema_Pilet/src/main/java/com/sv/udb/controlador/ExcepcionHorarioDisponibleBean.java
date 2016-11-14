@@ -86,7 +86,7 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
             this.objeExceHoraDisp = FCDEExceHoraDisp.find(codi);
             this.guardar = false;
             
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " +this.objeExceHoraDisp.getFechExceHoraDisp()+ "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
@@ -134,7 +134,8 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
             if(validar()){
               FCDEExceHoraDisp.create(this.objeExceHoraDisp);
               this.listExceHoraDisp.add(this.objeExceHoraDisp);
-              ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");  
+              ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+              limpForm();
             }
         }
         catch(Exception ex)

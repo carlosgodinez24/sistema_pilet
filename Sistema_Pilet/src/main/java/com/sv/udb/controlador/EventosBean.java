@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -87,7 +88,7 @@ public class EventosBean implements Serializable{
         {
             this.objeEven = FCDEEven.find(codi); //Encontrando el codigo
             this.guardar = false;
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " +this.objeEven.getNombEven()+ "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
@@ -109,6 +110,7 @@ public class EventosBean implements Serializable{
                 FCDEEven.create(this.objeEven);
                 this.listEven.add(this.objeEven);
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                limpForm();
             }
         }
         catch(Exception ex)
@@ -153,13 +155,25 @@ public class EventosBean implements Serializable{
         DateFormat formatter = new SimpleDateFormat("hh:mm a");
         try
         {
-            if((this.objeEven.getFechFinaEven().after(this.objeEven.getFechInicEven()))||(this.objeEven.getFechFinaEven().equals(this.objeEven.getFechInicEven())&&formatter.parse(this.objeEven.getHoraFinaEven()).after(formatter.parse(this.objeEven.getHoraInicEven()))))
+            //si las fechas son correctas
+            if((this.objeEven.getFechFinaEven().after(this.objeEven.getFechInicEven())))
             {
                 return true;
             }
             else
-            {
-                ctx.execute("setMessage('MESS_INFO', 'Atención', 'Fecha Final no debe ser antes de la Inicial');");
+            {   //si es el mismo dia pero con horas correctas
+                if((this.objeEven.getFechFinaEven().equals(this.objeEven.getFechInicEven())&&formatter.parse(this.objeEven.getHoraFinaEven()).after(formatter.parse(this.objeEven.getHoraInicEven())))){
+                    return true;
+                //si las fechas son correctas pero las horas son incorrectas
+                }else if((this.objeEven.getFechFinaEven().equals(this.objeEven.getFechInicEven()))&& !formatter.parse(this.objeEven.getHoraFinaEven()).after(formatter.parse(this.objeEven.getHoraInicEven()))){
+                    FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicEven", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora Final no puede ser antes de la Inicial",  null));
+                    FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaEven", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora Final no puede ser antes de la Inicial",  null));
+                //si las fechas son incorrectas
+                }else{
+                    FacesContext.getCurrentInstance().addMessage("FormRegi:fechInic", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La Fecha Final no puede ser antes de la Inicial",  null));
+                    FacesContext.getCurrentInstance().addMessage("FormRegi:fechFina", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La Fecha Final no puede ser antes de la Inicial",  null));
+                }
+                
                 return false;
             }
         }

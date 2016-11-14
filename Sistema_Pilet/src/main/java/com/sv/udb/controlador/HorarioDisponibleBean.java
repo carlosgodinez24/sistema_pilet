@@ -121,8 +121,7 @@ public class HorarioDisponibleBean implements Serializable{
             this.objeHoraDisp = FCDEHoraDisp.find(codi);
             this.guardar = false;
             //logger.info("Se ha consultado un horario: " + this.objeHoraDisp.getDiaHoraDisp()+" "+this.objeHoraDisp.getHoraInicHoraDisp() + " "+this.objeHoraDisp.getAnioHoraDisp());
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s %s", this.objeHoraDisp.getDiaHoraDisp(), this.objeHoraDisp.getHoraInicHoraDisp()) + "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
@@ -148,6 +147,7 @@ public class HorarioDisponibleBean implements Serializable{
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                 if(this.listHoraDisp.isEmpty()) this.listHoraDisp = new ArrayList<Horariodisponible>();
                 this.listHoraDisp.add(objeHoraDisp);
+                limpForm();
             }
         }
         catch(Exception ex)

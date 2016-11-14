@@ -115,33 +115,33 @@ and open the template in the editor.
                                         <h:inputHidden id="codi" value="#{visitantesBean.objeVisi.codiVisi}" />
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="nomb" value="Nombre: "/>
-                                            <h:inputText id="nomb" value="#{visitantesBean.objeVisi.nombVisi}" class="form-control" />
                                             <h:message for="nomb" errorClass="field-error" />
+                                            <h:inputText id="nomb" value="#{visitantesBean.objeVisi.nombVisi}" class="form-control" required="true" requiredMessage="Debe Registrar Su Nombre"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="apel" value="Apellido: "/>
-                                            <h:inputText id="apel" value="#{visitantesBean.objeVisi.apelVisi}" class="form-control" />
                                             <h:message for="apel" errorClass="field-error" />
+                                            <h:inputText id="apel" value="#{visitantesBean.objeVisi.apelVisi}" class="form-control" required="true" requiredMessage="Debe Registrar Su Apellido"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="dui" value="DUI: "/>
-                                            <p:inputMask id="dui" value="#{visitantesBean.objeVisi.duiVisi}" class="form-control" mask="99999999-9"/>
                                             <h:message for="dui" errorClass="field-error" />
+                                            <p:inputMask id="dui" value="#{visitantesBean.objeVisi.duiVisi}" class="form-control" mask="99999999-9" requiredMessage="DUI"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="tel" value="Teléfono: "/>
-                                            <p:inputMask id="tel" value="#{visitantesBean.objeVisi.teleVisi}" mask="9999-9999" class="form-control"/>
                                             <h:message for="tel" errorClass="field-error" />
+                                            <p:inputMask id="tel" value="#{visitantesBean.objeVisi.teleVisi}" mask="9999-9999" class="form-control" required="true" requiredMessage="Debe Registrar un Número Telefónico"/>
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="mail" value="E-mail: "/>
-                                            <h:inputText id="mail" value="#{visitantesBean.objeVisi.corrVisi}" class="form-control" />
                                             <h:message for="mail" errorClass="field-error" />
+                                            <h:inputText id="mail" value="#{visitantesBean.objeVisi.corrVisi}" class="form-control" required="true" requiredMessage="Debe Registrar un Correo Electrónico" validatorMessage="Formato Inválido" />
                                         </div>
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="tipo" value="Tipo Visitante: "/>
                                             <h:message for="tipo" errorClass="field-error" />
-                                            <h:selectOneMenu id="tipo" value="#{visitantesBean.objeVisi.tipoVisi}" class="form-control select" pt:data-live-search="true">
+                                            <h:selectOneMenu id="tipo" value="#{visitantesBean.objeVisi.tipoVisi}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar el Tipo de Visitante">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItem itemValue="1" itemLabel="Encargado Alumno"/>
                                                 <f:selectItem itemValue="2" itemLabel="Particular"/>

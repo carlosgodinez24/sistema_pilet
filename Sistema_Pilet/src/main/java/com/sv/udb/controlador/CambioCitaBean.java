@@ -84,8 +84,7 @@ public class CambioCitaBean implements Serializable{
         {
             this.objeCambCita = FCDECambCita.find(codi);
             this.guardar = false;
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s %s", this.objeCambCita.getFechInicCitaNuev(), this.objeCambCita.getFechFinCitaNuev()) + "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado)");
         }
         catch(Exception ex)
         {
