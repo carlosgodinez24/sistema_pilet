@@ -449,9 +449,9 @@ and open the template in the editor.
                                             
                                             
                                             <div class="form-group input-group-xs">
-                                                <h:outputLabel  for="beca" value="Beca:"/>
-                                                <h:message for="beca" errorClass="field-error" />
-                                                <h:inputText disabled="true" id="beca" value="#{detalleBecaBean.objeDetaBeca.codiBeca.codiBeca}" class="form-control" />
+                                                <h:outputLabel  for="alumBeca" value="Beca:"/>
+                                                <h:message for="alumBeca" errorClass="field-error" />
+                                                <h:inputText disabled="true" id="beca" value="#{becaSoliBean.objeBeca.codiBeca}" class="form-control" />
                                             </div>
                                             
                                             
@@ -459,7 +459,7 @@ and open the template in the editor.
                                             <div class="form-group input-group-xs">
                                                 <h:outputLabel  for="tipo" value="Tipo Beca"/>
                                                 <h:selectOneMenu id="tipo" value="#{detalleBecaBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
-                                                    <f:selectItems value="#{tipoBecaBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
+                                                    <f:selectItems value="#{becaSoliBean.listTipoBeca}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
                                                     <f:converter converterId="PooConv"/>
                                                 </h:selectOneMenu>
                                                 <h:message for="tipo" errorClass="field-error" />           

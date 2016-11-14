@@ -89,7 +89,8 @@ public class DetalleBecaBean implements Serializable{
         
         listTipoBeca = FCDETipoBeca.findTipos(objeCombPadr.getCodiSoliBeca().getCodiGrad().getNivelGrad());
     }
-
+    
+    
     
     /**
      * Creates a new instance of DetalleBecaBean
