@@ -981,12 +981,14 @@ public class CitasBean implements Serializable{
             if(this.listCitaAlumUsua == null)this.listCitaAlumUsua = new ArrayList<Cita>();
             List<Cita> listCitaAlumUsuaTemp = new ArrayList<Cita>(); 
             listCitaAlumUsuaTemp.addAll(listCitaAlumUsua);
+            if(listCitaAlumUsuaTemp!= null)
+            {
             for(Cita obje : listCitaAlumUsuaTemp){
                 Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
                 if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Visitantecita();
                if(objeAlumVisiTemp.getCarnAlum() == null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
             }
-            
+            }
         }
         catch(Exception ex)
         {
