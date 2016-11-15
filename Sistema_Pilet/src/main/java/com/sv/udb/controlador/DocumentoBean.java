@@ -21,21 +21,15 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import org.apache.log4j.Logger;
-import org.eclipse.persistence.jpa.jpql.Assert;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -82,13 +76,16 @@ public class DocumentoBean implements Serializable{
         this.consTodo();
         this.objeDocu.setFechDocu(new Date());
         this.inicializar();
+        
     }
     
     public void limpForm()
     {
         this.objeDocu = new Documento();
         this.guardar = true;  
+        this.showImag=false;
         this.objeDocu.setFechDocu(new Date());
+        
     }
     
     public void esta()
@@ -122,7 +119,7 @@ public class DocumentoBean implements Serializable{
         {
             this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();
             this.uploFile();
-            this.objeDocu.setEstaDocu(1);           
+            this.objeDocu.setEstaDocu(1);   
             FCDEDocu.create(this.objeDocu);
             this.listDocu.add(this.objeDocu);
             this.limpForm();
@@ -169,10 +166,23 @@ public class DocumentoBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listDocu.remove(this.objeDocu); //Limpia el objeto viejo
+          
             this.objeDocu.setEstaDocu(0);
-            FCDEDocu.edit(this.objeDocu);
-            this.listDocu.add(this.objeDocu); //Agrega el objeto modificado
+            String ruta = this.rutas.get(0) + this.objeDocu.getRutaDocu();
+            
+    		File file = new File(ruta);
+
+    		if(file.delete()){
+    			System.out.println(file.getName() + " is deleted!");
+    		}else{
+    			System.out.println("Delete operation is failed.");
+    		}
+
+
+            
+            FCDEDocu.remove(this.objeDocu);
+            this.listDocu.remove(this.objeDocu); //Limpia el objeto viejo
+            //this.listDocu.add(this.objeDocu); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Documento Modificado");
         }
@@ -211,12 +221,16 @@ public class DocumentoBean implements Serializable{
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {
+            
             this.objeDocu = FCDEDocu.find(codi);
             String h = this.rutas.get(0);
             //System.out.println(h + this.objeDocu.getRutaDocu());
             rutaC = h + this.objeDocu.getRutaDocu();
             //this.objeDocu.setRutaDocu(h + this.objeDocu.getRutaDocu());
             this.guardar = false;
+            this.showDocu = false;
+            this.showImag=false;
+                    
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDocu.getRutaDocu()) + "')");
             log.info("Documento Consultado");
@@ -272,8 +286,8 @@ public class DocumentoBean implements Serializable{
             
             this.listNombFile = new ArrayList<>();
             this.rutas = new ArrayList<>();
-            //String ruta ="C:/Users/Ariel/Desktop/becas/";    
-            String ruta = "/home/eduardo/Escritorio/asd/";
+            String ruta ="C:/Users/Ariel/Desktop/becas/";    
+            //String ruta = "/home/eduardo/Escritorio/asd/";
            rutas.add(ruta);
            DireActuInde = 0;
           //this.consTodo("");
@@ -549,6 +563,8 @@ public class DocumentoBean implements Serializable{
     public void toogImag()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+       
         this.showImag = !this.showImag;
+        System.out.println(this.showImag);
     }
 }

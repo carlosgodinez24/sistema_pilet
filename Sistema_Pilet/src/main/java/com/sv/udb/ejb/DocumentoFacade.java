@@ -6,9 +6,12 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Documento;
+import com.sv.udb.modelo.Transaccion;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -23,6 +26,13 @@ public class DocumentoFacade extends AbstractFacade<Documento> implements Docume
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    @Override
+    public Documento findLast() {
+        Query q = getEntityManager().createNativeQuery("select * from documento order by documento.fech_docu DESC limit 1", Documento.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (Documento)resu.get(0);
     }
 
     public DocumentoFacade() {
