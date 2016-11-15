@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstadisticasCitas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d3aeefd7-be22-4429-b7af-bc8e642763fb">
 	<property name="ireport.zoom" value="0.9090909090909091"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="51"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -47,7 +47,7 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 		<band height="78" splitType="Stretch">
 			<image>
 				<reportElement x="18" y="0" width="161" height="78" uuid="66d08cda-7299-4323-9713-7efede6314cb"/>
-				<imageExpression><![CDATA["K:\\ControlCitas\\ControlCitas\\src\\main\\webapp\\WEB-INF\\resources\\reportes\\ricaldone.png"]]></imageExpression>
+				<imageExpression><![CDATA["ricaldone.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="179" y="23" width="316" height="28" uuid="a3184cd4-2cc3-43b2-a1fb-7c3217c79844"/>
@@ -87,7 +87,7 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="28" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
 				<reportElement style="table" x="124" y="0" width="162" height="20" uuid="dd6c0a64-ff87-4e1a-bafa-0351dbf1a749"/>
 				<textElement textAlignment="Center">

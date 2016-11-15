@@ -95,10 +95,24 @@ and open the template in the editor.
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="fech">
                                    <f:facet name="header">Fecha y Hora</f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}"> 
-                                    <f:convertDateTime pattern="EEEE dd/MM/yyyy" timeZone="GMT-6"/>
-                                   </h:outputText><br/>de
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} a #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
+                                   <h:panelGroup rendered="#{citasBean.datef.format(citasBean.objeCambCitaDepe.fechInicCitaNuev) ne citasBean.datef.format(citasBean.objeCambCitaDepe.fechFinCitaNuev)}">
+                                            Desde
+                                         <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}">
+                                             <f:convertDateTime pattern="EEEE dd/MM/yyyy" timeZone="GMT-6"/>
+                                         </h:outputText> a las
+                                         <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev}"/> <br/>hasta 
+                                         <h:outputText value="#{citasBean.objeCambCitaDepe.fechFinCitaNuev}">
+                                             <f:convertDateTime pattern="EEEE dd/MM/yyyy" timeZone="GMT-6"/>
+                                         </h:outputText> a las 
+                                        <h:outputText value="#{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
+                                   </h:panelGroup>
+                                   <h:panelGroup rendered="#{citasBean.datef.format(citasBean.objeCambCitaDepe.fechInicCitaNuev) eq citasBean.datef.format(citasBean.objeCambCitaDepe.fechFinCitaNuev)}">
+                                       <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}"> 
+                                            <f:convertDateTime pattern="EEEE dd/MM/yyyy" timeZone="GMT-6"/>
+                                       </h:outputText><br/>de
+                                       <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} a #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
+                                   </h:panelGroup>
+                                  
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="luga">
                                    <f:facet name="header">Lugar </f:facet>

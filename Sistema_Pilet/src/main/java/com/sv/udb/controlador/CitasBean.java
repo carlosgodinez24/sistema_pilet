@@ -119,7 +119,9 @@ public class CitasBean implements Serializable{
     private String buscAlum="";
     private List<HorarioCitas> listHoraCitaDoce;
     private HorarioCitas horaSeleSoliCita;
-
+    DateFormat timef = new SimpleDateFormat("hh:mm a");
+    DateFormat datef = new SimpleDateFormat("dd/MM/yyyy");
+    
     public HorarioCitas getHoraSeleSoliCita() {
         return horaSeleSoliCita;
     }
@@ -461,6 +463,22 @@ public class CitasBean implements Serializable{
 
     public void setIgnoExceHora(boolean ignoExceHora) {
         this.ignoExceHora = ignoExceHora;
+    }
+
+    public DateFormat getTimef() {
+        return timef;
+    }
+
+    public void setTimef(DateFormat timef) {
+        this.timef = timef;
+    }
+
+    public DateFormat getDatef() {
+        return datef;
+    }
+
+    public void setDatef(DateFormat datef) {
+        this.datef = datef;
     }
 
     
@@ -1182,13 +1200,23 @@ public class CitasBean implements Serializable{
         
     }
     //confirmar(1), rechazar(2), Reprogramar(3) cita
-    private boolean valiDatoCambCita(int acci){
+    private boolean valiDatoCambCita(int acci) throws ParseException{
         boolean vali = false;
+        DateFormat formatter = new SimpleDateFormat("hh:mm a");
         //si no es nulo ó se esta solicitando cancelación ó se esta rechazando
         if(objeCita.getCodiUbic() != null || (acci == 1 && objeCita.getEstaCita() == 5) || acci == 2){
             //si no es nulo ó se esta solicitando cancelación  ó se esta rechazando
             if((motivo != null && !motivo.trim().equals("")) || (acci == 1 && objeCita.getEstaCita() == 5) || acci == 2){
-                vali = true;
+                if(ignoHoraDisp){
+                    if(formatter.parse(FechFina).after(formatter.parse(FechInic))){
+                        vali = true;
+                    }else{
+                        FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
+                        FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
+                    }
+                }else{
+                    vali = true;
+                }
             }else{
                 FacesContext.getCurrentInstance().addMessage("FormRegi:descCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe Especificar El Motivo",  null));
             }
@@ -1280,23 +1308,32 @@ public class CitasBean implements Serializable{
     
     private boolean valiDatoProgVisiUsua() throws ParseException{
         boolean vali = false;
-        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        //si la fecha no es null y ( si el horario no es null ó se esta ignorando el horario)
         if((horaSeleCita != null || ignoHoraDisp) && fechSoliCita!= null){
             int diaHoraDisp = (horaSeleCita == null)? 0 : getDay(this.horaSeleCita.getDiaHoraDisp());
             int diaExceHoraDisp = this.fechSoliCita.getDay();
+            //si la fecha = horario
             if(diaHoraDisp == diaExceHoraDisp || ignoHoraDisp){
+                //si hay visitantes en la cita
                 if(listVisiTemp.size() > 0 || listVisiVisiTemp.size() > 0){
                     DateFormat formatter = new SimpleDateFormat("hh:mm a");
-                    if(fechSoliCita.after(new Date())){
+                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    //si la fecha es despues de "hoy"
+                    if(!fechSoliCita.before(new Date()) || df.format(fechSoliCita).equals(df.format(new Date()))){
+                        //si la ubicacion != null
                         if(objeCita.getCodiUbic() != null){
+                            //si el motivo != null
                             if((motivo != null && !motivo.trim().equals(""))){
-                                if(formatter.parse(FechFina).after(formatter.parse(FechInic)) && ignoHoraDisp){
-                                    vali = true;
-                                }else if(!ignoHoraDisp){
-                                    vali = true;
+                                //fecha fin despues de fecha inicio y se ignora 
+                                if(ignoHoraDisp){
+                                    if(formatter.parse(FechFina).after(formatter.parse(FechInic)) && ignoHoraDisp){
+                                        vali = true;
+                                    }else{
+                                        FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
+                                        FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
+                                    }
                                 }else{
-                                    FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
-                                    FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
+                                    vali = true;
                                 }
                             }else{
                                 FacesContext.getCurrentInstance().addMessage("FormRegi:descCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe Especificar El Motivo",  null));
