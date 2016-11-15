@@ -166,27 +166,29 @@ and open the template in the editor.
                                             
                                             <h:outputLabel  for="hora" value="Horario comunmente disponible"/>
                                             <h:message for="hora" errorClass="field-error" />
-                                            <h:selectOneMenu id="hora" value="#{citasBean.horaSeleSoliCita}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar una horario Disponible">
+                                            <h:selectOneMenu id="hora" value="#{citasBean.horaSeleSoliCita}" class="form-control select" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{citasBean.listHoraCitaDoce}" var="lstHora" itemLabel="#{lstHora.diaDisp} #{lstHora.fecha} de (#{lstHora.horaInic} a #{lstHora.horaFina})" itemValue="#{lstHora}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                         </div>
                                         
-                                        <div class="input-group col-xs-12">
-                                            <h:outputLabel  for="visi" value="¿Quién solicita esta cita?"/>
-                                            <h:message for="visi" errorClass="field-error" />  
-                                            <h:selectOneMenu id="visi" value="#{citasBean.alumVisiSelec}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Seleccionese usted mismo como encarfado de #{loginBean.usuaPojo.nomb}">
-                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{alumnoVisitanteBean.listAlumVisiCarne}" var="lstVisi" itemLabel="#{lstVisi.codiVisi.nombVisi} #{lstVisi.codiVisi.apelVisi}" itemValue="#{lstVisi}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>                                          
-                                        </div>
+                                        <h:panelGroup rendered="#{citasBean.programar}">
+                                            <div class="input-group col-xs-12">
+                                                <h:outputLabel  for="visi" value="¿Quién solicita esta cita?"/>
+                                                <h:message for="visi" errorClass="field-error" />  
+                                                <h:selectOneMenu id="visi" value="#{citasBean.alumVisiSelec}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Seleccionese usted mismo como encarfado de #{loginBean.usuaPojo.nomb}">
+                                                    <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                    <f:selectItems value="#{alumnoVisitanteBean.listAlumVisiCarne}" var="lstVisi" itemLabel="#{lstVisi.codiVisi.nombVisi} #{lstVisi.codiVisi.apelVisi}" itemValue="#{lstVisi}"/>
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectOneMenu>                                          
+                                            </div>
+                                        </h:panelGroup>
                                         
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="moti" value="Motivo: "/>
                                             <h:message for="moti" errorClass="field-error" />	
-                                            <h:inputText id="moti" value="#{citasBean.motivo}" class="form-control" required="true" requiredMessage="Debe Registrar El Motivo de La Cita"/>
+                                            <h:inputText id="moti" value="#{citasBean.motivo}" class="form-control" required="true" requiredMessage="Debe Registrar El Motivo"/>
                                         </div>
                                         
                                         

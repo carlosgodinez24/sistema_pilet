@@ -177,6 +177,10 @@ and open the template in the editor.
                                             <h:panelGroup rendered="#{!citasBean.isGrouVisi}">
                                                 <h4 style="">Visitantes Involucrados en la Visita:</h4>
                                             </h:panelGroup>
+                                            <h:form id="frmMensGlob">
+                                                <h:inputHidden id="mensTabl" value="#"/>
+                                                <h:message for="mensTabl" errorClass="field-error"/>
+                                            </h:form>
                                             <h:dataTable pt:data-id="TablInvo" value="#{citasBean.listVisiVisiTemp}"
                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablInvo"
                                                     styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
@@ -287,16 +291,16 @@ and open the template in the editor.
                                                     </h:inputText> 
                                                 </div>
                                                 <div class="input-group col-xs-12">
+                                                    <h:outputLabel  for="horaInicCita" value="Hora de Inicio: "/>
+                                                    <h:message for="horaInicCita" errorClass="field-error" />
+                                                    <h:inputText id="horaInicCita" value="#{citasBean.fechInic}" class="form-control timepicker" required="true" requiredMessage="Debe Seleccionar una Hora de Inicio"/>
+                                                </div>
+                                                <div class="input-group col-xs-12">
                                                     <h:outputLabel  for="fechFina" value="Fecha Final: "/>
                                                     <h:message for="fechFina" errorClass="field-error" />
                                                     <h:inputText id="fechFina" value="#{citasBean.fechSoliCita2}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha de Finalización">
                                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                                     </h:inputText> 
-                                                </div>
-                                                <div class="input-group col-xs-12">
-                                                    <h:outputLabel  for="horaInicCita" value="Hora de Inicio: "/>
-                                                    <h:message for="horaInicCita" errorClass="field-error" />
-                                                    <h:inputText id="horaInicCita" value="#{citasBean.fechInic}" class="form-control timepicker" required="true" requiredMessage="Debe Seleccionar una Hora de Inicio"/>
                                                 </div>
                                                 <div class="input-group col-xs-12">
                                                     <h:outputLabel  for="horaFinaCita" value="Hora de Finalización: "/>

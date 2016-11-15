@@ -158,6 +158,10 @@ and open the template in the editor.
                                     <h:panelGroup rendered="#{citasBean.switFormCita}">
                                         <div class="modal-body">
                                             <h4 style="">Visitantes Involucrados en la Cita:</h4>
+                                            <h:form id="frmMensGlob">
+                                                <h:inputHidden id="mensTabl" value="#"/>
+                                                <h:message for="mensTabl" errorClass="field-error"/>
+                                            </h:form>
                                             <h:dataTable pt:data-id="TablInvo" value="#{citasBean.listVisiTemp}"
                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablInvo"
                                                     styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
@@ -234,7 +238,7 @@ and open the template in the editor.
                                             <div class="input-group col-xs-12">
                                                 <h:outputLabel  for="ubicCita" value="Lugar "/>
                                                 <h:message for="ubicCita" errorClass="field-error" />
-                                                <h:selectOneMenu id="ubicCita" value="#{citasBean.objeCita.codiUbic}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar un Lugar">
+                                                <h:selectOneMenu id="ubicCita" value="#{citasBean.objeCita.codiUbic}" class="form-control select" pt:data-live-search="true">
                                                     <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                     <f:selectItems value="#{ubicacionesBean.consListUbicPorDispCita()}" var="lst" itemLabel="#{lst.nombUbic}" itemValue="#{lst}"/>
                                                     <f:converter converterId="PooConv"/>
@@ -289,7 +293,7 @@ and open the template in the editor.
                                             <div class="input-group col-xs-12">
                                                 <h:outputLabel  for="descCita" value="Motivo: "/>
                                                 <h:message for="descCita" errorClass="field-error" />
-                                                <h:inputTextarea  id="descCita" value="#{citasBean.motivo}" class="form-control" required="true" requiredMessage="Debe Especificar El Motivo"/>
+                                                <h:inputTextarea  id="descCita" value="#{citasBean.motivo}" class="form-control"/>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
