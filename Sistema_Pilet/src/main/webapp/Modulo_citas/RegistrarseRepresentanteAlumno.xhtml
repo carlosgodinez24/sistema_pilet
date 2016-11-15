@@ -165,7 +165,7 @@ and open the template in the editor.
                                                     <p:ajax listener="#{alumnoVisitanteBean.limpForm()}" process="@form" update="@form" global="true"/>
                                                     <i class="fa fa-mail-forward"/> Cerrar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{alumnoVisitanteBean.guardar}">
+                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{alumnoVisitanteBean.guardar and !alumnoVisitanteBean.contForm}">
                                                     <p:ajax listener="#{alumnoVisitanteBean.regiVisi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_FORM();" />
                                                     <i class="fa fa-plus"/> Registrar
                                                 </h:commandLink>

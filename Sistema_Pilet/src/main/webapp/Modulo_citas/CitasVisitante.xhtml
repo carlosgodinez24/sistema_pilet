@@ -145,6 +145,10 @@ and open the template in the editor.
                                     <h:panelGroup rendered="#{citasBean.switFormCita}">
                                         <div class="modal-body">
                                             <h4 style="">Visitantes Involucrados en la Cita:</h4>
+                                            <h:form id="frmMensGlob">
+                                                <h:inputHidden id="mensTabl" value="#"/>
+                                                <h:message for="mensTabl" errorClass="field-error"/>
+                                            </h:form>
                                             <h:dataTable pt:data-id="TablInvo" value="#{citasBean.listVisiVisiTemp}"
                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablInvo"
                                                     styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
