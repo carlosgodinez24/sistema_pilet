@@ -699,6 +699,7 @@ public class CitasBean implements Serializable{
                     break;
                 }
                 estaCita();
+                limpForm();
             }
         }
         catch(Exception ex)
@@ -706,6 +707,26 @@ public class CitasBean implements Serializable{
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al realizar la acción')");
             ex.printStackTrace();
         }
+    }
+    //1 solicitar, 2 soli repro
+    private boolean valiDatoCitaVisi(int acci){
+        boolean val = false;
+            if(this.horaSeleSoliCita== null)
+            {
+                switch(acci){
+                    case 1:
+                        FacesContext.getCurrentInstance().addMessage("FormRegi:hora", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe Seleccionar una horario Disponible",  null));
+                    break;
+                    case 2:
+                        val = true;
+                    break;
+                }
+            }
+            else
+            {
+                val=true;
+            }
+        return val;
     }
     private int getDay(String dia){
         int ndia = 0;
@@ -717,31 +738,7 @@ public class CitasBean implements Serializable{
     }
     
     
-    
-    
-    //1 solicitar, 2 soli repro, 3 soli cance
-    private boolean valiDatoCitaVisi(int acci){
-        boolean val = false;
-            if(this.horaSeleSoliCita== null)
-            {
-                switch(acci){
-                    case 1:
-                        FacesContext.getCurrentInstance().addMessage("FormRegi:hora", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe Seleccionar una horario Disponible",  null));
-                    break;
-                    case 2:
-                        FacesContext.getCurrentInstance().addMessage("FormRegi:hora", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe Seleccionar una horario Disponible",  null));
-                    break;
-                    case 3:
-                        val = true;
-                    break;
-                }
-            }
-            else
-            {
-                val=true;
-            }
-        return val;
-    }
+   
     
     
     /* TERMINA SECCIÓN DESTINADA A LA PROGRAMACIÓN DE CITAS PARA VISITANTES */
@@ -1610,6 +1607,7 @@ public class CitasBean implements Serializable{
                     listVisiUsua.add(objeCita);
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Reprogramada'); $('#ModaFormRegi').modal('hide');");
                     estaCita();
+                    limpForm();
             }
             
         }
