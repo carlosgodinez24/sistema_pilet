@@ -14,6 +14,7 @@ import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.Grado;
 import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoBeca;
+import com.sv.udb.modelo.TipoRetiro;
 import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.utils.AlumnosPojo;
 import java.io.Serializable;
@@ -182,6 +183,7 @@ public class BecaSoliBean implements Serializable {
         this.objeBeca = new Beca();  
         this.objeSoli = new SolicitudBeca();
         this.objeSoli.setFechSoliBeca(new Date());
+        this.objeBeca.setFechBaja(new Date());
         this.guardar = true; 
         this.falso();
         this.filt = "";
@@ -205,7 +207,8 @@ public class BecaSoliBean implements Serializable {
                     System.out.println("AQUIIII: "+this.objeSoli2);
                     this.objeBeca.setCodiSoliBeca(objeSoli2);
                     this.objeBeca.setCodiTipoEsta(a);
-                    this.objeBeca.setFechInic(new Date());
+                    this.objeBeca.setFechInic(objeBeca.getFechBaja());
+                    this.objeBeca.setFechBaja(null);
                     System.out.println(objeBeca);
                     this.FCDEBeca.create(objeBeca);
                     this.listSoli.add(this.objeSoli);
@@ -246,6 +249,7 @@ public class BecaSoliBean implements Serializable {
             this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
             this.listSoli.remove(this.objeSoli);
             this.objeSoli2.setEstaSoliBeca(3);
+            objeSoli.setBecaList(null);
             FCDESoli.edit(objeSoli2);
             this.listSoli.add(objeSoli2);
             this.objeSoli.setEstaSoliBeca(1);
@@ -265,6 +269,8 @@ public class BecaSoliBean implements Serializable {
             this.listBeca.add(objeBeca);
             //FCDESoli.edit(this.objeSoli);
             //this.listSoli.add(this.objeSoli); //Agrega el objeto modificado
+            this.consTodoH();
+            this.consTodo();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Solicitud Modificada");
             
@@ -285,42 +291,33 @@ public class BecaSoliBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            /*Busca el objeto viejo le setea el estado 3 de historial y lo modifica*/
-            this.objeBeca2 = FCDEBeca.findSoli(this.objeBeca.getCodiSoliBeca().getCodiSoliBeca());
-            this.listBeca.remove(this.objeBeca2);
+             /*Busca el objeto viejo le setea el estado 3 de historial y lo modifica*/
+            //this.listBeca.remove(this.objeBeca);
+            this.objeSoli2 = this.objeSoli;
+            this.objeSoli.setEstaSoliBeca(3);
+            FCDESoli.edit(objeSoli);              //edita
+            this.objeBeca2 = this.objeBeca;
             TipoEstado esta = new TipoEstado();
             esta.setCodiTipoEsta(3);
             this.objeBeca.setCodiTipoEsta(esta);
-            FCDEBeca.edit(this.objeBeca2);
-            this.listBeca.add(this.objeBeca2); //Agrega el objeto modificado
-            
-            /**/
-            this.listSoli.remove(this.objeSoli);
-            objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());
-            objeSoli2.setEstaSoliBeca(3);
-            FCDESoli.edit(objeSoli2);
-            this.listSoli.add(objeSoli2);
-            
-            /**/
-            FCDESoli.create(objeSoli);
-            this.listSoli.add(objeSoli);
-            
-            
-            /*Setea la informacion ingresada en el objeto e inserta el nuevo objeto en la base*/
-            TipoEstado esta2 = new TipoEstado();
-            esta2.setCodiTipoEsta(1);
-            this.objeBeca.setCodiTipoEsta(esta2);
-            this.objeBeca.setRetiBeca(null);
-            this.objeBeca.setCodiReti(null);
-            this.objeSoli = FCDESoli.findLast();
-            this.objeBeca.setCodiSoliBeca(objeSoli);
-            this.objeBeca.setFechBaja(null);
-            FCDEBeca.create(this.objeBeca);
-            this.listBeca.add(this.objeBeca);
+            FCDEBeca.edit(objeBeca);                          
+            this.objeSoli2.setEstaSoliBeca(1);            
+            TipoRetiro reti = new TipoRetiro();
+            reti.setCodiReti(null);
+            this.objeBeca2.setCodiReti(null);
+            this.objeBeca2.setRetiBeca(null);
+            esta.setCodiTipoEsta(1);
+            this.objeBeca2.setCodiTipoEsta(esta);
+            objeSoli2.setBecaList(null);
+            FCDESoli.create(objeSoli2);
+            this.objeSoli2 = FCDESoli.findLast();
+            this.objeBeca2.setCodiSoliBeca(objeSoli2);
+            this.objeBeca2.setFechBaja(null);
+            FCDEBeca.create(objeBeca2);     
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
             log.info("Beca reactivada");
             this.consTodo();
-            
+            this.consTodoH();
         }
         catch(Exception ex)
         {
@@ -344,7 +341,9 @@ public class BecaSoliBean implements Serializable {
             esta.setCodiTipoEsta(2);
             this.objeBeca.setCodiTipoEsta(esta);
             this.objeBeca.setFechBaja(new Date());
+            this.objeSoli.setEstaSoliBeca(2);
             FCDEBeca.edit(this.objeBeca);
+            FCDESoli.edit(objeSoli);
             this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
             log.info("Beca reactivada");
@@ -353,9 +352,12 @@ public class BecaSoliBean implements Serializable {
         }
         catch(Exception ex)
         {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+                        ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
             log.error(getRootCause(ex).getMessage());
             System.out.println("AQUI "+ex);
+            System.out.println("AQUI "+ex.getMessage());
+            System.out.println("AQUI "+ex.getCause());
+            System.out.println("AQUI "+getRootCause(ex).getMessage());
         }
         finally
         {
@@ -625,6 +627,7 @@ public class BecaSoliBean implements Serializable {
             em.persist(object);
             utx.commit();
         } catch (Exception e) {
+           
             java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
             throw new RuntimeException(e);
         }
