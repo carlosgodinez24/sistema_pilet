@@ -5,6 +5,8 @@ package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.EventoFacadeLocal;
 import com.sv.udb.modelo.Evento;
+import com.sv.udb.controlador.LoginBean;
+import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -31,12 +34,21 @@ public class EventosBean implements Serializable{
     public EventosBean() {
         
     }
-     
+    //Bean Sesion
+    @Inject
+    private LoginBean logiBean;  
+    
+    
     @EJB
     private EventoFacadeLocal FCDEEven;    
     private Evento objeEven;
     private List<Evento> listEven;
     private boolean guardar;
+    
+    
+    private LOG4J<EventosBean> lgs = new LOG4J<EventosBean>(EventosBean.class) {
+    };
+    private Logger log = lgs.getLog();
     
     public Evento getObjeEven() {
         return objeEven;
@@ -88,10 +100,12 @@ public class EventosBean implements Serializable{
         {
             this.objeEven = FCDEEven.find(codi); //Encontrando el codigo
             this.guardar = false;
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Consultar evento: " + objeEven.getNombEven());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
+            log.error("Error al consultar evento");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
     }
@@ -109,12 +123,14 @@ public class EventosBean implements Serializable{
             {
                 FCDEEven.create(this.objeEven);
                 this.listEven.add(this.objeEven);
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Agregado evento: " + objeEven.getNombEven());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                 limpForm();
             }
         }
         catch(Exception ex)
         {
+            log.error("Error al registar evento");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
         }
     }
@@ -134,11 +150,13 @@ public class EventosBean implements Serializable{
                 this.listEven.remove(this.objeEven); //Limpia el objeto viejo
                 FCDEEven.edit(this.objeEven);
                 this.listEven.add(this.objeEven); //Agrega el objeto modificado
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Modificar evento: " + objeEven.getNombEven());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             }
         }
         catch(Exception ex)
         {
+            log.error("Error al modificar evento");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
@@ -196,10 +214,12 @@ public class EventosBean implements Serializable{
         {
             FCDEEven.remove(this.objeEven);
             this.listEven.remove(this.objeEven);
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Eliminar evento codigo: " + objeEven.getCodiEvent());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
         catch(Exception ex)
         {
+            log.error("Error al eliminar evento");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }
