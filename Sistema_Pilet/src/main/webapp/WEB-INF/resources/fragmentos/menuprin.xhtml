@@ -227,6 +227,13 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiCitaRepo}">
+                                    <h:link outcome="/Modulo_citas/reportes" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/reportes.xhtml')}">
+                                        <i class="fa fa-user"></i> Reportes
+                                    </h:link>
+                                </li>
+                            </ul>
                         </li>
                     </ui:fragment>  
                     <ui:fragment  rendered="#{globalAppBean.getEstaPermByName('Sistema_Pilet/poo/Modulo_becas')}">
