@@ -6,6 +6,7 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -140,6 +141,7 @@ public class Cambiocita implements Serializable {
         return fechInicCitaNuev;
     }
 
+    
     public void setFechInicCitaNuev(Date fechInicCitaNuev) {
         this.fechInicCitaNuev = fechInicCitaNuev;
     }
