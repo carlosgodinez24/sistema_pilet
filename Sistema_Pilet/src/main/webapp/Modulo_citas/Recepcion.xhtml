@@ -343,6 +343,7 @@ and open the template in the editor.
                                             </h:dataTable>
                                         </ui:fragment>
                                         <ui:fragment rendered="#{!citasBean.switFormCita and !citasBean.isVisiUsua}">
+                                            <!--FRAGMENTO DE SELECCIÓN DE EMPLEADO-->
                                             <h:form>
                                                 <div class="input-group col-xs-12">
                                                     <h:outputLabel  for="tipoEmpl" value="Tipo de Empleado"/>
@@ -395,6 +396,7 @@ and open the template in the editor.
                                                     </h:panelGroup>
                                                 </h:column>
                                             </h:dataTable>
+                                            <!-- TERMINA FRAGMENTO DE SELECCIÓN DE EMPLEADO-->
                                         </ui:fragment>
                                         <ui:fragment rendered="#{!citasBean.switFormCita}">
                                             <div class="modal-footer">
