@@ -441,17 +441,13 @@ public class TransaccionBean implements Serializable{
             
             //Crear el objeto de empresa para restarle al fondito de la empresa 2:24 am
             this.objeEmpr = FCDEEmpr.find(this.objeTran.getCodiDona().getCodiEmpr().getCodiEmpr());
-            this.montEmprTota = FCDETran.findMontoEmpr(this.objeTran.getCodiDona().getCodiEmpr().getCodiEmpr());
-            this.objeEmpr.setMontEmpr(this.objeEmpr.getMontEmpr().subtract(this.objeTran.getMontTran()));
             
-            //Enviar el monto de la transacción al método para restarlo del fondo
-            boolean conf2 = this.reem(this.objeTran.getMontTran(), 1);
+            //Enviar el monto de la transacción al método para restarlo del fondo y del fondo de la empresa
+            boolean conf2 = this.reem(this.objeTran.getMontTran(), 1, objeEmpr);
             
             if (conf2) {
                 //Modificar la donación
                 FCDEDona.edit(this.objeDona);
-                //Modificar la empresa
-                FCDEEmpr.edit(objeEmpr);
                 //Proceso normal de modificación de la transacción
                 this.listTran.remove(this.objeTran); //Limpia el objeto viejo
                 this.objeTran.setEstaTran(0);
@@ -474,7 +470,7 @@ public class TransaccionBean implements Serializable{
     }
     
     /**
-     * Éste método debe de desactivar una salida como entrega de detalles de beca y sumar el monto de la transacción al fondo total 
+     * Éste método debe de desactivar una salida como entrega de detalles de beca y sumar el monto de la transacción al fondo total y al fondo de la empresa
      */
     public void desaSali()
     {
@@ -495,20 +491,17 @@ public class TransaccionBean implements Serializable{
             this.objeDeta = FCDEDeta.findDetaTran(this.objeTran.getCodiTran());
             this.objeDeta.setEstaDeta(0);
             
-            //Sumarle el monto a la empresa 2:36 am
+            //Obtener el objeto de empresa a la que hay que sumarle la transacción
             this.objeEmpr = FCDEEmpr.find(this.objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca().getCodiEmpr().getCodiEmpr());
-            this.objeEmpr.setMontEmpr(this.objeEmpr.getMontEmpr().add(this.objeTran.getMontTran()));
             
-            //Enviar al método para sumar el monto
-            boolean conf2 = this.reem(this.objeTran.getMontTran(), 2);
+            //Enviar al método para sumar el monto total y de la empresa
+            boolean conf2 = this.reem(this.objeTran.getMontTran(), 2, objeEmpr);
             
             if (conf2) {
                 //Modificar el detalle de beca
                 FCDEDetaBeca.edit(objeDetaBeca);
                 //Modificar el detalle de beca
                 FCDEDeta.edit(objeDeta);
-                //Editar la empresa
-                FCDEEmpr.edit(objeEmpr);
                 //Proceso normal de modificación de la transacción
                 this.listTran.remove(this.objeTran); //Limpia el objeto viejo
                 this.objeTran.setEstaTran(0);
@@ -589,13 +582,12 @@ public class TransaccionBean implements Serializable{
      * Este método sirve para las operaciones de sumar y restar montos de transacciones cuando se desactivan, realiza un nuevo insert a la tabla transacciones como reembolso del dinero
      * @param monto de transacciones que se desea sumar o restar del fondo total
      * @param tipo para decidir si se resta o suma del fondo total (1: restar, 2: sumar)
+     * @param empr objeto de la empresa a la que hay que editarle el monto total
      * @return 
      */
-    public boolean reem(BigDecimal monto, int tipo){
+    public boolean reem(BigDecimal monto, int tipo, Empresa empr){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try {
-            System.out.println("Monto a desactivar: "+monto);
-            System.out.println("Tipo: "+tipo);
             //Obtener el monto total al que hay que restarle el monto de transacciones
             this.objeTranTemp = FCDETran.findLast();
             this.objeTranDesa.setMontTran(monto);
@@ -606,8 +598,9 @@ public class TransaccionBean implements Serializable{
                 case 1:
                     //Si el monto total disponible es menor a la cantidad que se desea restar la transacción no puede realizarse
                     //1 el primer monto es mayor al segundo
-                    if (this.objeTranTemp.getMontTota().compareTo(monto) == 1 ) {
+                    if (empr.getMontEmpr().compareTo(monto) == 1 ) {
                         this.objeTranDesa.setMontTota(objeTranTemp.getMontTota().subtract(monto));
+                        empr.setMontEmpr(empr.getMontEmpr().subtract(monto));
                         //Variable para guardar
                         this.guarTran = true;
                     } else {
@@ -616,6 +609,7 @@ public class TransaccionBean implements Serializable{
                     break;
                 case 2:
                     this.objeTranDesa.setMontTota(objeTranTemp.getMontTota().add(monto));
+                    empr.setMontEmpr(empr.getMontEmpr().add(monto));
                     this.guarTran = true;
                     break;
                 default:
@@ -626,6 +620,8 @@ public class TransaccionBean implements Serializable{
                 //setear el estado de tran xd
                 this.objeTranDesa.setEstaTran(1);
                 this.objeTranDesa.setTipoTran(3);
+                //Editar la empresa
+                FCDEEmpr.edit(empr);
                 //Para cuando cree la transacción
                 FCDETran.create(this.objeTranDesa);
                 this.listTran.add(this.objeTranDesa);
