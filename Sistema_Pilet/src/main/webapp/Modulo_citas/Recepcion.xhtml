@@ -344,25 +344,17 @@ and open the template in the editor.
                                         </ui:fragment>
                                         <ui:fragment rendered="#{!citasBean.switFormCita and !citasBean.isVisiUsua}">
                                             <!--FRAGMENTO DE SELECCIÓN DE EMPLEADO-->
-                                            <h:form>
-                                                <div class="input-group col-xs-12">
-                                                    <h:outputLabel  for="tipoEmpl" value="Tipo de Empleado"/>
-                                                    <h:message for="tipoEmpl" errorClass="field-error" />
-                                                    <h:selectOneMenu id="tipoEmpl" value="#{citasBean.objeCita.codiUsua}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar un profesor de #{loginBean.usuaPojo.nomb}">
-                                                        <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                        <f:selectItems value="#{citasBean.consDoceAlum().doce}" var="lstDoce" itemLabel="#{lstDoce.nomb}" itemValue="#{lstDoce.codi}"/>
-                                                        <p:ajax listener="#{citasBean.consHorarios()}" process="@this" oncomplete="INIT_OBJE_MODA();" update="@form :FormRegi" />
-                                                    </h:selectOneMenu>
-                                                </div>
+                                            <h:form>                                                
                                                 <div class="cutom_search">
-                                                    <h:inputText id="cadeText" class="form-control cutom_search_text" />
+                                                    <h:inputText id="cadeText" value="#{citasBean.buscEmpl}" class="form-control cutom_search_text" />
                                                     <h:commandLink id="btonBusc" class="btn btn-success cutom_search_button">
-                                                        <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :ContRegi :contTablRegiVisi"  global="true" />
+                                                        <p:ajax  process="@form" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_TABL_EMPL();" update="@form :ContRegi :paneTablEmpl"  global="true" />
                                                         <i class="fa fa-search"/>
                                                     </h:commandLink>
                                                 </div>
                                             </h:form>
-                                            <h:dataTable pt:data-id="TablEmpl" id="TablEmpl" value="#{visitantesBean.listVisi}"
+                                            <h:panelGroup id="paneTablEmpl">
+                                                <h:dataTable pt:data-id="TablEmpl" id="TablEmpl" value="#{citasBean.listDoceBusc}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablEmpl"
                                                          styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                          pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -373,29 +365,23 @@ and open the template in the editor.
                                                 </h:column>
                                                 <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                                     <f:facet name="header">Código</f:facet>
-                                                    <h:outputText value="#{fila.codiVisi}"/>
+                                                    <h:outputText value="#{citasBean.consCodiUsuaByAcce(fila.usua)}"/>
                                                 </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="nomb">
                                                     <f:facet name="header">Nombre</f:facet>
-                                                    <h:outputText value="#{fila.nombVisi.concat(' ').concat(fila.apelVisi)}"/>   
+                                                    <h:outputText value="#{fila.nomb} #{fila.apel}"/>   
                                                 </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="dui">
-                                                    <f:facet name="header">DUI</f:facet>
-                                                    <h:outputText value="#{fila.duiVisi}"/>   
-                                                </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="tele">
-                                                    <f:facet name="header">Contacto</f:facet>
-                                                    <h:panelGroup rendered="#{fila.corrVisi != null}">
-                                                        <span class='fa fa-envelope' style="margin-right: 10px;"></span>
-                                                        <h:outputText value="#{fila.corrVisi}"/>
-                                                        <br/>
-                                                    </h:panelGroup>
-                                                    <h:panelGroup rendered="#{fila.teleVisi != null}">
-                                                        <span class='fa fa-phone' style="margin-right: 10px;"></span>
-                                                        <h:outputText value="#{fila.teleVisi}"/>
-                                                    </h:panelGroup>
-                                                </h:column>
+                                               <h:column pt:data-sortable="true" pt:data-field="tipo">
+                                                    <f:facet name="header">Tipo</f:facet>
+                                                    <h:panelGroup rendered="#{fila.tipo eq 'doceTecn'}">
+                                                    Docente Técnico</h:panelGroup>
+                                                    <h:panelGroup rendered="#{fila.tipo eq 'doceAcad'}">
+                                                    Docente Académico</h:panelGroup>
+                                                    <h:panelGroup rendered="#{fila.tipo eq 'emplAdmi'}">
+                                                    Empleado Administrativo</h:panelGroup>
+                                                </h:column>                                                    
                                             </h:dataTable>
+                                            </h:panelGroup>
                                             <!-- TERMINA FRAGMENTO DE SELECCIÓN DE EMPLEADO-->
                                         </ui:fragment>
                                         <ui:fragment rendered="#{!citasBean.switFormCita}">

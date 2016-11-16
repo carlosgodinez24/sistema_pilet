@@ -9,18 +9,18 @@ package com.sv.udb.utils.pojos;
  *
  * @author Alvin
  */
-public class DatosDocentesByCrit {
+public class DatosUsuariosByCrit {
     private String nomb;
     private String apel;
     private byte[] foto;
     private String usua;
     private String tipo;
     
-    public DatosDocentesByCrit() {
+    public DatosUsuariosByCrit() {
         
     }
 
-    public DatosDocentesByCrit(String nomb, String apel, byte[] foto, String tipo) {
+    public DatosUsuariosByCrit(String nomb, String apel, byte[] foto, String tipo) {
         this.nomb = nomb;
         this.apel = apel;
         this.foto = foto;

@@ -16,6 +16,7 @@ import com.sv.udb.modelo.Visitante;
 import com.sv.udb.modelo.Visitantecita;
 import com.sv.udb.utils.HorarioCitas;
 import com.sv.udb.utils.pojos.DatosAlumnos;
+import com.sv.udb.utils.pojos.DatosUsuariosByCrit;
 import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
 import java.io.Serializable;
@@ -119,7 +120,36 @@ public class CitasBean implements Serializable{
     DateFormat timef = new SimpleDateFormat("hh:mm a");
     DateFormat datef = new SimpleDateFormat("dd/MM/yyyy");
     private boolean isVisiUsua;
+    private String tipoEmpl="0";
+    private String buscEmpl="";
     
+    private List<DatosUsuariosByCrit> listDoceBusc;
+
+    public List<DatosUsuariosByCrit> getListDoceBusc() {
+        consUsuaByCrit();
+        return listDoceBusc;
+    }
+
+    public void setListDoceBusc(List<DatosUsuariosByCrit> listDoceBusc) {
+        this.listDoceBusc = listDoceBusc;
+    }
+    
+    public String getBuscEmpl() {
+        return buscEmpl;
+    }
+
+    public void setBuscEmpl(String buscEmpl) {
+        this.buscEmpl = buscEmpl;
+    }
+    
+    public String getTipoEmpl() {
+        return tipoEmpl;
+    }
+
+    public void setTipoEmpl(String tipoEmpl) {
+        this.tipoEmpl = tipoEmpl;
+    }
+        
     public HorarioCitas getHoraSeleSoliCita() {
         return horaSeleSoliCita;
     }
@@ -298,7 +328,9 @@ public class CitasBean implements Serializable{
     public void setProgramar(boolean programar) {
         this.programar = programar;
     }
-
+    /* Metodo para saber si el usuario es un docente       
+     * @since incluido desde la version 1.0
+     */
     public boolean isIsUsuaDoce() {
         if(LoginBean.getObjeWSconsEmplByAcce().getTipo().equals("doceTecn")||LoginBean.getObjeWSconsEmplByAcce().getTipo().equals("doceAcad"))
         {
@@ -347,7 +379,8 @@ public class CitasBean implements Serializable{
         this.listAlumnosWS = listAlumnosWS;
     }
 
-
+    /* Metodo para consultar los alumnos del webservice
+     */
     private void consAlumWS()
     {
         if(isUsuaDoce)
@@ -1745,8 +1778,6 @@ public class CitasBean implements Serializable{
     }
     
     
-    
-    
     /*TERMINA SECCIÓN DESTINADA  PARA LA GESTIÓN DE VISITAS*/
     public void prueba(){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -1754,4 +1785,27 @@ public class CitasBean implements Serializable{
         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'MENSAJE');");
         
     }
+    
+    private void consUsuaByCrit()
+    {
+        this.listDoceBusc = new ArrayList<DatosUsuariosByCrit>();
+        List<DatosUsuariosByCrit> temp = new ArrayList<DatosUsuariosByCrit>();
+        temp = new WebServicesBean().consEmplPorParam(this.buscEmpl, this.buscEmpl, this.tipoEmpl).getResu();
+        if(temp!=null)
+        {            
+            for(DatosUsuariosByCrit dato : temp)
+            {
+                if(!dato.getTipo().equals("emplRece") && !dato.getTipo().equals("alum"))
+                {
+                    this.listDoceBusc.add(dato);
+                }
+            }
+        }
+    }
+    
+    public String consCodiUsuaByAcce(String acce)
+    {
+        return String.valueOf(new WebServicesBean().consEmplByUser(acce).getCodi());
+    }
+    
 }
