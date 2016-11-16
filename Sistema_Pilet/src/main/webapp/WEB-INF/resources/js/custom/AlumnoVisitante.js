@@ -8,7 +8,6 @@ $(document).ready(function() {
         return false;
     };
     $.fn.initBootTableAlumNoDoce = function() {
-        alert("Inicializando no doce");
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
