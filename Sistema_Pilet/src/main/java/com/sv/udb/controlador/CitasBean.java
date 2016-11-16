@@ -118,6 +118,7 @@ public class CitasBean implements Serializable{
     private HorarioCitas horaSeleSoliCita;
     DateFormat timef = new SimpleDateFormat("hh:mm a");
     DateFormat datef = new SimpleDateFormat("dd/MM/yyyy");
+    private boolean isVisiUsua;
     
     public HorarioCitas getHoraSeleSoliCita() {
         return horaSeleSoliCita;
@@ -478,6 +479,14 @@ public class CitasBean implements Serializable{
         this.datef = datef;
     }
 
+    public boolean isIsVisiUsua() {
+        return isVisiUsua;
+    }
+
+    public void setIsVisiUsua(boolean isVisiUsua) {
+        this.isVisiUsua = isVisiUsua;
+    }
+
     
 
     
@@ -516,8 +525,20 @@ public class CitasBean implements Serializable{
         this.listVisiVisiTemp = new ArrayList<Visitante>();
         this.LugaEven = true;
         this.nombProf = null;
+        isVisiUsua = true;
     }
-    
+    //1 es visitante, 2 es usuario
+    public void switVisiUsua(int frag){
+        this.switFormCita = false;
+        switch(frag){
+            case 1:
+                this.isVisiUsua = true;
+            break;
+            case 2:
+                this.isVisiUsua = false;
+            break;
+        }
+    }
     
      private void consHoraCitaDoce()
     {

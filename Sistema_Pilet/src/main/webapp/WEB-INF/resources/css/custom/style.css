@@ -119,6 +119,7 @@
     display: inline-block !important;
     border-radius: 0px 5px 5px 0px;
     vertical-align: top;
+    float: right;
 }
 .toolTipPrime{
     z-index: 9999999 !important;
