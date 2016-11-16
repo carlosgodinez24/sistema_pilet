@@ -26,16 +26,17 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-/**
- *
- * @author Orlando Vasquez
+ /**
+ * La clase calendario para citas
+ * @author: ControlCitas
+ * @version: Prototipo 2
  */
 @Named(value = "calendarioBean")
 @ViewScoped
 public class CalendarioBean implements Serializable{
 
     /**
-     * Creates a new instance of CalendarioBean
+     * Creaando una nueva instancia para la clase Calendario
      */
     
     private static final long serialVersionUID = 6527333208194203406L;
@@ -45,6 +46,7 @@ public class CalendarioBean implements Serializable{
     private Cambiocita objeCambCita;
     private String fechForma;
 
+   
     public String getFechForma() {
         return fechForma;
     }
@@ -117,7 +119,10 @@ public class CalendarioBean implements Serializable{
         }
     }
     
-    
+   
+    /**
+     * Metodo para 
+     */
      public void getEvenCale(){
         try{
             this.objeCale = new DefaultScheduleModel();
@@ -145,6 +150,10 @@ public class CalendarioBean implements Serializable{
         }  
      }
      
+     
+    /**
+     * Metodo de cambio de cita
+     */
     public Cambiocita getCambCita(Cita cita)
     {
         Cambiocita objeCambCita = null;
@@ -159,6 +168,9 @@ public class CalendarioBean implements Serializable{
         return objeCambCita;
     }
      
+    /**
+     * Mètodo para obtener la fecha
+     */
     private Date getFecha(String date) 
     {
         

@@ -11,17 +11,17 @@ import java.util.List;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 
-/**
- *
- * @author Kevin
- */
+
 @Named(value = "alumnosBean")
 @Dependent
 public class AlumnosBean {
-
-    /**
-     * Creates a new instance of AlumnosBean
-     */
+    
+ /**
+ * La clase alumnos
+ * @author: ControlCitas
+ * @version: Prototipo 1
+ */
+    
     public AlumnosBean() {
     }
     public List<Alumno> consTodoAlum(){
