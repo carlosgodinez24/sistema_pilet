@@ -14,6 +14,7 @@ import java.util.List;
 public class WSconsUsua {
     private boolean resp;
     private List<DatosUsuarios> resu;
+    private List<DatosUsuarios> resuElim;
 
     public boolean isResp() {
         return resp;
@@ -30,6 +31,5 @@ public class WSconsUsua {
     public void setResu(List<DatosUsuarios> resu) {
         this.resu = resu;
     }
-    
     
 }

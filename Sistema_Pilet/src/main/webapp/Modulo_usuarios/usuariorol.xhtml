@@ -29,7 +29,9 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="bootstrap-select.css"/>
         <h:outputScript library="js" name="bootstrap-select.js"/>
         <!--Plugins custom-->
-            <h:outputScript library="js" name="custom/usuarios.js"/>
+        <h:outputStylesheet library="css" name="bootstrap-toggle.css"/>
+        <h:outputScript library="js" name="bootstrap-toggle.js"/>
+        <h:outputScript library="js" name="custom/usua.js"/>
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
@@ -55,7 +57,7 @@ and open the template in the editor.
             }
         </style>
             <div class="row">
-                <div class="col-md-12 col-xs-12">
+                <div class="col-md-6 col-xs-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">Tabla de Datos</div>
                         <div class="panel-body">
@@ -63,20 +65,11 @@ and open the template in the editor.
                                 <div id="toolTablRegi">
                                     <h:form>
                                         <!--Form exclusivo para los remotos-->
-                                        <p:remoteCommand name="cons" actionListener="#{usuarioRolBean.cons()}" update=":FormRegi" 
-                                                         oncomplete="$('#ModaFormRegi').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimAlum" actionListener="#{usuarioRolBean.elim()}" update=":FormRegi :ContRegi" 
-                                                         oncomplete="INIT_OBJE();" global="true"/>
-                                        <h:panelGroup rendered="#{globalAppBean.getEstaPermByName('/Modulo_usuarios/usuariorol.xhtml/agregar')}">
-                                            <h:commandLink id="btonNuev" class="btn btn-success">
-                                                <p:ajax listener="#{usuarioRolBean.limpForm()}" update=":FormRegi" global="true" 
-                                                        oncomplete="$('#ModaFormRegi').modal('show');"/>
-                                                <i class="fa fa-plus"/> Nuevo
-                                            </h:commandLink>
-                                        </h:panelGroup>
+                                        <p:remoteCommand name="cons" actionListener="#{usuarioRolBean.consRoleByUsua()}" update=":TablRegi1 :formRole" 
+                                                          global="true"/>
                                     </h:form>
                                 </div>
-                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{usuarioRolBean.listUsuaRole}"
+                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{usuarioBean.listUsua}"
                                              var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
                                              styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                              pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -87,23 +80,68 @@ and open the template in the editor.
                                     </h:column>
                                     <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
                                         <f:facet name="header">Código</f:facet>
-                                        <h:outputText value="#{fila.codiUsuaRole}"/>
+                                        <h:outputText value="#{fila.codiUsua}"/>
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
                                         <f:facet name="header">Usuario</f:facet>
-                                        <h:outputText value="#{fila.codiUsua.acceUsua}"/>   
+                                        <h:outputText value="#{fila.acceUsua}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Tipo</f:facet> 
+                                        <h:panelGroup class="label label-success" rendered="#{fila.tipoUsua eq 'alum'}">
+                                            Alumno</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoUsua eq 'doceTecn'}">
+                                            Docente Tecnico</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoUsua eq 'doceAcad'}">
+                                            Docente Academico</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoUsua eq 'emplAdmi'}">
+                                            Administrativo</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.tipoUsua eq 'emplRece'}">
+                                            Recepcionista</h:panelGroup>
+                                    </h:column>
+                                </h:dataTable>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Tabla de Datos</div>
+                        <div class="panel-body">
+                            <div id="toolTablRegi1">
+                                    <h:form id="formRole">
+                                        <h:panelGroup rendered="#{usuarioRolBean.guardar}">
+                                            <h:commandLink id="btonNuev" class="btn btn-success">
+                                                <p:ajax listener="#{usuarioRolBean.limpForm()}" update=":FormRegi" global="true" 
+                                                        oncomplete="$('#ModaFormRegi').modal('show');"/>
+                                                <i class="fa fa-plus"/> Nuevo
+                                            </h:commandLink>
+                                        </h:panelGroup>
+                                    </h:form>
+                                </div>
+                            <h:panelGroup id="ContRegi1">
+                                <h:dataTable pt:data-id="TablRegi1" id="TablRegi1" value="#{usuarioRolBean.listUsuaRole}"
+                                             var="fila" class="boottable" pt:data-toolbar="#toolTablRegi1"
+                                             styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                             pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                             pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                             pt:data-single-select="true">
+                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                        <f:facet name="header">Código</f:facet>
+                                        <h:outputText value="#{fila.codiUsuaRole}"/>
+                                    </h:column>
+                                    <h:column pt:data-sortable="true" pt:data-field="nomb">
                                         <f:facet name="header">Rol</f:facet>
-                                        <h:outputText value="#{fila.codiRole.nombRole}">
-                                        </h:outputText>                            
+                                        <h:outputText value="#{fila.codiRole.nombRole}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Estado</f:facet> 
-                                        <h:panelGroup class="label label-success" rendered="#{fila.estaUsuaRole eq '1'}">
-                                            <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                        <h:panelGroup class="label label-danger" rendered="#{fila.estaUsuaRole ne '1'}">
-                                            <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                        <f:facet name="header">Estado</f:facet>
+                                        <h:selectBooleanCheckbox value="#{fila.estaUsuaRole}"
+                                                                pt:data-id="chck" pt:data-size="mini"
+                                                                pt:data-onstyle="success" pt:data-offstyle="danger"
+                                                                pt:data-on="Sí" pt:data-off="No">
+                                           <p:ajax event="change" process="@this"/>
+                                       </h:selectBooleanCheckbox>
                                     </h:column>
                                 </h:dataTable>
                             </h:panelGroup>
@@ -125,10 +163,10 @@ and open the template in the editor.
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codi" value="#{usuarioRolBean.objeUsuaRole.codiUsuaRole}" />
-                                        <div class="form-group input-group-xs">
+                                        <div class="form-group input-group-xs" >
                                             <h:outputLabel  for="usua" value="Usuario: "/>
                                             <h:message for="usua" errorClass="field-error" />
-                                            <h:selectOneMenu id="usua" value="#{usuarioRolBean.objeUsuaRole.codiUsua}" class="form-control" pt:data-live-search="true">
+                                            <h:selectOneMenu id="usua" value="#{usuarioRolBean.objeUsuaRole.codiUsua}" class="form-control" pt:data-live-search="true" disabled="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{usuarioBean.listUsua}" var="lst2" itemLabel="#{lst2.acceUsua}" itemValue="#{lst2}"/>
                                                 <f:converter converterId="PooConv"/>
@@ -149,8 +187,8 @@ and open the template in the editor.
                                                 <h:message for="esta" errorClass="field-error" />
                                                 <h:selectOneMenu id="esta" value="#{usuarioRolBean.objeUsuaRole.estaUsuaRole}" class="form-control">
                                                     <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                    <f:selectItem itemValue="1" itemLabel="Activo"/>
-                                                    <f:selectItem itemValue="0" itemLabel="Inactivo"/>
+                                                    <f:selectItem itemValue="true" itemLabel="Activo"/>
+                                                    <f:selectItem itemValue="false" itemLabel="Inactivo"/>
                                                 </h:selectOneMenu>
                                             </div>
                                         </h:panelGroup>
@@ -159,12 +197,10 @@ and open the template in the editor.
                                 <div class="modal-footer">
                                         <div class="input-group-btn right" style="padding-top: 5px;">
                                             <div class="btn-group">
-                                                <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                    <p:ajax listener="#{usuarioRolBean.limpForm()}" process="@form" update="@form" global="true"/>
-                                                    <i class="fa fa-mail-forward"/> Cerrar
-                                                </h:commandLink>
+                                                <h:commandButton id="btonCanc" class="btn btn-default" pt:data-dismiss="modal" value="Cerrar">
+                                                </h:commandButton>
                                                 <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{usuarioRolBean.guardar and globalAppBean.getEstaPermByName('/Modulo_usuarios/usuariorol.xhtml/agregar')}">
-                                                    <p:ajax listener="#{usuarioRolBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                    <p:ajax listener="#{usuarioRolBean.guar()}" process="@form" update=":TablRegi1" oncomplete="INIT_OBJE();"/>
                                                     <i class="fa fa-plus"/> Guardar
                                                 </h:commandLink>
                                                 <h:panelGroup rendered="#{globalAppBean.getEstaPermByName('/Modulo_usuarios/usuariorol.xhtml/agregar')}">

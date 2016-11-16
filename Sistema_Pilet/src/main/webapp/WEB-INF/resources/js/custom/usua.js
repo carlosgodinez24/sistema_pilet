@@ -7,23 +7,19 @@ $(document).ready(function() {
         });
         return false;
     };
-    $.fn.initDatePick = function() {
-        $(this).datepicker({
-            format: "dd/mm/yyyy",
-            language: "es",
-            orientation: "top auto",
-            autoclose: true,
-            todayHighlight: true
-        }).on('show.bs.modal', function(e) {
-            // Quitar el conflicto con bootstrap modal "show.bs.modal"
-            e.stopPropagation();
-        }).on('hide.bs.modal', function(e) {
-            // Quitar el conflicto con bootstrap modal "hide.bs.modal"
-            e.stopPropagation();
+    $.fn.initBootTableRole = function() {
+        $(this).bootstrapTable('destroy');
+        $(this).bootstrapTable().
+        unbind('load-success.bs.table').on('load-success.bs.table', function (e, row) {
+            $("[data-id='chck']").bootstrapToggle();
+        }).
+        unbind('page-change.bs.table').on('page-change.bs.table', function (e, row) {
+            $("[data-id='chck']").bootstrapToggle();
         });
+        return false;
     };
     $('#ModaFormRegi').on('show.bs.modal', function() {
-        INIT_OBJE_MODA();
+        INIT_OBJE();
     });
     $('#ModaFormRegi').on('hide.bs.modal', function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
@@ -31,6 +27,7 @@ $(document).ready(function() {
 
     
     INIT_OBJE();
+    $("#TablRegi1").initBootTableRole();
 });
 
 function INIT_OBJE()
@@ -39,7 +36,14 @@ function INIT_OBJE()
     INIT_OBJE_MODA();
 }
 
+function RECA()
+{
+    $("[data-id='chck']").bootstrapToggle();
+}
+
+
 function INIT_OBJE_MODA()
 {
-    $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
+    $("[data-id='chck']").bootstrapToggle();
+    $("#FormRegi\\:role").selectpicker();
 }

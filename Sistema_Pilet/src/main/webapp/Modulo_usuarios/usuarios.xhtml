@@ -13,145 +13,137 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
-        <ui:param name="pageTitl" value="::: Página WebServices :::"/>
-        <ui:param name="pageNomb" value="Página WebServices"/>
-        <ui:param name="pageDesc" value="Página WebServices Client"/>
+        <ui:param name="pageTitl" value="::: Habilitar Usuario :::"/>
+        <ui:param name="pageNomb" value="Habilitar Usuarios"/>
+        <ui:param name="pageDesc" value="Importar usuarios al sistema"/>
         <!-- Activar el link del menú -->
         <ui:param name="actiMenu1" value="active"/>
         <ui:param name="actiWebServ" value="active"/>
         <!-- Scripts personalizados -->
         <ui:define name="CustomScripts">
+            <!--Plugins Selector de Fecha-->
+            <h:outputStylesheet library="css" name="bootstrap-switch.min.css"/>
+            <h:outputScript library="js" name="bootstrap-switch.min.js"/>
+            <!--Plugins Select-->
+            <h:outputStylesheet library="css" name="bootstrap-select.css"/>
+            <h:outputScript library="js" name="bootstrap-select.js"/>
             <!--Plugins custom-->
-            <h:outputScript library="js" name="custom/slid.js"/>
             <h:outputScript library="js" name="custom/usuarios.js"/>
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
         <style>
-            
+            .field-error
+            {
+                color: #a94442; 
+                display: inline;
+                font-size: 10px;
+            }
+            .field-error:first-letter
+            {
+                text-transform: capitalize;
+                color: #003399;
+            }
+            .form-group
+            {
+                margin-bottom: 5px !important;
+            }
+            .bootstrap-select > .btn {
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
         </style>
-            <div class="row">
+    <div class="row">
                 <div class="col-md-12 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">Tabla de Datos</div>
                         <div class="panel-body">
-                            <div class="row col-md-12">
-                                <h:form>
-                                    <div class="btn-group">
-                                        <h:commandLink id="btonOpenModa" class="btn btn-success btn-sm" actionListener="#{webServicesBean.nuev()}">
-                                            <p:ajax update=":FormWebServ" oncomplete="$('#ModaFormWebServ').modal('show');" global="true"/>
-                                            <i class="fa fa-cloud-upload"/> Consumir WebService
-                                        </h:commandLink>
-                                        <h:commandLink id="btonOpenModaSlid" class="btn btn-primary btn-sm" actionListener="#{webServicesBean.abri()}">
-                                            <p:ajax update=":FormDemo" oncomplete="$('#ModaFormDemo').modal('show');" global="true"/>
-                                            <i class="fa fa-archive"/> Form Switchable
-                                        </h:commandLink>
-                                    </div>
-                                </h:form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <!-- Modal -->
-                <div id="ModaFormWebServ" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <h:panelGroup id="FormWebServ">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
-                                    <h4 class="modal-title">Gestión de WebServices</h4>
-                                </div>
-                                <div class="modal-body" style="padding-top: 2px;">
-                                    
-                                        <h:form id="FormBusc" class="form-horizontal">
-                                        <div class="input-group input-group-sm">
-                                            <h:inputText id="Filt" value="#{webServicesBean.filt}" class="form-control" 
-                                                         pt:placeholder="Buscar por Usuario..." >
-                                            </h:inputText>
+                            <h:panelGroup id="ContRegi">
+                                <div id="toolTablRole">
+                                    <h:form id="habiUsua">
+                                        <!--Form exclusivo para los remotos-->
+                                        <fieldset class="col-md-12">
+                                            <div class="col-md-4">
+                                                <div class="form-group input-group-s">
+                                                    <h:inputText id="FiltNomb" value="#{webServicesBean.filt}" class="form-control" 
+                                                                 pt:placeholder="Usuario" autocomplete="off"/>                                                    
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-group input-group-s">                                                    
+                                                    <h:inputText id="FiltApel" value="#{webServicesBean.filtApel}" class="form-control" 
+                                                                 pt:placeholder="Apellido" autocomplete="off"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group input-group-s">
+                                                    <h:selectOneMenu id="FiltTipo" value="#{webServicesBean.filtTipo}" class="form-control">
+                                                        <f:selectItem itemValue="alum" itemLabel="Alumno"/>
+                                                        <f:selectItem itemValue="doceTecn" itemLabel="Docente Técnico"/>
+                                                        <f:selectItem itemValue="doceAcad" itemLabel="Docente Academico"/>
+                                                        <f:selectItem itemValue="emplAdmi" itemLabel="Empleado Administración"/>
+                                                        <f:selectItem itemValue="emplRece" itemLabel="Empleado Recepción"/>
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
                                             <span class="input-group-btn">
                                                 <h:commandLink id="btonBusc" class="btn btn-default">
-                                                    <p:ajax listener="#{webServicesBean.consWebServHabiUsua()}" process="@form" update=":resp" global="true"/>
+                                                    <p:ajax listener="#{webServicesBean.consWebServHabiUsua()}" process="@form" update=":TablRegi" global="true"/>
                                                     <i class="fa fa-search"/>
                                                 </h:commandLink>
                                             </span>
-                                        </div>
-                                        <br/>
-                                        </h:form>
-                                        <h:form id="resp">
-                                        <ul class="list-group">
-                                            <li class="list-group-item list-group-item-success">Respuesta: #{webServicesBean.objeWebServ.resp}</li>
-                                            <ui:repeat var="temp" value="#{webServicesBean.objeWebServ.resu}">
-                                                <li class="list-group-item">#{temp.nomb} #{temp.apel} - #{temp.tipo}</li>
-                                            </ui:repeat>
-                                        </ul>
-                                        </h:form>
-                                </div>
-                                <div class="modal-footer" style="padding-top: 0; padding-bottom: 5px;">
-                                    <div class="input-group-btn right" style="padding-top: 5px;">
-                                        <div class="btn-group">
-                                            <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                <p:ajax listener="#{alumnosBean.limpForm()}" process="@form" update="@form" global="true"/>
-                                                <i class="fa fa-mail-forward"/> Cerrar
-                                            </h:commandLink>
-                                        </div>
-                                    </div>
-                                </div>
-                                </h:panelGroup>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <!-- Modal -->
-                <div id="ModaFormDemo" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <h:form id="FormDemo" class="form-horizontal">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
-                                    <h4 class="modal-title">Modal Demo</h4>
-                                </div>
-                                <div class="modal-body" style="padding-top: 2px;">
-                                    <ui:fragment id="FragBusc" rendered="#{webServicesBean.showBusc}">
-                                        <fieldset>
-                                            <div class="callout callout-success">
-                                                <h4>Buscador</h4>
-                                                <p>Aca se coloca el buscador</p>
-                                            </div>
-                                            <h:commandLink id="btonOculBusc" class="btn btn-default btn-sm">
-                                                <p:ajax listener="#{webServicesBean.toogBusc()}" process="@this" update="@form" global="true"/>
-                                                <i class="fa fa-undo"/> Regresar
-                                            </h:commandLink>
                                         </fieldset>
-                                    </ui:fragment>
-                                    <ui:fragment id="FragForm" rendered="#{!webServicesBean.showBusc}">
-                                        <fieldset>
-                                            <div class="callout callout-info">
-                                                <h4>Formulario</h4>
-                                                <p>Aca se coloca los elementos del formulario</p>
-                                            </div>
-                                            <h:commandLink id="btonMostBusc" class="btn btn-default btn-sm">
-                                                <p:ajax listener="#{webServicesBean.toogBusc()}" process="@this" update="@form" global="true"/>
-                                                <i class="fa fa-search"/> Buscar ...
-                                            </h:commandLink>
-                                        </fieldset>
-                                    </ui:fragment>
+                                    </h:form>
+                                        
+                                    <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{usuarioBean.resuElim}"
+                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablPagi"
+                                                     styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                     pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                     pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                     pt:data-click-to-select="false"  pt:data-select-item-name="radio"
+                                                     pt:data-single-select="false">                                
+                                            <h:column pt:data-field="state" pt:data-checkbox="true">
+                                            </h:column>
+                                            <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                                <f:facet name="header">Usuario</f:facet>
+                                                <h:outputText value="#{fila.usua}"/>   
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Nombre</f:facet>
+                                                <h:outputText value="#{fila.nomb}">
+                                                </h:outputText>                            
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Apellido</f:facet>
+                                                <h:outputText value="#{fila.apel}">
+                                                </h:outputText>                            
+                                            </h:column>
+                                            <h:column pt:data-sortable="true">
+                                                <f:facet name="header">Tipo</f:facet> 
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'alum'}">
+                                                    Alumno</h:panelGroup>
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'doceTecn'}">
+                                                    Docente Tecnico</h:panelGroup>
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'doceAcad'}">
+                                                    Docente Academico</h:panelGroup>
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'emplAdmi'}">
+                                                    Administrativo</h:panelGroup>
+                                                <h:panelGroup class="label label-success" rendered="#{fila.tipo eq 'emplRece'}">
+                                                    Recepcionista</h:panelGroup>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">Estado</f:facet>
+                                                <h:form>
+                                                    <h:commandLink id="btonGuar" class="btn btn-success">
+                                                        <p:ajax listener="#{usuarioBean.guar(fila)}" process="@form" update=":ContRegi" oncomplete="INIT_OBJE();" />
+                                                        <i class="fa fa-plus"/> Habilitar
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </h:column>
+                                        </h:dataTable>                                    
                                 </div>
-                                <div class="modal-footer" style="padding-top: 0; padding-bottom: 5px;">
-                                    <div class="input-group-btn right" style="padding-top: 5px;">
-                                        <div class="btn-group">
-                                            <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                <p:ajax listener="#{webServicesBean.limpForm()}" process="@form" update="@form" global="true"/>
-                                                <i class="fa fa-mail-forward"/> Cerrar
-                                            </h:commandLink>
-                                        </div>
-                                    </div>
-                                </div>
-                            </h:form>
+                            </h:panelGroup>
                         </div>
                     </div>
                 </div>
