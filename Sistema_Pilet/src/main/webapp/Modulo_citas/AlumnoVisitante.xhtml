@@ -38,7 +38,8 @@ and open the template in the editor.
                             <h:panelGroup id="ContRegi">
                                 <div id="toolTablRegi">
                                     <h:form>
-                                        
+                                        <p:remoteCommand name="consObjeAlum" actionListener="#{citasBean.setAlumn()}" update="" 
+                                                         oncomplete="" global="true"/>
                                         <p:remoteCommand name="consObje" actionListener="#{alumnoVisitanteBean.cons()}" update=":FormRegi" 
                                                          oncomplete="$('#ModaFormRegi').modal('show'); INIT_FORM(); INIT_OBJE();" global="true"/>
                                         <p:remoteCommand name="elimObje" actionListener="#{alumnoVisitanteBean.elim()}" update=":FormRegi :ContRegi" 
@@ -103,6 +104,76 @@ and open the template in the editor.
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
                                         
+                                        <ui:fragment id="FragAlumIsDoce" rendered="#{citasBean.isUsuaDoce}">
+                                            <h:panelGroup id = "gpTablAlum">
+                                                <h:dataTable pt:data-id="TablAlum" id="TablAlum" value="#{citasBean.listAlumnosWS}"
+                                                    var="fila" class="boottable" pt:data-toolbar="#toolTablAlum"
+                                                    styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                    pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                    pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                    pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                    pt:data-single-select="true">                                
+                                                <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                </h:column>
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                                                    <f:facet name="header">Carnet</f:facet>
+                                                    <h:outputText value="#{fila.carn}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                                    <f:facet name="header">Nombre</f:facet>
+                                                    <h:outputText value="#{fila.nomb}"/>   
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="niv">
+                                                    <f:facet name="header">Nivel</f:facet>
+                                                    <h:outputText value="#{fila.grad}"/>   
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="espe">
+                                                    <f:facet name="header">Epecialidad</f:facet>
+                                                    <h:outputText value="#{fila.espe}"/>   
+                                                </h:column>
+                                            </h:dataTable>
+                                            </h:panelGroup>
+                                            </ui:fragment>
+                                        
+                                        <ui:fragment id="FragAlumNoDoce" rendered="#{!citasBean.isUsuaDoce}">
+                                            <div class="cutom_search">
+                                                    <h:inputText id="cadeText" value="#{citasBean.buscAlum}" class="form-control cutom_search_text" />
+                                                    <h:commandLink id="btonBusc" class="btn btn-success cutom_search_button">
+                                                        <p:ajax  process="cadeText" oncomplete="INIT_OBJE_TABL();" update="gpTablAlumNoDoce"  global="true" />
+                                                        <i class="fa fa-search"/>
+                                                    </h:commandLink>
+                                                </div>
+                                               
+                                            <h:panelGroup id="gpTablAlumNoDoce">
+                                                <h:dataTable pt:data-id="TablAlumNoDoce" id="TablAlumNoDoce" value="#{citasBean.listAlumnosWS}"
+                                                    var="fila" class="boottable" pt:data-toolbar="#toolTablAlumNoDoce"
+                                                    styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                    pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                    pt:data-search="false" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                    pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                    pt:data-single-select="true">                                
+                                                <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                </h:column>
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                                                    <f:facet name="header">Carnet</f:facet>
+                                                    <h:outputText value="#{fila.carn}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                                    <f:facet name="header">Nombre</f:facet>
+                                                    <h:outputText value="#{fila.nomb}"/>   
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="niv">
+                                                    <f:facet name="header">Nivel</f:facet>
+                                                    <h:outputText value="#{fila.grad}"/>   
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="espe">
+                                                    <f:facet name="header">Epecialidad</f:facet>
+                                                    <h:outputText value="#{fila.espe}"/>   
+                                                </h:column>
+                                            </h:dataTable>
+                                                    </h:panelGroup>
+                                            </ui:fragment>
+                                        
                                         <h:inputHidden id="codi" value="#{alumnoVisitanteBean.objeAlumVisi.codiAlumVisi}" />
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="seleAlum" value="Alumno: "/>
@@ -113,7 +184,7 @@ and open the template in the editor.
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                         </div>
-                                        
+                                                                                
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="seleVisi" value="Visitante: "/>
                                             <h:message for="seleVisi" errorClass="field-error" />

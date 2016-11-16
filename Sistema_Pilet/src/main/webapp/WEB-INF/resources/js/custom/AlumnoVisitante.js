@@ -1,4 +1,21 @@
 $(document).ready(function() {
+    $.fn.initBootTableAlum = function() {
+        $(this).bootstrapTable('destroy');
+        $(this).bootstrapTable().
+        unbind('check.bs.table').on('check.bs.table', function (e, row) {
+            consObjeAlum([{name : 'codiObjeAlum', value : row.id.trim()}]);
+        });
+        return false;
+    };
+    $.fn.initBootTableAlumNoDoce = function() {
+        alert("Inicializando no doce");
+        $(this).bootstrapTable('destroy');
+        $(this).bootstrapTable().
+        unbind('check.bs.table').on('check.bs.table', function (e, row) {
+            consObjeAlum([{name : 'codiObjeAlum', value : row.id.trim()}]);
+        });
+        return false;
+    };
     INIT_FORM();
 });
 
@@ -20,4 +37,9 @@ function INIT_FORM(){
       });
       var select = document.getElementById("FormRegi:seleParen");
       otroParen(select[select.selectedIndex].innerHTML);
+}
+
+function INIT_OBJE_TABL(){
+    $("#TablAlum").initBootTableAlum();
+    $("#TablAlumNoDoce").initBootTableAlumNoDoce();
 }
