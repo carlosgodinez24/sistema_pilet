@@ -9,6 +9,7 @@ import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
 import com.sv.udb.ejb.VisitanteFacadeLocal;
 import com.sv.udb.modelo.Alumnovisitante;
 import com.sv.udb.modelo.Visitante;
+import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 
@@ -47,6 +49,9 @@ public class AlumnoVisitanteBean implements Serializable{
     private List<Alumnovisitante> listAlumVisi;
     private boolean guardar;
     
+    private LOG4J<AlumnoVisitanteBean> lgs = new LOG4J<AlumnoVisitanteBean>(AlumnoVisitanteBean.class) {
+    };
+    private Logger log = lgs.getLog();
     // Variables para registrarse como visitante representante alumno
     @EJB
     private VisitanteFacadeLocal FCDEVisi;    
@@ -164,13 +169,16 @@ public class AlumnoVisitanteBean implements Serializable{
             this.Disabled=false;
             this.contForm = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Consultar alumno visitante: " +  objeAlumVisi.getCarnAlum());
             //por alguna razón, al consultar con cambia el select... asi que se hace manualmente....
             ctx.execute("selectedItem("+this.objeAlumVisi.getPareAlumVisi()+")");
         }
         catch(Exception ex)
         {
+            log.error("Error al consultar alumno visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
+        
         finally
         {
             
@@ -222,13 +230,14 @@ public class AlumnoVisitanteBean implements Serializable{
             objeAlumVisi.setEstaAlumVisi(1);
             FCDEAlumVisi.create(this.objeAlumVisi);
             this.listAlumVisi.add(this.objeAlumVisi);
-            
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Agregar alumno visitante: " +  objeAlumVisi.getCarnAlum());
             this.limpForm();
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
+            log.error("Error al guardar alumno visitante");
             ex.printStackTrace();
         }
     }
@@ -245,9 +254,11 @@ public class AlumnoVisitanteBean implements Serializable{
             FCDEAlumVisi.edit(this.objeAlumVisi);
             this.listAlumVisi.add(this.objeAlumVisi); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Modificar alumno visitante: " +  objeAlumVisi.getCarnAlum());
         }
         catch(Exception ex)
         {
+            log.error("Error al modificar alumno visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
@@ -264,9 +275,11 @@ public class AlumnoVisitanteBean implements Serializable{
             this.listAlumVisi.remove(this.objeAlumVisi);
             this.listAlumVisiCarne.remove(this.objeAlumVisi);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Eliminar alumno visitante codigo: " +  objeAlumVisi.getCodiAlumVisi());
         }
         catch(Exception ex)
         {
+            log.error("Error al eliminar alumno visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }

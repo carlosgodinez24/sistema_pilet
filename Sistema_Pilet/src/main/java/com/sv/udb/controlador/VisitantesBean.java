@@ -7,6 +7,7 @@ import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
 import com.sv.udb.ejb.VisitanteFacadeLocal;
 import com.sv.udb.modelo.Alumnovisitante;
 import com.sv.udb.modelo.Visitante;
+import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -35,6 +36,9 @@ public class VisitantesBean implements Serializable{
     private VisitanteFacadeLocal FCDEVisi;    
     private Visitante objeVisi;
     
+    @Inject
+    private LoginBean logiBean; 
+    
     private List<Visitante> listVisi;
     private boolean guardar;
     
@@ -47,6 +51,10 @@ public class VisitantesBean implements Serializable{
     public void setCadeText(String cadeText) {
         this.cadeText = cadeText;
     }
+    
+    private LOG4J<VisitantesBean> lgs = new LOG4J<VisitantesBean>(VisitantesBean.class) {
+    };
+    private Logger log = lgs.getLog();
     
     
     
@@ -121,10 +129,12 @@ public class VisitantesBean implements Serializable{
         {
             this.objeVisi = FCDEVisi.find(codi);
             this.guardar = false;
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Consultar visitante: " + objeVisi.getNombVisi() + " " + objeVisi.getApelVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
+            log.error("Error al consultar visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
         finally
@@ -145,12 +155,15 @@ public class VisitantesBean implements Serializable{
         {
             objeVisi.setEstaVisi(1);
             FCDEVisi.create(this.objeVisi);
-            this.listVisi.add(this.objeVisi);
+            
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Agregar visitante: " + objeVisi.getNombVisi() + " " + objeVisi.getApelVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            this.listVisi.add(this.objeVisi);
             limpForm();
         }
         catch(Exception ex)
         {
+            log.error("Error al guardar visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
         }
     }
@@ -168,10 +181,12 @@ public class VisitantesBean implements Serializable{
             this.listVisi.remove(this.objeVisi); //Limpia el objeto viejo
             FCDEVisi.edit(this.objeVisi);
             this.listVisi.add(this.objeVisi); //Agrega el objeto modificado
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Modificar visitante: " + objeVisi.getNombVisi() + " " + objeVisi.getApelVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
+            log.error("Error al modificar visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
@@ -189,11 +204,13 @@ public class VisitantesBean implements Serializable{
             objeVisi.setEstaVisi(0);
             FCDEVisi.edit(this.objeVisi);
             this.listVisi.remove(this.objeVisi);
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Eliminar visitante codigo: " + objeVisi.getCodiVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
             this.limpForm();
         }
         catch(Exception ex)
         {
+            log.error("Error al eliminar visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }
