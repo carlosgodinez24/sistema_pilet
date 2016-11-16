@@ -133,35 +133,12 @@ Hecho por Fernando
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codi" value="#{seguimientoBean.objeSegu.codiSegu}" />
                                         <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="Empr" value="Empresa: "/>
-                                            <h:selectOneMenu id="Empr" value="#{seguimientoBean.objeSegu.codiEmpr}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="Empr" errorClass="field-error" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="Soli" value="Solicitud: "/>
-                                            <h:selectOneMenu id="Soli" value="#{seguimientoBean.objeSegu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.carnAlum}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="Soli" errorClass="field-error" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
                                             <h:outputLabel  for="Tipo" value="Tipo Seguimiento: "/>
                                             <h:selectOneMenu id="Tipo" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control" pt:data-live-search="true">
                                                 <f:selectItems value="#{tipoSeguBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoSegui}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="Tipo" errorClass="field-error" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="fech" value="Fecha "/>
-                                            <h:inputText id="fech" value="#{seguimientoBean.objeSegu.fechSegu}" class="form-control">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:inputText>
-                                            <h:message for="fech" errorClass="field-error" />
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fechInic" value="Fecha Inicio: "/>

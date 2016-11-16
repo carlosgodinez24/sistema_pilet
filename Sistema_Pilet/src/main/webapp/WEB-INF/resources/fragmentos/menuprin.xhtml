@@ -136,16 +136,23 @@ and open the template in the editor.
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li class="#{actiEven}">
-                                    <h:link outcome="/Modulo_citas/Eventos" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Eventos.xhtml')}">
-                                        <i class="fa fa-user"></i> Eventos
+                                <li class="#{actiHoraDisp}">
+                                    <h:link outcome="/Modulo_citas/HorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/HorarioDisponible.xhtml')}">
+                                        <i class="fa fa-user"></i> Horario Disponible
                                     </h:link>
                                 </li>
                             </ul>
                             <ul class="treeview-menu">
-                                <li class="#{actiCitaAlum}">
-                                    <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
-                                        <i class="fa fa-user"></i> Cita Alumno
+                                <li class="#{actiExceHoraDisp}">
+                                    <h:link outcome="/Modulo_citas/ExcepcionHorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/ExcepcionHorarioDisponible.xhtml')}">
+                                        <i class="fa fa-user"></i> Excepcion Horario
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiEven}">
+                                    <h:link outcome="/Modulo_citas/Eventos" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Eventos.xhtml')}">
+                                        <i class="fa fa-user"></i> Eventos
                                     </h:link>
                                 </li>
                             </ul>
@@ -163,17 +170,11 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            
                             <ul class="treeview-menu">
-                                <li class="#{actiHoraDisp}">
-                                    <h:link outcome="/Modulo_citas/HorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/HorarioDisponible.xhtml')}">
-                                        <i class="fa fa-user"></i> Horario Disponible
-                                    </h:link>
-                                </li>
-                            </ul>
-                            <ul class="treeview-menu">
-                                <li class="#{actiExceHoraDisp}">
-                                    <h:link outcome="/Modulo_citas/ExcepcionHorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/ExcepcionHorarioDisponible.xhtml')}">
-                                        <i class="fa fa-user"></i> Excepcion Horario
+                                <li class="#{actiCale}">
+                                    <h:link outcome="/Modulo_citas/CitaCalendario" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaCalendario.xhtml')}">
+                                        <i class="fa fa-user"></i> Calendario de Citas y Visitas
                                     </h:link>
                                 </li>
                             </ul>
@@ -192,9 +193,23 @@ and open the template in the editor.
                                 </li>
                             </ul>
                             <ul class="treeview-menu">
+                                <li class="#{actiVisiTas}">
+                                    <h:link outcome="/Modulo_citas/Visitas" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Visitas.xhtml')}">
+                                        <i class="fa fa-user"></i> Visitas
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
                                 <li class="#{actiRece}">
                                     <h:link outcome="/Modulo_citas/Recepcion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Recepcion.xhtml')}">
                                         <i class="fa fa-user"></i> Recepción
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiCitaAlum}">
+                                    <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
+                                        <i class="fa fa-user"></i> Cita Alumno
                                     </h:link>
                                 </li>
                             </ul>
@@ -352,6 +367,22 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            
+                         <ul class="treeview-menu">
+                                <li class="#{actiSegu}">
+                                    <h:link outcome="/Modulo_becas/seguimiento_empresa" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/seguimiento_empresa.xhtml')}">
+                                        <i class="fa fa-user"></i> Seguimiento Empresa
+                                    </h:link>
+                                </li>
+                            </ul>  
+                            
+                         <ul class="treeview-menu">
+                                <li class="#{actiSegu}">
+                                    <h:link outcome="/Modulo_becas/seguimiento_soli" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/seguimiento_soli.xhtml')}">
+                                        <i class="fa fa-user"></i> Seguimiento Alumno
+                                    </h:link>
+                                </li>
+                            </ul>    
                         
                          <ul class="treeview-menu">
                                 <li class="#{actiTipoSegu}">
