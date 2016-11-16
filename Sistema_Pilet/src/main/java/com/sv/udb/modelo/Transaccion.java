@@ -8,9 +8,7 @@ package com.sv.udb.modelo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,29 +19,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author eduardo
+ * @author Owner
  */
 @Entity
 @Table(name = "transaccion", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),   
+    @NamedQuery(name = "Transaccion.findAll", query = "SELECT t FROM Transaccion t"),
     @NamedQuery(name = "Transaccion.findByCodiTran", query = "SELECT t FROM Transaccion t WHERE t.codiTran = :codiTran"),
     @NamedQuery(name = "Transaccion.findByMontTran", query = "SELECT t FROM Transaccion t WHERE t.montTran = :montTran"),
     @NamedQuery(name = "Transaccion.findByFechTran", query = "SELECT t FROM Transaccion t WHERE t.fechTran = :fechTran"),
     @NamedQuery(name = "Transaccion.findByMontTota", query = "SELECT t FROM Transaccion t WHERE t.montTota = :montTota"),
     @NamedQuery(name = "Transaccion.findByTipoTran", query = "SELECT t FROM Transaccion t WHERE t.tipoTran = :tipoTran"),
     @NamedQuery(name = "Transaccion.findByEstaTran", query = "SELECT t FROM Transaccion t WHERE t.estaTran = :estaTran")})
-
 public class Transaccion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,14 +59,12 @@ public class Transaccion implements Serializable {
     private Integer tipoTran;
     @Column(name = "esta_tran")
     private Integer estaTran;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTran", fetch = FetchType.LAZY)
-    private List<Detalle> detalleList;
-    @JoinColumn(name = "codi_dona", referencedColumnName = "codi_dona")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Donacion codiDona;
     @JoinColumn(name = "codi_deta_beca", referencedColumnName = "codi_deta_beca")
     @ManyToOne(fetch = FetchType.LAZY)
     private DetalleBeca codiDetaBeca;
+    @JoinColumn(name = "codi_dona", referencedColumnName = "codi_dona")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Donacion codiDona;
 
     public Transaccion() {
     }
@@ -128,13 +121,12 @@ public class Transaccion implements Serializable {
         this.estaTran = estaTran;
     }
 
-    @XmlTransient
-    public List<Detalle> getDetalleList() {
-        return detalleList;
+    public DetalleBeca getCodiDetaBeca() {
+        return codiDetaBeca;
     }
 
-    public void setDetalleList(List<Detalle> detalleList) {
-        this.detalleList = detalleList;
+    public void setCodiDetaBeca(DetalleBeca codiDetaBeca) {
+        this.codiDetaBeca = codiDetaBeca;
     }
 
     public Donacion getCodiDona() {
@@ -143,14 +135,6 @@ public class Transaccion implements Serializable {
 
     public void setCodiDona(Donacion codiDona) {
         this.codiDona = codiDona;
-    }
-
-    public DetalleBeca getCodiDetaBeca() {
-        return codiDetaBeca;
-    }
-
-    public void setCodiDetaBeca(DetalleBeca codiDetaBeca) {
-        this.codiDetaBeca = codiDetaBeca;
     }
 
     @Override

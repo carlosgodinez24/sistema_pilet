@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author eduardo
+ * @author Owner
  */
 @Entity
 @Table(name = "tipo_beca", catalog = "sistemas_pilet", schema = "")
@@ -38,8 +38,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoBeca.findByNombTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.nombTipoBeca = :nombTipoBeca"),
     @NamedQuery(name = "TipoBeca.findByDescTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.descTipoBeca = :descTipoBeca"),
     @NamedQuery(name = "TipoBeca.findByEstaTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.estaTipoBeca = :estaTipoBeca"),
-    @NamedQuery(name = "TipoBeca.findByTipoTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.tipoTipoBeca = :tipoTipoBeca")})
+    @NamedQuery(name = "TipoBeca.findByTipoTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.tipoTipoBeca = :tipoTipoBeca"),
+    @NamedQuery(name = "TipoBeca.findByNivelTipoBeca", query = "SELECT t FROM TipoBeca t WHERE t.nivelTipoBeca = :nivelTipoBeca")})
 public class TipoBeca implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoBeca", fetch = FetchType.LAZY)
+    private List<DetalleBeca> detalleBecaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -59,8 +63,10 @@ public class TipoBeca implements Serializable {
     private Integer estaTipoBeca;
     @Column(name = "tipo_tipo_beca")
     private Integer tipoTipoBeca;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiTipoBeca", fetch = FetchType.LAZY)
-    private List<DetalleBeca> detalleBecaList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "nivel_tipo_beca")
+    private int nivelTipoBeca;
 
     public TipoBeca() {
     }
@@ -69,9 +75,10 @@ public class TipoBeca implements Serializable {
         this.codiTipoBeca = codiTipoBeca;
     }
 
-    public TipoBeca(Integer codiTipoBeca, String nombTipoBeca) {
+    public TipoBeca(Integer codiTipoBeca, String nombTipoBeca, int nivelTipoBeca) {
         this.codiTipoBeca = codiTipoBeca;
         this.nombTipoBeca = nombTipoBeca;
+        this.nivelTipoBeca = nivelTipoBeca;
     }
 
     public Integer getCodiTipoBeca() {
@@ -114,13 +121,12 @@ public class TipoBeca implements Serializable {
         this.tipoTipoBeca = tipoTipoBeca;
     }
 
-    @XmlTransient
-    public List<DetalleBeca> getDetalleBecaList() {
-        return detalleBecaList;
+    public int getNivelTipoBeca() {
+        return nivelTipoBeca;
     }
 
-    public void setDetalleBecaList(List<DetalleBeca> detalleBecaList) {
-        this.detalleBecaList = detalleBecaList;
+    public void setNivelTipoBeca(int nivelTipoBeca) {
+        this.nivelTipoBeca = nivelTipoBeca;
     }
 
     @Override
@@ -146,6 +152,15 @@ public class TipoBeca implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.TipoBeca[ codiTipoBeca=" + codiTipoBeca + " ]";
+    }
+
+    @XmlTransient
+    public List<DetalleBeca> getDetalleBecaList() {
+        return detalleBecaList;
+    }
+
+    public void setDetalleBecaList(List<DetalleBeca> detalleBecaList) {
+        this.detalleBecaList = detalleBecaList;
     }
     
 }

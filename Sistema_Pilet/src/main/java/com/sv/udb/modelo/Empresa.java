@@ -6,6 +6,7 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -44,6 +45,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresa.findByFechEmpr", query = "SELECT e FROM Empresa e WHERE e.fechEmpr = :fechEmpr"),
     @NamedQuery(name = "Empresa.findByEstaEmpr", query = "SELECT e FROM Empresa e WHERE e.estaEmpr = :estaEmpr")})
 public class Empresa implements Serializable {
+
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "mont_empr")
+    private BigDecimal montEmpr;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -218,6 +225,14 @@ public class Empresa implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Empresa[ codiEmpr=" + codiEmpr + " ]";
+    }
+
+    public BigDecimal getMontEmpr() {
+        return montEmpr;
+    }
+
+    public void setMontEmpr(BigDecimal montEmpr) {
+        this.montEmpr = montEmpr;
     }
     
 }

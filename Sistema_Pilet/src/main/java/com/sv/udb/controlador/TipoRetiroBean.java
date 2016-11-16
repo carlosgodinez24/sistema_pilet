@@ -139,7 +139,7 @@ public class TipoRetiroBean implements Serializable{
             this.listTipoReti.remove(this.objeTipoReti); //Limpia el objeto viejo
             this.objeTipoReti.setEstaReti(0);
             FCDETipoReti.edit(this.objeTipoReti);
-            this.listTipoReti.add(this.objeTipoReti); //Agrega el objeto modificado
+           // this.listTipoReti.add(this.objeTipoReti); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Tipo Beca Eliminado");
         }
@@ -161,7 +161,7 @@ public class TipoRetiroBean implements Serializable{
     {
         try
         {
-            this.listTipoReti = FCDETipoReti.findAll();
+            this.listTipoReti = FCDETipoReti.findAllActive();
             log.info("Tipos de Becas Consultados");
         }
         catch(Exception ex)

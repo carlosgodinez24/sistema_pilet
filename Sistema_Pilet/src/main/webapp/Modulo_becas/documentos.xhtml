@@ -68,16 +68,16 @@ and open the template in the editor.
                                     <h:form id="FormAlumasd" class="form-horizontal" enctype="multipart/form-data">
                                         <!--Form exclusivo para los remotos-->
                                           
-                                        <p:remoteCommand name="consObje" actionListener="#{documentoBean.cons()}" update=":FormAlum" 
+                                        <p:remoteCommand name="consObje" actionListener="#{documentoBean.cons()}" update=":FormRegi" 
                                                          oncomplete="$('#ModaForm').modal('show');" global="true"/>
-                                        <p:remoteCommand name="elimObje" actionListener="#{documentoBean.elim()}" update=":FormAlum :ContRegi" 
+                                        <p:remoteCommand name="elimObje" actionListener="#{documentoBean.elim()}" update=":FormRegi :ContRegi" 
                                                          oncomplete="INIT_OBJE();" global="true">
                                         
                                         </p:remoteCommand>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
-                                            <p:ajax listener="#{documentoBean.limpForm()}" update=":FormAlum" global="true" 
+                                            <p:ajax listener="#{documentoBean.limpForm()}" update=":FormRegi" global="true" 
                                                     oncomplete="$('#ModaForm').modal('show');" />
-                                            <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
+                                            
                                             <i class="fa fa-plus"/> Nuevo
                                         </h:commandLink>
                                         
@@ -119,10 +119,7 @@ and open the template in the editor.
                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                         </h:outputText>
                                     </h:column>
-                                    <h:column pt:data-sortable="true">
-                                        <f:facet name="header">Estado</f:facet>
-                                        <h:outputText value="#{fila.estaDocu}"/>
-                                    </h:column>
+                                   
                                    
                                 </h:dataTable>
                             </h:panelGroup>
@@ -136,7 +133,7 @@ and open the template in the editor.
                     <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
-                            <h:form id="FormAlum" class="form-horizontal" enctype="multipart/form-data">
+                            <h:form id="FormRegi" class="form-horizontal" enctype="multipart/form-data">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
                                     <h4 class="modal-title">Gestión documento</h4>
@@ -156,7 +153,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fech" value="Fecha "/>
                                             <h:inputText id="fech" value="#{documentoBean.objeDocu.fechDocu}" class="form-control">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                               <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                             </h:inputText>
                                             <h:message for="fech" errorClass="field-error" />
                                         </div>
@@ -168,28 +165,22 @@ and open the template in the editor.
                                             </h:selectOneMenu>
                                             <h:message for="tipo" errorClass="field-error" />           
                                         </div>
+                                         <div class="form-group input-group-xs">
+                                             <c:if test="#{documentoBean.guardar}">
+                                                <h:outputLabel  for="tipo" value="Selecciona tu archivo"/>
+                                                <h:inputFile pt:data-id="file" value="#{documentoBean.file}" pt:multiple="true"/>
+                                             </c:if>
+                                              </div>
                                         
-                            <div class="col-md-12" style="padding-right: 0;">
-                               
-                                            <h:inputFile pt:data-id="file" value="#{documentoBean.file}" pt:multiple="true"/>
-                            </div>
-                                        <h:commandLink id="btonMostBusc" class="btn btn-default btn-sm">
-                                            <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
-                                                    <i class="fa fa-chevron-down"/> Ver imagen
-                                                </h:commandLink>
                                     </fieldset>
                                         </ui:fragment>
                                     <ui:fragment id="FragGrad" rendered="#{documentoBean.showImag}">
                                         <div class="panel panel-default">
                                             <h:panelGroup>
-                                                <h:graphicImage height="300px" value="/images/#{documentoBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
+                                                <h:graphicImage height="500px" width="500px" value="/images/#{documentoBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
                                             </h:panelGroup>
                                         </div>
-                                        <h:commandLink id="btonOculEsta" class="btn btn-default btn-sm">
-                                            <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
-                                                <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
-                                                <i class="fa fa-undo"/> Regresar
-                                            </h:commandLink>
+                                       
                                     </ui:fragment>
                                 </div>
                                 
@@ -200,10 +191,42 @@ and open the template in the editor.
                                                     <p:ajax listener="#{documentoBean.limpForm()}" process="@form" update="@form" global="true"/>
                                                     <i class="fa fa-mail-forward"/> Cerrar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonSubira" class="btn btn-success btn-sm" actionListener="#{documentoBean.guar()}">
-                                                    <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
-                                                    <i class="fa fa-cloud-upload"/> Subir
+                                                
+                                                <c:if test="#{documentoBean.guardar}">
+                                                    <h:commandLink id="btonSubira" class="btn btn-success btn-md" actionListener="#{documentoBean.guar()}">
+                                                        <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
+                                                        <i class="fa fa-cloud-upload"/> Subir
+                                                    </h:commandLink>
+                                                 </c:if>
+                                                
+                                                <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==false}">
+                                                <h:commandLink id="btonMostBusc" class="btn btn-default btn-md">
+                                                    <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
+                                                            <i class="fa fa-chevron-down"/> Ver imagen
                                                 </h:commandLink>
+                                                    
+                                                    
+                                                    <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!documentoBean.guardar}" value="#" pt:data-placement="left"
+                                                              pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                    <i class="fa fa-times"/> Eliminar
+                                                </h:outputLink>
+                                                
+                                                </c:if>
+                                                
+                                                <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==true}">
+                                                 <h:commandLink id="btonOculEsta" class="btn btn-default btn-md">
+                                          
+                                            <p:ajax listener="#{documentoBean.toogImag}" oncomplete="INIT_OBJE_FILE();" process="@this" update="@form" global="true"/>
+                                                <i class="fa fa-undo"/> Regresar
+                                            </h:commandLink>
+                                                     
+                                                       </c:if>
+                                                
+                                                
+                                                 <c:if test="#{1==0}">
                                                 <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!documentoBean.guardar}">
                                                     <p:ajax listener="#{documentoBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
                                                     <i class="fa fa-plus"/> Nuevo
@@ -219,13 +242,8 @@ and open the template in the editor.
                                                     3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
                                                     4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
                                                 -->
-                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!documentoBean.guardar}" value="#" pt:data-placement="left"
-                                                              pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
-                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
-                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
-                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
-                                                    <i class="fa fa-times"/> Eliminar
-                                                </h:outputLink>
+                                                
+                                                </c:if>
                                             </div>
                                         </div>
                                 </div>

@@ -25,6 +25,8 @@ public interface TipoRetiroFacadeLocal {
     TipoRetiro find(Object id);
 
     List<TipoRetiro> findAll();
+    
+    List<TipoRetiro> findAllActive();
 
     List<TipoRetiro> findRange(int[] range);
 

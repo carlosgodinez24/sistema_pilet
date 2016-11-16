@@ -53,10 +53,10 @@ public class Beca implements Serializable {
     @Column(name = "reti_beca")
     private String retiBeca;
     @Column(name = "fech_inic")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechInic;
     @Column(name = "fech_baja")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechBaja;
     @JoinColumn(name = "codi_soli_beca", referencedColumnName = "codi_soli_beca")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

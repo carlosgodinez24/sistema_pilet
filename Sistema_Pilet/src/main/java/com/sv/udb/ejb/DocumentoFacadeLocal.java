@@ -25,6 +25,8 @@ public interface DocumentoFacadeLocal {
     Documento find(Object id);
 
     List<Documento> findAll();
+    
+    Documento findLast();
 
     List<Documento> findRange(int[] range);
 

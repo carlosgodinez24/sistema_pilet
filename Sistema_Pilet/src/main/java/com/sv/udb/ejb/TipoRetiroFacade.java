@@ -5,10 +5,13 @@
  */
 package com.sv.udb.ejb;
 
+import com.sv.udb.modelo.TipoDocumento;
 import com.sv.udb.modelo.TipoRetiro;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +30,15 @@ public class TipoRetiroFacade extends AbstractFacade<TipoRetiro> implements Tipo
 
     public TipoRetiroFacade() {
         super(TipoRetiro.class);
+    }
+    
+     @Override
+    public List<TipoRetiro> findAllActive()  {        
+        String consulta = "select * from tipo_retiro where tipo_retiro.esta_reti = 1";
+        Query q = getEntityManager().createNativeQuery(consulta, TipoRetiro.class);         
+                  
+        List resu = q.getResultList(); 
+        return resu.isEmpty() ? null : resu;
     }
     
 }

@@ -101,30 +101,37 @@ and open the template in the editor.
                                     <h:column pt:data-sortable="true" pt:data-field="nomb">
                                          <f:facet name="header">Nombre empresa</f:facet>
                                        <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr ne null}">
-                                      
                                         <h:outputText value="#{fila.codiDona.codiEmpr.nombEmpr}"/>  
                                         </h:panelGroup>
                                        <h:panelGroup class="label label-default" rendered="#{fila.codiDetaBeca eq null and fila.codiDona.codiEmpr.nombEmpr eq null}">                                       
                                              Sin Empresa
                                         </h:panelGroup> 
                                     </h:column>
-                                    
+                                    <!--Prueba columna oculta-->
+                                    <h:column pt:data-sortable="true">
+                                        <f:facet name="header">Carnet</f:facet> 
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiDetaBeca eq null}">
+                                       Sin Carnet</h:panelGroup>
+                                        <h:panelGroup  rendered="#{fila.codiDetaBeca ne null}">
+                                            <h:outputText value="#{fila.codiDetaBeca.codiBeca.codiSoliBeca.carnAlum}"/>                                           
+                                        </h:panelGroup>
+                                    </h:column>
+                                    <!--Prueba columna oculta-->
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Estudiante</f:facet> 
                                         <h:panelGroup class="label label-danger" rendered="#{fila.codiDetaBeca eq null}">
                                        Sin Carnet</h:panelGroup>
                                         <h:panelGroup  rendered="#{fila.codiDetaBeca ne null}">
-                                            <h:outputText value="#{fila.codiDetaBeca.codiBeca.codiSoliBeca.carnAlum.concat(' ').concat(fila.codiDetaBeca.codiBeca.codiSoliBeca.nombAlum)}"/>                                           
+                                            <h:outputText value="#{fila.codiDetaBeca.codiBeca.codiSoliBeca.nombAlum}"/>                                           
                                         </h:panelGroup>
                                     </h:column>
-                                    
-                                   <h:column pt:data-sortable="true" pt:data-field="mont">
+                                   <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="mont">
                                         <f:facet name="header">Monto </f:facet>
-                                        <h:outputText value="#{fila.montTran}"/>   
+                                        <h:outputText value="$ #{fila.montTran}"/>   
                                     </h:column>
-                                    <h:column pt:data-sortable="true" pt:data-field="montTotal">
+                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="montTotal">
                                         <f:facet name="header">Monto total</f:facet>
-                                        <h:outputText value="#{fila.montTota}"/>   
+                                        <h:outputText value="$ #{fila.montTota}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Fecha movimiento</f:facet> 
@@ -184,15 +191,6 @@ and open the template in the editor.
                                             </h:selectOneMenu>                                      
                                             <h:message for="becaSali" errorClass="field-error" />           
                                         </div>
-                                        
-                                        <!--<div class="form-group input-group-xs">
-                                            <h:outputLabel  for="soli" value="Nombre empresa "/>
-                                            <h:selectOneMenu id="soli" value="#{transaccionBean.objeTran.codiDona}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{donacionBean.listDona}" var="lst" itemLabel="#{lst.codiEmpr.nombEmpr.concat(' ').concat(lst.nombDona)}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                            <h:message for="soli" errorClass="field-error" />           
-                                        </div>-->
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="mont" value="Monto:"/>
                                             <h:message for="mont" errorClass="field-error" />

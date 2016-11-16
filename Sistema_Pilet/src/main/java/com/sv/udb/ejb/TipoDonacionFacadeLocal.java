@@ -25,6 +25,9 @@ public interface TipoDonacionFacadeLocal {
     TipoDonacion find(Object id);
 
     List<TipoDonacion> findAll();
+    
+    
+    List<TipoDonacion> findAllActive();
 
     List<TipoDonacion> findRange(int[] range);
 

@@ -183,7 +183,7 @@ public class DonacionBean implements Serializable{
             this.objeDona.setEstaDona(0);
             this.listDona.remove(this.objeDona); //Limpia el objeto viejo
             FCDEDona.edit(this.objeDona);
-            this.listDona.add(this.objeDona); //Agrega el objeto modificado
+           //this.listDona.add(this.objeDona); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
             log.info("Donacion Eliminada");
         }
@@ -202,7 +202,7 @@ public class DonacionBean implements Serializable{
     {
         try
         {
-            this.listDona = FCDEDona.findAll();
+            this.listDona = FCDEDona.findAllActive();
             log.info("Donaciones Consultadas");
         }
         catch(Exception ex)

@@ -123,7 +123,7 @@ public class EmpresaBean implements Serializable{
             this.listEmpr.remove(this.objeEmpr); //Limpia el objeto viejo
             this.objeEmpr.setEstaEmpr(0);
             FCDEEmpr.edit(this.objeEmpr);
-            this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
+            //this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Empresa Eliminada");
         }
@@ -142,7 +142,7 @@ public class EmpresaBean implements Serializable{
     {
         try
         {
-            this.listEmpr = FCDEEmpr.findAll();
+            this.listEmpr = FCDEEmpr.findAllActive();
             log.info("Empresas Consultadas");
         }
         catch(Exception ex)

@@ -78,11 +78,20 @@ public class TipoTipoDonacionBean implements Serializable {
         try
         {
             this.objeTipo.setEstaDona(1);
-            FCDETipoDona.create(this.objeTipo);
+            if(this.objeTipo.getRecaTipoDona()==null ||this.objeTipo.getRecaTipoDona().equals("") )
+            {
+                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Elige un tipo de doanción')");
+            
+            }
+            else
+            {
+                FCDETipoDona.create(this.objeTipo);
             this.listTipo.add(this.objeTipo);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Tipo Documento Guardado");
+            
+            }    
         }
         catch(Exception ex)
         {
@@ -131,7 +140,7 @@ public class TipoTipoDonacionBean implements Serializable {
             this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
             this.objeTipo.setEstaDona(0);
             FCDETipoDona.edit(this.objeTipo);
-            this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+           // this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Tipo Documento Eliminado");
         }
@@ -153,7 +162,7 @@ public class TipoTipoDonacionBean implements Serializable {
     {
         try
         {
-            this.listTipo = FCDETipoDona.findAll();
+            this.listTipo = FCDETipoDona.findAllActive();
             log.info("Tipos de Documentos Consultados");
         }
         catch(Exception ex)

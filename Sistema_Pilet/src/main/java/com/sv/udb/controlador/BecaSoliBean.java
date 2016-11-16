@@ -7,20 +7,30 @@ package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.BecaFacadeLocal;
+import com.sv.udb.ejb.DetalleBecaFacadeLocal;
 import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
+import com.sv.udb.ejb.TipoBecaFacadeLocal;
 import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.Grado;
 import com.sv.udb.modelo.SolicitudBeca;
+import com.sv.udb.modelo.TipoBeca;
+import com.sv.udb.modelo.TipoRetiro;
 import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.utils.AlumnosPojo;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.ejb.ApplicationException;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
@@ -40,6 +50,22 @@ import org.primefaces.context.RequestContext;
 public class BecaSoliBean implements Serializable {
 
     @EJB
+    private TipoBecaFacadeLocal FCDETipoBeca;
+
+    @EJB
+    private DetalleBecaFacadeLocal FCDEDetaBeca;
+    private List<TipoBeca> listTipoBeca;
+
+    public List<TipoBeca> getListTipoBeca() {
+        return listTipoBeca;
+    }
+
+    public void setListTipoBeca(List<TipoBeca> listTipoBeca) {
+        this.listTipoBeca = listTipoBeca;
+    }
+    
+    
+    @EJB
     private SolicitudBecaFacadeLocal FCDESoli;
     private SolicitudBeca objeSoli;
     private SolicitudBeca objeSoli2;
@@ -47,7 +73,8 @@ public class BecaSoliBean implements Serializable {
     private List<SolicitudBeca> listSoliH;
     private String filt; //Filotro de búsqueda
 
-
+    
+    
     @EJB
     private BecaFacadeLocal FCDEBeca;
     private Beca objeBeca;
@@ -92,6 +119,10 @@ public class BecaSoliBean implements Serializable {
     public void setListSoli(List<SolicitudBeca> listSoli) {
         this.listSoli = listSoli;
     }
+    @PersistenceContext(unitName = "PILETPU")
+    private EntityManager em;
+    @Resource
+    private javax.transaction.UserTransaction utx;
 
     public Beca getObjeBeca() {
         return objeBeca;
@@ -139,6 +170,12 @@ public class BecaSoliBean implements Serializable {
         this.objeBeca = new Beca();
         this.consTodo();
         this.consTodoH();
+        if (this.objeSoli.getCodiSoliBeca() != null) {
+            DetalleBecaBean asd = (DetalleBecaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("detalleBecaBean");
+            /*asd.setObjeCombPadr(objeSoli);
+            asd.onAlumBecaSelect();*/
+        }
+        
     }
     
     public void limpForm()
@@ -146,34 +183,46 @@ public class BecaSoliBean implements Serializable {
         this.objeBeca = new Beca();  
         this.objeSoli = new SolicitudBeca();
         this.objeSoli.setFechSoliBeca(new Date());
+        this.objeBeca.setFechBaja(new Date());
         this.guardar = true; 
-        this.showBusc = false;
-        this.beca = false;
-        this.elim = false;
-        this.empresa = false;
+        this.falso();
         this.filt = "";
     }
-    
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            TipoEstado a = new TipoEstado();
-            a.setCodiTipoEsta(1);
-            this.objeSoli.setEstaSoliBeca(1);
-            FCDESoli.create(objeSoli);
-            this.objeSoli2 = FCDESoli.findLast();
-            this.objeBeca.setCodiSoliBeca(objeSoli);
-            this.objeBeca.setCodiTipoEsta(a);
-            this.objeBeca.setFechInic(new Date());
-            this.FCDEBeca.create(objeBeca);
-            this.listSoli.add(this.objeSoli);
-            System.out.println(this.objeBeca);
-            this.listBeca.add(objeBeca);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Beca Guardada");
+            if(objeSoli.getCarnAlum() == null || objeSoli.getNombAlum() == null)
+            {
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Busque un alumno')");
+            }
+            else
+            {
+                    TipoEstado a = new TipoEstado();
+                    a.setCodiTipoEsta(1);
+                    this.objeSoli.setEstaSoliBeca(0);
+                    FCDESoli.create(objeSoli);
+                    this.objeSoli2 = FCDESoli.findLast();
+                    System.out.println("AQUIIII: "+this.objeSoli2);
+                    this.objeBeca.setCodiSoliBeca(objeSoli2);
+                    this.objeBeca.setCodiTipoEsta(a);
+                    this.objeBeca.setFechInic(objeBeca.getFechBaja());
+                    this.objeBeca.setFechBaja(null);
+                    System.out.println(objeBeca);
+                    this.FCDEBeca.create(objeBeca);
+                    this.listSoli.add(this.objeSoli);
+                   if(this.listBeca == null)
+                    {
+                        this.listBeca = new ArrayList<>();
+                    }
+                    System.out.println(this.objeBeca);
+                    this.listBeca.add(objeBeca);
+                    this.limpForm();
+                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                    log.info("Beca Guardada");
+            
+            }
         }
         catch(Exception ex)
         {
@@ -200,6 +249,7 @@ public class BecaSoliBean implements Serializable {
             this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
             this.listSoli.remove(this.objeSoli);
             this.objeSoli2.setEstaSoliBeca(3);
+            objeSoli.setBecaList(null);
             FCDESoli.edit(objeSoli2);
             this.listSoli.add(objeSoli2);
             this.objeSoli.setEstaSoliBeca(1);
@@ -219,6 +269,8 @@ public class BecaSoliBean implements Serializable {
             this.listBeca.add(objeBeca);
             //FCDESoli.edit(this.objeSoli);
             //this.listSoli.add(this.objeSoli); //Agrega el objeto modificado
+            this.consTodoH();
+            this.consTodo();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Solicitud Modificada");
             
@@ -239,42 +291,33 @@ public class BecaSoliBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            /*Busca el objeto viejo le setea el estado 3 de historial y lo modifica*/
-            this.objeBeca2 = FCDEBeca.findSoli(this.objeBeca.getCodiSoliBeca().getCodiSoliBeca());
-            this.listBeca.remove(this.objeBeca2);
+             /*Busca el objeto viejo le setea el estado 3 de historial y lo modifica*/
+            //this.listBeca.remove(this.objeBeca);
+            this.objeSoli2 = this.objeSoli;
+            this.objeSoli.setEstaSoliBeca(3);
+            FCDESoli.edit(objeSoli);              //edita
+            this.objeBeca2 = this.objeBeca;
             TipoEstado esta = new TipoEstado();
             esta.setCodiTipoEsta(3);
             this.objeBeca.setCodiTipoEsta(esta);
-            FCDEBeca.edit(this.objeBeca2);
-            this.listBeca.add(this.objeBeca2); //Agrega el objeto modificado
-            
-            /**/
-            this.listSoli.remove(this.objeSoli);
-            objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());
-            objeSoli2.setEstaSoliBeca(3);
-            FCDESoli.edit(objeSoli2);
-            this.listSoli.add(objeSoli2);
-            
-            /**/
-            FCDESoli.create(objeSoli);
-            this.listSoli.add(objeSoli);
-            
-            
-            /*Setea la informacion ingresada en el objeto e inserta el nuevo objeto en la base*/
-            TipoEstado esta2 = new TipoEstado();
-            esta2.setCodiTipoEsta(1);
-            this.objeBeca.setCodiTipoEsta(esta2);
-            this.objeBeca.setRetiBeca(null);
-            this.objeBeca.setCodiReti(null);
-            this.objeSoli = FCDESoli.findLast();
-            this.objeBeca.setCodiSoliBeca(objeSoli);
-            this.objeBeca.setFechBaja(null);
-            FCDEBeca.create(this.objeBeca);
-            this.listBeca.add(this.objeBeca);
+            FCDEBeca.edit(objeBeca);                          
+            this.objeSoli2.setEstaSoliBeca(1);            
+            TipoRetiro reti = new TipoRetiro();
+            reti.setCodiReti(null);
+            this.objeBeca2.setCodiReti(null);
+            this.objeBeca2.setRetiBeca(null);
+            esta.setCodiTipoEsta(1);
+            this.objeBeca2.setCodiTipoEsta(esta);
+            objeSoli2.setBecaList(null);
+            FCDESoli.create(objeSoli2);
+            this.objeSoli2 = FCDESoli.findLast();
+            this.objeBeca2.setCodiSoliBeca(objeSoli2);
+            this.objeBeca2.setFechBaja(null);
+            FCDEBeca.create(objeBeca2);     
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
             log.info("Beca reactivada");
             this.consTodo();
-            
+            this.consTodoH();
         }
         catch(Exception ex)
         {
@@ -298,7 +341,9 @@ public class BecaSoliBean implements Serializable {
             esta.setCodiTipoEsta(2);
             this.objeBeca.setCodiTipoEsta(esta);
             this.objeBeca.setFechBaja(new Date());
+            this.objeSoli.setEstaSoliBeca(2);
             FCDEBeca.edit(this.objeBeca);
+            FCDESoli.edit(objeSoli);
             this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
             log.info("Beca reactivada");
@@ -307,14 +352,29 @@ public class BecaSoliBean implements Serializable {
         }
         catch(Exception ex)
         {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+                        ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
             log.error(getRootCause(ex).getMessage());
             System.out.println("AQUI "+ex);
+            System.out.println("AQUI "+ex.getMessage());
+            System.out.println("AQUI "+ex.getCause());
+            System.out.println("AQUI "+getRootCause(ex).getMessage());
         }
         finally
         {
             
         }
+    }
+    
+    public void falso()
+    {
+        showBusc = false;
+        empresa = false;
+        beca = false;
+        elim = false;
+        estado = false;
+        detalle = false;
+        grado = false;
+        historia = false;
     }
     
     public void cons()
@@ -327,6 +387,7 @@ public class BecaSoliBean implements Serializable {
             this.objeSoli = FCDESoli.find(codi);
             this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());
             this.guardar = false;
+            this.falso();
             this.filt = objeSoli.getCarnAlum();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeBeca.getCodiSoliBeca().getNombAlum()) + "')");
@@ -342,7 +403,41 @@ public class BecaSoliBean implements Serializable {
             
         }
     }
+    public boolean cons(SolicitudBeca obje)
+    {
+        boolean variable=false;
+        try
+        {
+           SolicitudBeca s = new SolicitudBeca();
+            s = FCDESoli.find(obje);
+            if(s!=null)
+            {variable=true;}
+           
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        return variable;
+    }
     
+    public boolean cons(String obje)
+    {
+        boolean variable=false;
+        try
+        {
+           
+           SolicitudBeca s1 = new SolicitudBeca();
+            s1 = FCDESoli.findCarnet(obje);
+            if(s1 != null)
+            {variable=true;}
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        return variable;
+    }
     public void consTodo()
     {
         try
@@ -384,31 +479,45 @@ public class BecaSoliBean implements Serializable {
     {
         RequestContext ctx = RequestContext.getCurrentInstance();
         Client client = ClientBuilder.newClient();
-        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consAlum/%s", this.filt);
-        WebTarget resource = client.target(url);
-        Builder request = resource.request();
-        request.accept(MediaType.APPLICATION_JSON);
-        Response response = request.get();
-        if (response.getStatusInfo().getFamily() == Family.SUCCESSFUL)
-        {
-            AlumnosPojo resp = response.readEntity(AlumnosPojo.class); //La respuesta de captura en un pojo que esta en el paquete utils
-            this.objeSoli.setCarnAlum(filt);
-            this.objeSoli.setNombAlum(resp.getNomb());
-            System.out.println(this.objeSoli.getNombAlum());
-            Grado grad = new Grado();
-            String cortado= resp.getGrad().substring(0,1);
-            grad.setCodiGrad(Integer.parseInt(cortado));
-            this.objeSoli.setCodiGrad(grad);
-            System.out.println(grad.getCodiGrad());
-            if(resp.getNomb() == null || resp.getNomb().equals(""))
+        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consAlum/%s", this.filt.trim());
+        
+       if(this.cons(filt.trim()))
+       {
+           
+         ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El Alumno ya se encuentra')");
+       }
+       else
+       {
+           WebTarget resource = client.target(url);
+            Builder request = resource.request();
+            request.accept(MediaType.APPLICATION_JSON);
+            Response response = request.get();
+            if (response.getStatusInfo().getFamily() == Family.SUCCESSFUL)
             {
-                ctx.execute("setMessage('MESS_WARN', 'Atención', 'Alumno no encontrado.')");
+                AlumnosPojo resp = response.readEntity(AlumnosPojo.class); //La respuesta de captura en un pojo que esta en el paquete utils
+                this.objeSoli.setCarnAlum(filt.trim());
+                this.objeSoli.setNombAlum(resp.getNomb());
+                System.out.println(this.objeSoli.getNombAlum());
+                Grado grad = new Grado();
+                String cortado= resp.getGrad().substring(0,1);
+                grad.setCodiGrad(Integer.parseInt(cortado));
+                this.objeSoli.setCodiGrad(grad);
+                System.out.println(grad.getCodiGrad());
+                if(resp.getNomb() == null || resp.getNomb().equals(""))
+                {
+                    ctx.execute("setMessage('MESS_WARN', 'Atención', 'Alumno no encontrado.')");
+                }
             }
-        }
-        else
-        {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar alumno')");
-        }
+            else
+            {
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar alumno')");
+            }
+       
+       }
+                
+                
+                
+        
     }
     
     //Lógica slider
@@ -463,7 +572,7 @@ public class BecaSoliBean implements Serializable {
     public void empr()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        EmpresaBean asd = new EmpresaBean();
+        EmpresaBean asd = (EmpresaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean");
         asd.limpForm();
         this.empresa = !this.empresa;
         this.beca = !this.beca;
@@ -494,6 +603,7 @@ public class BecaSoliBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         this.detalle = !this.detalle;
         this.beca = !this.beca;
+        listTipoBeca = FCDETipoBeca.findTipos(this.objeSoli.getCodiGrad().getNivelGrad());
     }
     
     public void grad()
@@ -509,5 +619,17 @@ public class BecaSoliBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         this.historia = !this.historia;
         System.out.println("Hostiral: "+this.historia);
+    }
+
+    public void persist(Object object) {
+        try {
+            utx.begin();
+            em.persist(object);
+            utx.commit();
+        } catch (Exception e) {
+           
+            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
     }
 }

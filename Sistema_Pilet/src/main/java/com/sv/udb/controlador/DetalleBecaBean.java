@@ -8,6 +8,10 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.DetalleBeca;
 import com.sv.udb.ejb.DetalleBecaFacadeLocal;
+import com.sv.udb.ejb.TipoBecaFacadeLocal;
+import com.sv.udb.modelo.Beca;
+import com.sv.udb.modelo.SolicitudBeca;
+import com.sv.udb.modelo.TipoBeca;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -27,6 +31,8 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class DetalleBecaBean implements Serializable{
 
+    @EJB
+    private TipoBecaFacadeLocal FCDETipoBeca;
     @EJB
     private DetalleBecaFacadeLocal FCDEDetaBeca;
     private DetalleBeca objeDetaBeca;
@@ -59,6 +65,33 @@ public class DetalleBecaBean implements Serializable{
     }
     
     
+    //Manejo de combobox
+    private Beca objeCombPadr;
+    //private SolicitudBeca objeCombPadr;
+    private List<TipoBeca> listTipoBeca;
+
+    public Beca getObjeCombPadr() {
+        return objeCombPadr;
+    }
+
+    public void setObjeCombPadr(Beca objeCombPadr) {
+        this.objeCombPadr = objeCombPadr;
+    }
+    public List<TipoBeca> getListTipoBeca() {
+        return listTipoBeca;
+    }
+
+    public void setListTipoBeca(List<TipoBeca> listTipoBeca) {
+        this.listTipoBeca = listTipoBeca;
+    }
+    
+    public void onAlumBecaSelect(){
+        
+        listTipoBeca = FCDETipoBeca.findTipos(objeCombPadr.getCodiSoliBeca().getCodiGrad().getNivelGrad());
+    }
+    
+    
+    
     /**
      * Creates a new instance of DetalleBecaBean
      */
@@ -71,6 +104,16 @@ public class DetalleBecaBean implements Serializable{
         this.objeDetaBeca = new DetalleBeca();
         this.guardar = true;
         this.consTodo();
+        
+        if( FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean") != null)
+        {
+            BecaSoliBean asd = (BecaSoliBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean");
+           Beca a = new Beca();
+         
+            this.objeDetaBeca.setCodiBeca(asd.getObjeBeca());
+            System.out.println(this.objeDetaBeca.getCodiBeca().getCodiBeca());
+        }
+         
     }
     
     public void limpForm()
@@ -84,6 +127,7 @@ public class DetalleBecaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeDetaBeca.setCodiBeca(objeCombPadr);
             this.objeDetaBeca.setEstaDetaBeca(1);
             FCDEDetaBeca.create(this.objeDetaBeca);
             this.listDetaBeca.add(this.objeDetaBeca);
