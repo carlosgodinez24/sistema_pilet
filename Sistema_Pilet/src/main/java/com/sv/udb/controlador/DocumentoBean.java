@@ -44,8 +44,25 @@ public class DocumentoBean implements Serializable{
     private Documento objeDocu;
     private List<Documento> listDocu;
     private boolean guardar;
+    private boolean imagen;
     private static Logger log = Logger.getLogger(DocumentoBean.class);
     private String rutaC;
+    private byte[] esto;
+
+    public byte[] getEsto() {
+        return esto;
+    }
+
+    public boolean isImagen() {
+        return imagen;
+    }
+
+    public void setImagen(boolean imagen) {
+        this.imagen = imagen;
+    }
+    
+    
+    
     public Documento getObjeDocu() {
         return objeDocu;
     }
@@ -76,7 +93,7 @@ public class DocumentoBean implements Serializable{
         this.consTodo();
         this.objeDocu.setFechDocu(new Date());
         this.inicializar();
-        
+        this.imagen = false;
     }
     
     public void limpForm()
@@ -85,7 +102,6 @@ public class DocumentoBean implements Serializable{
         this.guardar = true;  
         this.showImag=false;
         this.objeDocu.setFechDocu(new Date());
-        
     }
     
     public void esta()
@@ -221,7 +237,7 @@ public class DocumentoBean implements Serializable{
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {
-            
+            this.imagen = false;
             this.objeDocu = FCDEDocu.find(codi);
             String h = this.rutas.get(0);
             //System.out.println(h + this.objeDocu.getRutaDocu());
@@ -230,7 +246,15 @@ public class DocumentoBean implements Serializable{
             this.guardar = false;
             this.showDocu = false;
             this.showImag=false;
-                    
+            String ruta = this.rutas.get(0) + this.objeDocu.getRutaDocu();
+            File file = new File(ruta);
+            String[] tokens = file.getName().split("\\.(?=[^\\.]+$)");
+            if("pdf".equals(tokens[1]))
+            {
+                this.imagen = !this.imagen;
+                InputStream docu = new FileInputStream(file);
+                this.esto = readFully(docu);
+            }
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDocu.getRutaDocu()) + "')");
             log.info("Documento Consultado");
@@ -286,11 +310,11 @@ public class DocumentoBean implements Serializable{
             
             this.listNombFile = new ArrayList<>();
             this.rutas = new ArrayList<>();
-            String ruta ="C:/Users/Ariel/Desktop/becas/";    
-            //String ruta = "/home/eduardo/Escritorio/asd/";
+            //String ruta ="C:/Users/Ariel/Desktop/becas/";    
+            String ruta = "/home/eduardo/Escritorio/asd/";
            rutas.add(ruta);
            DireActuInde = 0;
-          //this.consTodo("");
+          this.consTodo("");
            this.carnet = "";
         }
         catch(Exception e)
@@ -524,7 +548,7 @@ public class DocumentoBean implements Serializable{
                 }
                 
             }
-            
+            System.out.println(this.listNombFile.size());
         }
         catch(Exception ex)
         {
@@ -563,8 +587,9 @@ public class DocumentoBean implements Serializable{
     public void toogImag()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-       
+        
         this.showImag = !this.showImag;
         System.out.println(this.showImag);
+        
     }
 }

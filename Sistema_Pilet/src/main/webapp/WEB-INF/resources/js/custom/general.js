@@ -35,7 +35,7 @@ $(document).ready(function() {
     $('#ModaForm').on('hide.bs.modal', function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
     });
-     
+
 
     
     INIT_OBJE();

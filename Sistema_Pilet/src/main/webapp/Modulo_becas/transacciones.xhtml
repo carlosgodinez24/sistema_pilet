@@ -263,7 +263,7 @@ and open the template in the editor.
                                             <h:outputLabel  for="becaAlum" value="Alumno "/>
                                             <h:selectOneMenu id="becaAlum"  value="#{transaccionBean.objeCombPadr }" class="form-control" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{becaSoliBean.listBeca}" var="lst" itemLabel="#{lst.codiSoliBeca.nombAlum}" itemValue="#{lst}"/>
                                                 <p:ajax update="becaSali" listener="#{transaccionBean.onDetalleSelect}" process="@this"/>  
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
