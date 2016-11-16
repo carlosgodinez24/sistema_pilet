@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Cambiocita;
@@ -19,9 +15,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+
 /**
- *
- * @author Kevin
+ * Facade: Citas de los visitantes
+ * @author Control citas
+ * Prototipo 1
  */
 @Stateless
 public class VisitantecitaFacade extends AbstractFacade<Visitantecita> implements VisitantecitaFacadeLocal {

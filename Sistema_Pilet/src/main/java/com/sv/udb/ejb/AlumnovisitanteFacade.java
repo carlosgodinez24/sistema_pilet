@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.ejb;
-
 import com.sv.udb.modelo.Alumnovisitante;
 import com.sv.udb.modelo.Cita;
 import com.sv.udb.modelo.Horariodisponible;
@@ -16,8 +10,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 /**
- *
- * @author Kevin
+ * Facade: Alumno visitantes
+ * @author Control citas
+ * Prototipo 2
  */
 @Stateless
 public class AlumnovisitanteFacade extends AbstractFacade<Alumnovisitante> implements AlumnovisitanteFacadeLocal {
