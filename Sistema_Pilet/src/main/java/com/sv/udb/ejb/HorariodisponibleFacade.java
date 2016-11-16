@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.ejb;
-
 import com.sv.udb.modelo.Horariodisponible;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,9 +9,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+
 /**
- *
- * @author Kevin
+ * @author Control citas
+ * Facade: Horarios disponibles
+ * Prototipo 1
  */
 @Stateless
 public class HorariodisponibleFacade extends AbstractFacade<Horariodisponible> implements HorariodisponibleFacadeLocal {

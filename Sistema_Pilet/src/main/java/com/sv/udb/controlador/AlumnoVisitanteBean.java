@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
@@ -23,9 +18,12 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
-/**
- *
- * @author REGISTRO
+
+ /**
+ * La clase alumno visitante 
+ * @author: ControlCitas
+ * @version: Prototipo 1
+ * Octubre de 2016
  */
 @Named(value = "alumnoVisitanteBean")
 @ViewScoped
@@ -111,7 +109,9 @@ public class AlumnoVisitanteBean implements Serializable{
         this.contForm = contForm;
     }
     
-    
+       /**
+     * Métodos
+     */
     
     @PostConstruct
     public void init()
@@ -180,6 +180,9 @@ public class AlumnoVisitanteBean implements Serializable{
             
         }
     }
+       /**
+     * Método para encontrar el Dui del visitante
+     */
     public void consPorDui()
      {
         RequestContext ctx = RequestContext.getCurrentInstance();
@@ -212,6 +215,11 @@ public class AlumnoVisitanteBean implements Serializable{
         }
     }
     
+       /**
+     * Método para guardar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -232,6 +240,11 @@ public class AlumnoVisitanteBean implements Serializable{
         }
     }
     
+     /**
+     * Método para modificar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void modi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -249,7 +262,11 @@ public class AlumnoVisitanteBean implements Serializable{
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
-    
+     /**
+     * Método para eliminar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void elim()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -268,6 +285,11 @@ public class AlumnoVisitanteBean implements Serializable{
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }
+     /**
+     * Método para registrar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void regiVisi(){
         RequestContext ctx = RequestContext.getCurrentInstance();
         FacesContext facsCtxt = FacesContext.getCurrentInstance();
@@ -285,6 +307,11 @@ public class AlumnoVisitanteBean implements Serializable{
         }                    
         asigAlumVisi();
     }
+     /**
+     * Método para asignar un visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void asigAlumVisi(){
         try{
             RequestContext ctx = RequestContext.getCurrentInstance();

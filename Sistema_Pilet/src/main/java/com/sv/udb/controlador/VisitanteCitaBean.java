@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.VisitantecitaFacadeLocal;
@@ -17,9 +12,11 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
-/**
- *
- * @author REGISTRO
+ /**
+ * La clase  visitante cita 
+ * @author: ControlCitas
+ * @version: Prototipo 2
+ * Octubre  2016
  */
 @Named(value = "VisitantecitaCitaBean")
 @ViewScoped
@@ -127,7 +124,12 @@ public class VisitanteCitaBean implements Serializable{
             
         }
     }
-    
+ /**
+ * Metodo para guardar los datos del visitante que realiza
+ * la cita
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -144,6 +146,11 @@ public class VisitanteCitaBean implements Serializable{
         }
     }
     
+     /**
+ * Metodo para modificar los datos del visitante que realizar la cita
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void modi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -160,6 +167,11 @@ public class VisitanteCitaBean implements Serializable{
         }
     }
     
+     /**
+     * Metodo para eliminar los datos del visitante que realiza la cita
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void elim()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página

@@ -1,8 +1,4 @@
-/*
- * Controlador eventos
- */
 package com.sv.udb.controlador;
-
 import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
 import com.sv.udb.ejb.VisitanteFacadeLocal;
 import com.sv.udb.modelo.Alumnovisitante;
@@ -20,9 +16,10 @@ import org.primefaces.context.RequestContext;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * La clase visitantes
  * @author Sistema de citas
- * @version 1.0 13 de Octubre de 2016
+ * @version prototipo 2
+ * Octubre 2016
  */
 @Named(value = "visitantesBean")
 @ViewScoped

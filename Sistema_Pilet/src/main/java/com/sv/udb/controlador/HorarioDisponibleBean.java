@@ -1,10 +1,4 @@
- /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.controlador;
-
 import com.sv.udb.ejb.HorariodisponibleFacadeLocal;
 import com.sv.udb.modelo.Horariodisponible;
 import com.sv.udb.utils.LOG4J;
@@ -24,9 +18,10 @@ import org.primefaces.context.RequestContext;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * Clase de horario disponible 
  * @author Sistema de citas
- * @version 1.0 13 de Octubre de 2016
+ * @version prototipo 2
+ * Octubre de 2016
  */
 @Named(value = "horarioDisponibleBean")
 @ViewScoped
