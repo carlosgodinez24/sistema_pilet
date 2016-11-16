@@ -1156,8 +1156,11 @@ public class CitasBean implements Serializable{
             //consultamos el ultimo objeto cambio_cita
             this.objeCambCitaDepe = FCDECambCita.findByCita(cita);
             if(objeCambCitaDepe==null)objeCambCitaDepe = new Cambiocita();
-            //consultamos el alumno 
+            //consultamos el alumno
+            if(listVisiCitaDepe.get(0).getCarnAlum() != null && listVisiCitaDepe.get(0).getCarnAlum().trim()!=""){
             this.objeAlumDepe = consObjeAlumno(listVisiCitaDepe.get(0).getCarnAlum());
+            }
+            
             if(objeAlumDepe==null)objeAlumDepe= new WSconsDoceByAlum();
             
         }

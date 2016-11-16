@@ -83,7 +83,7 @@ public class EventosBean implements Serializable{
     {
         try
         {
-            this.listEven = FCDEEven.findAll();
+            this.listEven = FCDEEven.findByEsta(1);
         }
         catch(Exception ex)
         {
@@ -212,8 +212,10 @@ public class EventosBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEEven.remove(this.objeEven);
+            this.objeEven.setEstaEven(0);
             this.listEven.remove(this.objeEven);
+            FCDEEven.edit(this.objeEven);
+            this.listEven.add(this.objeEven);
             log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Eliminar evento codigo: " + objeEven.getCodiEvent());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
