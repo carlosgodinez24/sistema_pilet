@@ -136,7 +136,7 @@ and open the template in the editor.
                                                 <f:facet name="header">Estado beca</f:facet> 
                                                 <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta == 1}">
                                                     <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                                <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 10}">
+                                                <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 3}">
                                                     <i class="fa fa-unlock"/> Historial</h:panelGroup>
                                                 <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta == 2}">
                                                     <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
@@ -199,14 +199,14 @@ and open the template in the editor.
                                             <h:column pt:data-sortable="true">
                                                 <f:facet name="header">Fecha Solicitud</f:facet>
                                                 <h:outputText value="#{fila.codiSoliBeca.fechSoliBeca}">
-                                                   <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                                 </h:outputText>
                                             </h:column>
                                             <h:column pt:data-sortable="true">
                                                 <f:facet name="header">Estado beca</f:facet> 
                                                 <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta == 1}">
                                                     <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                                <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 10}">
+                                                <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 3}">
                                                     <i class="fa fa-unlock"/> Historial</h:panelGroup>
                                                 <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta == 2}">
                                                     <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
@@ -248,6 +248,10 @@ and open the template in the editor.
                                                 <h:inputText id="por" value="#{becaSoliBean.objeBeca.retiBeca}" class="form-control" />
                                             </div>
                                             
+                                            <h:inputHidden id="fechaoculta" value="#{becaSoliBean.objeBeca.fechBaja}"> 
+                                            
+                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                            </h:inputHidden>
                                         </fieldset>
                                     </ui:fragment>
                                     <ui:fragment id="FragForm" rendered="#{!becaSoliBean.beca}">
@@ -342,7 +346,7 @@ and open the template in the editor.
                                                     <div class="form-group col-md-11 input-group-xs">
                                                         <h:outputLabel  for="fech" value="Fecha Solicitud: "/>
                                                         <h:inputText  id="fech" value="#{becaSoliBean.objeSoli.fechSoliBeca}" class="form-control">
-                                                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6" />
+                                                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                                         </h:inputText>
                                                         <h:message for="fech" errorClass="field-error" />
                                                     </div>
@@ -491,14 +495,6 @@ and open the template in the editor.
                                             <h:message for="mens" errorClass="field-error" />
                                             <h:inputText id="mensgrad" value="#{gradoBean.objeGrad.mensGrad}" class="form-control" />
                                         </div>
-                                        <h:commandLink id="btonGuargrad" class="btn btn-success" rendered="#{gradoBean.guardar}">
-                                            <p:ajax listener="#{gradoBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                            <i class="fa fa-plus"/> Guardar
-                                        </h:commandLink>
-                                        <h:commandLink id="btonOculgrad" class="btn btn-default btn-sm">
-                                            <p:ajax listener="#{becaSoliBean.grad()}" process="@this" update="@form" global="true"/>
-                                            <i class="fa fa-undo"/> Regresar
-                                        </h:commandLink>
                                     </fieldset>
                                     </ui:fragment>
                                 </div>
@@ -509,29 +505,29 @@ and open the template in the editor.
                                                     <p:ajax listener="#{becaSoliBean.limpForm()}" process="@form" update="@form" global="true"/>
                                                     <i class="fa fa-mail-forward"/> Cerrar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{becaSoliBean.guardar == true and becaSoliBean.empresa==false}">
+                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{becaSoliBean.guardar == true and becaSoliBean.empresa==false and becaSoliBean.grado == false}">
                                                     <p:ajax listener="#{becaSoliBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                     <i class="fa fa-plus"/> Guardar
                                                 </h:commandLink>
-                                                 <c:if test="#{becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false }">
+                                                 <c:if test="#{becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false and becaSoliBean.grado == false}">
                                                 <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!becaSoliBean.guardar}">
                                                     <p:ajax listener="#{becaSoliBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
                                                     <i class="fa fa-plus"/> Nuevo
                                                 </h:commandLink>
                                                  </c:if>
-                                                <c:if test="#{becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false  }">
+                                                <c:if test="#{becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false  and becaSoliBean.grado == false}">
                                                     <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becaSoliBean.guardar}">
                                                         <p:ajax listener="#{becaSoliBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Modificar
                                                     </h:commandLink>
                                                  </c:if>
-                                                <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta != 2 and !becaSoliBean.guardar and becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false }">
+                                                <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta != 2 and !becaSoliBean.guardar and becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false and becaSoliBean.grado == false}">
                                                     <h:commandLink id="btonDeta" class="btn btn-warning">
                                                         <p:ajax listener="#{becaSoliBean.deta()}" process="@this" update="@form" global="true"/>
                                                         <i class="fa fa-chevron-down"/> Detalle
                                                     </h:commandLink>
                                                 </c:if>
-                                                <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta != 2 and becaSoliBean.guardar == false and becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false }">
+                                                <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta != 2 and becaSoliBean.guardar == false and becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false and becaSoliBean.grado == false}">
                                                 <h:commandLink id="btonMostBusc" class="btn btn-danger">
                                                     <p:ajax listener="#{becaSoliBean.elim()}" process="@this" update="@form" global="true"/>
                                                     <i class="fa fa-chevron-down"/> Retirar Beca
@@ -589,10 +585,24 @@ and open the template in the editor.
                                                     
                                                  </c:if>
                                                 
+                                                <!-- Botones del fragmento de  empresa -->
+                                                 
+                                                <c:if test="#{becaSoliBean.grado == true}">
+                                                 <h:commandLink id="btonGuarGrad" class="btn btn-success" rendered="#{gradoBean.guardar}">
+                                                     <p:ajax listener="#{gradoBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                    <i class="fa fa-plus"/> Guardar Grado
+                                                </h:commandLink>
+                                            <h:commandLink id="btonOculGrad" class="btn btn-default btn-md">
+                                                <p:ajax listener="#{becaSoliBean.grad()}" process="@this" update="@form" global="true"/>
+                                                <i class="fa fa-undo"/> Regresar anterior
+                                            </h:commandLink>
+                                                     
+                                                      </c:if>
+                                                
                                                 <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta == 2}">
                                                     <h:commandLink id="btonActi" class="btn btn-info" rendered="#{!becaSoliBean.detalle}">
                                                         <p:ajax listener="#{becaSoliBean.reActi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                        <i class="fa fa-edit"/> ReActivar
+                                                        <i class="fa fa-edit"/> Activar
                                                     </h:commandLink>
                                                 </c:if>
                                             </div>
