@@ -13,13 +13,13 @@ import java.util.List;
  */
 public class WSconsEmplByCrit {
     private boolean resp;
-    private List<DatosDocentesByCrit> resu;
+    private List<DatosUsuariosByCrit> resu;
     
     public WSconsEmplByCrit() {
         
     }
 
-    public WSconsEmplByCrit(boolean resp, List<DatosDocentesByCrit> resu) {
+    public WSconsEmplByCrit(boolean resp, List<DatosUsuariosByCrit> resu) {
         this.resp = resp;
         this.resu = resu;
     }
@@ -32,11 +32,11 @@ public class WSconsEmplByCrit {
         this.resp = resp;
     }
 
-    public List<DatosDocentesByCrit> getResu() {
+    public List<DatosUsuariosByCrit> getResu() {
         return resu;
     }
 
-    public void setResu(List<DatosDocentesByCrit> resu) {
+    public void setResu(List<DatosUsuariosByCrit> resu) {
         this.resu = resu;
     }       
 }
