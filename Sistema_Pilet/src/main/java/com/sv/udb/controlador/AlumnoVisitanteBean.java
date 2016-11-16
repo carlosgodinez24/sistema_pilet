@@ -56,6 +56,16 @@ public class AlumnoVisitanteBean implements Serializable{
     private boolean contForm;
     private List<Alumnovisitante> listAlumVisiCarne;
     
+    private String carnAlum;
+    
+    public void setAlumn(){
+        String Carn = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjeAlum"));
+        if(Carn!=null){
+            this.carnAlum = Carn;
+            RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Alumno Seleccionado')");
+        }
+    }
     
     public Alumnovisitante getObjeAlumVisi() {
         return objeAlumVisi;
@@ -174,11 +184,6 @@ public class AlumnoVisitanteBean implements Serializable{
             log.error("Error al consultar alumno visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
-        
-        finally
-        {
-            
-        }
     }
        /**
      * Método para encontrar el Dui del visitante
@@ -226,9 +231,10 @@ public class AlumnoVisitanteBean implements Serializable{
         try
         {
             objeAlumVisi.setEstaAlumVisi(1);
+            objeAlumVisi.setCarnAlum(this.carnAlum);
             FCDEAlumVisi.create(this.objeAlumVisi);
             this.listAlumVisi.add(this.objeAlumVisi);
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados'); INIT_OBJE_TABL();");
             log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Agregar alumno visitante: " +  objeAlumVisi.getCarnAlum());
             this.limpForm();
         }
@@ -251,6 +257,7 @@ public class AlumnoVisitanteBean implements Serializable{
         try
         {
             this.listAlumVisi.remove(this.objeAlumVisi); //Limpia el objeto viejo
+            this.objeAlumVisi.setCarnAlum(this.carnAlum);
             FCDEAlumVisi.edit(this.objeAlumVisi);
             this.listAlumVisi.add(this.objeAlumVisi); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
