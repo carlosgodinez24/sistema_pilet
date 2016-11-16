@@ -197,7 +197,6 @@ public class WebServicesBean implements Serializable {
         Client client = ClientBuilder.newClient();
         String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
         url = String.format("%s/%s/%s/%s/%s", url, "consUsua", this.filt, "P", "alum");
-        System.out.println(url);
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
         request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));
@@ -277,13 +276,11 @@ public class WebServicesBean implements Serializable {
     
     public WSconsDoceByAlum consDocePorAlum(String carnAlum)
     {
-        System.out.println("consDocePorAlu");
         FacesContext facsCtxt = FacesContext.getCurrentInstance();
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         Client client = ClientBuilder.newClient();
         String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
         url = String.format("%s/%s/%s", url, "consAlum", carnAlum);
-        System.out.println(url);
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
         request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));

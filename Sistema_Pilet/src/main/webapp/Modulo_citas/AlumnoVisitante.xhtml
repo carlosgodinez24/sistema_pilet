@@ -38,7 +38,7 @@ and open the template in the editor.
                             <h:panelGroup id="ContRegi">
                                 <div id="toolTablRegi">
                                     <h:form>
-                                        <p:remoteCommand name="consObjeAlum" actionListener="#{citasBean.setAlumn()}" update="" 
+                                        <p:remoteCommand name="consObjeAlum" actionListener="#{alumnoVisitanteBean.setAlumn()}" update="" 
                                                          oncomplete="" global="true"/>
                                         <p:remoteCommand name="consObje" actionListener="#{alumnoVisitanteBean.cons()}" update=":FormRegi" 
                                                          oncomplete="$('#ModaFormRegi').modal('show'); INIT_FORM(); INIT_OBJE();" global="true"/>
@@ -69,8 +69,8 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.codiVisi.nombVisi.concat(' ').concat(fila.codiVisi.apelVisi)}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="dui">
-                                        <f:facet name="header">Carné Alumno</f:facet>
-                                        <h:outputText value="#{fila.carnAlum}"/>   
+                                        <f:facet name="header">Alumno</f:facet>
+                                        <h:outputText value="#{citasBean.consObjeAlumno(fila.carnAlum).nomb}"/>   
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Parentesco</f:facet>
@@ -178,16 +178,7 @@ and open the template in the editor.
                                 <div class="modal-body" style="padding-top: 2px;"> 
                                     <fieldset>
                                         <h:inputHidden id="codi" value="#{alumnoVisitanteBean.objeAlumVisi.codiAlumVisi}" />
-                                        <div class="input-group col-xs-12">
-                                            <h:outputLabel  for="seleAlum" value="Alumno: "/>
-                                            <h:message for="seleAlum" errorClass="field-error" />
-                                            <h:selectOneMenu id="seleAlum" value="#{alumnoVisitanteBean.objeAlumVisi.carnAlum}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar Un Alumno">
-                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{alumnosBean.consTodoAlum()}" var="lst" itemLabel="#{lst.nombAlum} #{lst.apelAlum}" itemValue="#{lst.carnAlum}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
-                                        </div>
-
+                                        
                                         <div class="input-group col-xs-12">
                                             <h:outputLabel  for="seleVisi" value="Visitante: "/>
                                             <h:message for="seleVisi" errorClass="field-error" />
