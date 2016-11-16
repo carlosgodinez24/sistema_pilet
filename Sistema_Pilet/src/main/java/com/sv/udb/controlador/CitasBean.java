@@ -19,6 +19,7 @@ import com.sv.udb.utils.pojos.DatosAlumnos;
 import com.sv.udb.utils.pojos.DatosUsuariosByCrit;
 import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
+import com.sv.udb.utils.pojos.WSconsEmplByCodi;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -122,7 +123,7 @@ public class CitasBean implements Serializable{
     private boolean isVisiUsua;
     private String tipoEmpl="0";
     private String buscEmpl="";
-    
+    private int codiUsua;
     private List<DatosUsuariosByCrit> listDoceBusc;
 
     public List<DatosUsuariosByCrit> getListDoceBusc() {
@@ -697,7 +698,7 @@ public class CitasBean implements Serializable{
                 this.objeCita.setEstaCita(1);
                 this.objeCita.setDescCita(this.motivo);
                 FCDECita.create(this.objeCita);  
-
+                if(listCitaAlum == null)listCitaAlum = new ArrayList<Cita>();
                 this.listCitaAlum.add(this.objeCita);
                 objeCambCita = new Cambiocita();
                 objeCambCita.setCodiCita(this.objeCita);
@@ -928,6 +929,86 @@ public class CitasBean implements Serializable{
             ex.printStackTrace();
         }
     }
+    
+    //setear visitante al ser seleccionado desde una tabla
+    public void setVisiRecep(){
+        try{
+            RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+            int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjeVisi"));
+            this.objeVisi = FCDEVisi.find(codi);
+            if(objeVisi == null) objeVisi = new Visitante();
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Visitante Seleccionado')");
+            this.switFormCita = true;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    //setear visitante al ser seleccionado desde una tabla
+    public void setEmplRecep(){
+        try{
+            RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+            int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjeEmpl"));
+            this.objeCita.setCodiUsua(codi);
+            WSconsEmplByCodi objeProf  = new WebServicesBean().consEmplPorCodi(String.valueOf(codi));
+            this.nombProf = objeProf.getNomb();
+            System.out.println("USUARIO: "+objeCita.getCodiUsua());
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Personal de la Institución Seleccionado')");
+            this.switFormCita = true;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    
+    //Solicitar Citas especificando citador y citado
+    
+    public void soliCitaRecep()
+    {
+        try{
+            RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+            if(valiDatoCitaVisi(1))
+            {
+                //objeCita = new Cita();
+                System.out.println("USUARIO: "+objeCita.getCodiUsua());
+                this.objeCita.setTipoCita(1);
+                this.objeCita.setTipoVisi(2);
+                this.objeCita.setTipoDura(2);
+                this.objeCita.setEstaCita(1);
+                this.objeCita.setDescCita(this.motivo);
+                FCDECita.create(this.objeCita);  
+                if(listCitaAlum == null)listCitaAlum = new ArrayList<Cita>();
+                this.listCitaAlum.add(this.objeCita);
+                objeCambCita = new Cambiocita();
+                objeCambCita.setCodiCita(this.objeCita);
+                
+                
+                objeCambCita.setFechCambCita(new Date());
+                
+                
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                objeCambCita.setFechInicCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
+                objeCambCita.setFechFinCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
+
+                DateFormat df = new SimpleDateFormat("hh:mm a");
+                objeCambCita.setHoraCambCita(df.format(new Date()));
+                objeCambCita.setHoraInicCitaNuev(this.horaSeleSoliCita.getHoraInic());
+                objeCambCita.setHoraFinCitaNuev(this.horaSeleSoliCita.getHoraFina());
+                objeCambCita.setEstaCambCita(objeCita.getEstaCita());
+                FCDECambCita.create(objeCambCita);
+                objeVisiCita.setCodiCita(this.objeCita);
+                objeVisiCita.setCodiVisi(this.objeVisi);
+                FCDEVisiCita.create(objeVisiCita);
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Se ha solicitado la cita, espere por la respuesta.')");
+                this.limpForm();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+    }
+    
     
     
     /*SECCIÓN TERMINADA DE VISITAS (CITAS DE TIPO 2), PARA LLEVAR CONTROL DE VISITANTES*/

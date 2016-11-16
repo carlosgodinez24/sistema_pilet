@@ -3,7 +3,7 @@ $(document).ready(function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            consObjeAlum([{name : 'codiObjeAlum', value : row.id.trim()}]);
+            consObjeVisi([{name : 'codiObjeVisi', value : row.id.trim()}]);
         });
         return false;
     };
@@ -11,7 +11,7 @@ $(document).ready(function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            consObjeAlum([{name : 'codiObjeAlum', value : row.id.trim()}]);
+            consObjeEmpl([{name : 'codiObjeEmpl', value : row.id.trim()}]);
         });
         return false;
     };
