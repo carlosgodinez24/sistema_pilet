@@ -1,6 +1,4 @@
-
 package com.sv.udb.ejb;
-
 import com.sv.udb.modelo.Cambiocita;
 import com.sv.udb.modelo.Cita;
 import com.sv.udb.modelo.Visitante;
