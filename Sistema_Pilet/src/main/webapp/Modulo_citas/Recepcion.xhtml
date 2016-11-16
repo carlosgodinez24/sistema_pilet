@@ -53,8 +53,8 @@ and open the template in the editor.
                                         
                                         <div class="btn-group">
                                             <h:commandLink id="btonRegiVisi" class="btn btn-success">
-                                                <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegiVisi" global="true" 
-                                                        oncomplete="$('#ModaFormRegiVisi').modal('show');"/>
+                                                <p:ajax listener="#{vistantesBean.limpForm()}" update=":FormRegiVisi" global="true" 
+                                                        oncomplete="$('#ModaFormRegiVisi').modal('show'); INIT_OBJE();"/>
                                                 <i class="fa fa-user"/> Registrar Visitante
                                             </h:commandLink>
                                             <h:commandLink id="btonSoliCita" class="btn btn-default">
@@ -114,8 +114,8 @@ and open the template in the editor.
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="carn">
                                    <f:facet name="header">Alumno</f:facet>
-                                   <h:panelGroup  rendered="#{fila.codiCita.tipoCita eq '1'}">
-                                       <h:outputText value="#{citasBean.objeAlumDepe.nomb}"/>
+                                   <h:panelGroup  rendered="#{fila.codiCita.tipoCita eq '1' and fila.carnAlum ne '' and fila.carnAlum ne null}">
+                                       <h:outputText value="#{citasBean.consObjeAlumno(fila.carnAlum).nomb}"/>
                                    </h:panelGroup>
                                    <h:panelGroup  rendered="#{fila.codiCita.tipoCita ne '1'}">
                                        
@@ -209,11 +209,59 @@ and open the template in the editor.
                                     <h4 class="modal-title">Registrar Visitante</h4>
                                 </div>
                                 <div class="modal-body" style="padding-top: 2px;">
-                                    
+                                    <fieldset class="col-md-12">
+                                        <h:inputHidden id="codi" value="#{visitantesBean.objeVisi.codiVisi}" />
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="nomb" value="Nombre: "/>
+                                            <h:message for="nomb" errorClass="field-error" />
+                                            <h:inputText id="nomb" value="#{visitantesBean.objeVisi.nombVisi}" class="form-control" required="true" requiredMessage="Debe Registrar Un Nombre"/>
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="apel" value="Apellido: "/>
+                                            <h:message for="apel" errorClass="field-error" />
+                                            <h:inputText id="apel" value="#{visitantesBean.objeVisi.apelVisi}" class="form-control" required="true" requiredMessage="Debe Registrar Un Apellido"/>
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="dui" value="DUI: "/>
+                                            <h:message for="dui" errorClass="field-error" />
+                                            <p:inputMask id="dui" value="#{visitantesBean.objeVisi.duiVisi}" class="form-control" mask="99999999-9" requiredMessage="DUI"/>
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="tel" value="Teléfono: "/>
+                                            <h:message for="tel" errorClass="field-error" />
+                                            <p:inputMask id="tel" value="#{visitantesBean.objeVisi.teleVisi}" mask="9999-9999" class="form-control" required="true" requiredMessage="Debe Registrar un Número Telefónico"/>
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="mail" value="E-mail: "/>
+                                            <h:message for="mail" errorClass="field-error" />
+                                            <h:inputText id="mail" value="#{visitantesBean.objeVisi.corrVisi}" class="form-control" required="true" requiredMessage="Debe Registrar un Correo Electrónico" validatorMessage="Formato Inválido" />
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="tipo" value="Tipo Visitante: "/>
+                                            <h:message for="tipo" errorClass="field-error" />
+                                            <h:selectOneMenu id="tipo" value="#{visitantesBean.objeVisi.tipoVisi}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar el Tipo de Visitante">
+                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                <f:selectItem itemValue="1" itemLabel="Encargado Alumno"/>
+                                                <f:selectItem itemValue="2" itemLabel="Particular"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </fieldset>
                                 </div>
                                 <div class="modal-footer">
                                         <div class="input-group-btn right" style="padding-top: 5px;">
                                             <div class="btn-group">
+                                                <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
+                                                    <p:ajax listener="#{visitantesBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                    <i class="fa fa-mail-forward"/> Cerrar
+                                                </h:commandLink>
+                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{visitantesBean.guardar}">
+                                                    <p:ajax listener="#{visitantesBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
+                                                    <i class="fa fa-plus"/> Guardar
+                                                </h:commandLink>
+                                                <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!visitantesBean.guardar}">
+                                                    <p:ajax listener="#{visitantesBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                    <i class="fa fa-plus"/> Nuevo
+                                                </h:commandLink>
                                             </div>
                                         </div>
                                 </div>

@@ -5,6 +5,7 @@ import com.sv.udb.modelo.Alumnovisitante;
 import com.sv.udb.modelo.Visitante;
 import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -155,6 +156,7 @@ public class VisitantesBean implements Serializable{
             
             log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Agregar visitante: " + objeVisi.getNombVisi() + " " + objeVisi.getApelVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            if(listVisi == null)listVisi = new ArrayList<Visitante>();
             this.listVisi.add(this.objeVisi);
             limpForm();
         }
