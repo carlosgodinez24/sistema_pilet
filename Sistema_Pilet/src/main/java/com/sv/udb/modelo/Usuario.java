@@ -6,27 +6,22 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Adonay
+ * @author aleso
  */
 @Entity
 @Table(name = "usuario", catalog = "sistemas_pilet", schema = "")
@@ -35,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByCodiUsua", query = "SELECT u FROM Usuario u WHERE u.codiUsua = :codiUsua"),
     @NamedQuery(name = "Usuario.findByAcceUsua", query = "SELECT u FROM Usuario u WHERE u.acceUsua = :acceUsua"),
+    @NamedQuery(name = "Usuario.findByTipoUsua", query = "SELECT u FROM Usuario u WHERE u.tipoUsua = :tipoUsua"),
     @NamedQuery(name = "Usuario.findByEstaUsua", query = "SELECT u FROM Usuario u WHERE u.estaUsua = :estaUsua")})
 public class Usuario implements Serializable {
 
@@ -49,14 +45,13 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 150)
     @Column(name = "acce_usua")
     private String acceUsua;
+    @Size(max = 50)
+    @Column(name = "tipo_usua")
+    private String tipoUsua;
     @Basic(optional = false)
     @NotNull
     @Column(name = "esta_usua")
     private int estaUsua;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiUsua", fetch = FetchType.LAZY)
-    private List<UsuarioRol> usuarioRolList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiUsua", fetch = FetchType.LAZY)
-    private List<Notificacion> notificacionList;
 
     public Usuario() {
     }
@@ -87,30 +82,20 @@ public class Usuario implements Serializable {
         this.acceUsua = acceUsua;
     }
 
+    public String getTipoUsua() {
+        return tipoUsua;
+    }
+
+    public void setTipoUsua(String tipoUsua) {
+        this.tipoUsua = tipoUsua;
+    }
+
     public int getEstaUsua() {
         return estaUsua;
     }
 
     public void setEstaUsua(int estaUsua) {
         this.estaUsua = estaUsua;
-    }
-
-    @XmlTransient
-    public List<UsuarioRol> getUsuarioRolList() {
-        return usuarioRolList;
-    }
-
-    public void setUsuarioRolList(List<UsuarioRol> usuarioRolList) {
-        this.usuarioRolList = usuarioRolList;
-    }
-
-    @XmlTransient
-    public List<Notificacion> getNotificacionList() {
-        return notificacionList;
-    }
-
-    public void setNotificacionList(List<Notificacion> notificacionList) {
-        this.notificacionList = notificacionList;
     }
 
     @Override

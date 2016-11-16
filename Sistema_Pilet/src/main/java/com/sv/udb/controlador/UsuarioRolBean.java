@@ -96,7 +96,8 @@ public class UsuarioRolBean implements Serializable {
     public void init()
     {
         this.limpForm();
-        this.consTodo();
+        guardar = false;
+        //this.consTodo();
         //log = new LOG4J();
         //log.debug("Se inicializa el modelo de UsuarioRol");
     }
@@ -133,11 +134,14 @@ public class UsuarioRolBean implements Serializable {
         try
         {
             if(valiUsuaRole()){
+                Usuario obje = new Usuario();
+                obje.setCodiUsua(this.objeUsuaRole.getCodiUsua().getCodiUsua());
                 FCDEUsuaRole.create(this.objeUsuaRole);
                 this.listUsuaRole.add(this.objeUsuaRole);
-                this.guardar = false;
-                globalAppBean.addNotificacion(this.objeOldUsuaRole.getCodiUsua().getCodiUsua(), "Se le ha asignado el rol de " + this.objeUsuaRole.getCodiRole().getNombRole(), "Modulo usuarios", "");
-                log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol creado: "+this.objeUsuaRole.getCodiUsua()+"/"+this.objeUsuaRole.getCodiRole());
+                this.limpForm();
+                this.objeUsuaRole.setCodiUsua(obje);
+                /*globalAppBean.addNotificacion(this.objeOldUsuaRole.getCodiUsua().getCodiUsua(), "Se le ha asignado el rol de " + this.objeUsuaRole.getCodiRole().getNombRole(), "Modulo usuarios", "");
+                log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol creado: "+this.objeUsuaRole.getCodiUsua()+"/"+this.objeUsuaRole.getCodiRole());*/
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             }
             else
@@ -204,6 +208,33 @@ public class UsuarioRolBean implements Serializable {
             
         }
     }
+    
+    /**
+     * Método que consutla la información de un registro en específico de la base de datos
+     */
+    public void consRoleByUsua()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
+        try
+        {
+            this.limpForm();
+            Usuario obje = new Usuario();
+            obje.setCodiUsua(codi);
+            this.objeUsuaRole.setCodiUsua(obje);
+            this.listUsuaRole = FCDEUsuaRole.findByUsua(obje);
+            guardar = true;
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+        }
+        finally
+        {
+            
+        }
+    }
+    
     
     /**
      * Método que consutla la información de un registro en específico de la base de datos

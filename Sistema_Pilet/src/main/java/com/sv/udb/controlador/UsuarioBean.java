@@ -5,9 +5,12 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.UsuarioFacadeLocal;
 import com.sv.udb.modelo.Usuario;
 import com.sv.udb.utils.LOG4J;
+import com.sv.udb.utils.pojos.DatosUsuarios;
+import com.sv.udb.utils.pojos.WSconsUsua;
 import com.sv.udb.utils.UsuariosPojo;
 import java.io.Serializable;
 import java.util.List;
@@ -22,6 +25,9 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.inject.Inject;
+import org.apache.log4j.Logger;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -35,10 +41,17 @@ public class UsuarioBean implements Serializable{
     @EJB
     private UsuarioFacadeLocal FCDEUsuario;
    
+    //Bean de session
+    @Inject
+    private LoginBean logiBean; 
+    
     private List<Usuario> listUsua;
     private Usuario objeUsua;
     private boolean guardar;
-    private LOG4J log;
+    private List<DatosUsuarios> resuElim;
+    private LOG4J<UsuarioBean> lgs = new LOG4J<UsuarioBean>(UsuarioBean.class) {
+    };
+    private Logger log = lgs.getLog();
     /**
      * Creates a new instance of UsuarioBean
      */
@@ -67,6 +80,14 @@ public class UsuarioBean implements Serializable{
         this.guardar = guardar;
     }
     
+    public List<DatosUsuarios> getResuElim() {
+        return resuElim;
+    }
+
+    public void setResuElim(List<DatosUsuarios> resuElim) {
+        this.resuElim = resuElim;
+    }
+    
     public UsuarioBean() {
     }
     
@@ -76,7 +97,7 @@ public class UsuarioBean implements Serializable{
     @PostConstruct
     public void init()
     {
-        this.listUsua = FCDEUsuario.findAll();
+        this.consTodo();
         //log = new LOG4J();
         //log.debug("Se inicializa el modelo de Usuarios");
     }
@@ -99,6 +120,7 @@ public class UsuarioBean implements Serializable{
             
         }
     }
+    
     public List<Usuario> consTecn(){
         try
         {
@@ -151,5 +173,49 @@ public class UsuarioBean implements Serializable{
             ex.printStackTrace();
         }
         return this.objeUsua.getAcceUsua();
+    }
+    
+    public List<Usuario> cons()
+    {
+        List<Usuario> usua = null;
+        try
+        {
+            usua = FCDEUsuario.findAll();
+        }
+        catch(Exception ex)
+        {
+            ex.getMessage();
+        }
+        finally
+        {
+            
+        }
+        return usua;
+    }
+    
+     public void guar(DatosUsuarios obje)
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            this.objeUsua = new Usuario();            
+            this.objeUsua.setAcceUsua(obje.getUsua());
+            this.objeUsua.setTipoUsua(obje.getTipo());
+            this.objeUsua.setEstaUsua(1);
+            FCDEUsuario.create(this.objeUsua);
+            this.resuElim.remove(obje);
+            this.guardar = false;
+            log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"Usuario"+"-"+"Usuario habilitado: "+this.objeUsua.getAcceUsua());
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"Usuarios"+"-"+"Error habilitando Usuario: "+getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
     }
 }

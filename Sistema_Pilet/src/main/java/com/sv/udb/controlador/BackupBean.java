@@ -56,10 +56,10 @@ public class BackupBean implements Serializable{
             ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String dumpExePath = "C:\\wamp\\bin\\mysql\\mysql5.5.17\\bin\\mysqldump.exe";
             //"C:\\wamp\\bin\\mysql\\mysql5.5.16\\bin\\mysqldump.exe"
-            String host = "localhost";
+            String host = "185.144.156.103";
             String port = "3306";
-            String user = "root";
-            String password="123456";
+            String user = "ricaldone";
+            String password="@dmin123";
             String database = "sistemas_pilet";
             String basePath = ctx.getRealPath("/");
             //String backupPath = basePath + "BackupsMySQLdb//";

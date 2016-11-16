@@ -6,6 +6,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.UsuarioRol;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -38,5 +39,13 @@ public class UsuarioRolFacade extends AbstractFacade<UsuarioRol> implements Usua
         q.setParameter("codiRole", codiRole);
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (UsuarioRol)resu.get(0);
+    }
+    
+    @Override
+    public List<UsuarioRol> findByUsua(Object usua) {
+        Query q = getEntityManager().createQuery("SELECT u FROM UsuarioRol u WHERE u.codiUsua = :codiUsua", UsuarioRol.class);        
+        q.setParameter("codiUsua", usua);
+        List resu = q.getResultList();
+        return  resu;
     }
 }

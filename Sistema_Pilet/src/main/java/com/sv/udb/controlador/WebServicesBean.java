@@ -7,15 +7,17 @@ import com.sv.udb.utils.pojos.DatosUsuarios;
 import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
 import com.sv.udb.utils.pojos.WSconsUsua;
+import com.sv.udb.modelo.Usuario;
 import com.sv.udb.controlador.LoginBean;
 import com.sv.udb.utils.pojos.WSconsEmplByCodi;
 import com.sv.udb.utils.pojos.WSconsEmplByUser;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -32,7 +34,7 @@ import org.primefaces.context.RequestContext;
  * @author Adonay
  */
 @Named(value = "webServicesBean")
-@Dependent
+@ViewScoped
 public class WebServicesBean implements Serializable {
     @Inject
     private LoginBean logiBean; //Bean de session
@@ -47,6 +49,10 @@ public class WebServicesBean implements Serializable {
     private WSconsUsua objeWebServ;
     //Lógica slider
     private boolean showBusc = false;
+    
+    //Bean de session
+    @Inject
+    private UsuarioBean UsuaBean;
 
     private WSconsAlumByDoce objeWebServAlumByDoce;
     private WSconsDoceByAlum objeWebServDoceByAlum;
@@ -134,11 +140,13 @@ public class WebServicesBean implements Serializable {
     public UsuariosPojo consLogi(String acce, String cont)
     {
         UsuariosPojo resp;
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         Client client = ClientBuilder.newClient();
-        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consLogi/%s/%s", acce,getSHA256Hash(cont));
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
+        url = String.format("%s/%s/%s/%s", url, "consLogi", acce, this.getSHA256Hash(cont));
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
-        request.accept(MediaType.APPLICATION_JSON);
         Response response = request.get();
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
@@ -149,6 +157,7 @@ public class WebServicesBean implements Serializable {
         }
         else
         {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consumir los datos')");
             resp = null;
         }
         return resp;
@@ -191,7 +200,7 @@ public class WebServicesBean implements Serializable {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         Client client = ClientBuilder.newClient();
         String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
-        url = String.format("%s/%s/%s/%s/%s", url, "consUsua", this.filt, "P", "alum");
+        url = String.format("%s/%s/%s/%s/%s", url, "consUsua", this.filt.equals("") ? null : this.filt, this.filtApel.equals("") ? null : this.filtApel, this.filtTipo.equals("") ? null : this.filtTipo);
         System.out.println(url);
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
@@ -200,17 +209,27 @@ public class WebServicesBean implements Serializable {
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
         {
             this.objeWebServ = response.readEntity(WSconsUsua.class); //La respuesta de captura en un pojo que esta en el paquete utils
-            for(DatosUsuarios temp : this.objeWebServ.getResu())
-            {
-                System.out.println(temp.getNomb());
+            List<DatosUsuarios> lstDato = new ArrayList<DatosUsuarios>();
+            for(DatosUsuarios temp : objeWebServ.getResu()){
+                int cont = 0;
+                if(this.UsuaBean.getListUsua() != null){
+                    for(Usuario temp2 : this.UsuaBean.getListUsua()){
+                        if(temp2.getAcceUsua().equals(temp.getUsua())){
+                            cont = 1; 
+                        }
+                    }
+                    if(cont == 0){
+                        lstDato.add(temp);
+                    }
+                }
             }
+            this.UsuaBean.setResuElim(lstDato);
         }
         else
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
         }
     }
-    
     /*
     * Toogle buscador, cambia el valor del buscador
     */
