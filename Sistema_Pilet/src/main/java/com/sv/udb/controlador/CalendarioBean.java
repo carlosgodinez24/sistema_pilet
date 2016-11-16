@@ -121,7 +121,9 @@ public class CalendarioBean implements Serializable{
     
    
     /**
-     * Metodo para 
+     * Metodo para llamar los datos y mostrar en el calendario esos datos.
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
      */
      public void getEvenCale(){
         try{

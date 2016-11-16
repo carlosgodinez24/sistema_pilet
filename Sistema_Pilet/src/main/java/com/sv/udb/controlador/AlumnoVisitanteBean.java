@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
@@ -28,6 +23,7 @@ import org.primefaces.context.RequestContext;
  * La clase alumno visitante 
  * @author: ControlCitas
  * @version: Prototipo 1
+ * Octubre de 2016
  */
 @Named(value = "alumnoVisitanteBean")
 @ViewScoped
@@ -221,6 +217,8 @@ public class AlumnoVisitanteBean implements Serializable{
     
        /**
      * Método para guardar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
      */
     public void guar()
     {
@@ -244,6 +242,8 @@ public class AlumnoVisitanteBean implements Serializable{
     
      /**
      * Método para modificar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
      */
     public void modi()
     {
@@ -264,6 +264,8 @@ public class AlumnoVisitanteBean implements Serializable{
     }
      /**
      * Método para eliminar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
      */
     public void elim()
     {
@@ -285,6 +287,8 @@ public class AlumnoVisitanteBean implements Serializable{
     }
      /**
      * Método para registrar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
      */
     public void regiVisi(){
         RequestContext ctx = RequestContext.getCurrentInstance();
@@ -305,6 +309,8 @@ public class AlumnoVisitanteBean implements Serializable{
     }
      /**
      * Método para asignar un visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
      */
     public void asigAlumVisi(){
         try{

@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.controlador;
-
 import com.sv.udb.modelo.Alumno;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +6,18 @@ import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 
 
-@Named(value = "alumnosBean")
-@Dependent
-public class AlumnosBean {
-    
  /**
  * La clase alumnos
  * @author: ControlCitas
  * @version: Prototipo 1
+ * Septiembre  2016
  */
     
+
+@Named(value = "alumnosBean")
+@Dependent
+public class AlumnosBean {
+   
     public AlumnosBean() {
     }
     public List<Alumno> consTodoAlum(){

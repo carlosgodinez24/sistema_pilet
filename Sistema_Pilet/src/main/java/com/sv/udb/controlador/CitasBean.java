@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
@@ -43,10 +38,12 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 
-/**
- *
- * @author REGISTRO
+ /**
+ * La clase citas 
+ * @author: ControlCitas
+ * @version: Prototipo 1
  */
+
 @Named(value = "citasBean")
 @ViewScoped
 public class CitasBean implements Serializable{
@@ -560,7 +557,7 @@ public class CitasBean implements Serializable{
             }
         }
     }
-      
+     
     public void consHorarios()
     {
         try
@@ -628,6 +625,11 @@ public class CitasBean implements Serializable{
         }
     }
     
+      /**
+ * Metodo para solicitar visitas 
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void soliCitaVisi()
     {
         try{
@@ -672,6 +674,12 @@ public class CitasBean implements Serializable{
         }
         
     }
+     /**
+     * Metodo para solicitar un cambio de cita
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
+    
     //solicitar Reprogramación(1), Solicitar Cancelación(2)
     public void soliCambCita(int acci){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -727,6 +735,9 @@ public class CitasBean implements Serializable{
         }
     }
     //1 solicitar, 2 soli repro
+     /**
+ * Metodo para validar las fechas y horas en las citas
+ */
     private boolean valiDatoCitaVisi(int acci){
         boolean val = false;
             if(this.horaSeleSoliCita== null)
@@ -831,6 +842,10 @@ public class CitasBean implements Serializable{
     }
     
     //1(registrar entrada), 2 (registrar Salida)
+    /* Metodo para cambiar la cita de un visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void cambVisiCitaRecep(int estado){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
@@ -881,10 +896,12 @@ public class CitasBean implements Serializable{
     
     
                                     /*SECCIÓN PARA CITAS (DOCENTE Y PERSONAL ADMIN.)*/
+    /* Metodo para consultar el ultimo objeto "cambio cita" a partir de un objeto "cita"
+    * establecer booleanos segun el estado de la cita
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     
-    //consultar el ultimo objeto "cambio cita" a partir de un objeto "cita"
-    
-     //establecer booleanos segun el estado de la cita
     private void estaCita(){
         switch(this.objeCita.getEstaCita()){
             //cuando una cita está por ser programada
@@ -926,7 +943,10 @@ public class CitasBean implements Serializable{
         }
     }
      
-    //método para retornar parentesco, dependiendo del código se le pase
+    /* Método para retornar parentesco, dependiendo del código se le pase
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public String getParen(Visitante visi){
         String parentesco = "";
         Alumnovisitante obje = consObjeAlumVisi(visi);
@@ -956,7 +976,10 @@ public class CitasBean implements Serializable{
     //consultar el ultimo cambio de la cita (para mostrar en la tabla)
 
     
-    //consultar el ultimo cambio de la cita (para mostrar en la tabla)
+    /* Metodo para consultar el ultimo cambio de la cita (para mostrar en la tabla)
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public Visitante consObjeVisi(int codi){
         Visitante objecons = null; 
         try
@@ -995,7 +1018,10 @@ public class CitasBean implements Serializable{
         return new WebServicesBean().consDocePorAlum(logiBean.getObjeUsua().getAcceUsua());
     }
     
-    //consultar las citas del usuario
+    /* Metodo para consultar las citas del usuario
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void consListCitaAlumUsua()
     {
         try
@@ -1019,7 +1045,10 @@ public class CitasBean implements Serializable{
         }
     }
     
-    //consultar las citas del usuario
+    /* Metodo para consultar las citas del usuario
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void consListCitaVisiUsua()
     {
         try
@@ -1041,7 +1070,10 @@ public class CitasBean implements Serializable{
         }
     }
         
-    //consultar los encargados de un alumno
+    /* Metodo para consultar los encargados de un alumno
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void consListVisiAlum(){
         try
         {
@@ -1059,7 +1091,10 @@ public class CitasBean implements Serializable{
         }
     }
     
-     //consultar los horariso disponibles del usuario 
+     /* Metodo para consultar los horariso disponibles del usuario 
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     private void consListHoraDispUsua(){
         try
         {
@@ -1071,7 +1106,10 @@ public class CitasBean implements Serializable{
         }
     }
     
-    //consultar visitantes de una cita y los guardamos en una lista temporal
+    /* Metodo para consultar visitantes de una cita y los guardamos en una lista temporal
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void consVisiCita(boolean padre){
         try{
             if(objeCita==null)objeCita=new Cita();
@@ -1131,7 +1169,10 @@ public class CitasBean implements Serializable{
     public Visitantecita consFirtObjeVisiCitaDepe(){
         return listVisiCitaDepe.get(0);
     } 
-    //usado para consultar los encargados de un alumno, al seleccionar un alumno desde una tabla
+    /* Metodo usado para consultar los encargados de un alumno, al seleccionar un alumno desde una tabla
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void setAlumn(){
         String Carn = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjeAlum"));
         if(Carn!=null){
@@ -1143,7 +1184,10 @@ public class CitasBean implements Serializable{
     }
     
     
-    //consultar una cita del usuario (de los que estan en la tabla de datos)
+    /* Metodo para consultar una cita del usuario (de los que estan en la tabla de datos)
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void consObjeCitaUsua(boolean padre){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
@@ -1168,7 +1212,10 @@ public class CitasBean implements Serializable{
     }
    
     
-    //"Agregar un visitante a una lista temporal"
+    /* Metodo para agregar un visitante a una cita a una lista temporal
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void addVisiCita(){
         try
         {
@@ -1185,7 +1232,11 @@ public class CitasBean implements Serializable{
         }
         
     }
-    //quitar un visitante de la lista temporal
+    
+    /* Metodo para quitar un visitante en la cita de la lista temporal
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void dropVisiCita(Alumnovisitante obje){
         try
         {
@@ -1525,7 +1576,10 @@ public class CitasBean implements Serializable{
         }
         
     }
-    
+    /* Metodo para validar los datos (fechas y horas)de la programacion de visitas
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     private boolean valiDatoProgVisi(){
         boolean vali = false;
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -1567,6 +1621,12 @@ public class CitasBean implements Serializable{
         
         return vali;
     }
+ 
+     /**
+ * Metodo para programar visitas
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     
     public void progVisi(){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -1619,6 +1679,11 @@ public class CitasBean implements Serializable{
         }
     }
     //cambios cita 
+     /**
+ * En este metodo se hara el cambio de visita (Por fechas y horas)
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void cambVisi(){
         RequestContext ctx = RequestContext.getCurrentInstance();
         

@@ -1,8 +1,4 @@
-/*
- * Controlador Excepcionhorariodisponible
- */
 package com.sv.udb.controlador;
-
 import com.sv.udb.ejb.ExcepcionhorariodisponibleFacadeLocal;
 import com.sv.udb.modelo.Excepcionhorariodisponible;
 import com.sv.udb.utils.LOG4J;
@@ -19,9 +15,10 @@ import org.primefaces.context.RequestContext;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * Clase de excepcion de los horarios disponibles
  * @author Sistema de citas
- * @version 1.0 13 de Octubre de 2016
+ * @version prototipo 2
+ * Octubre de 2016
  */
 @Named(value = "excepcionHorarioDisponiblesBean")
 @ViewScoped
@@ -104,8 +101,9 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
         }
     }
      /**
-     * Obteniendo los dias de la semana
-     */ 
+     * Obteniendo los dias de la semana       
+     * @since incluido desde la version 1.0
+     */
     private int getDay(String dia){
         int ndia = 0;
         String dias[] = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};

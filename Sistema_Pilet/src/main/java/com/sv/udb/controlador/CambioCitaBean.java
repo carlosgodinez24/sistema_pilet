@@ -19,9 +19,12 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
-/**
- *
- * @author REGISTRO
+
+ /**
+ * La clase cambio de cita 
+ * @author: ControlCitas
+ * @version: Prototipo 1
+ * Septiembre 2016
  */
 @Named(value = "cambioCitaBean")
 @ViewScoped
@@ -108,6 +111,12 @@ public class CambioCitaBean implements Serializable{
         }
     }
     
+    
+ /**
+ * Metodo para guardar los datos de cambio de cita
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -125,6 +134,12 @@ public class CambioCitaBean implements Serializable{
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
         }
     }
+    
+     /**
+ * Metodo para modificar los datos de cambio de cita
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     
     public void modi()
     {
@@ -144,7 +159,11 @@ public class CambioCitaBean implements Serializable{
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
-    
+ /**
+ * Metodo para eliminar los datos de cambio de cita
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void elim()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
