@@ -25,6 +25,8 @@ public interface EventoFacadeLocal {
     Evento find(Object id);
 
     List<Evento> findAll();
+    
+    List<Evento> findByEsta(int estaEven);
 
     List<Evento> findRange(int[] range);
 
