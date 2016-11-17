@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.SessionBean;
@@ -852,6 +854,7 @@ public class CitasBean implements Serializable{
         try
         {
             this.listVisiCitaRecep = FCDEVisiCita.findAll();
+            if(listVisiCitaRecep == null)listVisiCitaRecep = new ArrayList<Visitantecita>();
             List<Cambiocita> listCambCitaTemp = new ArrayList<Cambiocita>();
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             //tomamos todos los ultimos cambio cita que sean para "hoy"
@@ -1007,6 +1010,93 @@ public class CitasBean implements Serializable{
             e.printStackTrace();
         }
         
+    }
+    
+    //setear visitante en visita en recepcionista
+    public void setVisiVisi(){
+        try{
+            int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjeVisiCita"));
+            this.objeVisi = FCDEVisi.find(codi);
+            if(objeVisi == null) objeVisi = new Visitante();
+            if(listVisiVisiTemp == null)listVisiVisiTemp = new ArrayList<Visitante>();
+            
+                RequestContext ctx = RequestContext.getCurrentInstance();
+            if((isGrouVisi && listVisiVisiTemp.size() < 1) || !isGrouVisi){
+                listVisiVisiTemp.add(objeVisi);
+                //eliminamos posibles cambioCita duplicados
+                HashSet<Visitante> hashSet = new HashSet<Visitante>(listVisiVisiTemp);
+                listVisiVisiTemp.clear();
+                listVisiVisiTemp.addAll(hashSet); 
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Visitante Agregado')");
+            }else{
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Este grupo ya tiene un encargado')");
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+    }
+    
+    //registrar visita recepcionista
+    
+    public void progVisiRecep(){
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        DateFormat df = new SimpleDateFormat("hh:mm a");
+        fechSoliCita = new Date();
+        fechSoliCita2 = fechSoliCita;
+        FechInic = df.format(new Date());
+        System.out.println(FechInic+" "+FechFina);
+        
+    
+        try
+        {
+            if(valiDatoProgVisi()){
+                objeCita.setEstaCita(2);
+                objeCita.setDescCita(motivo);
+                objeCita.setTipoCita(2);
+                objeCita.setTipoDura(2);
+                objeCita.setTipoVisi(2);
+                //crear el objeto cita
+                FCDECita.create(objeCita);
+
+                objeCambCita.setCodiCita(objeCita);
+                objeCambCita.setEstaCambCita(objeCita.getEstaCita());
+                objeCambCita.setFechCambCita(new Date());
+
+                objeCambCita.setFechInicCitaNuev(fechSoliCita);
+                objeCambCita.setFechFinCitaNuev(fechSoliCita2);
+                objeCambCita.setHoraCambCita(df.format(new Date()));
+                objeCambCita.setHoraInicCitaNuev(FechInic);
+                objeCambCita.setHoraFinCitaNuev(FechFina);
+                objeCambCita.setEstaCambCita(objeCita.getEstaCita());
+
+                //crear el objeto cambio Cita
+                FCDECambCita.create(objeCambCita);
+                
+                if(objeVisiCita == null)objeVisiCita = new Visitantecita();
+                //registrando visitantes Cita
+                for(Visitante visi : listVisiVisiTemp){
+                    objeVisiCita.setCodiCita(objeCita);
+                    objeVisiCita.setCodiVisi(visi);
+                    objeVisiCita.setFechLlegCita(new Date());
+                    objeVisiCita.setFechSaliCita(new Date());
+                    objeVisiCita.setEstaVisi(1);
+                    objeVisiCita.setHoraLlegCita(FechInic);
+                    FCDEVisiCita.create(objeVisiCita);
+                    
+                }
+                if(this.listVisiUsua ==  null)this.listVisiUsua = new ArrayList<Cita>();
+                this.listVisiUsua.add(objeCita);
+                this.limpForm();
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Programada');");
+            }            
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al Programar')");
+            ex.printStackTrace();
+        }
     }
     
     
@@ -1738,6 +1828,7 @@ public class CitasBean implements Serializable{
                     }else{
                         FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hora Final no debe ser antes de la Inicial",  null));
                         FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hora Final no debe ser antes de la Inicial",  null));
+                        FacesContext.getCurrentInstance().addMessage("FormRegiVisiCita:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Esa hora ya pasó",  null));
                     }
                 //ambas fechas incorrectas
                 }else if(this.fechSoliCita2.before(this.fechSoliCita)){
