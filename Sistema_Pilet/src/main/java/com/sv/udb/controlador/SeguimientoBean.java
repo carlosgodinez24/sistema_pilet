@@ -33,6 +33,8 @@ public class SeguimientoBean implements Serializable{
     private SeguimientoFacadeLocal FCDESegu;
     private Seguimiento objeSegu;
     private List<Seguimiento> listSegu;
+    private List<Seguimiento> listEmpr;
+    private List<Seguimiento> listSoli;
     private boolean guardar;  
     private static Logger log = Logger.getLogger(SeguimientoBean.class);
     public Seguimiento getObjeSegu() {
@@ -51,6 +53,16 @@ public class SeguimientoBean implements Serializable{
         return listSegu;
     }
 
+    public List<Seguimiento> getListEmpr() {
+        return listEmpr;
+    }
+
+    public List<Seguimiento> getListSoli() {
+        return listSoli;
+    }
+    
+    
+
     /**
      * Creates a new instance of SeguimientoBean
      */
@@ -63,6 +75,8 @@ public class SeguimientoBean implements Serializable{
         this.objeSegu = new Seguimiento();
         this.guardar = true;
         this.consTodo();
+        this.consEmpr();
+        this.consSoli();
     }
     
     public void limpForm()
@@ -79,7 +93,18 @@ public class SeguimientoBean implements Serializable{
             this.objeSegu.setFechSegu(new Date());
             this.objeSegu.setEstaSegu(1);
             this.FCDESegu.create(this.objeSegu);
-            this.listSegu.add(this.objeSegu);
+            if(this.objeSegu.getCodiEmpr() != null)
+            {
+                this.listEmpr.add(objeSegu);
+            }
+            else if(this.objeSegu.getCodiSoliBeca() != null)
+            {
+                this.listSoli.add(objeSegu);
+            }
+            else if(this.objeSegu.getCodiEmpr() == null && this.objeSegu.getCodiSoliBeca() == null)
+            {
+                this.listSegu.add(this.objeSegu);
+            }
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Seguimiento Guardado");
@@ -102,7 +127,18 @@ public class SeguimientoBean implements Serializable{
         {
             this.listSegu.remove(this.objeSegu); //Limpia el objeto viejo
             FCDESegu.edit(this.objeSegu);
-            this.listSegu.add(this.objeSegu); //Agrega el objeto modificado
+            if(this.objeSegu.getCodiEmpr() != null)
+            {
+                this.listEmpr.add(objeSegu);
+            }
+            else if(this.objeSegu.getCodiSoliBeca() != null)
+            {
+                this.listSoli.add(objeSegu);
+            }
+            else if(this.objeSegu.getCodiEmpr() == null && this.objeSegu.getCodiSoliBeca() == null)
+            {
+                this.listSegu.add(this.objeSegu);
+            }
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Seguimiento Modificado");
         }
@@ -124,7 +160,18 @@ public class SeguimientoBean implements Serializable{
         {
             this.objeSegu.setEstaSegu(0);
             FCDESegu.remove(this.objeSegu);
-            this.listSegu.remove(this.objeSegu);
+            if(this.objeSegu.getCodiEmpr() != null)
+            {
+                this.listEmpr.remove(objeSegu);
+            }
+            else if(this.objeSegu.getCodiSoliBeca() != null)
+            {
+                this.listSoli.remove(objeSegu);
+            }
+            else if(this.objeSegu.getCodiEmpr() == null && this.objeSegu.getCodiSoliBeca() == null)
+            {
+                this.listSegu.remove(this.objeSegu);
+            }
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
             log.info("Seguimiento Eliminado");
@@ -144,7 +191,47 @@ public class SeguimientoBean implements Serializable{
     {
         try
         {
-            this.listSegu = FCDESegu.findAll();
+            System.out.println("Aqui 1");
+            this.listSegu = FCDESegu.findByAll();
+            System.out.println("Aqui 2");
+            log.info("Seguimientos Consultados");
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    public void consEmpr()
+    {
+        try
+        {
+            System.out.println("1");
+            this.listEmpr = FCDESegu.findByEmpr();
+            System.out.println("2");
+            //log.info("Seguimientos Consultados");
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    public void consSoli()
+    {
+        try
+        {
+            this.listSoli = FCDESegu.findBySoli();
             log.info("Seguimientos Consultados");
         }
         catch(Exception ex)
