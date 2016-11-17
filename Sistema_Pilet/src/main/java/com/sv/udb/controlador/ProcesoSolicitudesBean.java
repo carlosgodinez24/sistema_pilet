@@ -43,10 +43,18 @@ public class ProcesoSolicitudesBean implements Serializable{
         return objeProcSoli;
     }
 
+    /**
+     * Función para obtener el estado del boton
+     * @return estado
+     */
     public String getEstado() {
         return estado;
     }
 
+    /**
+     * Función para saber si se va a realizar una reolución
+     * @return reso
+     */
     public boolean isReso() {
         return reso;
     }
@@ -104,6 +112,7 @@ public class ProcesoSolicitudesBean implements Serializable{
     
     /**
      * Función para guardar
+     * @param a
      */
     public void guar(int a)
     {
@@ -131,6 +140,9 @@ public class ProcesoSolicitudesBean implements Serializable{
         }
     }
     
+    /**
+     * Función para cambiar el estado del boton
+     */
     public void cambEsta() {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try {

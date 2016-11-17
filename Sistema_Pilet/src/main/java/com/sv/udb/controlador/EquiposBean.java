@@ -15,8 +15,9 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
 /**
- *
+ * Esta clase se encuentran los metodos para la consulta de equipos
  * @author Alexander
+ * @version 1.0
  */
 @Named(value = "equiposBean")
 @ViewScoped
@@ -28,14 +29,26 @@ public class EquiposBean implements Serializable{
 
     private List<Equipos> listEqui;
 
+    /**
+     * Funcion para otener la lista de equipos
+     * @return listEqui
+     */
     public List<Equipos> getListEqui() {
         return listEqui;
     }
     
+    /**
+     * Funcion para obtener el objeto objeEqui
+     * @return objeEqui
+     */
     public Equipos getObjeEqui() {
         return objeEqui;
     }
 
+    /**
+     * Función para definir el objet objeEqui
+     * @param objeEqui
+     */
     public void setObjeEqui(Equipos objeEqui) {
         this.objeEqui = objeEqui;
     }
@@ -45,12 +58,19 @@ public class EquiposBean implements Serializable{
      */
     public EquiposBean() {
     }
+
+    /**
+     * Función que se ejecuta después de construir la clase
+     */
     @PostConstruct
     public void init()
     {
         this.consTodo();
     }
     
+    /**
+     * Funcion para consultar todos los equipos
+     */
     public void consTodo()
     {
         try
@@ -67,7 +87,11 @@ public class EquiposBean implements Serializable{
         }
     }
     
-    
+    /**
+     * Función para consultar un equipo por su id
+     * @param codi
+     * @return objeEqui
+     */
     public Equipos consEqui(int codi){
         try{
             this.objeEqui = FCDEEqui.find(codi);

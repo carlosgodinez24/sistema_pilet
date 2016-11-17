@@ -105,10 +105,6 @@ and open the template in the editor.
                                             <f:convertDateTime pattern="dd/MM/yyyy H:mm:ss" timeZone="GMT-6"/>
                                         </h:outputText>                            
                                     </h:column>
-                                    <h:column pt:data-sortable="true" pt:data-field="tiem">
-                                        <f:facet name="header">Tiempo de resolución</f:facet>
-                                        <h:outputText value="#{fila.tiemResoSoli}"/>   
-                                    </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="equi">
                                         <f:facet name="header">Equipo</f:facet> 
                                         <h:panelGroup class="label label-danger" rendered="#{fila.codiEqui ne null}">

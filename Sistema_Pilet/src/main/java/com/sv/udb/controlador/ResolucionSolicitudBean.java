@@ -170,6 +170,11 @@ public class ResolucionSolicitudBean implements Serializable{
         }
     }
     
+    /**
+     * Funcion para consultar una resolución por id
+     * @param codi
+     * @return
+     */
     public ResolucionSolicitudes consReso(int codi){
         try{
             this.objeResoSoli = FCDEResoSoli.findReso(codi);
@@ -180,6 +185,10 @@ public class ResolucionSolicitudBean implements Serializable{
         return this.objeResoSoli;
     }
     
+    /**
+     * Función para consultar las ultimas resoluciones
+     * @return listResoSoli
+     */
     public List<ResolucionSolicitudes> consResoUsua(){
         try{
             if(this.cant == 0){
@@ -193,6 +202,10 @@ public class ResolucionSolicitudBean implements Serializable{
         return this.listResoSoli;
     }
     
+    /**
+     * Función para obtener la cantidad de registros a consultar
+     * @param cant
+     */
     public void consCant(int cant){
         this.cant = cant;
     }
