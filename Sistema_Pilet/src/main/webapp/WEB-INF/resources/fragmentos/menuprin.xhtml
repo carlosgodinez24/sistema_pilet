@@ -214,6 +214,13 @@ and open the template in the editor.
                                 </li>
                             </ul>
                             <ul class="treeview-menu">
+                                <li class="#{actiCitaAlum}">
+                                    <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
+                                        <i class="fa fa-user"></i> Cita Alumno
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
                                 <li class="#{actiRegiReprAlum}">
                                     <h:link outcome="/Modulo_citas/RegistrarseRepresentanteAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/RegistrarseRepresentanteAlumno.xhtml')}">
                                         <i class="fa fa-user"></i> Representantes
@@ -367,6 +374,22 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            
+                         <ul class="treeview-menu">
+                                <li class="#{actiSegu}">
+                                    <h:link outcome="/Modulo_becas/seguimiento_empresa" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/seguimiento_empresa.xhtml')}">
+                                        <i class="fa fa-user"></i> Seguimiento Empresa
+                                    </h:link>
+                                </li>
+                            </ul>  
+                            
+                         <ul class="treeview-menu">
+                                <li class="#{actiSegu}">
+                                    <h:link outcome="/Modulo_becas/seguimiento_soli" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/seguimiento_soli.xhtml')}">
+                                        <i class="fa fa-user"></i> Seguimiento Alumno
+                                    </h:link>
+                                </li>
+                            </ul>    
                         
                          <ul class="treeview-menu">
                                 <li class="#{actiTipoSegu}">

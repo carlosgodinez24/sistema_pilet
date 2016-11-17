@@ -85,6 +85,7 @@ public class CalendarioBecasBean implements Serializable{
                 evt.setData(obj.getCodiSegu());
                 evt.setDescription(obj.getDescSegu());
                 objeCale.addEvent(evt);
+                System.out.println("Eventus");
              }
         }catch(Exception e){
             System.out.println("CatchxdXD");

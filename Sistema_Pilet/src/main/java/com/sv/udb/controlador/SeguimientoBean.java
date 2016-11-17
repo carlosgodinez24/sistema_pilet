@@ -9,6 +9,9 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Seguimiento;
 import com.sv.udb.ejb.SeguimientoFacadeLocal;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -73,7 +76,9 @@ public class SeguimientoBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDESegu.create(this.objeSegu);
+            this.objeSegu.setFechSegu(new Date());
+            this.objeSegu.setEstaSegu(1);
+            this.FCDESegu.create(this.objeSegu);
             this.listSegu.add(this.objeSegu);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
@@ -117,6 +122,7 @@ public class SeguimientoBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            this.objeSegu.setEstaSegu(0);
             FCDESegu.remove(this.objeSegu);
             this.listSegu.remove(this.objeSegu);
             this.limpForm();
