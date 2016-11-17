@@ -1170,7 +1170,7 @@ public class CitasBean implements Serializable{
             for(Cita obje : listCitaAlumUsuaTemp){
                 Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
                 if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Visitantecita();
-               if(objeAlumVisiTemp.getCarnAlum() == null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
+                if(new LoginBean().getObjeWSconsEmplByAcce().getTipo().equals("emplAdmi") && objeAlumVisiTemp.getCarnAlum() == null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
             }
             }
         }
@@ -1194,7 +1194,6 @@ public class CitasBean implements Serializable{
             listCitaVisiUsuaTemp.addAll(listCitaVisiUsua);
             for(Cita obje : listCitaVisiUsuaTemp){
                Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
-               if(objeAlumVisiTemp == null) objeAlumVisiTemp = new Visitantecita();
                if(objeAlumVisiTemp.getCarnAlum() != null && listCitaVisiUsua.contains(obje))listCitaVisiUsua.remove(obje);
             }
             
