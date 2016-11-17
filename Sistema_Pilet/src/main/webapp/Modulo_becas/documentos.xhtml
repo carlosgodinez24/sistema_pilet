@@ -146,7 +146,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="beca" value="Numero de beca "/>
                                             <h:selectOneMenu id="beca" value="#{documentoBean.objeDocu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{becaSoliBean.listSoliActivos}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="beca" errorClass="field-error" />           
@@ -211,7 +211,7 @@ and open the template in the editor.
                                                 <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==false}">
                                                 <h:commandLink id="btonMostBusc" class="btn btn-default btn-md">
                                                     <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
-                                                            <i class="fa fa-chevron-down"/> Ver imagen
+                                                    <i class="fa fa-chevron-down"/> Ver #{documentoBean.tokens}
                                                 </h:commandLink>
                                                     
                                                     

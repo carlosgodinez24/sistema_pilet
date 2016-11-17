@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.TipoBeca;
 import com.sv.udb.ejb.TipoBecaFacadeLocal;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -82,6 +83,10 @@ public class TipoBecaBean implements Serializable{
         {
             this.objeTipo.setEstaTipoBeca(1);
             FCDETipo.create(this.objeTipo);
+            if(this.listTipo == null)
+            {
+                this.listTipo = new ArrayList<>();
+            }
             this.listTipo.add(this.objeTipo);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");

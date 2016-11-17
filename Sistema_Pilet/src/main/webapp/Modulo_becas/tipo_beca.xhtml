@@ -101,7 +101,7 @@ and open the template in the editor.
                                         Matrícula</h:panelGroup>
                                         <h:panelGroup class="label label-info" rendered="#{fila.tipoTipoBeca eq '2'}">
                                         Mensualidad</h:panelGroup>
-                                        <h:panelGroup class="label label-info" rendered="#{fila.tipoTipoBeca eq '0'}">
+                                        <h:panelGroup class="label label-info" rendered="#{fila.tipoTipoBeca eq '3'}">
                                         Otro</h:panelGroup>
                                     </h:column>
                                     <h:column pt:data-sortable = "true">
@@ -110,7 +110,7 @@ and open the template in the editor.
                                         Tercer ciclo</h:panelGroup>
                                         <h:panelGroup class="label label-info" rendered="#{fila.nivelTipoBeca eq '2'}">
                                         1º y 2º año</h:panelGroup>
-                                        <h:panelGroup class="label label-info" rendered="#{fila.nivelTipoBeca eq '0'}">
+                                        <h:panelGroup class="label label-info" rendered="#{fila.nivelTipoBeca eq '3'}">
                                         3ºaño</h:panelGroup>
                                     </h:column>
                                     <h:column pt:data-sortable="true">
@@ -166,7 +166,7 @@ and open the template in the editor.
                                             <h:selectOneRadio value="#{tipoBecaBean.objeTipo.nivelTipoBeca}">
                                                 <f:selectItem itemValue="1" itemLabel="Tercer ciclo" />
                                                 <f:selectItem itemValue="2" itemLabel="1º y 2º año" />
-                                                <f:selectItem itemValue="0" itemLabel="3º año" />
+                                                <f:selectItem itemValue="3" itemLabel="3º año" />
                                             </h:selectOneRadio>
                                         </div>
                                     </fieldset>
