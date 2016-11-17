@@ -52,7 +52,7 @@ and open the template in the editor.
                                         <p:remoteCommand name="consObjeVisi" actionListener="#{citasBean.setVisi()}" update=":paneTabl :ContRegi :paneClose" 
                                                          oncomplete="INIT_OBJE_TABL(); INIT_OBJE_MODA(); INIT_OBJE_CITA();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
-                                            <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegi :tablPart :paneClose" global="true" 
+                                            <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegi :tablPart :paneClose :paneTabl" global="true" 
                                                     oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA; INIT_OBJE_CITA(); INIT_OBJE_TABL();"/>
                                             <i class="fa fa-plus"/> Programar
                                         </h:commandLink>
@@ -69,7 +69,7 @@ and open the template in the editor.
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                    #{citasBean.consDepeListCitaUsua(fila)}
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiCita}"/>
                                </h:column>
@@ -83,26 +83,25 @@ and open the template in the editor.
                                     </h:panelGroup>  
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="fech">
-                                   <f:facet name="header">Fecha</f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}">
-                                       <f:convertDateTime pattern="dd/MM/yyyy (EEEEE)" />
-                                   </h:outputText>   
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="hora">
-                                   <f:facet name="header">Hora </f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} - #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
+                                   <f:facet name="header">Fecha y Hora</f:facet>
+                                   <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}"> 
+                                    <f:convertDateTime pattern="EEEE dd/MM/yyyy" timeZone="GMT-6"/>
+                                   </h:outputText><br/>de
+                                   <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} a #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="luga">
                                    <f:facet name="header">Lugar </f:facet>
                                    <h:outputText value="#{fila.codiUbic.nombUbic}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="moti">
-                                   <f:facet name="header">Motivo </f:facet>
-                                   <h:outputText value="#{fila.descCita}"/>
-                               </h:column>
-                               <h:column pt:data-sortable="true" pt:data-field="desc">
-                                   <f:facet name="header">Ultima Descripción </f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.motiCambCita}"/>
+                                   <f:facet name="header">Motivo ó Descripción</f:facet>
+                                   <span style="font-weight: bold;">Motivo: </span><br/>
+                                   <h:outputText value="#{fila.descCita}"/>   
+                                   <h:panelGroup rendered="#{citasBean.objeCambCitaDepe.motiCambCita ne null}">
+                                       <hr style="margin: 3px 1px 3px 1px;" />
+                                       <span style="font-weight: bold;">Ultimo Cambio: </span><br/>
+                                       <h:outputText value="#{citasBean.objeCambCitaDepe.motiCambCita}"/>
+                                   </h:panelGroup>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="esta">
                                    <f:facet name="header">Estado</f:facet>
@@ -146,6 +145,10 @@ and open the template in the editor.
                                     <h:panelGroup rendered="#{citasBean.switFormCita}">
                                         <div class="modal-body">
                                             <h4 style="">Visitantes Involucrados en la Cita:</h4>
+                                            <h:form id="frmMensGlob">
+                                                <h:inputHidden id="mensTabl" value="#"/>
+                                                <h:message for="mensTabl" errorClass="field-error"/>
+                                            </h:form>
                                             <h:dataTable pt:data-id="TablInvo" value="#{citasBean.listVisiVisiTemp}"
                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablInvo"
                                                     styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
@@ -161,10 +164,18 @@ and open the template in the editor.
                                                     <f:facet name="header">DUI</f:facet>
                                                     <h:outputText value="#{fila.duiVisi}"/>   
                                                 </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="espe">
-                                                    <f:facet name="header">Teléfono</f:facet>
-                                                    <h:outputText value="#{fila.teleVisi}"/>   
-                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="tele">
+                                                    <f:facet name="header">Contacto</f:facet>
+                                                     <h:panelGroup rendered="#{fila.corrVisi != null}">
+                                                         <span class='fa fa-envelope' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.corrVisi}"/>
+                                                          <br/>
+                                                      </h:panelGroup>
+                                                     <h:panelGroup rendered="#{fila.teleVisi != null}">
+                                                         <span class='fa fa-phone' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.teleVisi}"/>
+                                                     </h:panelGroup>
+                                                  </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="acci" rendered="#{citasBean.programar}">
                                                     <f:facet name="header">Acciones</f:facet>
                                                     <h:form>
@@ -193,9 +204,9 @@ and open the template in the editor.
                                                 <hr/>
                                             </h:panelGroup>
                                             <div class="input-group col-xs-12">
-                                                <h:outputLabel  for="ubicCita" value="Ubicación "/>
+                                                <h:outputLabel  for="ubicCita" value="Lugar "/>
                                                 <h:message for="ubicCita" errorClass="field-error" />
-                                                <h:selectOneMenu id="ubicCita" value="#{citasBean.objeCita.codiUbic}" class="form-control select" pt:data-live-search="true" required="true">
+                                                <h:selectOneMenu id="ubicCita" value="#{citasBean.objeCita.codiUbic}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar un Lugar">
                                                     <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                     <f:selectItems value="#{ubicacionesBean.consListUbicPorDispCita()}" var="lst" itemLabel="#{lst.nombUbic}" itemValue="#{lst}"/>
                                                     <f:converter converterId="PooConv"/>
@@ -217,7 +228,7 @@ and open the template in the editor.
                                                         <div class="input-group col-xs-12">
                                                             <h:message for="hora" errorClass="field-error" />
                                                             <h:outputLabel  for="hora" value="Horario disponible "/>
-                                                            <h:selectOneMenu id="hora" value="#{citasBean.horaSeleCita}" class="form-control select" pt:data-live-search="true" required="true">
+                                                            <h:selectOneMenu id="hora" value="#{citasBean.horaSeleCita}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe seleccionar un Horario Disponible">
                                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                                 <f:selectItems value="#{citasBean.listHoraDispUsua}" var="lstHora" itemLabel="#{lstHora.diaHoraDisp} (#{lstHora.horaInicHoraDisp} - #{lstHora.horaFinaHoraDisp})" itemValue="#{lstHora}"/>
                                                                 <f:converter converterId="PooConv"/>
@@ -227,30 +238,30 @@ and open the template in the editor.
                                                 </h:panelGroup>
                                                 <div class="input-group col-xs-12">
                                                     <h:outputLabel  for="fech" value="Fecha: "/>
-                                                    <h:inputText id="fech" value="#{citasBean.fechSoliCita}" class="form-control datepicker" required="true">
+                                                    <h:message for="fech" errorClass="field-error" />
+                                                    <h:inputText id="fech" value="#{citasBean.fechSoliCita}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
                                                         <f:convertDateTime pattern="dd/MM/yyyy" />
                                                     </h:inputText> 
-                                                    <h:message for="fech" errorClass="field-error" />
                                                 </div>
                                                 <h:panelGroup id="paneHoraHoraDispIgno">
                                                     <h:panelGroup rendered="#{citasBean.ignoHoraDisp}">
                                                         <div class="input-group col-xs-12">
                                                             <h:outputLabel  for="horaInicCita" value="Hora de Inicio: "/>
-                                                            <h:inputText id="horaInicCita" value="#{citasBean.fechInic}" class="form-control timepicker" required="true"/>
                                                             <h:message for="horaInicCita" errorClass="field-error" />
+                                                            <h:inputText id="horaInicCita" value="#{citasBean.fechInic}" class="form-control timepicker" required="true" requiredMessage="Debe Seleccionar una Hora de Inicio"/>
                                                         </div>
                                                         <div class="input-group col-xs-12">
                                                             <h:outputLabel  for="horaFinaCita" value="Hora de Finalización: "/>
-                                                            <h:inputText id="horaFinaCita" value="#{citasBean.fechFina}" class="form-control timepicker" required="true"/>
                                                             <h:message for="horaFinaCita" errorClass="field-error" />
+                                                            <h:inputText id="horaFinaCita" value="#{citasBean.fechFina}" class="form-control timepicker" required="true" requiredMessage="Debe Seleccionar una Hora de Finalización"/>
                                                         </div>
                                                     </h:panelGroup>
                                                 </h:panelGroup>
                                             </h:panelGroup>
                                             <div class="input-group col-xs-12">
-                                                <h:outputLabel  for="descCita" value="Descripción: "/>
-                                                <h:inputTextarea  id="descCita" value="#{citasBean.motivo}" class="form-control"/>
+                                                <h:outputLabel  for="descCita" value="Motivo: "/>
                                                 <h:message for="descCita" errorClass="field-error" />
+                                                <h:inputTextarea  id="descCita" value="#{citasBean.motivo}" class="form-control" required="true" requiredMessage="Debe Especificar El Motivo"/>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -284,19 +295,16 @@ and open the template in the editor.
                                 <h:panelGroup id="paneTabl" class="form-horizontal">
                                     <ui:fragment id="FragBusc" rendered="#{!citasBean.switFormCita}">
                                         <div class="modal-body" style="padding-top: 2px;">
-                                            <br/>
-                                                <h4 style="">Seleccionar Visitantes:</h4>
-                                            <div style="width: 100%">
-                                                <h:form style="float: right">
-                                                    <h:inputText style="float: right; width: 100%;" id="cadeText" value="#{visitantesBean.cadeText}" class="form-control" />
-                                                    <br/><br/>
-                                                    <h:commandLink style="float: right; " id="btonBusc" class="btn btn-success">
-                                                        <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :TablVisi"  global="true" />
-                                                        Buscar
+                                            <h4 style="">Seleccionar Visitantes:</h4>
+                                            <h:form>
+                                                <div class="cutom_search">
+                                                    <h:inputText id="cadeText" value="#{visitantesBean.cadeText}" class="form-control cutom_search_text" />
+                                                    <h:commandLink id="btonBusc" class="btn btn-success cutom_search_button">
+                                                        <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :ContRegi :TablVisi"  global="true" />
+                                                        <i class="fa fa-search"/>
                                                     </h:commandLink>
-                                                    <br/><br/>
-                                                </h:form>
-                                            </div>
+                                                </div>
+                                            </h:form>
 
                                             <h:dataTable pt:data-id="TablVisi" id="TablVisi" value="#{visitantesBean.listVisi}"
                                                     var="fila" class="boottable" pt:data-toolbar="#toolTablVisi"
@@ -307,7 +315,7 @@ and open the template in the editor.
                                                     pt:data-single-select="true">                                
                                                 <h:column pt:data-field="state" pt:data-checkbox="true">
                                                 </h:column>
-                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                                     <f:facet name="header">Código</f:facet>
                                                     <h:outputText value="#{fila.codiVisi}"/>
                                                 </h:column>
@@ -320,12 +328,16 @@ and open the template in the editor.
                                                     <h:outputText value="#{fila.duiVisi}"/>   
                                                 </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="tele">
-                                                    <f:facet name="header">Teléfono</f:facet>
-                                                    <h:outputText value="#{fila.teleVisi}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="mail">
-                                                    <f:facet name="header">Email</f:facet>
-                                                    <h:outputText value="#{fila.corrVisi}"/>
+                                                    <f:facet name="header">Contacto</f:facet>
+                                                     <h:panelGroup rendered="#{fila.corrVisi != null}">
+                                                         <span class='fa fa-envelope' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.corrVisi}"/>
+                                                          <br/>
+                                                      </h:panelGroup>
+                                                     <h:panelGroup rendered="#{fila.teleVisi != null}">
+                                                         <span class='fa fa-phone' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.teleVisi}"/>
+                                                     </h:panelGroup>
                                                 </h:column>
                                              </h:dataTable>
                                             <hr/>
@@ -345,9 +357,17 @@ and open the template in the editor.
                                                     <f:facet name="header">DUI</f:facet>
                                                     <h:outputText value="#{fila.duiVisi}"/>   
                                                 </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="espe">
-                                                    <f:facet name="header">Teléfono</f:facet>
-                                                    <h:outputText value="#{fila.teleVisi}"/>   
+                                                <h:column pt:data-sortable="true" pt:data-field="tele">
+                                                    <f:facet name="header">Contacto</f:facet>
+                                                     <h:panelGroup rendered="#{fila.corrVisi != null}">
+                                                         <span class='fa fa-envelope' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.corrVisi}"/>
+                                                          <br/>
+                                                      </h:panelGroup>
+                                                     <h:panelGroup rendered="#{fila.teleVisi != null}">
+                                                         <span class='fa fa-phone' style="margin-right: 10px;"></span>
+                                                          <h:outputText value="#{fila.teleVisi}"/>
+                                                     </h:panelGroup>
                                                 </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="acci">
                                                     <f:facet name="header">Acciones</f:facet>

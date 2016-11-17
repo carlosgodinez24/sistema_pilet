@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.sv.udb.controlador;
 
 import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
 import com.sv.udb.ejb.VisitanteFacadeLocal;
 import com.sv.udb.modelo.Alumnovisitante;
 import com.sv.udb.modelo.Visitante;
+import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +15,15 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
-/**
- *
- * @author REGISTRO
+
+ /**
+ * La clase alumno visitante 
+ * @author: ControlCitas
+ * @version: Prototipo 1
+ * Octubre de 2016
  */
 @Named(value = "alumnoVisitanteBean")
 @ViewScoped
@@ -45,6 +45,9 @@ public class AlumnoVisitanteBean implements Serializable{
     private List<Alumnovisitante> listAlumVisi;
     private boolean guardar;
     
+    private LOG4J<AlumnoVisitanteBean> lgs = new LOG4J<AlumnoVisitanteBean>(AlumnoVisitanteBean.class) {
+    };
+    private Logger log = lgs.getLog();
     // Variables para registrarse como visitante representante alumno
     @EJB
     private VisitanteFacadeLocal FCDEVisi;    
@@ -53,6 +56,16 @@ public class AlumnoVisitanteBean implements Serializable{
     private boolean contForm;
     private List<Alumnovisitante> listAlumVisiCarne;
     
+    private String carnAlum;
+    
+    public void setAlumn(){
+        String Carn = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjeAlum"));
+        if(Carn!=null){
+            this.carnAlum = Carn;
+            RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Alumno Seleccionado')");
+        }
+    }
     
     public Alumnovisitante getObjeAlumVisi() {
         return objeAlumVisi;
@@ -106,7 +119,9 @@ public class AlumnoVisitanteBean implements Serializable{
         this.contForm = contForm;
     }
     
-    
+       /**
+     * Métodos
+     */
     
     @PostConstruct
     public void init()
@@ -159,20 +174,20 @@ public class AlumnoVisitanteBean implements Serializable{
             this.guardar = false;
             this.Disabled=false;
             this.contForm = false;
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s %s", this.objeAlumVisi.getPareAlumVisi(), this.objeAlumVisi.getCarnAlum()) + "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Consultar alumno visitante: " +  objeAlumVisi.getCarnAlum());
             //por alguna razón, al consultar con cambia el select... asi que se hace manualmente....
             ctx.execute("selectedItem("+this.objeAlumVisi.getPareAlumVisi()+")");
         }
         catch(Exception ex)
         {
+            log.error("Error al consultar alumno visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
-        finally
-        {
-            
-        }
     }
+       /**
+     * Método para encontrar el Dui del visitante
+     */
     public void consPorDui()
      {
         RequestContext ctx = RequestContext.getCurrentInstance();
@@ -205,41 +220,60 @@ public class AlumnoVisitanteBean implements Serializable{
         }
     }
     
+       /**
+     * Método para guardar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
             objeAlumVisi.setEstaAlumVisi(1);
+            objeAlumVisi.setCarnAlum(this.carnAlum);
             FCDEAlumVisi.create(this.objeAlumVisi);
             this.listAlumVisi.add(this.objeAlumVisi);
-            
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados'); INIT_OBJE_TABL();");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Agregar alumno visitante: " +  objeAlumVisi.getCarnAlum());
             this.limpForm();
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
+            log.error("Error al guardar alumno visitante");
             ex.printStackTrace();
         }
     }
     
+     /**
+     * Método para modificar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void modi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
             this.listAlumVisi.remove(this.objeAlumVisi); //Limpia el objeto viejo
+            this.objeAlumVisi.setCarnAlum(this.carnAlum);
             FCDEAlumVisi.edit(this.objeAlumVisi);
             this.listAlumVisi.add(this.objeAlumVisi); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Modificar alumno visitante: " +  objeAlumVisi.getCarnAlum());
         }
         catch(Exception ex)
         {
+            log.error("Error al modificar alumno visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
-    
+     /**
+     * Método para eliminar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void elim()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -250,12 +284,19 @@ public class AlumnoVisitanteBean implements Serializable{
             this.listAlumVisi.remove(this.objeAlumVisi);
             this.listAlumVisiCarne.remove(this.objeAlumVisi);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"AlumnoVisitante"+"-"+" Eliminar alumno visitante codigo: " +  objeAlumVisi.getCodiAlumVisi());
         }
         catch(Exception ex)
         {
+            log.error("Error al eliminar alumno visitante");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }
+     /**
+     * Método para registrar los datos del visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void regiVisi(){
         RequestContext ctx = RequestContext.getCurrentInstance();
         FacesContext facsCtxt = FacesContext.getCurrentInstance();
@@ -273,6 +314,11 @@ public class AlumnoVisitanteBean implements Serializable{
         }                    
         asigAlumVisi();
     }
+     /**
+     * Método para asignar un visitante
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
     public void asigAlumVisi(){
         try{
             RequestContext ctx = RequestContext.getCurrentInstance();

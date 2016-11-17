@@ -1,24 +1,24 @@
-/*
- * Controlador Excepcionhorariodisponible
- */
 package com.sv.udb.controlador;
-
 import com.sv.udb.ejb.ExcepcionhorariodisponibleFacadeLocal;
 import com.sv.udb.modelo.Excepcionhorariodisponible;
+import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import org.apache.log4j.Logger;
 
 /**
- *
+ * Clase de excepcion de los horarios disponibles
  * @author Sistema de citas
- * @version 1.0 13 de Octubre de 2016
+ * @version prototipo 2
+ * Octubre de 2016
  */
 @Named(value = "excepcionHorarioDisponiblesBean")
 @ViewScoped
@@ -34,6 +34,13 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
     private Excepcionhorariodisponible objeExceHoraDisp;
     private List<Excepcionhorariodisponible> listExceHoraDisp;
     private boolean guardar;
+    
+     @Inject
+    private LoginBean logiBean; 
+     
+    private LOG4J<ExcepcionHorarioDisponibleBean> lgs = new LOG4J<ExcepcionHorarioDisponibleBean>(ExcepcionHorarioDisponibleBean.class) {
+    };
+    private Logger log = lgs.getLog();
     
     public Excepcionhorariodisponible getObjeExceHoraDisp() {
         return objeExceHoraDisp;
@@ -68,7 +75,7 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
     {
         try
         {
-            this.listExceHoraDisp = FCDEExceHoraDisp.findAll();
+            this.listExceHoraDisp = FCDEExceHoraDisp.findByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
         }
         catch(Exception ex)
         {
@@ -84,17 +91,19 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
         {
             this.objeExceHoraDisp = FCDEExceHoraDisp.find(codi);
             this.guardar = false;
-            
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " +this.objeExceHoraDisp.getFechExceHoraDisp()+ "')");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"ExcepcionHorario"+"-"+" Consultar codigo excepcion : " + objeExceHoraDisp.getCodiExceHoraDisp());
         }
         catch(Exception ex)
         {
+            log.error("Error al consultar registro",ex);
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
     }
      /**
-     * Obteniendo los dias de la semana
-     */ 
+     * Obteniendo los dias de la semana       
+     * @since incluido desde la version 1.0
+     */
     private int getDay(String dia){
         int ndia = 0;
         String dias[] = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};
@@ -116,8 +125,7 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
             if(diaHoraDisp == diaExceHoraDisp){
                 val = true;
             }else{
-                ctx.execute("setMessage('MESS_INFO', 'Atención', 'La excepción seleccionada "
-                        + "no coincide con la fecha ingresada');");
+                FacesContext.getCurrentInstance().addMessage("FormRegi:fech", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Esta fecha no coincide con el Horario Disponible",  null));
             }
         return val;
     }
@@ -134,12 +142,14 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
             if(validar()){
               FCDEExceHoraDisp.create(this.objeExceHoraDisp);
               this.listExceHoraDisp.add(this.objeExceHoraDisp);
-              ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");  
+              ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+              log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"ExcepcionHorario"+"-"+" Agregado excepcion: " + objeExceHoraDisp.getFechExceHoraDisp() + " " + objeExceHoraDisp.getCodiHoraDisp());
+              limpForm();
             }
         }
         catch(Exception ex)
         {
-            
+            log.error("Error al registar excepcion horario");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
         }
     }
@@ -158,11 +168,13 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
               FCDEExceHoraDisp.edit(this.objeExceHoraDisp);
               this.listExceHoraDisp.add(this.objeExceHoraDisp); //Agrega el objeto modificado
               ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+              log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"ExcepcionHorario"+"-"+" Modificar excepcion: " + objeExceHoraDisp.getFechExceHoraDisp() + " " + objeExceHoraDisp.getCodiHoraDisp());
               this.listExceHoraDisp.add(this.objeExceHoraDisp); 
             }
         }
         catch(Exception ex)
         {
+            log.error("Error al modificar excepcion horario");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
@@ -178,10 +190,13 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
         {
             FCDEExceHoraDisp.remove(this.objeExceHoraDisp);
             this.listExceHoraDisp.remove(this.objeExceHoraDisp);
+            
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"ExcepcionHorario"+"-"+" Eliminar excepcion codigo: " + objeExceHoraDisp.getCodiExceHoraDisp());
         }
         catch(Exception ex)
         {
+            log.error("Error al eliminar excepcion horario");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }

@@ -51,8 +51,21 @@ and open the template in the editor.
                 <div class="col-md-12 col-xs-12">
                     <div class="panel panel-default">
                         
-                        <p:schedule value="#{calendarioBean.objeCale}" ignoreTimezone="false" locale="es" columnFormat="dddd DD/MM"/>
-                        <script type="text/javascript">
+                        <p:schedule  timeFormat="hh:mm a" resizable="false" displayEventEnd="true" draggable="false" value="#{calendarioBean.objeCale}" clientTimeZone="local" locale="es" columnFormat="dddd DD/MM">
+                            <p:ajax event="eventSelect" listener="#{calendarioBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                        </p:schedule>
+                        
+                        <p:dialog widgetVar="eventDialog" resizable="false" header="Detalles de Cita" modal="true" showEffect="clip" hideEffect="clip">
+                            <h:panelGrid id="eventDetails" columns="2">
+                                Lugar: #{calendarioBean.objeCambCita.codiCita.codiUbic.nombUbic} <br/>
+                                Fecha: #{calendarioBean.fechForma}<br/>
+                                Hora Inicio: #{calendarioBean.objeCambCita.horaInicCitaNuev}<br/>
+                                Hora Fin: #{calendarioBean.objeCambCita.horaFinCitaNuev} <br/>
+                                Motivo: #{calendarioBean.objeCambCita.codiCita.descCita}
+                            </h:panelGrid>
+                        </p:dialog>    
+                        
+                           <script type="text/javascript">
                             PrimeFaces.locales['es'] = {
                                 closeText: 'Cerrar',
                                 prevText: 'Anterior',

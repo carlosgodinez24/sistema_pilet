@@ -7,7 +7,6 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,21 +18,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Kevin
+ * @author Alvin
  */
 @Entity
-@Table(name = "Evento", catalog = "sistemas_pilet", schema = "")
+@Table(name = "evento", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Evento.findAll", query = "SELECT e FROM Evento e"),
@@ -42,7 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Evento.findByFechInicEven", query = "SELECT e FROM Evento e WHERE e.fechInicEven = :fechInicEven"),
     @NamedQuery(name = "Evento.findByFechFinaEven", query = "SELECT e FROM Evento e WHERE e.fechFinaEven = :fechFinaEven"),
     @NamedQuery(name = "Evento.findByHoraInicEven", query = "SELECT e FROM Evento e WHERE e.horaInicEven = :horaInicEven"),
-    @NamedQuery(name = "Evento.findByHoraFinaEven", query = "SELECT e FROM Evento e WHERE e.horaFinaEven = :horaFinaEven")})
+    @NamedQuery(name = "Evento.findByHoraFinaEven", query = "SELECT e FROM Evento e WHERE e.horaFinaEven = :horaFinaEven"),
+    @NamedQuery(name = "Evento.findByEstaEven", query = "SELECT e FROM Evento e WHERE e.estaEven = :estaEven")})
 public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,8 +74,10 @@ public class Evento implements Serializable {
     @Size(min = 1, max = 8)
     @Column(name = "hora_fina_even")
     private String horaFinaEven;
-    @OneToMany(mappedBy = "codiEven", fetch = FetchType.EAGER)
-    private List<Cita> citaList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "esta_even")
+    private int estaEven;
     @JoinColumn(name = "codi_ubic", referencedColumnName = "codi_ubic")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Ubicaciones codiUbic;
@@ -89,13 +89,14 @@ public class Evento implements Serializable {
         this.codiEvent = codiEvent;
     }
 
-    public Evento(Integer codiEvent, String nombEven, Date fechInicEven, Date fechFinaEven, String horaInicEven, String horaFinaEven) {
+    public Evento(Integer codiEvent, String nombEven, Date fechInicEven, Date fechFinaEven, String horaInicEven, String horaFinaEven, int estaEven) {
         this.codiEvent = codiEvent;
         this.nombEven = nombEven;
         this.fechInicEven = fechInicEven;
         this.fechFinaEven = fechFinaEven;
         this.horaInicEven = horaInicEven;
         this.horaFinaEven = horaFinaEven;
+        this.estaEven = estaEven;
     }
 
     public Integer getCodiEvent() {
@@ -146,13 +147,12 @@ public class Evento implements Serializable {
         this.horaFinaEven = horaFinaEven;
     }
 
-    @XmlTransient
-    public List<Cita> getCitaList() {
-        return citaList;
+    public int getEstaEven() {
+        return estaEven;
     }
 
-    public void setCitaList(List<Cita> citaList) {
-        this.citaList = citaList;
+    public void setEstaEven(int estaEven) {
+        this.estaEven = estaEven;
     }
 
     public Ubicaciones getCodiUbic() {

@@ -20,28 +20,73 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-/**
- *
- * @author Orlando Vasquez
+ /**
+ * La clase calendario para citas
+ * @author: ControlCitas
+ * @version: Prototipo 2
  */
 @Named(value = "calendarioBean")
 @ViewScoped
 public class CalendarioBean implements Serializable{
 
     /**
-     * Creates a new instance of CalendarioBean
+     * Creaando una nueva instancia para la clase Calendario
      */
     
     private static final long serialVersionUID = 6527333208194203406L;
     private ScheduleModel objeCale;
-    //private List<Pruebaevento> listPruebaevento = new ArrayList<Pruebaevento>();
     private List<Cita> listCita;
-//    @EJB
-//    private PruebaeventoFacadeLocal FCDEPruEven;
+    private ScheduleEvent citaEven;
+    private Cambiocita objeCambCita;
+    private String fechForma;
+
+   
+    public String getFechForma() {
+        return fechForma;
+    }
+
+    public void setFechForma(String fechForma) {
+        this.fechForma = fechForma;
+    }
+    
+    public void onEventSelect(SelectEvent selectEvent)
+    {
+        this.citaEven= (ScheduleEvent) selectEvent.getObject();
+        this.objeCambCita = (Cambiocita) citaEven.getData();
+        this.fechForma = new SimpleDateFormat("dd/MM/yyyy").format(this.objeCambCita.getFechFinCitaNuev());
+    }
+    
+    public Cambiocita getObjeCambCita() {
+        return objeCambCita;
+    }
+
+    public void setObjeCambCita(Cambiocita objeCambCita) {
+        this.objeCambCita = objeCambCita;
+    }
+    
+    
+    public List<Cita> getListCita() {
+        return listCita;
+    }
+
+    public void setListCita(List<Cita> listCita) {
+        this.listCita = listCita;
+    }
+
+    public ScheduleEvent getCitaEven() {
+        return citaEven;
+    }
+
+    public void setCitaEven(ScheduleEvent citaEven) {
+        this.citaEven = citaEven;
+    }
+    
     @EJB
     private CitaFacadeLocal FCDECita;
     @EJB
@@ -58,18 +103,6 @@ public class CalendarioBean implements Serializable{
         getEvenCale();
     }
     
-//    public void consTodo() {
-//        try {
-//            this.listPruebaevento = FCDEPruEven.findAll();
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
-    
-//    public List<Pruebaevento> getListPruebaevento() {
-//        return listPruebaevento;
-//    }
-
     public ScheduleModel getObjeCale() {
         return objeCale;
     }
@@ -85,6 +118,13 @@ public class CalendarioBean implements Serializable{
             ex.printStackTrace();
         }
     }
+    
+   
+    /**
+     * Metodo para llamar los datos y mostrar en el calendario esos datos.
+     * @exception Error al realizar la operacion         
+     * @since incluido desde la version 1.0
+     */
      public void getEvenCale(){
         try{
             this.objeCale = new DefaultScheduleModel();
@@ -97,20 +137,25 @@ public class CalendarioBean implements Serializable{
                 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 String FechFinaS = df.format(objeCambCita.getFechFinCitaNuev())+" "+objeCambCita.getHoraFinCitaNuev();
                 String FechInicS = df.format(objeCambCita.getFechInicCitaNuev())+" "+objeCambCita.getHoraInicCitaNuev();
-                System.out.println("Fecha Inicio: " + FechInicS);
-                System.out.println("Fecha Fin: " + FechFinaS);
                 DefaultScheduleEvent evt = new DefaultScheduleEvent();
                 evt.setStartDate(this.getFecha(FechInicS));
                 evt.setEndDate(this.getFecha(FechFinaS));
                 evt.setTitle("Cita");
-                evt.setData(obj.getCodiCita());
+                evt.setData(objeCambCita);
                 evt.setDescription(obj.getCodiUbic().getNombUbic());
+                
+                System.out.println(objeCambCita.getFechInicCitaNuev()+"");
                 this.objeCale.addEvent(evt);
              }
         }catch(Exception e){
             e.printStackTrace();
         }  
      }
+     
+     
+    /**
+     * Metodo de cambio de cita
+     */
     public Cambiocita getCambCita(Cita cita)
     {
         Cambiocita objeCambCita = null;
@@ -125,6 +170,9 @@ public class CalendarioBean implements Serializable{
         return objeCambCita;
     }
      
+    /**
+     * Mètodo para obtener la fecha
+     */
     private Date getFecha(String date) 
     {
         

@@ -91,3 +91,44 @@
 #notis{
     background-color: #BDBDBD;
 }
+.RegDiv{
+    margin-right: 0px !important;
+}
+.field-error{
+    font-weight: bold;
+    color: #b71c1c;
+    float: right;
+    font-size: 12pt;
+}
+.cutom_search{
+    width: 200px;
+    float: right;
+    margin: 10px 0px 10px 10px;
+    position: relative;
+}
+.cutom_search_text{
+    height: 35px !important;
+    width: calc(100% - 35px) !important;
+    display: inline-block !important;
+    border-radius: 5px 0px 0px 5px;
+    vertical-align: top;
+}
+.cutom_search_button{
+    width: 35px !important;
+    height: 35px !important;
+    display: inline-block !important;
+    border-radius: 0px 5px 5px 0px;
+    vertical-align: top;
+    float: right;
+}
+.toolTipPrime{
+    z-index: 9999999 !important;
+}
+.nonDisplay{
+    display: none;
+}
+@media (max-width: 600px) {
+    .cutom_search {
+      width: calc(100% - 100px);
+    }
+}

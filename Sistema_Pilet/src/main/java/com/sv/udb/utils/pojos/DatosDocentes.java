@@ -11,6 +11,7 @@ package com.sv.udb.utils.pojos;
  */
 public class DatosDocentes {
     private String codi;
+    private String mail;
     private String nomb;
     private byte[] foto;
     private String secc;
@@ -20,19 +21,28 @@ public class DatosDocentes {
     
     }
 
-    public DatosDocentes(String codi, String nomb, byte[] foto, String secc) {
+    public DatosDocentes(String codi, String mail, String nomb, byte[] foto, String secc) {
         this.codi = codi;
+        this.mail = mail;
         this.nomb = nomb;
         this.foto = foto;
         this.secc = secc;
     }
-    
+
     public String getCodi() {
         return codi;
     }
 
     public void setCodi(String codi) {
         this.codi = codi;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getNomb() {

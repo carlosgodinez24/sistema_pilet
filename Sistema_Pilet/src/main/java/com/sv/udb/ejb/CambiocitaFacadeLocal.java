@@ -32,6 +32,9 @@ public interface CambiocitaFacadeLocal {
     Cambiocita findByCodiCita(Cita codi);
     
     Cambiocita findByCita(Cita codi);
+    
+    boolean findCambioCitaByParams(String fecha, String horaInic, String horaFin, Integer codiUsua);
+    
     int count();
     
 }

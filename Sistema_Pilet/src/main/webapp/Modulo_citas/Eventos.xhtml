@@ -68,7 +68,7 @@ and open the template in the editor.
                                         pt:data-single-select="true">                                
                                <h:column pt:data-field="state" pt:data-checkbox="true">
                                </h:column>
-                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" class="hidden">
+                               <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
                                    <h:outputText value="#{fila.codiEvent}"/>
                                </h:column>
@@ -108,44 +108,44 @@ and open the template in the editor.
                                 <div class="modal-body" style="padding-top: 2px;">
                                     <fieldset class="col-md-12">
                                         <h:inputHidden id="codi" value="#{eventosBean.objeEven.codiEvent}" />
-			                            <div class="input-group col-xs-12">
-			                                <h:outputLabel  for="luga" value="Lugar: "/>
-			                                <h:selectOneMenu id="luga" value="#{eventosBean.objeEven.codiUbic}" class="form-control select" pt:data-live-search="true">
-                                                            <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                            <f:selectItems value="#{ubicacionesBean.listUbic}" var="lst" itemLabel="#{lst.nombUbic}" itemValue="#{lst}"/>
-                                                            <f:converter converterId="PooConv"/>
-                                                        </h:selectOneMenu>
-			                                <h:message for="luga" errorClass="field-error" />
-			                            </div>
-			                            <div class="input-group col-xs-12">
-			                                <h:outputLabel  for="nombEven" value="Nombre de Evento: "/>
-			                                <h:inputText  id="nombEven" value="#{eventosBean.objeEven.nombEven}" class="form-control"/>
-			                                <h:message for="nombEven" errorClass="field-error" />
-			                            </div>
-			                            <div class="input-group col-xs-12">
-			                                <h:outputLabel  for="fechInic" value="Fecha Inicio: "/>
-			                                <h:inputText id="fechInic" value="#{eventosBean.objeEven.fechInicEven}" class="form-control datepicker">
-                                                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                                                        </h:inputText>       
-			                                <h:message for="fechInic" errorClass="field-error" />
-			                            </div>
-			                            <div class="input-group col-xs-12">
-			                                <h:outputLabel  for="fechFina" value="Fecha Fin: "/>
-                                                        <h:inputText id="fechFina" value="#{eventosBean.objeEven.fechFinaEven}" class="form-control datepicker">
-                                                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                                                        </h:inputText>
-			                                <h:message for="fechFina" errorClass="field-error" />
-			                            </div>
-			                            <div class="input-group col-xs-12">
-			                                <h:outputLabel  for="horaInicEven" value="Hora Inicio: "/>
-                                                        <h:inputText id="horaInicEven" value="#{eventosBean.objeEven.horaInicEven}" class="form-control timepicker"/>
-			                                <h:message for="horaInicEven" errorClass="field-error" />
-			                            </div>
-			                            <div class="input-group col-xs-12">
-			                                <h:outputLabel  for="horaFinaEven" value="Hora Fin: "/>
-                                                        <h:inputText id="horaFinaEven" value="#{eventosBean.objeEven.horaFinaEven}" class="form-control timepicker"/>
-			                                <h:message for="horaFinaEven" errorClass="field-error" />	
-			                            </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="luga" value="Lugar: "/>
+                                            <h:message for="luga" errorClass="field-error" />
+                                            <h:selectOneMenu id="luga" value="#{eventosBean.objeEven.codiUbic}" class="form-control select" pt:data-live-search="true" required="true" requiredMessage="Debe Seleccionar un Lugar">
+                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                <f:selectItems value="#{ubicacionesBean.consListUbicPorDisEven()}" var="lst" itemLabel="#{lst.nombUbic}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="nombEven" value="Nombre de Evento: "/>
+                                            <h:message for="nombEven" errorClass="field-error" />
+                                            <h:inputText  id="nombEven" value="#{eventosBean.objeEven.nombEven}" class="form-control" required="true" requiredMessage="Debe Registrar un Nombre pra el Evento"/>
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="fechInic" value="Fecha Inicio: "/>
+                                            <h:message for="fechInic" errorClass="field-error" />
+                                            <h:inputText id="fechInic" value="#{eventosBean.objeEven.fechInicEven}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar Una Fecha de Inicio">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:inputText>       
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="fechFina" value="Fecha Fin: "/>
+                                            <h:message for="fechFina" errorClass="field-error" />
+                                            <h:inputText id="fechFina" value="#{eventosBean.objeEven.fechFinaEven}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar Una Fecha de Fin">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:inputText>
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="horaInicEven" value="Hora Inicio: "/>
+                                            <h:message for="horaInicEven" errorClass="field-error" />
+                                            <h:inputText id="horaInicEven" value="#{eventosBean.objeEven.horaInicEven}" class="form-control timepicker" required="true" requiredMessage="Debe Seleccionar Una Hora de Inicio"/>
+                                        </div>
+                                        <div class="input-group col-xs-12">
+                                            <h:outputLabel  for="horaFinaEven" value="Hora Fin: "/>
+                                            <h:message for="horaFinaEven" errorClass="field-error" />	
+                                            <h:inputText id="horaFinaEven" value="#{eventosBean.objeEven.horaFinaEven}" class="form-control timepicker" required="true" requiredMessage="Debe Seleccionar Una Hora de Fin"/>
+                                        </div>
                                     </fieldset>
                                 </div>
                                 <div class="modal-footer">
