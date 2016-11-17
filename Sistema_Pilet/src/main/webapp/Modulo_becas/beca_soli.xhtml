@@ -134,12 +134,14 @@ and open the template in the editor.
                                             </h:column>
                                             <h:column pt:data-sortable="true">
                                                 <f:facet name="header">Estado beca</f:facet> 
-                                                <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta == 1}">
+                                                <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta eq 1}">
                                                     <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                                <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 3}">
+                                                <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta eq 3}">
                                                     <i class="fa fa-unlock"/> Historial</h:panelGroup>
-                                                <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta == 2}">
+                                                <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta eq 2}">
                                                     <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                                <h:panelGroup class="label label-warning" rendered="#{fila.codiTipoEsta.codiTipoEsta eq 4}">
+                                                    <i/> Evaluando</h:panelGroup>
                                             </h:column>
                                         </h:dataTable>
                                     </h:panelGroup>
@@ -210,6 +212,8 @@ and open the template in the editor.
                                                     <i class="fa fa-unlock"/> Historial</h:panelGroup>
                                                 <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta == 2}">
                                                     <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                                <h:panelGroup class="label label-warning" rendered="#{fila.codiTipoEsta.codiTipoEsta == 4}">
+                                                    <i/> Evaluando</h:panelGroup>
                                             </h:column>
                                         </h:dataTable>
                                     </h:panelGroup>
@@ -268,7 +272,6 @@ and open the template in the editor.
                                                 
                                                  <div class="form-group input-group-xs col-md-11">                                                
                                                     <h:selectOneMenu id="Empr" value="#{becaSoliBean.objeSoli.codiEmpr}" class="form-control" pt:data-live-search="true">
-                                                        <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                         <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                         <f:converter converterId="PooConv"/>
                                                     </h:selectOneMenu>                             

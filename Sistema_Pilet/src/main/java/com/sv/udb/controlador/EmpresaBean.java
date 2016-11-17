@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Empresa;
 import com.sv.udb.ejb.EmpresaFacadeLocal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -76,6 +77,7 @@ public class EmpresaBean implements Serializable{
         try
         {
             this.objeEmpr.setEstaEmpr(1);
+            this.objeEmpr.setMontEmpr(BigDecimal.ZERO);
             FCDEEmpr.create(this.objeEmpr);
             this.listEmpr.add(this.objeEmpr);
             this.limpForm();

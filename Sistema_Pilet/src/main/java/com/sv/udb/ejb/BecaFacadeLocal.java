@@ -30,6 +30,8 @@ public interface BecaFacadeLocal {
     
     List<Beca> findAllH();
     
+    List<Beca> findAllActivos();
+    
     List<Beca> findAllHisto();
 
     List<Beca> findRange(int[] range);

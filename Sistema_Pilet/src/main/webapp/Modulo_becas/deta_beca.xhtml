@@ -133,7 +133,7 @@ and open the template in the editor.
                                             
                                             <h:selectOneMenu id="alumBeca"  value="#{detalleBecaBean.objeCombPadr }" class="form-control" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{becaSoliBean.listBeca}" var="lst" itemLabel="#{lst.codiSoliBeca.nombAlum}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{becaSoliBean.listBecaActivos}" var="lst" itemLabel="#{lst.codiSoliBeca.nombAlum}" itemValue="#{lst}"/>
                                                 <p:ajax update="detaBeca" listener="#{detalleBecaBean.onAlumBecaSelect()}" process="@this"/>  
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu> 
