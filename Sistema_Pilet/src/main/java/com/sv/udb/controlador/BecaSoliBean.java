@@ -71,6 +71,7 @@ public class BecaSoliBean implements Serializable {
     private SolicitudBeca objeSoli2;
     private List<SolicitudBeca> listSoli;
     private List<SolicitudBeca> listSoliH;
+    private List<SolicitudBeca> listSoliActivos;
     private String filt; //Filotro de búsqueda
 
     
@@ -81,7 +82,7 @@ public class BecaSoliBean implements Serializable {
     private Beca objeBeca2;
     private List<Beca> listBeca;
     private List<Beca> listBecaH;
-    
+    private List<Beca> listBecaActivos;
     
     private boolean guardar; 
     private static Logger log = Logger.getLogger(BecaSoliBean.class);
@@ -108,6 +109,10 @@ public class BecaSoliBean implements Serializable {
 
     public void setListBecaH(List<Beca> listBecaH) {
         this.listBecaH = listBecaH;
+    }
+
+    public List<Beca> getListBecaActivos() {
+        return listBecaActivos;
     }
     
     
@@ -155,6 +160,11 @@ public class BecaSoliBean implements Serializable {
     public void setFilt(String filt) {
         this.filt = filt;
     }
+
+    public List<SolicitudBeca> getListSoliActivos() {
+        return listSoliActivos;
+    }
+    
     
     /**
      * Creates a new instance of BecaSoliBean
@@ -200,8 +210,8 @@ public class BecaSoliBean implements Serializable {
             else
             {
                     TipoEstado a = new TipoEstado();
-                    a.setCodiTipoEsta(1);
-                    this.objeSoli.setEstaSoliBeca(0);
+                    a.setCodiTipoEsta(4);
+                    this.objeSoli.setEstaSoliBeca(4);
                     FCDESoli.create(objeSoli);
                     this.objeSoli2 = FCDESoli.findLast();
                     System.out.println("AQUIIII: "+this.objeSoli2);
@@ -212,7 +222,7 @@ public class BecaSoliBean implements Serializable {
                     System.out.println(objeBeca);
                     this.FCDEBeca.create(objeBeca);
                     this.listSoli.add(this.objeSoli);
-                   if(this.listBeca == null)
+                    if(this.listBeca == null)
                     {
                         this.listBeca = new ArrayList<>();
                     }
@@ -265,6 +275,8 @@ public class BecaSoliBean implements Serializable {
             this.objeSoli = FCDESoli.findLast();
             System.out.println(this.objeSoli.getCodiSoliBeca());
             this.objeBeca.setCodiSoliBeca(objeSoli);
+            es.setCodiTipoEsta(this.objeSoli.getEstaSoliBeca());
+            this.objeBeca.setCodiTipoEsta(es);
             FCDEBeca.create(objeBeca);
             this.listBeca.add(objeBeca);
             //FCDESoli.edit(this.objeSoli);
@@ -388,6 +400,7 @@ public class BecaSoliBean implements Serializable {
             this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());
             this.guardar = false;
             this.falso();
+            System.out.println(this.objeBeca.getCodiTipoEsta().getCodiTipoEsta());
             this.filt = objeSoli.getCarnAlum();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeBeca.getCodiSoliBeca().getNombAlum()) + "')");
@@ -444,6 +457,8 @@ public class BecaSoliBean implements Serializable {
         {
             this.listSoli = FCDESoli.findAll();
             this.listBeca = FCDEBeca.findAllH();
+            this.listSoliActivos = FCDESoli.findAllActivos();
+            this.listBecaActivos = FCDEBeca.findAllActivos();
             log.info("Beca Consultadas");
         }
         catch(Exception ex)

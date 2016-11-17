@@ -90,7 +90,7 @@ public class DetalleBecaBean implements Serializable{
         listTipoBeca = FCDETipoBeca.findTipos(objeCombPadr.getCodiSoliBeca().getCodiGrad().getNivelGrad());
     }
     
-    
+    DetalleBeca vali;
     
     /**
      * Creates a new instance of DetalleBecaBean
@@ -102,6 +102,7 @@ public class DetalleBecaBean implements Serializable{
     public void init()
     {
         this.objeDetaBeca = new DetalleBeca();
+        this.vali = new DetalleBeca();
         this.guardar = true;
         this.consTodo();
         
@@ -124,16 +125,62 @@ public class DetalleBecaBean implements Serializable{
     
     public void guar()
     {
+        boolean guardarDeta;
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+             System.out.println(":O");
             this.objeDetaBeca.setCodiBeca(objeCombPadr);
-            this.objeDetaBeca.setEstaDetaBeca(1);
-            FCDEDetaBeca.create(this.objeDetaBeca);
-            this.listDetaBeca.add(this.objeDetaBeca);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Detalle Guardado");
+           
+            System.out.println("A la sombra de un cripes");
+            System.out.println("Lo que envía al método: Codigo de beca: " +this.objeDetaBeca.getCodiBeca().getCodiBeca());
+            System.out.println("Codigo tipo de beca: "+ this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+            //FCDEDetaBeca.validar(this.objeDetaBeca.getCodiBeca().getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+            vali = this.FCDEDetaBeca.validar(this.objeDetaBeca.getCodiBeca().getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+            if (vali == null) {
+                if (this.objeDetaBeca.getCantMese() > 0) {
+                    //Proceso normal
+                    switch (this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca()) {
+                        case 1:
+                            //Matricula
+                            if (this.objeDetaBeca.getCantMese() > 1) {
+                                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar matrícula más de una vez')");
+                                guardarDeta = false;
+                            } else {
+                                guardarDeta = true;
+                            }
+                            break;
+                        case 2:
+                            //Mensualidad
+                            if (this.objeDetaBeca.getCantMese() > 11) {
+                                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar más de 11 mensualidades')");
+                                guardarDeta = false;
+                            } else {
+                                guardarDeta = true;
+                            }
+                            break;
+                        case 3:
+                            guardarDeta = true;
+                            break;
+                        default:
+                            guardarDeta = false;
+                            break;
+                    }
+                    if (guardarDeta) {
+                        
+                        this.objeDetaBeca.setEstaDetaBeca(1);
+                        FCDEDetaBeca.create(this.objeDetaBeca);
+                        this.listDetaBeca.add(this.objeDetaBeca);
+                        this.limpForm();
+                        ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                        log.info("Detalle Guardado");
+                    }
+                } else {
+                    ctx.execute("setMessage('MESS_ERRO', 'Atención', 'La cantidad de meses no puede ser 0')");
+                }
+            } else {
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El alumno ya cuenta con ese detalle de beca')");
+            }
             
         }
         catch(Exception ex)

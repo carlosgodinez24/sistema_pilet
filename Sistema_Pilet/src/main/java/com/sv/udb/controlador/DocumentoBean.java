@@ -48,6 +48,7 @@ public class DocumentoBean implements Serializable{
     private static Logger log = Logger.getLogger(DocumentoBean.class);
     private String rutaC;
     private byte[] esto;
+    private String tokens = "";
 
     public byte[] getEsto() {
         return esto;
@@ -59,6 +60,10 @@ public class DocumentoBean implements Serializable{
 
     public void setImagen(boolean imagen) {
         this.imagen = imagen;
+    }
+
+    public String getTokens() {
+        return tokens;
     }
     
     
@@ -94,6 +99,7 @@ public class DocumentoBean implements Serializable{
         this.objeDocu.setFechDocu(new Date());
         this.inicializar();
         this.imagen = false;
+        this.tokens = "Imagen";
     }
     
     public void limpForm()
@@ -238,6 +244,7 @@ public class DocumentoBean implements Serializable{
         try
         {
             this.imagen = false;
+            this.tokens = "Imagen";
             this.objeDocu = FCDEDocu.find(codi);
             String h = this.rutas.get(0);
             //System.out.println(h + this.objeDocu.getRutaDocu());
@@ -252,6 +259,7 @@ public class DocumentoBean implements Serializable{
             if("pdf".equals(tokens[1]))
             {
                 this.imagen = !this.imagen;
+                this.tokens = "Documento";
                 InputStream docu = new FileInputStream(file);
                 this.esto = readFully(docu);
             }

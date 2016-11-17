@@ -5,6 +5,7 @@
  */
 package com.sv.udb.ejb;
 
+import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.SolicitudBeca;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -29,6 +30,14 @@ public class SolicitudBecaFacade extends AbstractFacade<SolicitudBeca> implement
 
     public SolicitudBecaFacade() {
         super(SolicitudBeca.class);
+    }
+    
+    @Override
+    public List<SolicitudBeca> findAllActivos()
+    {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM `solicitud_beca` WHERE `esta_soli_beca` = 1", SolicitudBeca.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
     }
     
     @Override
