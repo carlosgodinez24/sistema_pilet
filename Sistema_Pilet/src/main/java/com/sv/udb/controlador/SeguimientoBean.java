@@ -126,6 +126,8 @@ public class SeguimientoBean implements Serializable{
         try
         {
             this.listSegu.remove(this.objeSegu); //Limpia el objeto viejo
+            this.listSoli.remove(objeSegu);
+            this.listEmpr.remove(objeSegu);
             FCDESegu.edit(this.objeSegu);
             if(this.objeSegu.getCodiEmpr() != null)
             {
@@ -133,6 +135,7 @@ public class SeguimientoBean implements Serializable{
             }
             else if(this.objeSegu.getCodiSoliBeca() != null)
             {
+                
                 this.listSoli.add(objeSegu);
             }
             else if(this.objeSegu.getCodiEmpr() == null && this.objeSegu.getCodiSoliBeca() == null)

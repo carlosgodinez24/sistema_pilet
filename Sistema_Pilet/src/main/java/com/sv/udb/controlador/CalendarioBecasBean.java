@@ -119,8 +119,7 @@ public class CalendarioBecasBean implements Serializable{
                 DefaultScheduleEvent evt = new DefaultScheduleEvent();
                 evt.setEndDate(this.getFecha(FechFina));
                 evt.setStartDate(this.getFecha(FechInic));
-                //evt.setTitle(objeSegu.getNombSegu());
-                evt.setTitle("Seguimiento");
+                evt.setTitle(objeSegu.getNombSegu());
                 evt.setData(obj);
                 evt.setDescription(obj.getDescSegu());
                 objeCale.addEvent(evt);

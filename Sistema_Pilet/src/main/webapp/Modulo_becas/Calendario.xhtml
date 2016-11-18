@@ -57,10 +57,24 @@ and open the template in the editor.
 
                             <p:dialog widgetVar="eventDialog" resizable="false" header="Detalles de Segimiento" modal="true" showEffect="clip" hideEffect="clip">
                                 <h:panelGrid id="eventDetails" columns="2">
-                                    Nombre: #{calendarioBecasBean.objeSegu.nombSegu} <br/>
-                                    Descripcion: #{calendarioBecasBean.objeSegu.descSegu}<br/>
-                                    Hora Inicio: #{calendarioBecasBean.objeSegu.fechInicio}<br/>
-                                    Hora Fin: #{calendarioBecasBean.objeSegu.fechFin}
+                                    <h:outputText value="Nombre: ">
+                                    </h:outputText>
+                                    <h:outputText value="#{calendarioBecasBean.objeSegu.nombSegu}" >
+                                    </h:outputText>
+                                    <h:outputText value="Descripcion: ">
+                                    </h:outputText>
+                                    <h:outputText value="#{calendarioBecasBean.objeSegu.descSegu}" >
+                                    </h:outputText>
+                                    <h:outputText value="Fecha Inicio: ">
+                                    </h:outputText>
+                                    <h:outputText value="#{calendarioBecasBean.objeSegu.fechInicio}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                    <h:outputText value="Fecha Fin: ">
+                                    </h:outputText>
+                                    <h:outputText value="#{calendarioBecasBean.objeSegu.fechFin}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
                                 </h:panelGrid>
                             </p:dialog>
                             <script type="text/javascript">
