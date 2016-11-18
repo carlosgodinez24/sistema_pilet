@@ -50,7 +50,8 @@ public class ImageServlet extends HttpServlet {
             throws ServletException, IOException {
         String filename = request.getPathInfo().substring(1);
         //String ruta ="C:/Users/Ariel/Desktop/becas/";    
-        String ruta = "/home/eduardo/Escritorio/asd/";
+        //String ruta = "/home/eduardo/Escritorio/asd/";
+        String ruta = "/Users/Kevin/Desktop";
         File file = new File(ruta, filename);
         response.setHeader("Content-Type", getServletContext().getMimeType(filename));
         response.setHeader("Content-Length", String.valueOf(file.length()));
