@@ -299,7 +299,6 @@ public class AlumnoVisitanteBean implements Serializable{
      */
     public void regiVisi(){
         RequestContext ctx = RequestContext.getCurrentInstance();
-        FacesContext facsCtxt = FacesContext.getCurrentInstance();
         try{
             if(!Disabled){//si aun no está registrado
                 //Registramos Visitante
@@ -322,13 +321,22 @@ public class AlumnoVisitanteBean implements Serializable{
     public void asigAlumVisi(){
         try{
             RequestContext ctx = RequestContext.getCurrentInstance();
-            System.out.println("ACCE CARNET ");
-            objeAlumVisi.setCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
-            //System.out.println("CODIGO VISI: "+objeVisi.getCodiVisi()+" NOMBRE VISI: "+objeVisi.getNombVisi());
-            objeAlumVisi.setCodiVisi(objeVisi);
-            objeAlumVisi.setEstaAlumVisi(1);
-            this.listAlumVisiCarne.add(this.objeAlumVisi);
-            this.guar();
+            if((FCDEAlumVisi.findByVisiCarn(carnAlum, objeVisi)) != null){
+                objeAlumVisi = FCDEAlumVisi.findByVisiCarn(carnAlum, objeVisi);
+                objeAlumVisi.setEstaAlumVisi(1);
+                FCDEAlumVisi.edit(objeAlumVisi);
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Visitante Reactivado'); INIT_OBJE_TABL();");
+                
+                
+            }else{
+                objeAlumVisi.setCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
+                //System.out.println("CODIGO VISI: "+objeVisi.getCodiVisi()+" NOMBRE VISI: "+objeVisi.getNombVisi());
+                this.carnAlum = String.valueOf(logiBean.getObjeUsua().getAcceUsua());
+                objeAlumVisi.setCodiVisi(objeVisi);
+                objeAlumVisi.setEstaAlumVisi(1);
+                this.listAlumVisiCarne.add(this.objeAlumVisi);
+                this.guar();
+            }
         }catch(Exception e){
             System.out.println("ERROR AL ASIGNAR ALUMNO");
             e.printStackTrace();

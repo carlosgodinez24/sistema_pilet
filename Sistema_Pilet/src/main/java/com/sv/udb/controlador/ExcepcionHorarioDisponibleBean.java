@@ -3,6 +3,7 @@ import com.sv.udb.ejb.ExcepcionhorariodisponibleFacadeLocal;
 import com.sv.udb.modelo.Excepcionhorariodisponible;
 import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -141,6 +142,7 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
         {   
             if(validar()){
               FCDEExceHoraDisp.create(this.objeExceHoraDisp);
+              if(listExceHoraDisp == null)listExceHoraDisp= new ArrayList<Excepcionhorariodisponible>();
               this.listExceHoraDisp.add(this.objeExceHoraDisp);
               ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
               log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"ExcepcionHorario"+"-"+" Agregado excepcion: " + objeExceHoraDisp.getFechExceHoraDisp() + " " + objeExceHoraDisp.getCodiHoraDisp());

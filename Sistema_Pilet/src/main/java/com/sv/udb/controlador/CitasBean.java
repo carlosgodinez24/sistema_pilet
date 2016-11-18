@@ -681,7 +681,7 @@ public class CitasBean implements Serializable{
             ex.printStackTrace();
         }
     }
-    
+    //LOG: cita solicitada por visitante
       /**
  * Metodo para solicitar visitas 
      * @exception Error al realizar la operacion         
@@ -737,6 +737,7 @@ public class CitasBean implements Serializable{
      * @since incluido desde la version 1.0
      */
     
+    //LOG: Cambio de cita agregado
     //solicitar Reprogramación(1), Solicitar Cancelación(2)
     public void soliCambCita(int acci){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -966,7 +967,7 @@ public class CitasBean implements Serializable{
     
     
     //Solicitar Citas especificando citador y citado
-    
+    //LOG: Recepcionista solicitó cita
     public void soliCitaRecep()
     {
         try{
@@ -1039,7 +1040,7 @@ public class CitasBean implements Serializable{
     }
     
     //registrar visita recepcionista
-    
+    //LOG: el recepcionista registró una visita
     public void progVisiRecep(){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         DateFormat df = new SimpleDateFormat("hh:mm a");
@@ -1505,7 +1506,7 @@ public class CitasBean implements Serializable{
         return vali;
     }
     
-    
+    //LOG: cambio de cita realizado
     //confirmar(1), rechazar(2), Reprogramar(3) cita
     public void cambCita(int acci, boolean padre){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -1640,6 +1641,7 @@ public class CitasBean implements Serializable{
         }
         return vali;
     }
+    //LOG: cita programada por el usuario (personal de la institución)
     //programar cita, variable "padre" =  "true" -> padre de familia, "padre" = "false-> visitante particular
     public void progCitaUsua(boolean padre){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -1855,7 +1857,7 @@ public class CitasBean implements Serializable{
      * @exception Error al realizar la operacion         
      * @since incluido desde la version 1.0
      */
-    
+    //LOG: visita programada por un administrador
     public void progVisi(){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         
@@ -1912,6 +1914,7 @@ public class CitasBean implements Serializable{
      * @exception Error al realizar la operacion         
      * @since incluido desde la version 1.0
      */
+    //LOG: cambio a visita realizado (reprogramada)
     public void cambVisi(){
         RequestContext ctx = RequestContext.getCurrentInstance();
         

@@ -57,7 +57,7 @@ and open the template in the editor.
                                                          oncomplete="INIT_OBJE_MODA();" global="true"/>
 
                                         <p:remoteCommand name="consObjeVisiCita" actionListener="#{citasBean.setVisiVisi()}" update=":paneTabl  :paneCloseVisi" 
-                                                         oncomplete="INIT_OBJE_TABL_VISI(); INIT_OBJE_MODA();" global="true"/>
+                                                         oncomplete="INIT_OBJE_TABL_VISI(); INIT_OBJE_MODA(); INIT_OBJE_REGI_VISI();" global="true"/>
                                         
                                         <div class="btn-group">
                                             <h:commandLink id="btonRegiVisi" class="btn btn-success">
@@ -169,26 +169,11 @@ and open the template in the editor.
                                     <h:panelGroup rendered="#{citasBean.objeVisiCita.estaVisi eq '0'}">
                                         <h3>Esta Cita o Visita Esta pendiente.</h3>
                                         <h5>Registrar entrada de los visitantes</h5>
-                                        <div class="input-group-btn right" style="padding-top: 5px;">
-                                            <div class="btn-group">
-                                                <h:commandLink class="btn btn-success">
-                                                    <p:ajax listener="#{citasBean.cambVisiCitaRecep(1)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
-                                                    <i class="fa fa-check"/> Confirmar Entrada de Visitantes
-                                                </h:commandLink>
-                                            </div>
-                                        </div>
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{citasBean.objeVisiCita.estaVisi eq '1'}">
                                         <h3>Esta Cita o Visita se está llevando a cabo.</h3>
                                         <h5>Registrar salida de los visitantes</h5>
-                                        <div class="input-group-btn right" style="padding-top: 5px;">
-                                            <div class="btn-group">
-                                                <h:commandLink class="btn btn-success">
-                                                    <p:ajax listener="#{citasBean.cambVisiCitaRecep(2)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
-                                                    <i class="fa fa-check"/> Confirmar Salida de Visitantes
-                                                </h:commandLink>
-                                            </div>
-                                        </div>
+                                        
                                     </h:panelGroup>
                                     <h:panelGroup rendered="#{citasBean.objeVisiCita.estaVisi eq '2'}">
                                         <h3>Esta Cita o Visita ha terminado.</h3>
@@ -197,6 +182,18 @@ and open the template in the editor.
                                 <div class="modal-footer">
                                     <div class="input-group-btn right" style="padding-top: 5px;">
                                         <div class="btn-group">
+                                            <h:panelGroup rendered="#{citasBean.objeVisiCita.estaVisi eq '0'}">
+                                                <h:commandLink class="btn btn-success">
+                                                    <p:ajax listener="#{citasBean.cambVisiCitaRecep(1)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
+                                                    <i class="fa fa-check"/> Confirmar Entrada de Visitantes
+                                                </h:commandLink>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{citasBean.objeVisiCita.estaVisi eq '1'}">
+                                                <h:commandLink class="btn btn-success">
+                                                    <p:ajax listener="#{citasBean.cambVisiCitaRecep(2)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
+                                                    <i class="fa fa-check"/> Confirmar Salida de Visitantes
+                                                </h:commandLink>
+                                            </h:panelGroup>
                                         </div>
                                     </div>
                                 </div>

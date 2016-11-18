@@ -10,6 +10,7 @@ import com.sv.udb.utils.LOG4J;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import javax.annotation.PostConstruct;
@@ -121,7 +122,9 @@ public class EventosBean implements Serializable{
         {            
             if(validar())
             {
+                objeEven.setEstaEven(1);
                 FCDEEven.create(this.objeEven);
+                if(listEven == null)listEven = new ArrayList<Evento>();
                 this.listEven.add(this.objeEven);
                 log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Agregado evento: " + objeEven.getNombEven());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");

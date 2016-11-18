@@ -472,7 +472,7 @@ and open the template in the editor.
                                                     <f:facet name="header">Acciones</f:facet>
                                                     <h:form>
                                                         <h:commandLink class="btn btn-xs btn-danger">
-                                                            <p:ajax listener="#{citasBean.dropVisiCita(fila)}" process="@form" update=":paneTabl :ContRegi :paneClose" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA(); INIT_OBJE_TABL();" />
+                                                            <p:ajax listener="#{citasBean.dropVisiCita(fila)}" process="@form" update=":paneTabl :ContRegi :paneClose :formCmbVisi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA(); INIT_OBJE_TABL();" />
                                                             <i class="fa fa-trash-o"/> Quitar
                                                         </h:commandLink>
                                                     </h:form>   
