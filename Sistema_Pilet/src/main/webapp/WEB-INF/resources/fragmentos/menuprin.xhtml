@@ -47,6 +47,13 @@ and open the template in the editor.
                             </ul>
                             <ul class="treeview-menu">
                                 <li class="#{actiUsuaRole}">
+                                    <h:link outcome="/Modulo_usuarios/permisorol" rendered="#{globalAppBean.getEstaPermByName('/Modulo_usuarios/permisorol.xhtml')}">
+                                        <i class="fa fa-user"></i> Asignar permisos a roles
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiUsuaRole}">
                                     <h:link outcome="/Modulo_usuarios/usuariorol" rendered="#{globalAppBean.getEstaPermByName('/Modulo_usuarios/usuariorol.xhtml')}">
                                         <i class="fa fa-user"></i> Asignar roles a usuario
                                     </h:link>

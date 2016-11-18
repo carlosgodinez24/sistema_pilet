@@ -24,8 +24,6 @@ $(document).ready(function() {
     $('#ModaFormRegi').on('hide.bs.modal', function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
     });
-
-    
     INIT_OBJE();
     $("#TablRegi1").initBootTableRole();
 });
@@ -40,7 +38,6 @@ function RECA()
 {
     $("[data-id='chck']").bootstrapToggle();
 }
-
 
 function INIT_OBJE_MODA()
 {

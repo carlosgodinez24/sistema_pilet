@@ -6,9 +6,11 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.PermisoRol;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,13 @@ public class PermisoRolFacade extends AbstractFacade<PermisoRol> implements Perm
     public PermisoRolFacade() {
         super(PermisoRol.class);
     }
-    
+ 
+    @Override
+    public PermisoRol findByPermAndRole(Object perm, Object codiRole) {
+        Query q = getEntityManager().createQuery("SELECT u FROM PermisoRol u WHERE u.codiPerm = :codiPerm AND u.codiRole = :codiRole", PermisoRol.class);        
+        q.setParameter("codiPerm", perm);
+        q.setParameter("codiRole", codiRole);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (PermisoRol)resu.get(0);
+    }
 }
