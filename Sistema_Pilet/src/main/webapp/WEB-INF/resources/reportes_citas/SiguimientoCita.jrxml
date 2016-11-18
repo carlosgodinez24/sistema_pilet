@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SiguimientoCita" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6c9ceffb-a995-4199-8a9a-d393d0898cc7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="codi_cita" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select CONCAT(cc.fech_camb_cita, '  ' , cc.hora_camb_cita), CONCAT(cc.fech_inic_cita_nuev, ' ', cc.hora_inic_cita_nuev), CONCAT(cc.fech_fin_cita_nuev, ' ' , cc.hora_fin_cita_nuev), case (cc.esta_camb_cita) when 0 then 'ELIMINADA' when 1 then 'SOLICITADA' when 2 then 'PROGRAMADA' when 3 then 'RECHAZADA' when 4 then 'REPROGRAMACION SOLICITADA' when 5 then 'CANCELACION SOLICITADA' when 6 then 'FINALIZADA ' END AS ESTADO from cambio_cita cc inner join cita c on c.codi_cita = cc.codi_cita where c.codi_cita = $P{codi_cita}]]>
+	</queryString>
+	<field name="CONCAT(cc.fech_camb_cita, &apos;  &apos; , cc.hora_camb_cita)" class="java.lang.String"/>
+	<field name="CONCAT(cc.fech_inic_cita_nuev, &apos; &apos;, cc.hora_inic_cita_nuev)" class="java.lang.String"/>
+	<field name="CONCAT(cc.fech_fin_cita_nuev, &apos; &apos; , cc.hora_fin_cita_nuev)" class="java.lang.String"/>
+	<field name="ESTADO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="18" y="0" width="152" height="79" uuid="0383960d-5e9f-4f71-90cd-6b075da24bfe"/>
+				<imageExpression><![CDATA["K:\\ControlCitas\\ControlCitas\\src\\main\\webapp\\WEB-INF\\resources\\reportes\\ricaldone.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="194" y="12" width="347" height="28" uuid="c7b22f0e-c639-46dd-a648-32d92fc86f1c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEGUIMIENTO DE CITA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="328" y="39" width="92" height="28" uuid="422670ff-c7e3-4add-afc6-0fb68d400d5b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nª DE CITA : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="420" y="40" width="17" height="27" uuid="50ad843a-2596-4478-a063-bffa415f30c2"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{codi_cita}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="182" height="20" backcolor="#808080" uuid="32dd1c1a-806d-4035-95ed-9cbddcef8c9f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA Y HORA DEL CAMBIO CITA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="182" y="0" width="150" height="20" backcolor="#808080" uuid="bb25a5bd-16a0-4000-a48f-131408d1711c"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA Y HORA INICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="332" y="0" width="135" height="20" backcolor="#808080" uuid="a91c3a3c-6b01-4a1d-bc2e-b8aa59ec3645"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA Y HORA FINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="467" y="0" width="105" height="20" backcolor="#808080" uuid="d35c2c3f-1d86-41f9-97aa-a003ebd85370"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="182" height="20" uuid="98618e24-f485-47cd-bce9-420b3fb7e9e1"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CONCAT(cc.fech_camb_cita, '  ' , cc.hora_camb_cita)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="182" y="0" width="150" height="20" uuid="57c7319d-3b9f-430a-a8f6-6ad8be99b985"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CONCAT(cc.fech_inic_cita_nuev, ' ', cc.hora_inic_cita_nuev)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="332" y="0" width="135" height="20" uuid="b261e960-6432-41a2-a97d-f8257ee37f04"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CONCAT(cc.fech_fin_cita_nuev, ' ' , cc.hora_fin_cita_nuev)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="467" y="0" width="105" height="20" uuid="d482a8c9-2768-438b-b0b2-a193c64149e6"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ESTADO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
