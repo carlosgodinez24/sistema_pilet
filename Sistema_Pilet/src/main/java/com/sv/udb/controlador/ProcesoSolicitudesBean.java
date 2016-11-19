@@ -43,10 +43,18 @@ public class ProcesoSolicitudesBean implements Serializable{
         return objeProcSoli;
     }
 
+    /**
+     * Función para obtener el estado del boton
+     * @return estado
+     */
     public String getEstado() {
         return estado;
     }
 
+    /**
+     * Función para saber si se va a realizar una reolución
+     * @return reso
+     */
     public boolean isReso() {
         return reso;
     }
@@ -104,6 +112,7 @@ public class ProcesoSolicitudesBean implements Serializable{
     
     /**
      * Función para guardar
+     * @param a
      */
     public void guar(int a)
     {
@@ -118,7 +127,7 @@ public class ProcesoSolicitudesBean implements Serializable{
             FCDEProcSoli.create(this.objeProcSoli);
             this.listProcSoli.add(this.objeProcSoli);
             this.guardar = false;
-            //this.limpForm(); //Omito para mantener los datos en la modal
+            this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
         catch(Exception ex)
@@ -131,6 +140,9 @@ public class ProcesoSolicitudesBean implements Serializable{
         }
     }
     
+    /**
+     * Función para cambiar el estado del boton
+     */
     public void cambEsta() {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try {
@@ -235,5 +247,15 @@ public class ProcesoSolicitudesBean implements Serializable{
         {
             
         }
+    }
+    
+    public List<ProcesoSolicitudes> procSoli(int soli){
+        try{
+            this.listProcSoli = FCDEProcSoli.findProcSoli(soli);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return this.listProcSoli;
     }
 }

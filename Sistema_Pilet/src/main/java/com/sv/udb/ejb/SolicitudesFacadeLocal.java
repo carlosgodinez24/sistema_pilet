@@ -24,6 +24,8 @@ public interface SolicitudesFacadeLocal {
 
     Solicitudes find(Object id);
     
+    Solicitudes findSoli(int codi);
+    
     List<Solicitudes> findTodo();
     
     List<Solicitudes> findEncargado();
@@ -42,7 +44,7 @@ public interface SolicitudesFacadeLocal {
 
     List<Solicitudes> findRange(int[] range);
     
-    void asig(int codiSoli, int codiUsua);
+    void asig(int codiSoli, String prio, int codiUsua);
     
     void reso(int codiSoli);
 

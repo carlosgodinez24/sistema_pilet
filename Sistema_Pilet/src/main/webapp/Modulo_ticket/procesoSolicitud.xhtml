@@ -104,10 +104,6 @@ and open the template in the editor.
                                             <f:convertDateTime pattern="dd/MM/yyyy H:mm:ss" timeZone="GMT-6"/>
                                         </h:outputText>                            
                                     </h:column>
-                                    <h:column pt:data-sortable="true" pt:data-field="tiem">
-                                        <f:facet name="header">Tiempo de resolución</f:facet>
-                                        <h:outputText value="#{fila.tiemResoSoli}"/>   
-                                    </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="equi">
                                         <f:facet name="header">Equipo</f:facet> 
                                         <h:panelGroup class="label label-danger" rendered="#{fila.codiEqui ne null}">
@@ -257,8 +253,8 @@ and open the template in the editor.
                                                 </h:dataTable>
                                             </h:panelGroup>       
                                             <h:panelGroup  >
-                                                <center><h4 class="title">Detalle de mantenimiento</h4></center>
-                                                <h:dataTable pt:data-id="TablProc" id="TablProc" value="#{procesoSolicitudesBean.listProcSoli}"
+                                                <center><h4 class="title">Detalle de procesos</h4></center>
+                                                <h:dataTable pt:data-id="TablProc" id="TablProc" value="#{procesoSolicitudesBean.procSoli(solicitudesBean.objeSoli.codiSoli)}"
                                                              var="fila4" class="boottable" pt:data-toolbar="#toolTablMant"
                                                              styleClass="col-md-12 table-hover table-bordered table-condensed table-striped table-responsive"
                                                              pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false">
@@ -308,6 +304,54 @@ and open the template in the editor.
                                     <div class="modal-body" style="padding-top: 2px;">
                                         <fieldset class="col-md-12">
                                             <h:inputHidden id="codiReso" value="#{resolucionSolicitudBean.objeResoSoli.codiResoSoli}" />
+                                            <h:panelGroup rendered="#{solicitudesBean.objeSoli.codiEqui ne null}">
+                                                <center><h4 class="title">Detalle de equipos</h4></center>
+                                                <h:dataTable pt:data-id="TablEqui2" id="TablEqui2" value="#{equiposBean.consEqui(solicitudesBean.objeSoli.codiEqui.codiEqui)}"
+                                                             var="fila2" class="boottable" pt:data-toolbar="#toolTablEqui2"
+                                                             styleClass="col-md-12 table-hover table-bordered table-condensed table-striped table-responsive"
+                                                             pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false">
+                                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                                        <f:facet name="header">Código</f:facet>
+                                                        <h:outputText value="#{fila2.codiEqui}"/>
+                                                    </h:column>
+                                                    <h:column pt:data-sortable="true" pt:data-field="marc">
+                                                        <f:facet name="header">Marca</f:facet>
+                                                        <h:outputText value="#{fila2.marEqui}"/>   
+                                                    </h:column>
+                                                    <h:column pt:data-sortable="true" pt:data-field="mode">
+                                                        <f:facet name="header">Modelo</f:facet>
+                                                        <h:outputText value="#{fila2.modeEqui}"/>   
+                                                    </h:column>                                                
+                                                    <h:column pt:data-sortable="true" pt:data-field="seri">
+                                                        <f:facet name="header">N° Serie</f:facet>
+                                                        <h:outputText value="#{fila2.seriEqui}"/>   
+                                                    </h:column>
+                                                    <h:column pt:data-sortable="true" pt:data-field="desc">
+                                                        <f:facet name="header">Descripción del problema</f:facet>
+                                                        <h:outputText value="#{solicitudesBean.objeSoli.descSoli}"/>   
+                                                    </h:column>
+                                                </h:dataTable>
+                                            </h:panelGroup>
+                                            <h:panelGroup  rendered="#{solicitudesBean.objeSoli.codiEqui eq null}">
+                                                <center><h4 class="title">Detalle de mantenimiento</h4></center>
+                                                <h:dataTable pt:data-id="TablMant2" id="TablMant2" value="#{solicitudesBean.objeSoli.codiMant}"
+                                                             var="fila3" class="boottable" pt:data-toolbar="#toolTablMant2"
+                                                             styleClass="col-md-12 table-hover table-bordered table-condensed table-striped table-responsive"
+                                                             pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false">
+                                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                                        <f:facet name="header">Código</f:facet>
+                                                        <h:outputText value="#{fila3.codiMant}"/>
+                                                    </h:column>
+                                                    <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                                        <f:facet name="header">Ubicación</f:facet>
+                                                        <h:outputText value="#{fila3.codiUbic.nombUbic}"/>   
+                                                    </h:column>
+                                                    <h:column pt:data-sortable="true" pt:data-field="tipo">
+                                                        <f:facet name="header">Tipo</f:facet>
+                                                        <h:outputText value="#{fila3.codiTipoMant.nombTipoMant}"/>   
+                                                    </h:column>
+                                                </h:dataTable>
+                                            </h:panelGroup>
                                             <div class="form-group input-group-xs">
                                                 <h:outputLabel  for="descReso" value="Descripción"/> 
                                                 <h:message for="descReso" errorClass="field-error" />
@@ -324,7 +368,7 @@ and open the template in the editor.
                                         <div class="input-group-btn right" style="padding-top: 5px;">
                                             <div class="btn-group">
                                                 <h:commandLink id="btonNuevReso" class="btn btn-success" pt:data-dismiss="modal">
-                                                    <p:ajax listener="#{resolucionSolicitudBean.guar()}" process="@form" update="@form :ContTicket" oncomplete="INIT_OBJE_TICKET();" />
+                                                    <p:ajax listener="#{resolucionSolicitudBean.guar(solicitudesBean.objeSoli.codiSoli)}" process="@form" update="@form :ContTicket :TablReso" oncomplete="INIT_OBJE_TICKET();" />
                                                     <i class="fa fa-plus"/> Guardar
                                                 </h:commandLink>
                                                 <h:commandLink id="btonCancReso" class="btn btn-default" pt:data-dismiss="modal">

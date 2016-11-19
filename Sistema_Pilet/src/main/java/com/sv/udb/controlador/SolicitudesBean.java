@@ -19,9 +19,7 @@ import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
- * Esta clase se encuentran los metodos para el manejo de los datos (CRUD) del
- * objeto objeSoli
- *
+ * Esta clase se encuentran los metodos para el manejo de los datos (CRUD) del objeto objeSoli
  * @author Oscar
  * @version 1.2
  */
@@ -36,14 +34,12 @@ public class SolicitudesBean implements Serializable {
     private List<Solicitudes> listSoliEnca;
     private List<Solicitudes> listSoliTecn;
     private List<Solicitudes> listSoliVaci;
-    static int codiSoli;
     private boolean guardar;
     private String estado = "Sin Asignación";
     private boolean estaB = true;
 
     /**
-     * Función para obtener el objeto objeSoli
-     *
+     * Función para obtener el objeto objeSoli     *
      * @return Solicitudes objeSoli
      */
     public Solicitudes getObjeSoli() {
@@ -52,7 +48,6 @@ public class SolicitudesBean implements Serializable {
 
     /**
      * Función para definir el objeto objeSoli
-     *
      * @param objeSoli
      */
     public void setObjeSoli(Solicitudes objeSoli) {
@@ -60,9 +55,7 @@ public class SolicitudesBean implements Serializable {
     }
 
     /**
-     * Función que retorna el valor de la variable guardar para saber si se está
-     * guardando o no actualmente
-     *
+     * Función que retorna el valor de la variable guardar para saber si se está guardando o no actualmente
      * @return Boolean guardar
      */
     public boolean isGuardar() {
@@ -71,7 +64,6 @@ public class SolicitudesBean implements Serializable {
 
     /**
      * Función que retorna la lista de objetos de Solicitudes
-     *
      * @return List listSoli
      */
     public List<Solicitudes> getListSoli() {
@@ -80,7 +72,6 @@ public class SolicitudesBean implements Serializable {
 
     /**
      * Función que retorna la lista de objetos de Solicitudes por Encargado
-     *
      * @return List listSoliEnca
      */
     public List<Solicitudes> getListSoliEnca() {
@@ -89,7 +80,6 @@ public class SolicitudesBean implements Serializable {
 
     /**
      * Función que retorna la lista de objetos de Solicitudes por Técnico
-     *
      * @return List listSoliTecn
      */
     public List<Solicitudes> getListSoliTecn() {
@@ -98,7 +88,6 @@ public class SolicitudesBean implements Serializable {
 
     /**
      * Función que retorna la lista de objetos de Solicitudes sin asignar
-     *
      * @return List listSoliVaci
      */
     public List<Solicitudes> getListSoliVaci() {
@@ -107,7 +96,6 @@ public class SolicitudesBean implements Serializable {
 
     /**
      * Función que retorna el estado de las muestras
-     *
      * @return List listSoliVaci
      */
     public String getEstado() {
@@ -178,6 +166,10 @@ public class SolicitudesBean implements Serializable {
         }
     }
 
+    /**
+     * Función para consultar solicitudes en estado 3
+     * @return listSoliVaci
+     */
     public List<Solicitudes> consAsigFina()
     {
         try
@@ -191,6 +183,9 @@ public class SolicitudesBean implements Serializable {
         return listSoliVaci;
     }
     
+    /**
+     * Funcion para cambiar la función del boton
+     */
     public void cambEsta() {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try {
@@ -206,11 +201,16 @@ public class SolicitudesBean implements Serializable {
         }
     }
 
-    public void asig(int codiSoli, int codiUsua) {
+    /**
+     * Funcion para asignar solicitud a un técnico
+     * @param Soli
+     * @param codiUsua
+     */
+    public void asig(Solicitudes Soli, int codiUsua) {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try {
             this.listSoli.remove(this.objeSoli); //Limpia el objeto viejo
-            FCDESoli.asig(codiSoli, codiUsua);//Agrega el objeto modificado
+            FCDESoli.asig(Soli.getCodiSoli(), Soli.getPrioSoli(), codiUsua);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Solicitud asignada')");
         } catch (Exception ex) {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
@@ -277,7 +277,6 @@ public class SolicitudesBean implements Serializable {
 
     /**
      * Función para consultar las solicitudes sin asignar
-     *
      * @return List listSoliVaci
      */
     public List<Solicitudes> consVaci() {
@@ -297,6 +296,10 @@ public class SolicitudesBean implements Serializable {
         return listSoliVaci;
     }
 
+    /**
+     * Funcion para consultar solicitudes asignadas
+     * @return listSoliVaci
+     */
     public List<Solicitudes> consAsig() {
         try {
             this.listSoliVaci = FCDESoli.findAsig();
@@ -333,7 +336,6 @@ public class SolicitudesBean implements Serializable {
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiPara"));
         try {
             this.objeSoli = FCDESoli.find(codi);
-            codiSoli = objeSoli.getCodiSoli();
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a "
                     + String.format("%s", this.objeSoli.getCodiSoli()) + "')");
