@@ -6,9 +6,11 @@
 package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
+import com.sv.udb.ejb.GradoFacadeLocal;
 import com.sv.udb.modelo.TipoBeca;
 import com.sv.udb.ejb.TipoBecaFacadeLocal;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -27,12 +29,18 @@ import org.primefaces.context.RequestContext;
 @Named(value = "tipoBecaBean")
 @ViewScoped
 public class TipoBecaBean implements Serializable{
+
+    @EJB
+    private GradoFacadeLocal FCDEGrado;
     @EJB
     private TipoBecaFacadeLocal FCDETipo;
+
     private TipoBeca objeTipo;
     private List<TipoBeca> listTipo;
     private boolean guardar;        
     private static Logger log = Logger.getLogger(TipoBecaBean.class);
+    
+    boolean guarTipo;
     public TipoBeca getObjeTipo() {
         return objeTipo;
     }
@@ -79,18 +87,54 @@ public class TipoBecaBean implements Serializable{
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        BigDecimal matr;
+        BigDecimal mens;
         try
         {
-            this.objeTipo.setEstaTipoBeca(1);
-            FCDETipo.create(this.objeTipo);
-            if(this.listTipo == null)
-            {
-                this.listTipo = new ArrayList<>();
+            if (this.objeTipo.getDescTipoBeca().compareTo(BigDecimal.ZERO) == 1) {
+                switch (this.objeTipo.getTipoTipoBeca()) {
+                    case 1:
+                        //Matricula
+                        matr = this.FCDEGrado.findMatrLimit(this.objeTipo.getNivelTipoBeca());
+                        //Objeto 1: matricula, objeto 2: monto de la beca
+                        //Resultado 0 son iguales 
+                        //Resultado 1 el primero es mayor que el segundo
+                        if (matr.compareTo(this.objeTipo.getDescTipoBeca()) == 0 || matr.compareTo(this.objeTipo.getDescTipoBeca()) == 1) {
+                            guarTipo = true;
+                        } else {
+                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El monto que se desea descontar es mayor al valor de la matricula')");
+                            guarTipo = false;
+                        }
+                        break;
+                    case 2:
+                        //Mensualidad
+                        mens = this.FCDEGrado.findMensLimit(this.objeTipo.getNivelTipoBeca());
+                        if (mens.compareTo(this.objeTipo.getDescTipoBeca()) == 0 || mens.compareTo(this.objeTipo.getDescTipoBeca()) == 1) {
+                            guarTipo = true;
+                        } else {
+                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El monto que se desea descontar es mayor al valor de la mensualidad')");
+                            guarTipo = false;
+                        }
+                        break;
+                    case 3:
+                        //Otro
+                        break;
+                }
+                if (guarTipo) {
+                    this.objeTipo.setEstaTipoBeca(1);
+                    FCDETipo.create(this.objeTipo);
+                    if (this.listTipo == null) {
+                        this.listTipo = new ArrayList<>();
+                    }
+                    this.listTipo.add(this.objeTipo);
+                    this.limpForm();
+                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                    log.info("Tipo Beca Guardado");
+                }
+            } else {
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El descuento debe ser mayor a 0')"); 
             }
-            this.listTipo.add(this.objeTipo);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Tipo Beca Guardado");
+            
         }
         catch(Exception ex)
         {
@@ -109,13 +153,51 @@ public class TipoBecaBean implements Serializable{
     public void modi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        BigDecimal matr;
+        BigDecimal mens;
         try
         {
-            this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
-            FCDETipo.edit(this.objeTipo);
-            this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Tipo Beca Modificado");
+            if (this.objeTipo.getDescTipoBeca().compareTo(BigDecimal.ZERO) == 1) {
+                switch (this.objeTipo.getTipoTipoBeca()) {
+                    case 1:
+                        //Matricula
+                        matr = this.FCDEGrado.findMatrLimit(this.objeTipo.getNivelTipoBeca());
+                        //Objeto 1: matricula, objeto 2: monto de la beca
+                        //Resultado 0 son iguales 
+                        //Resultado 1 el primero es mayor que el segundo
+                        if (matr.compareTo(this.objeTipo.getDescTipoBeca()) == 0 || matr.compareTo(this.objeTipo.getDescTipoBeca()) == 1) {
+                            guarTipo = true;
+                        } else {
+                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El monto que se desea descontar es mayor al valor de la matricula')");
+                            guarTipo = false;
+                        }
+                        break;
+                    case 2:
+                        //Mensualidad
+                        mens = this.FCDEGrado.findMensLimit(this.objeTipo.getNivelTipoBeca());
+                        if (mens.compareTo(this.objeTipo.getDescTipoBeca()) == 0 || mens.compareTo(this.objeTipo.getDescTipoBeca()) == 1) {
+                            guarTipo = true;
+                        } else {
+                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El monto que se desea descontar es mayor al valor de la mensualidad')");
+                            guarTipo = false;
+                        }
+                        break;
+                    case 3:
+                        //Otro
+                        break;
+                }
+
+                if (guarTipo) {
+                    this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
+                    FCDETipo.edit(this.objeTipo);
+                    this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+                    log.info("Tipo Beca Modificado");
+                }
+            }
+            else{
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El descuento debe ser mayor a 0')");
+            }
         }
         catch(Exception ex)
         {
