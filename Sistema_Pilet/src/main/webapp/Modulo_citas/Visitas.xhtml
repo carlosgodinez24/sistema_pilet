@@ -10,7 +10,8 @@ and open the template in the editor.
       xmlns:f="http://xmlns.jcp.org/jsf/core" 
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:cs="http://xmlns.udb.edu.sv/component">
     <ui:composition template="../WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
         <ui:param name="pageTitl" value="Visitas"/>
@@ -137,11 +138,34 @@ and open the template in the editor.
                                    <h:panelGroup class="label label-danger" rendered="#{fila.estaCita eq '3'}">
                                        <i class="fa fa-calendar-o"/> Rechazada</h:panelGroup>
                                </h:column>
+                                <h:column pt:data-sortable="true" pt:data-field="acci" pt:data-click-to-select="false">
+                                    <f:facet name="header">Acciones</f:facet>
+                                    <div style="width: 120px">
+                                        <h:form>
+                                            <h:commandLink  onclick="PF('ModaRepo').show();" class="btn btn-primary" style="margin-bottom: 5px; width: 100%;">
+                                                    <p:ajax listener="#{reportesBean.procSegu(fila.codiCita)}"  update=":ModaRepoView"  global="true"/>
+                                                    <i class="fa fa-file-text-o"/> Seguimiento
+                                                </h:commandLink>
+                                            <h:commandLink  onclick="PF('ModaRepo').show();" class="btn btn-primary" style="width: 100%;">
+                                                    <p:ajax listener="#{reportesBean.procAsis(fila.codiCita)}"  update=":ModaRepoView"  global="true"/>
+                                                    <i class="fa fa-file-text-o"/> Asistencias
+                                                </h:commandLink>
+                                        </h:form>
+                                    </div>
+
+                                </h:column>
                             </h:dataTable>
                             </h:panelGroup>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <p:dialog header="" widgetVar="ModaRepo" minHeight="40" width="1000px" style="z-index: 9999999;">
+                    <h:panelGroup id="ModaRepoView">
+                        <cs:PdfViewer id="pdfViewer" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
+                    </h:panelGroup>
+                </p:dialog>
             </div>
             <div class="row">
                 <!-- Modal -->

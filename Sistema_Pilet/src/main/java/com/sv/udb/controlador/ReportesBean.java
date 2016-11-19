@@ -33,6 +33,7 @@ public class ReportesBean implements Serializable{
     private byte[] docuRepo; 
     private String anioCitas="";
     private String anioVisi="";
+    
     /**
      * Creates a new instance of ReportesBean
      */
@@ -128,24 +129,24 @@ public class ReportesBean implements Serializable{
         }
     }
     
-//     public void procAsis(int codiCita)
-//    {
-//        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-//        try
-//        {
-//            Connection cn = new Conexion().getCn(); //La conexión
-//            Map params = new HashMap(); //Mapa de parámetros
-//            
-//            params.put("codi_cita", codiCita); //Para este ejemplo no es necesario
-//            System.out.println(codiCita);
-//            String pathRepo = globalAppBean.getResourcePath("reportes_citas/AsistenciaCitas.jasper");
-//            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
-//            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
-//        }
-//        catch(Exception ex)
-//        {
-//            ex.printStackTrace();
-//            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");            
-//        }
-//    }
+     public void procAsis(int codiCita)
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            
+            params.put("codi_cita", codiCita); //Para este ejemplo no es necesario
+            System.out.println(codiCita);
+            String pathRepo = globalAppBean.getResourcePath("reportes_citas/AsistenciaCitas.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");            
+        }
+    }
 }

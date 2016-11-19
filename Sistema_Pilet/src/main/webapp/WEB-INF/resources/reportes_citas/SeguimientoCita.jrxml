@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SeguimientoCita" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="56b4bfa8-2dfc-497e-9774-99285312632f">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="193"/>
-	<property name="ireport.y" value="14"/>
+	<property name="ireport.y" value="30"/>
 	<parameter name="codi_cita" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
