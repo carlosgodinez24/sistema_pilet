@@ -33,7 +33,7 @@ public interface SolicitudBecaFacadeLocal {
     List<SolicitudBeca> findRange(int[] range);
     
     SolicitudBeca findLast();
-
+ List<SolicitudBeca> findAllDocu();
     int count();
     
 }

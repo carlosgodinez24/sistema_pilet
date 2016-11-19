@@ -146,7 +146,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="beca" value="Numero de beca "/>
                                             <h:selectOneMenu id="beca" value="#{documentoBean.objeDocu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{solicitudesBean.listSoliDocu}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{documentoBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="beca" errorClass="field-error" />           
@@ -203,7 +203,7 @@ and open the template in the editor.
                                                 
                                                 <c:if test="#{documentoBean.guardar}">
                                                     <h:commandLink id="btonSubira" class="btn btn-success btn-md" actionListener="#{documentoBean.guar()}">
-                                                        <f:ajax execute="@all" render=":TablRegi"  onevent="INIT_OBJE_FILE"/>
+                                                        <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
                                                         <i class="fa fa-cloud-upload"/> Subir
                                                     </h:commandLink>
                                                  </c:if>

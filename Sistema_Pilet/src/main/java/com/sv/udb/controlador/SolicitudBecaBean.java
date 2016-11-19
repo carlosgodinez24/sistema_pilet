@@ -31,6 +31,16 @@ public class SolicitudBecaBean implements Serializable{
     private SolicitudBecaFacadeLocal FCDESoli;
     private SolicitudBeca objeSoli;
     private List<SolicitudBeca> listSoli;
+
+    public List<SolicitudBeca> getListSoliVali() {
+        return listSoliVali;
+    }
+
+    public void setListSoliVali(List<SolicitudBeca> listSoliVali) {
+        this.listSoliVali = listSoliVali;
+    }
+    
+    private List<SolicitudBeca> listSoliVali;
     private boolean guardar;    
 private static Logger log = Logger.getLogger(SolicitudBecaBean.class);    
     public SolicitudBeca getObjeSoli() {
@@ -144,6 +154,7 @@ private static Logger log = Logger.getLogger(SolicitudBecaBean.class);
         try
         {
             this.listSoli = FCDESoli.findAll();
+            this.listSoliVali = FCDESoli.findAllDocu();
             log.info("Solicitudes Consultadas");
         }
         catch(Exception ex)
