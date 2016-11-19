@@ -124,7 +124,12 @@ public class LoginBean implements Serializable {
         this.usuaPojo = usuaPojo;
     }
 
+    public void consNoti(){
+        this.listNoti = null;
+        this.listNoti = FCDENoti.findByUsua(this.objeUsua.getCodiUsua());
+    }
 
+    
     /**
      * Método que crea la sesión
      */
@@ -147,7 +152,7 @@ public class LoginBean implements Serializable {
                     //Cargar una imagen de usuario (Puede ser de una BD)
                     this.imagPerf = "images/userDemo.png";
                     //Llenar lista de notif icaciones.... puede salir de la DB
-                    this.listNoti = FCDENoti.findByUsua(this.objeUsua.getCodiUsua());
+                    this.consNoti();
                     //Redireccionar
                     
                     facsCtxt.getExternalContext().redirect(globalAppBean.getUrl("index.xhtml"));
