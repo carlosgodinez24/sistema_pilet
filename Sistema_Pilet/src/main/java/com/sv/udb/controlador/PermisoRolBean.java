@@ -7,8 +7,10 @@ package com.sv.udb.controlador;
 
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.PermisoRolFacadeLocal;
+import com.sv.udb.modelo.Permiso;
 import com.sv.udb.modelo.PermisoRol;
 import com.sv.udb.utils.LOG4J;
+import com.sv.udb.utils.pojos.PermisoRolPojo;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -32,15 +34,16 @@ public class PermisoRolBean implements Serializable{
     private LoginBean logiBean; 
     @Inject
     private GlobalAppBean globalAppBean;
+    
     //Campos de la clase
     @EJB
     private PermisoRolFacadeLocal FCDEPermRole;
-    
     private PermisoRol objePermRole;
+    private PermisoRolPojo pojoPermRole;
     private PermisoRol objeOldPermRole;
     private PermisoRol objeVali;
     private List<PermisoRol> listPermRole;
-    private List<String> valores;
+    private List<String> acciones;
     private boolean guardar;
     
     private LOG4J<PermisoRolBean> lgs = new LOG4J<PermisoRolBean>(PermisoRolBean.class) {
@@ -64,6 +67,14 @@ public class PermisoRolBean implements Serializable{
         this.objeOldPermRole = objeOldPermRole;
     }
 
+    public PermisoRolPojo getPojoPermRole() {
+        return pojoPermRole;
+    }
+
+    public void setPojoPermRole(PermisoRolPojo pojoPermRole) {
+        this.pojoPermRole = pojoPermRole;
+    }
+    
     public PermisoRol getObjeVali() {
         return objeVali;
     }
@@ -80,12 +91,12 @@ public class PermisoRolBean implements Serializable{
         this.listPermRole = listPermRole;
     }
 
-    public List<String> getValores() {
-        return valores;
+    public List<String> getAcciones() {
+        return acciones;
     }
 
-    public void setValores(List<String> valores) {
-        this.valores = valores;
+    public void setAcciones(List<String> acciones) {
+        this.acciones = acciones;
     }
     
     public boolean isGuardar() {
@@ -109,6 +120,7 @@ public class PermisoRolBean implements Serializable{
     {
         this.limpForm();
         this.consTodo();
+        this.pojoPermRole = new PermisoRolPojo();
         //log = new LOG4J();
         //log.debug("Se inicializa el modelo de UsuarioRol");
     }
@@ -124,50 +136,79 @@ public class PermisoRolBean implements Serializable{
     
     /**
     * Método que valida si ya existe un registro ingresado
+    * @param perm código de un permiso
     * @return el valor de true = si no hay registros duplicados y false = si hay registros duplicados para posteriormente mostrar un error
     */
-    public boolean valiPermRole()
+    public boolean valiPermRole(int perm)
     {
         boolean resp = true;
-        this.objeVali = FCDEPermRole.findByPermAndRole(this.objePermRole.getCodiPerm(), this.objePermRole.getCodiRole());
+        this.objeVali = FCDEPermRole.findByPermAndRole(perm, this.objePermRole.getCodiRole());
         if(this.objeVali != null)
-            resp = (this.objeVali.getCodiPermRole() == this.objePermRole.getCodiPermRole()) ? true : false;
+            resp = (this.objeVali.getCodiPermRole() == perm) ? true : false;
         return resp;
     }
     
-   
     
-   
+    public void creaPerm(Permiso perm)
+    {
+        this.objePermRole.setCodiPerm(perm);
+        FCDEPermRole.create(this.objePermRole);
+    }
+    
     /**
      * Método que guarda la información en la base de datos
      */
-//    public void guar()
-//    {
-//        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-//        try
-//        {
-//            if(valiPermRole()){
-//                FCDEPermRole.create(this.objePermRole);
-//                this.listUsuaRole.add(this.objeUsuaRole);
-//                this.guardar = false;
-//                globalAppBean.addNotificacion(this.objeOldUsuaRole.getCodiUsua().getCodiUsua(), "Se le ha asignado el rol de " + this.objeUsuaRole.getCodiRole().getNombRole(), "Modulo usuarios", "");
-//                log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol creado: "+this.objeUsuaRole.getCodiUsua()+"/"+this.objeUsuaRole.getCodiRole());
-//                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-//            }
-//            else
-//               ctx.execute("setMessage('MESS_WARN', 'Atención', 'Datos ya registrados')"); 
-//        }
-//        catch(Exception ex)
-//        {
-//            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-//            ex.printStackTrace();
-//            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Error creando Usuariorol: "+getRootCause(ex).getMessage());
-//        }
-//        finally
-//        {
-//            
-//        }
-//    }
+    
+    public void guar()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            Permiso objePerm = new Permiso();
+            if(valiPermRole(this.pojoPermRole.getCodiModu()))
+            {
+                objePerm.setCodiPerm(this.pojoPermRole.getCodiModu());
+                this.creaPerm(objePerm);
+                if(valiPermRole(this.pojoPermRole.getCodiPagi()))
+                {
+                    objePerm.setCodiPerm(this.pojoPermRole.getCodiPagi());
+                    this.creaPerm(objePerm);
+                    for(String val: this.acciones)
+                    {
+                        if(valiPermRole(Integer.parseInt(val)))
+                        {
+                            objePerm.setCodiPerm(Integer.parseInt(val));
+                            this.creaPerm(objePerm);
+                        }
+                        else 
+                        {
+                           ctx.execute("setMessage('MESS_WARN', 'Atención', 'Datos ya registrados')"); 
+                        }
+                    }
+                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Permisos asignados con éxito')");
+                    this.guardar = false;
+                }
+                else 
+                {
+                   ctx.execute("setMessage('MESS_WARN', 'Atención', 'Datos ya registrados')"); 
+                }
+            }
+            else 
+            {
+               ctx.execute("setMessage('MESS_WARN', 'Atención', 'Datos ya registrados')"); 
+            }
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            ex.printStackTrace();
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Error creando Usuariorol: "+getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
     
     /**
      * Método que modifica la información en la base de datos
