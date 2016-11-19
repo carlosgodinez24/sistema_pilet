@@ -130,12 +130,12 @@ and open the template in the editor.
                                         <f:facet name="header">Acciones</f:facet>
                                         <div style="width: 120px">
                                             <h:form>
-                                                <h:commandLink  onclick="PF('ModaRepo').show();" class="btn btn-primary" style="margin-bottom: 5px; width: 100%;">
-                                                        <p:ajax listener="#{reportesBean.procSegu(fila.codiCita)}"  update=":ModaRepoView"  global="true"/>
+                                                <h:commandLink  class="btn btn-primary" style="margin-bottom: 5px; width: 100%;">
+                                                    <p:ajax oncomplete="PF('ModaRepo').show();" listener="#{reportesBean.procSegu(fila.codiCita)}"  update=":ModaRepoView"  global="true"/>
                                                         <i class="fa fa-file-text-o"/> Seguimiento
                                                     </h:commandLink>
-                                                <h:commandLink  onclick="PF('ModaRepo').show();" class="btn btn-primary" style="width: 100%;">
-                                                        <p:ajax listener="#{reportesBean.procAsis(fila.codiCita)}"  update=":ModaRepoView"  global="true"/>
+                                                <h:commandLink  class="btn btn-primary" style="width: 100%;">
+                                                        <p:ajax oncomplete="PF('ModaRepo').show();" listener="#{reportesBean.procAsis(fila.codiCita)}"  update=":ModaRepoView"  global="true"/>
                                                         <i class="fa fa-file-text-o"/> Asistencias
                                                     </h:commandLink>
                                             </h:form>
@@ -150,7 +150,7 @@ and open the template in the editor.
             </div>
             
             <div class="row">
-                <p:dialog header="" widgetVar="ModaRepo" minHeight="40" width="1000px" style="z-index: 9999999;">
+                <p:dialog header="" widgetVar="ModaRepo" modal="true" minHeight="40" width="1000px" style="z-index: 9999999;">
                     <h:panelGroup id="ModaRepoView">
                         <cs:PdfViewer id="pdfViewer" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
                     </h:panelGroup>
