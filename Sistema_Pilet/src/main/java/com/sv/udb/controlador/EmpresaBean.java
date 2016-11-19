@@ -10,6 +10,7 @@ import com.sv.udb.modelo.Empresa;
 import com.sv.udb.ejb.EmpresaFacadeLocal;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -79,6 +80,10 @@ public class EmpresaBean implements Serializable{
             this.objeEmpr.setEstaEmpr(1);
             this.objeEmpr.setMontEmpr(BigDecimal.ZERO);
             FCDEEmpr.create(this.objeEmpr);
+            if(this.listEmpr == null)
+            {
+                this.listEmpr = new ArrayList<>();
+            }
             this.listEmpr.add(this.objeEmpr);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");

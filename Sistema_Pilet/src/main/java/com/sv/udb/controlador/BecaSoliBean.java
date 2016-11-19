@@ -83,6 +83,7 @@ public class BecaSoliBean implements Serializable {
     private List<Beca> listBeca;
     private List<Beca> listBecaH;
     private List<Beca> listBecaActivos;
+    private List<Beca> listBecaDocu;
     
     private boolean guardar; 
     private static Logger log = Logger.getLogger(BecaSoliBean.class);
@@ -124,6 +125,13 @@ public class BecaSoliBean implements Serializable {
     public void setListSoli(List<SolicitudBeca> listSoli) {
         this.listSoli = listSoli;
     }
+
+    public List<Beca> getListBecaDocu() {
+        return listBecaDocu;
+    }
+    
+    
+    
     @PersistenceContext(unitName = "PILETPU")
     private EntityManager em;
     @Resource
@@ -459,6 +467,7 @@ public class BecaSoliBean implements Serializable {
             this.listBeca = FCDEBeca.findAllH();
             this.listSoliActivos = FCDESoli.findAllActivos();
             this.listBecaActivos = FCDEBeca.findAllActivos();
+            this.listBecaDocu = FCDEBeca.findAllDocu();
             log.info("Beca Consultadas");
         }
         catch(Exception ex)

@@ -32,6 +32,6 @@ public interface DetalleBecaFacadeLocal {
 
     int count();
     
-    DetalleBeca validar(Object codi_beca, Object codi_tipo);
+    int validar(int codi_beca, int codi_tipo);
     
 }

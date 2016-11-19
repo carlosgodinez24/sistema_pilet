@@ -146,7 +146,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="beca" value="Numero de beca "/>
                                             <h:selectOneMenu id="beca" value="#{documentoBean.objeDocu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{becaSoliBean.listSoliActivos}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{solicitudesBean.listSoliDocu}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="beca" errorClass="field-error" />           
@@ -184,8 +184,6 @@ and open the template in the editor.
                                             </div>
                                         </c:if>
                                         <c:if test="#{documentoBean.imagen}">
-                                            
-                                            
                                             <div>
                                                 <h:panelGroup>
                                                     <cs:PdfViewer id="demo" value="#{documentoBean.esto}" width="100%" height="500px"/>                                                                                                                                                                              
