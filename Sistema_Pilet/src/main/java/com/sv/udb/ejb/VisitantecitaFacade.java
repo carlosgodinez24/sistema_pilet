@@ -79,29 +79,28 @@ public class VisitantecitaFacade extends AbstractFacade<Visitantecita> implement
         String query = "SELECT c.codi_cita from cambio_cita c where c.fech_inic_cita_nuev = '"+df.format(new Date())+"' or c.fech_fin_cita_nuev = '"+df.format(new Date())+"'";
         Query q = getEntityManager().createNativeQuery(query);
         List<Object> codiCitaNow = q.getResultList();
-        if(codiCitaNow.size()>0)System.out.println("CODIGO DE LA PRIMERA: "+codiCitaNow.get(0));
-         List<Object> nowCodiVali = new ArrayList<Object>();
-         //consultamos el ultimo cambio de las citas consultadas, para validar que ese sea el ultimo cambio
-         for (Object codi : codiCitaNow) {
-             TypedQuery<Cambiocita> qcc = (TypedQuery<Cambiocita>) getEntityManager().createQuery("SELECT c FROM Cambiocita c WHERE c.codiCita.codiCita = :codiCita ORDER BY c.fechCambCita desc, c.horaCambCita desc");
-             qcc.setParameter("codiCita", Integer.parseInt(String.valueOf(codi)));
-             Cambiocita ccTemp = new Cambiocita();
-             if(!qcc.getResultList().isEmpty()) ccTemp = qcc.getResultList().get(0);
-             //si el ultimo cambio de la cita consultada es "HOY"
-             if(df.format(ccTemp.getFechFinCitaNuev()).equals(df.format(new Date())) || df.format(ccTemp.getFechFinCitaNuev()).equals(df.format(new Date()))){
-                 //se crea una lista de los codigo cita que realmente son para este dia
-                 nowCodiVali.add(ccTemp.getCodiCita().getCodiCita());
-             }
-         }
-          List<Visitantecita> lstVisi = new ArrayList<Visitantecita>();
-          //ahora consultamos las citas que ya validamos que si son para "HOY"
-         for (Object codi : nowCodiVali) {
-             TypedQuery<Visitantecita> qv = (TypedQuery<Visitantecita>) getEntityManager().createQuery("SELECT vc FROM Visitantecita vc WHERE vc.codiCita.codiCita = :codiCita");
-             qv.setParameter("codiCita", Integer.parseInt(String.valueOf(codi)));
-             //consultamos todos los visitante_cita de todas las citas que sean para hoy
-             if(!qv.getResultList().isEmpty())lstVisi.addAll(qv.getResultList());
-         }
-         return (lstVisi.isEmpty()) ? new ArrayList<Visitantecita>() : lstVisi;
+        List<Object> nowCodiVali = new ArrayList<Object>();
+        //consultamos el ultimo cambio de las citas consultadas, para validar que ese sea el ultimo cambio
+        for (Object codi : codiCitaNow) {
+            TypedQuery<Cambiocita> qcc = (TypedQuery<Cambiocita>) getEntityManager().createQuery("SELECT c FROM Cambiocita c WHERE c.codiCita.codiCita = :codiCita ORDER BY c.fechCambCita desc, c.horaCambCita desc");
+            qcc.setParameter("codiCita", Integer.parseInt(String.valueOf(codi)));
+            Cambiocita ccTemp = new Cambiocita();
+            if(!qcc.getResultList().isEmpty()) ccTemp = qcc.getResultList().get(0);
+            //si el ultimo cambio de la cita consultada es "HOY", y está programada
+            if(ccTemp.getCodiCita().getEstaCita() == 2 && (df.format(ccTemp.getFechFinCitaNuev()).equals(df.format(new Date())) || df.format(ccTemp.getFechFinCitaNuev()).equals(df.format(new Date())))){
+                //se crea una lista de los codigo cita que realmente son para este dia
+                nowCodiVali.add(ccTemp.getCodiCita().getCodiCita());
+            }
+        }
+         List<Visitantecita> lstVisi = new ArrayList<Visitantecita>();
+         //ahora consultamos las citas que ya validamos que si son para "HOY"
+        for (Object codi : nowCodiVali) {
+            TypedQuery<Visitantecita> qv = (TypedQuery<Visitantecita>) getEntityManager().createQuery("SELECT vc FROM Visitantecita vc WHERE vc.codiCita.codiCita = :codiCita");
+            qv.setParameter("codiCita", Integer.parseInt(String.valueOf(codi)));
+            //consultamos todos los visitante_cita de todas las citas que sean para hoy
+            if(!qv.getResultList().isEmpty())lstVisi.addAll(qv.getResultList());
+        }
+        return (lstVisi.isEmpty()) ? new ArrayList<Visitantecita>() : lstVisi;
     }
     
 }
