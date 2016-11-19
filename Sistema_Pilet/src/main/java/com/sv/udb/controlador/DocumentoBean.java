@@ -8,6 +8,8 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Documento;
 import com.sv.udb.ejb.DocumentoFacadeLocal;
+import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
+import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.utils.Archivo;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -218,12 +220,24 @@ public class DocumentoBean implements Serializable{
             
         }
     }
+     private List<SolicitudBeca> listSoli;
+
+    public List<SolicitudBeca> getListSoli() {
+        return listSoli;
+    }
+
+    public void setListSoli(List<SolicitudBeca> listSoli) {
+        this.listSoli = listSoli;
+    }
+ @EJB
+    private SolicitudBecaFacadeLocal FCDESoli;
     
     public void consTodo()
     {
         try
         {
             this.listDocu = FCDEDocu.findAll();
+            this.listSoli = FCDESoli.findAllDocu();
             log.info("Documentos Consultados");
         }
         catch(Exception ex)

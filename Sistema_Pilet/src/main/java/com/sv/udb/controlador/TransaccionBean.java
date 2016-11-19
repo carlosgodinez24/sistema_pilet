@@ -95,10 +95,11 @@ public class TransaccionBean implements Serializable{
     public void onEmpresaSelect(){
         this.listHijo1 = FCDEDona.findForCombo2(this.objeCombPadr1.getCodiEmpr());
     }
-    
-    
-    //Para la gestión del monto total de las empresas
-    BigDecimal montEmprTota;
+    //Para setear el monto de las donaciones
+    /*public void onDonaSelec(){
+        this.objeTran.setMontTran(FCDETran.findMontoDona(this.objeTran.getCodiDona().getCodiDona()));
+    }
+    */
     private Empresa objeEmpr;
     
     //Para los avisos de cancelados
@@ -287,8 +288,6 @@ public class TransaccionBean implements Serializable{
                 //Setear monto de transacción
                 this.objeTran.setMontTran(this.objeTran.getCodiDetaBeca().getCodiTipoBeca().getDescTipoBeca());
                 //Desde aquí tengo que empezar a cambiar xdddddddddddddddddddddddddddddddddd
-                //Obtener el monto por empresa xd
-                //montEmprTota = this.FCDETran.findMontoEmpr(this.objeTran.getCodiDetaBeca().getCodiBeca().getCodiSoliBeca().getCodiEmpr().getCodiEmpr());
                 //Obtener el monto total disponible en el fondo
                 this.objeTranTemp = FCDETran.findLast();
                 // objeto 1 = monto total, objeto 2 = monto transacción

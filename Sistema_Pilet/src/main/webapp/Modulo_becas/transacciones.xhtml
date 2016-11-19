@@ -187,14 +187,15 @@ and open the template in the editor.
                                           <h:outputLabel  for="donaEntr" value="Donación: "/>
                                           <h:selectOneMenu id="donaEntr" value="#{transaccionBean.objeTran.codiDona }" class="form-control" pt:data-live-search="true">
                                               <f:selectItems value="#{transaccionBean.listHijo1}" var="lst" itemLabel="#{lst.nombDona}" itemValue="#{lst}"/>
-                                                <f:converter converterId="PooConv"/>
+                                              <p:ajax update="mont" listener="#{transaccionBean.onDonaSelec()}" process="@this"/>
+                                              <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>                                      
                                             <h:message for="becaSali" errorClass="field-error" />           
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="mont" value="Monto:"/>
                                             <h:message for="mont" errorClass="field-error" />
-                                            <h:inputText id="mont" value="#{transaccionBean.objeTran.montTran}" class="form-control" />
+                                            <h:inputText disabled="true" id="mont" value="#{transaccionBean.objeTran.montTran}" class="form-control" />
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fech" value="Fecha Entrada "/>

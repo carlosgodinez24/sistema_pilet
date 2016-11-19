@@ -129,64 +129,123 @@ public class DetalleBecaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-             System.out.println(":O");
-            this.objeDetaBeca.setCodiBeca(objeCombPadr);
-           
-            System.out.println("A la sombra de un cripes");
-            System.out.println("Lo que envía al método: Codigo de beca: " +this.objeDetaBeca.getCodiBeca().getCodiBeca());
-            System.out.println("Codigo tipo de beca: "+ this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
-            //FCDEDetaBeca.validar(this.objeDetaBeca.getCodiBeca().getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
-            vali = this.FCDEDetaBeca.validar(this.objeDetaBeca.getCodiBeca().getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
-            if (vali == null) {
-                if (this.objeDetaBeca.getCantMese() > 0) {
-                    //Proceso normal
-                    switch (this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca()) {
-                        case 1:
-                            //Matricula
-                            if (this.objeDetaBeca.getCantMese() > 1) {
-                                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar matrícula más de una vez')");
-                                guardarDeta = false;
-                            } else {
-                                guardarDeta = true;
-                            }
-                            break;
-                        case 2:
-                            //Mensualidad
-                            if (this.objeDetaBeca.getCantMese() > 11) {
-                                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar más de 11 mensualidades')");
-                                guardarDeta = false;
-                            } else {
-                                guardarDeta = true;
-                            }
-                            break;
-                        case 3:
-                            guardarDeta = true;
-                            break;
-                        default:
+//            if (this.objeDetaBeca.getCantMese() > 0) {
+//                //Proceso normal
+//                switch (this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca()) {
+//                    case 1:
+//                        //Matricula
+//                        if (this.objeDetaBeca.getCantMese() > 1) {
+//                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar matrícula más de una vez')");
+//                            guardarDeta = false;
+//                        } else {
+//                            guardarDeta = true;
+//                        }
+//                        break;
+//                    case 2:
+//                        //Mensualidad
+//                        if (this.objeDetaBeca.getCantMese() > 11) {
+//                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar más de 11 mensualidades')");
+//                            guardarDeta = false;
+//                        } else {
+//                            guardarDeta = true;
+//                        }
+//                        break;
+//                    case 3:
+//                        guardarDeta = true;
+//                        break;
+//                    default:
+//                        guardarDeta = false;
+//                        break;
+//                }
+//                if (guardarDeta) {
+//                    
+//                      this.objeDetaBeca.setCodiBeca(objeCombPadr);
+//                      this.objeDetaBeca.setEstaDetaBeca(1);
+//                      this.FCDEDetaBeca.create(objeDetaBeca);
+//                      this.listDetaBeca.add(this.objeDetaBeca);
+//                      this.limpForm();
+////                    System.out.println("AQUIIIIIIIIII "+this.objeCombPadr.getCodiBeca());
+////                    this.objeDetaBeca.setEstaDetaBeca(1);
+////                    FCDEDetaBeca.create(this.objeDetaBeca);
+////                    this.listDetaBeca.add(this.objeDetaBeca);
+////                    this.limpForm();
+//                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+//                    log.info("Detalle Guardado");
+//                }
+//            } else {
+//                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'La cantidad de meses no puede ser 0')");
+//            }
+            if (this.objeDetaBeca.getCantMese() > 0) 
+            {
+                switch (this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca()) {
+                    case 1:
+                        //Matricula
+                        if (this.objeDetaBeca.getCantMese() > 1) {
+                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar matrícula más de una vez')");
                             guardarDeta = false;
-                            break;
+                        } else {
+                            guardarDeta = true;
+                        }
+                        break;
+                    case 2:
+                        //Mensualidad
+                        if (this.objeDetaBeca.getCantMese() > 11) {
+                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar más de 11 mensualidades')");
+                            guardarDeta = false;
+                        } else {
+                            guardarDeta = true;
+                        }
+                        break;
+                    case 3:
+                        guardarDeta = true;
+                        break;
+                    default:
+                        guardarDeta = false;
+                        break;
+                }
+                System.out.println(guardarDeta);
+                System.out.println("AQUI VE"+this.objeCombPadr.getCodiBeca());
+                this.objeDetaBeca.setCodiBeca(objeCombPadr);
+                System.out.println("AQUI VE"+this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+                if (guardarDeta) {
+                    System.out.println("Resultadisimo:"+this.FCDEDetaBeca.validar(this.objeCombPadr.getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca()));
+                    int resuVali=this.FCDEDetaBeca.validar(this.objeCombPadr.getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+                    System.out.println("Estoy apunto de entrar en una validación");
+                    if(resuVali>= 1)
+                    {
+                        System.out.println("Entro en la validacion");
+                        ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El alumno ya tiene asignado este tipo de beca.')");
                     }
-                    if (guardarDeta) {
-                        
+                    else
+                    {
+                        System.out.println("Pase");
+                        this.objeDetaBeca.setCodiBeca(objeCombPadr);
                         this.objeDetaBeca.setEstaDetaBeca(1);
-                        FCDEDetaBeca.create(this.objeDetaBeca);
+                        this.FCDEDetaBeca.create(objeDetaBeca);
                         this.listDetaBeca.add(this.objeDetaBeca);
                         this.limpForm();
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                         log.info("Detalle Guardado");
                     }
-                } else {
-                    ctx.execute("setMessage('MESS_ERRO', 'Atención', 'La cantidad de meses no puede ser 0')");
                 }
-            } else {
-                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El alumno ya cuenta con ese detalle de beca')");
+//                this.objeDetaBeca.setCodiBeca(objeCombPadr);
+//                this.objeDetaBeca.setEstaDetaBeca(1);
+//                this.FCDEDetaBeca.create(objeDetaBeca);
+//                this.listDetaBeca.add(this.objeDetaBeca);
+//                this.limpForm(); 
             }
+            else 
+            {
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'La cantidad de meses no puede ser 0')");
+            }
+                    
             
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
+            System.out.println(getRootCause(ex).getMessage());
+            log.error("Error en "+ getRootCause(ex).getMessage());
         }
         finally
         {

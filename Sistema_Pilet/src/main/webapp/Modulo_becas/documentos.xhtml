@@ -146,7 +146,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="beca" value="Numero de beca "/>
                                             <h:selectOneMenu id="beca" value="#{documentoBean.objeDocu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                <f:selectItems value="#{becaSoliBean.listSoliActivos}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                <f:selectItems value="#{documentoBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                             <h:message for="beca" errorClass="field-error" />           
