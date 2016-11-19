@@ -15,7 +15,7 @@
     </context-param>
     <context-param>  
         <param-name>webservices.URL</param-name>  
-        <param-value>http://localhost:27435/WebService/MiServicio</param-value>  
+        <param-value>http://www.opensv.tk:8080/WebService/MiServicio</param-value>  
     </context-param>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
