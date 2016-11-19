@@ -56,6 +56,15 @@ public class DetalleBecaFacade extends AbstractFacade<DetalleBeca> implements De
         //Object resu = q.getSingleResult().getClass().getCanonicalName();
         return Integer.parseInt(String.valueOf(q.getSingleResult()));
     }
+    
+    @Override
+    public void desa_deta(int codi_beca)
+    {
+        System.out.println("Codigo beca en detalle: "+codi_beca);
+        String consulta = "UPDATE `detalle_beca` SET `esta_deta_beca`= 0 WHERE `codi_beca` = 1?";
+        Query q = getEntityManager().createNativeQuery(consulta);
+        q.setParameter(1, codi_beca);//Y tu coso del chat?
+    }
 
     public DetalleBecaFacade() {
         super(DetalleBeca.class);

@@ -31,12 +31,23 @@ public class TipoEstadoBean implements Serializable{
     private TipoEstado objeTipoEsta;
     private List<TipoEstado> listTipoEsta;
     private List<TipoEstado> listTipoEstaIna;
+    private List<TipoEstado> listTipoEstaAct;
     private boolean guardar;   
     private static Logger log = Logger.getLogger(TipoEstadoBean.class);
     public TipoEstado getObjeTipoEsta() {
         return objeTipoEsta;
     }
 
+    public List<TipoEstado> getListTipoEstaAct() {
+        return listTipoEstaAct;
+    }
+
+    public void setListTipoEstaAct(List<TipoEstado> listTipoEstaAct) {
+        this.listTipoEstaAct = listTipoEstaAct;
+    }
+
+    
+    
     public void setObjeTipoEsta(TipoEstado objeTipoEsta) {
         this.objeTipoEsta = objeTipoEsta;
     }
@@ -160,6 +171,7 @@ public class TipoEstadoBean implements Serializable{
         try
         {
             this.listTipoEsta = FCDETipo.findAllN();
+            this.listTipoEstaAct = FCDETipo.findAllAct();
             log.info("Tipo Estados Consultados");
         }
         catch(Exception ex)
