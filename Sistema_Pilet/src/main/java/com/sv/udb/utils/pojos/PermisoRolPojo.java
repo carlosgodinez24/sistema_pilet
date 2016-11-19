@@ -9,14 +9,16 @@ package com.sv.udb.utils.pojos;
  *
  * @author Carlos
  */
-public class MntoPermisoRol {
+public class PermisoRolPojo {
     private int codiPermRole;
     private int codiModu;
     private int codiPagi;
-    private int codiAcci;
-    private int codiRole;
-    private int estaPermRole;
-
+    
+    
+    public PermisoRolPojo(){
+        
+    }
+    
     public int getCodiPermRole() {
         return codiPermRole;
     }
@@ -41,29 +43,4 @@ public class MntoPermisoRol {
         this.codiPagi = codiPagi;
     }
 
-    public int getCodiAcci() {
-        return codiAcci;
-    }
-
-    public void setCodiAcci(int codiAcci) {
-        this.codiAcci = codiAcci;
-    }
-
-    public int getCodiRole() {
-        return codiRole;
-    }
-
-    public void setCodiRole(int codiRole) {
-        this.codiRole = codiRole;
-    }
-
-    public int getEstaPermRole() {
-        return estaPermRole;
-    }
-
-    public void setEstaPermRole(int estaPermRole) {
-        this.estaPermRole = estaPermRole;
-    }
-    
-    
 }

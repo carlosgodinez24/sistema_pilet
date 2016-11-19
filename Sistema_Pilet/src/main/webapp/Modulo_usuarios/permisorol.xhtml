@@ -142,7 +142,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="modu" value="Módulo: "/>
                                             <h:message for="modu" errorClass="field-error" />
-                                            <h:selectOneMenu id="modu" value="#{permisoRolBean.objePermRole.codiPerm}" class="form-control" pt:data-live-search="true">
+                                            <h:selectOneMenu id="modu" value="#{permisoRolBean.pojoPermRole.codiModu}" class="form-control" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{permisoBean.listModu}" var="lst3" itemLabel="#{lst3.descPerm}" itemValue="#{lst3}"/>
                                                 <f:converter converterId="PooConv"/>
@@ -151,7 +151,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="pagi" value="Página: "/>
                                             <h:message for="pagi" errorClass="field-error" />
-                                            <h:selectOneMenu id="pagi" value="#{permisoRolBean.objePermRole.codiPerm}" class="form-control" pt:data-live-search="true">
+                                            <h:selectOneMenu id="pagi" value="#{permisoRolBean.pojoPermRole.codiPagi}" class="form-control" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{permisoBean.listPagi}" var="lst4" itemLabel="#{lst4.descPerm}" itemValue="#{lst4}"/>
                                                 <f:converter converterId="PooConv"/>
@@ -159,7 +159,7 @@ and open the template in the editor.
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="valo" value="El rol tendrá permisos para:"/> 
-                                            <h:selectManyCheckbox id="valo" value="#{permisoRolBean.valores}" layout="pageDirection">
+                                            <h:selectManyCheckbox id="valo" value="#{permisoRolBean.acciones}" layout="pageDirection">
                                                 <f:selectItems value="#{permisoBean.listAcci}" var="acci" 
                                                                itemLabel="#{acci.descPerm}" itemValue="#{acci.codiPerm}" />
                                                 <f:converter converterId="PooConv"/>
