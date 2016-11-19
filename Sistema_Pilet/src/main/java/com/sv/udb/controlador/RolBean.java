@@ -23,6 +23,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
+import com.sv.udb.utils.MailSender;
 
 /**
  * Esta clase se encarga de manejar lo relacionado al CRUD de roles
