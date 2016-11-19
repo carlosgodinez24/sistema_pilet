@@ -77,10 +77,8 @@ public class DinamicoBean implements Serializable{
         for (int i = 0; i <this.listOpci.size() ; i++) {
              Opcion opci =this.listOpci.get(i);
              this.mapa.put("elem"+(i+1), null);
-             Map<Object, Object> opciones = new HashMap<>();
-             opciones.put(1, opci.getCodiOpci());
              
-            this.listCmps.add(new DynamicField(opci.getTituOpci(), "elem"+(i+1), opciones, opci.getCodiEstr().getTipoEstr(),opci.getCodiOpci()));
+            this.listCmps.add(new DynamicField(opci.getTituOpci(), "elem"+(i+1), this.listOpci.get(i), opci.getCodiEstr().getTipoEstr()));
         }
         
 
@@ -112,9 +110,9 @@ public class DinamicoBean implements Serializable{
         opcionesCB.put(4, "opción 4");
         opcionesCB.put(5, "opción 5");
         this.mapa.put("elem4", null);
-        this.listCmps.add(new DynamicField("Label elemento 4", "elem4", opcionesCB, "SELECTMANYCHECKBOX"));
+        this.listCmps.add(new DynamicField("Label elemento 4", "elem4", opcionesCB, "SELECTMANYCHECKBOX"));*/
 
-        */
+        
     }
     public void consTodo()
     {
@@ -141,12 +139,16 @@ public class DinamicoBean implements Serializable{
         {
             
               for (int i = 0; i <this.listOpci.size() ; i++) {
-                  Object[] valor4 = (Object[])this.mapa.get("elem"+(i+1));
-                   System.out.println(valor4[0]);
+                  
+                  
+                  String valor1 = (String)this.mapa.get("elem"+(i+1));
+                  System.out.println(valor1);
+                  
+                  /*Object[] valor4 = (Object[])this.mapa.get("elem"+(i+1));
+                   System.out.println(valor4[0]);*/
                 }
             
-            
-/*            String valor = (String)this.mapa.get("elem4");
+            /*
             String valor1 = (String)this.mapa.get("elem1");
             String valor2 = (String)this.mapa.get("elem2");
             String valor3 = (String)this.mapa.get("elem3");
@@ -154,11 +156,13 @@ public class DinamicoBean implements Serializable{
             
             System.out.println(valor1);
             System.out.println(valor2);
-            System.out.println(valor3);*/
+            System.out.println(valor3);
             
             
             
-//            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos " + valor4[0] + "')");
+           ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos " + valor4[0] + "')");
+
+*/
         }
         catch(Exception ex)
         {

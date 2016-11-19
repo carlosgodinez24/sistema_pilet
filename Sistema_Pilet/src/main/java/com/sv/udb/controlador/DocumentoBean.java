@@ -143,7 +143,7 @@ public class DocumentoBean implements Serializable{
             this.uploFile();
             this.objeDocu.setEstaDocu(1);   
             FCDEDocu.create(this.objeDocu);
-            this.listDocu.add(this.objeDocu);
+            this.consTodo();
             this.limpForm();
             //this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();
             //this.uploFile();
@@ -223,6 +223,7 @@ public class DocumentoBean implements Serializable{
     {
         try
         {
+
             this.listDocu = FCDEDocu.findAll();
             log.info("Documentos Consultados");
         }
@@ -311,7 +312,12 @@ public class DocumentoBean implements Serializable{
     /**
      * Creates a new instance of UploadBean
      */
-    
+    public String getUrl()
+    {
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();      
+        String ruta = facsCtxt.getExternalContext().getInitParameter("docBecas.URL"); //Esta en el web.xml
+        return ruta;
+    }
     public void inicializar()
     {
         try{
@@ -319,7 +325,9 @@ public class DocumentoBean implements Serializable{
             this.listNombFile = new ArrayList<>();
             this.rutas = new ArrayList<>();
             //String ruta ="C:/Users/Ariel/Desktop/becas/";    
-            String ruta = "/home/eduardo/Escritorio/asd/";
+//            String ruta = "/home/eduardo/Escritorio/asd/";
+        
+        String ruta = getUrl();
            rutas.add(ruta);
            DireActuInde = 0;
           this.consTodo("");
