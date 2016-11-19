@@ -5,15 +5,20 @@
  */
 package com.sv.udb.utils;
 
+import com.sv.udb.controlador.DocumentoBean;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -51,7 +56,11 @@ public class ImageServlet extends HttpServlet {
         String filename = request.getPathInfo().substring(1);
         //String ruta ="C:/Users/Ariel/Desktop/becas/";    
         //String ruta = "/home/eduardo/Escritorio/asd/";
-        String ruta = "/Users/Kevin/Desktop";
+        String ruta ="C:/DocuBecas";
+        /*DocumentoBean docu= new DocumentoBean();
+        String ruta = docu.getUrl();*/
+        
+        
         File file = new File(ruta, filename);
         response.setHeader("Content-Type", getServletContext().getMimeType(filename));
         response.setHeader("Content-Length", String.valueOf(file.length()));

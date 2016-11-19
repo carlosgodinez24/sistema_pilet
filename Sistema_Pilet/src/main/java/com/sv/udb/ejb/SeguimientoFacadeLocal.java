@@ -30,6 +30,12 @@ public interface SeguimientoFacadeLocal {
     
     List<Seguimiento> findByEstaSegu();
     
+    List<Seguimiento> findByEmpr();
+    
+    List<Seguimiento> findBySoli();
+    
+    List<Seguimiento> findByAll();
+    
     Seguimiento findByCodiSegu(Seguimiento codi);
 
     int count();

@@ -53,4 +53,12 @@ public class SolicitudBecaFacade extends AbstractFacade<SolicitudBeca> implement
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (SolicitudBeca)resu.get(0);
     }
+    
+    @Override
+    public List<SolicitudBeca> findAllDocu()
+    {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM solicitud_beca WHERE esta_soli_beca != 3 and esta_soli_beca != 2", SolicitudBeca.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
 }

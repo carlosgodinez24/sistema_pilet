@@ -29,7 +29,6 @@ public class GradoBean implements Serializable{
     @EJB
     private GradoFacadeLocal FCDEGrad;
     
-    
     private Grado objeGrad;
     private List<Grado> listGrad;
     private boolean guardar;        

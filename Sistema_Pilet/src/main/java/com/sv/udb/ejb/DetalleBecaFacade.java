@@ -44,15 +44,17 @@ public class DetalleBecaFacade extends AbstractFacade<DetalleBeca> implements De
     }
     
     @Override
-    public DetalleBeca validar(Object codi_beca, Object codi_tipo)
+    public int validar(int codi_beca, int codi_tipo)
     {
-        int correcto =  0;
-        String consulta = "SELECT * FROM `detalle_beca` WHERE codi_beca = ?1 AND codi_deta_beca = ?2";
-        Query q = getEntityManager().createNativeQuery(consulta, DetalleBeca.class);
-        q.setParameter(1, codi_beca);
-        q.setParameter(2, codi_tipo);
-        List resu = q.getResultList();
-        return resu.isEmpty() ? null : (DetalleBeca)resu.get(0);
+         System.out.println("Consola beca: "+codi_tipo);
+        System.out.println("Consola tipo: "+codi_beca);
+        String consulta = "SELECT COUNT(codi_deta_beca) FROM `detalle_beca` WHERE `codi_tipo_beca` = ?1 and `codi_beca` = ?2";
+        Query q = getEntityManager().createNativeQuery(consulta);
+        q.setParameter(1, codi_tipo);
+        q.setParameter(2, codi_beca);
+        System.out.println("Resu: "+String.valueOf(q.getSingleResult() ));
+        //Object resu = q.getSingleResult().getClass().getCanonicalName();
+        return Integer.parseInt(String.valueOf(q.getSingleResult()));
     }
 
     public DetalleBecaFacade() {

@@ -144,7 +144,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="tipo" value="Donación "/>
                                             <h:message for="tipo" errorClass="field-error" />
-                                            <h:selectOneRadio value="#{tipoTipoDonacionBean.objeTipo.recaTipoDona}">
+                                            <h:selectOneRadio id="tipo" value="#{tipoTipoDonacionBean.objeTipo.recaTipoDona}">
                                                 <f:selectItem itemValue="V" itemLabel="Recaudación" />
                                                 <f:selectItem itemValue="F" itemLabel="Particular" />
                                             </h:selectOneRadio>
