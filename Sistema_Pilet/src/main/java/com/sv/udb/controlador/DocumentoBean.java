@@ -334,7 +334,7 @@ public class DocumentoBean implements Serializable{
             this.rutas = new ArrayList<>();
             //String ruta ="C:/Users/Ariel/Desktop/becas/";    
             //String ruta = "/home/eduardo/Escritorio/asd/";
-            String ruta = "/Users/Kevin/Desktop";
+            String ruta = "C:/DocuBecas/DocuBecas";
            rutas.add(ruta);
            DireActuInde = 0;
           this.consTodo("");

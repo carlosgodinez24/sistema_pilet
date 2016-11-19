@@ -56,7 +56,7 @@ public class ImageServlet extends HttpServlet {
         String filename = request.getPathInfo().substring(1);
         //String ruta ="C:/Users/Ariel/Desktop/becas/";    
         //String ruta = "/home/eduardo/Escritorio/asd/";
-        String ruta ="C:/DocuBecas";
+        String ruta ="C:/DocuBecas/DocuBecas";
         /*DocumentoBean docu= new DocumentoBean();
         String ruta = docu.getUrl();*/
         
