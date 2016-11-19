@@ -29,6 +29,8 @@ public interface DetalleBecaFacadeLocal {
     List<DetalleBeca> findForCombo(Object id);
 
     List<DetalleBeca> findRange(int[] range);
+    
+    void desa_deta(int codi_deta);
 
     int count();
     

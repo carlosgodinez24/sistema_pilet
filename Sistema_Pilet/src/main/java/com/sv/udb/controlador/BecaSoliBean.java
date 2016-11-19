@@ -364,6 +364,7 @@ public class BecaSoliBean implements Serializable {
             this.objeSoli.setEstaSoliBeca(2);
             FCDEBeca.edit(this.objeBeca);
             FCDESoli.edit(objeSoli);
+            FCDEDetaBeca.desa_deta(this.objeBeca.getCodiBeca());
             this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
             log.info("Beca reactivada");

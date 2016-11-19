@@ -382,7 +382,7 @@ and open the template in the editor.
                                                     <div class="form-group input-group-xs col-md-11">
                                                        
                                                         <h:selectOneMenu id="tipoEsta" value="#{becaSoliBean.objeBeca.codiTipoEsta}" class="form-control" pt:data-live-search="true">
-                                                            <f:selectItems value="#{tipoEstadoBean.listTipoEstaIna}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
+                                                            <f:selectItems value="#{tipoEstadoBean.listTipoEstaAct}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
                                                             <f:converter converterId="PooConv"/>
                                                         </h:selectOneMenu>
                                                     </div>
@@ -530,7 +530,7 @@ and open the template in the editor.
                                                         <i class="fa fa-chevron-down"/> Detalle
                                                     </h:commandLink>
                                                 </c:if>
-                                                <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta != 2 and becaSoliBean.guardar == false and becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false and becaSoliBean.grado == false}">
+                                                <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta != 2 and becaSoliBean.guardar == false and becaSoliBean.elim == false and becaSoliBean.empresa == false and becaSoliBean.estado == false and becaSoliBean.detalle == false and becaSoliBean.grado == false }">
                                                 <h:commandLink id="btonMostBusc" class="btn btn-danger">
                                                     <p:ajax listener="#{becaSoliBean.elim()}" process="@this" update="@form" global="true"/>
                                                     <i class="fa fa-chevron-down"/> Retirar Beca
@@ -576,7 +576,7 @@ and open the template in the editor.
                                                      
                                                       </c:if>
                                                 <!-- Botones del fragmento de  retirar beca -->
-                                                <c:if test="#{becaSoliBean.elim == true}">
+                                                <c:if test="#{becaSoliBean.elim == true }">
                                                     <h:commandLink id="btondesa" class="btn btn-primary" rendered="#{!becaSoliBean.guardar}">
                                                         <p:ajax listener="#{becaSoliBean.desa()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Desactivar Beca
@@ -602,7 +602,7 @@ and open the template in the editor.
                                                      
                                                       </c:if>
                                                 
-                                                <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta == 2}">
+                                                <c:if test="#{becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becaSoliBean.objeBeca.codiTipoEsta.codiTipoEsta == 4}">
                                                     <h:commandLink id="btonActi" class="btn btn-info" rendered="#{!becaSoliBean.detalle}">
                                                         <p:ajax listener="#{becaSoliBean.reActi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Activar
