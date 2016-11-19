@@ -854,26 +854,7 @@ public class CitasBean implements Serializable{
     {
         try
         {
-            this.listVisiCitaRecep = FCDEVisiCita.findAll();
-            if(listVisiCitaRecep == null)listVisiCitaRecep = new ArrayList<Visitantecita>();
-            List<Cambiocita> listCambCitaTemp = new ArrayList<Cambiocita>();
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            //tomamos todos los ultimos cambio cita que sean para "hoy"
-            for(Visitantecita obj : listVisiCitaRecep){
-                Cambiocita camb = FCDECambCita.findByCita(obj.getCodiCita());
-                if(df.format(camb.getFechInicCitaNuev()).equals(df.format(new Date())) || df.format(camb.getFechFinCitaNuev()).equals(df.format(new Date()))){
-                    listCambCitaTemp.add(camb);
-                }
-            }
-            //eliminamos posibles cambioCita duplicados
-            HashSet<Cambiocita> hashSet = new HashSet<Cambiocita>(listCambCitaTemp);
-            listCambCitaTemp.clear();
-            listCambCitaTemp.addAll(hashSet);
-            //limpiamos la lista, y agregamos todos los registros que involucren a los cambio cita de "hoy"
-            listVisiCitaRecep.clear();
-            for(Cambiocita obj: listCambCitaTemp){
-                listVisiCitaRecep.addAll(FCDEVisiCita.findByCodiCita(obj.getCodiCita()));
-            }
+            this.listVisiCitaRecep = FCDEVisiCita.findByNow();
             
         }
         catch(Exception ex)
