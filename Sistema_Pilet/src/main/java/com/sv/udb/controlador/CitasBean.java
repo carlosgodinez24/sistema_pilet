@@ -15,6 +15,7 @@ import com.sv.udb.modelo.Horariodisponible;
 import com.sv.udb.modelo.Visitante;
 import com.sv.udb.modelo.Visitantecita;
 import com.sv.udb.utils.HorarioCitas;
+import com.sv.udb.utils.LOG4J;
 import com.sv.udb.utils.pojos.DatosAlumnos;
 import com.sv.udb.utils.pojos.DatosUsuariosByCrit;
 import com.sv.udb.utils.pojos.WSconsAlumByDoce;
@@ -128,6 +129,13 @@ public class CitasBean implements Serializable{
     private int codiUsua;
     private List<DatosUsuariosByCrit> listDoceBusc;
 
+    
+    //log4j
+    private LOG4J<CitasBean> lgs = new LOG4J<CitasBean>(CitasBean.class) {
+    };
+    private org.apache.log4j.Logger log = lgs.getLog();
+    
+    
     public List<DatosUsuariosByCrit> getListDoceBusc() {
         consUsuaByCrit();
         return listDoceBusc;
@@ -723,6 +731,7 @@ public class CitasBean implements Serializable{
                 objeVisiCita.setCodiVisi(alumVisiSelec.getCodiVisi());
                 objeVisiCita.setCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
                 FCDEVisiCita.create(objeVisiCita);
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha solicitado la cita, espere por la respuesta");
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Se ha solicitado la cita, espere por la respuesta.')");
                 this.limpForm();
             }
@@ -775,10 +784,12 @@ public class CitasBean implements Serializable{
 
                 switch(acci){
                     case 1:
+                        log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha solicitado reprogramacion ");
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reprogramación Solicitada'); $('#ModaFormRegi').modal('hide');");
                         this.limpForm();
                     break;
                     case 2:
+                        log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha solicitado cancelacion ");
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cancelación Solicitada');");
                     break;
                 }
@@ -788,6 +799,7 @@ public class CitasBean implements Serializable{
         }
         catch(Exception ex)
         {
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Error al realiza la accion ");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al realizar la acción')");
             ex.printStackTrace();
         }
@@ -985,10 +997,12 @@ public class CitasBean implements Serializable{
                 objeVisiCita.setCodiCita(this.objeCita);
                 objeVisiCita.setCodiVisi(this.objeVisi);
                 FCDEVisiCita.create(objeVisiCita);
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha solicitado la cita, espere por la respuesta");
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Se ha solicitado la cita, espere por la respuesta.')");
                 this.limpForm();
             }
         }catch(Exception e){
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Error al solicitar cita");
             e.printStackTrace();
         }
         
@@ -1071,11 +1085,13 @@ public class CitasBean implements Serializable{
                 if(this.listVisiUsua ==  null)this.listVisiUsua = new ArrayList<Cita>();
                 this.listVisiUsua.add(objeCita);
                 this.limpForm();
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Cita programada");
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Programada');");
             }            
         }
         catch(Exception ex)
         {
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Error al programar cita ");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al Programar')");
             ex.printStackTrace();
         }
@@ -1546,13 +1562,16 @@ public class CitasBean implements Serializable{
                 }
                 switch(acci){
                     case 1:
+                        log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha confirmado cita ");
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Confirmada'); $('#ModaFormRegi').modal('hide');");
                         this.limpForm();
                     break;
                     case 2:
+                        log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha rechazado cita, proceda a reprogramar");
                         ctx.execute("setMessage('MESS_INFO', 'Atención', 'Cita Rechazada, Proceda a Reprogramar');");
                     break;
                     case 3:{
+                        log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha reprogramado una cita con codigo:" + objeCita.getCodiCita());
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Reprogramada'); $('#ModaFormRegi').modal('hide');");
                     }
                 }
@@ -1561,6 +1580,7 @@ public class CitasBean implements Serializable{
         }
         catch(Exception ex)
         {
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Error al realizar la accion ");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al realizar la acción')");
             ex.printStackTrace();
         }
@@ -1686,12 +1706,14 @@ public class CitasBean implements Serializable{
                     this.listCitaVisiUsua.add(objeCita);
                 }
                 this.limpForm();
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha programado una cita con visitante particulares");
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Programada');");
             }
             
         }
         catch(Exception ex)
         {
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Error al programar cita ");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al Programar')");
             ex.printStackTrace();
         }
@@ -1879,12 +1901,14 @@ public class CitasBean implements Serializable{
                 if(this.listVisiUsua ==  null)this.listVisiUsua = new ArrayList<Cita>();
                 this.listVisiUsua.add(objeCita);
                 this.limpForm();
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha programado una cita ");
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Programada');");
             }
             
         }
         catch(Exception ex)
         {
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Error al programar una cita");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al Programar')");
             ex.printStackTrace();
         }
@@ -1919,6 +1943,7 @@ public class CitasBean implements Serializable{
                     FCDECita.edit(objeCita);
                     FCDECambCita.create(objeCambCita);
                     listVisiUsua.add(objeCita);
+                    log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha reprogramada la cita ");
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Reprogramada'); $('#ModaFormRegi').modal('hide');");
                     estaCita();
                     limpForm();
@@ -1927,6 +1952,7 @@ public class CitasBean implements Serializable{
         }
         catch(Exception ex)
         {
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Error al realizar la accion ");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al realizar la acción')");
             ex.printStackTrace();
         }

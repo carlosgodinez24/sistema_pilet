@@ -127,12 +127,12 @@ public class VisitantesBean implements Serializable{
         {
             this.objeVisi = FCDEVisi.find(codi);
             this.guardar = false;
-            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Consultar visitante: " + objeVisi.getNombVisi() + " " + objeVisi.getApelVisi());
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+"Se ha consultado un visitante con codigo: " + objeVisi.getCodiVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
-            log.error("Error al consultar visitante");
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+"Error al consultar registro con codigo: " + objeVisi.getCodiVisi());
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
         finally
@@ -152,9 +152,8 @@ public class VisitantesBean implements Serializable{
         try
         {
             objeVisi.setEstaVisi(1);
-            FCDEVisi.create(this.objeVisi);
-            
-            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Agregar visitante: " + objeVisi.getNombVisi() + " " + objeVisi.getApelVisi());
+            FCDEVisi.create(this.objeVisi);            
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+"Se ha agregado un visitante con codigo: " + objeVisi.getCodiVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             if(listVisi == null)listVisi = new ArrayList<Visitante>();
             this.listVisi.add(this.objeVisi);
@@ -162,7 +161,7 @@ public class VisitantesBean implements Serializable{
         }
         catch(Exception ex)
         {
-            log.error("Error al guardar visitante");
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+"Error al agregar registro");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
         }
     }
@@ -180,12 +179,12 @@ public class VisitantesBean implements Serializable{
             this.listVisi.remove(this.objeVisi); //Limpia el objeto viejo
             FCDEVisi.edit(this.objeVisi);
             this.listVisi.add(this.objeVisi); //Agrega el objeto modificado
-            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Modificar visitante: " + objeVisi.getNombVisi() + " " + objeVisi.getApelVisi());
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+"Se ha modificado un visitante con codigo: " + objeVisi.getCodiVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
-            log.error("Error al modificar visitante");
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+"Error al modificar registro con codigo: " + objeVisi.getCodiVisi());
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
@@ -203,13 +202,13 @@ public class VisitantesBean implements Serializable{
             objeVisi.setEstaVisi(0);
             FCDEVisi.edit(this.objeVisi);
             this.listVisi.remove(this.objeVisi);
-            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+" Eliminar visitante codigo: " + objeVisi.getCodiVisi());
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+"Se ha eliminado un visitante con codigo: " + objeVisi.getCodiVisi());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
             this.limpForm();
         }
         catch(Exception ex)
         {
-            log.error("Error al eliminar visitante");
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Visitantes"+"-"+"Error al eliminar registro con codigo: " + objeVisi.getCodiVisi());
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }

@@ -101,12 +101,12 @@ public class EventosBean implements Serializable{
         {
             this.objeEven = FCDEEven.find(codi); //Encontrando el codigo
             this.guardar = false;
-            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Consultar evento: " + objeEven.getNombEven());
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Se ha consultado un evento con codigo: " + objeEven.getCodiEvent());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Registro Consultado')");
         }
         catch(Exception ex)
         {
-            log.error("Error al consultar evento");
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Error al consultar registro con codigo: " + objeEven.getCodiEvent());
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
         }
     }
@@ -126,14 +126,14 @@ public class EventosBean implements Serializable{
                 FCDEEven.create(this.objeEven);
                 if(listEven == null)listEven = new ArrayList<Evento>();
                 this.listEven.add(this.objeEven);
-                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Agregado evento: " + objeEven.getNombEven());
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Se ha agregado un evento con codigo: " + objeEven.getCodiEvent());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                 limpForm();
             }
         }
         catch(Exception ex)
         {
-            log.error("Error al registar evento");
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Error al guardar registro");
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar')");
         }
     }
@@ -153,13 +153,13 @@ public class EventosBean implements Serializable{
                 this.listEven.remove(this.objeEven); //Limpia el objeto viejo
                 FCDEEven.edit(this.objeEven);
                 this.listEven.add(this.objeEven); //Agrega el objeto modificado
-                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Modificar evento: " + objeEven.getNombEven());
+                log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Se ha modificado un evento con codigo: " + objeEven.getCodiEvent());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             }
         }
         catch(Exception ex)
         {
-            log.error("Error al modificar evento");
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Error al modificar registro con codigo: " + objeEven.getCodiEvent());
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
         }
     }
@@ -219,12 +219,12 @@ public class EventosBean implements Serializable{
             this.listEven.remove(this.objeEven);
             FCDEEven.edit(this.objeEven);
             this.listEven.add(this.objeEven);
-            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+" Eliminar evento codigo: " + objeEven.getCodiEvent());
+            log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Se ha eliminado un evento con codigo: " + objeEven.getCodiEvent());
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
         catch(Exception ex)
         {
-            log.error("Error al eliminar evento");
+            log.error(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Error al eliminar registro con codigo: " + objeEven.getCodiEvent());
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }
