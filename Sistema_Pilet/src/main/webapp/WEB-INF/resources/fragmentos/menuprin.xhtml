@@ -242,15 +242,8 @@ and open the template in the editor.
                             </a>
                                 
                                 <ul class="treeview-menu">
-                                    <li class="#{actiGrad}">
-                                        <h:link outcome="/Modulo_becas/Grado" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/Grado.xhtml')}">
-                                            <i class="fa fa-user"></i> Grados
-                                        </h:link>
-                                    </li>
-                                </ul>
-                                <ul class="treeview-menu">
                                     <li class="#{actiBecaSoli}">
-                                        <h:link outcome="/Modulo_becas/beca_soli" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/beca_soli.xhtml')}">
+                                        <h:link outcome="/Modulo_becas/becas" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/becas.xhtml')}">
                                             <i class="fa fa-user"></i> Solicitud de beca
                                         </h:link>
                                     </li>
@@ -269,6 +262,17 @@ and open the template in the editor.
                                         </h:link>
                                     </li>
                                 </ul>
+                                
+                                <ul class="treeview-menu">
+                                    <li class="#{actiGrad}">
+                                        <h:link outcome="/Modulo_becas/Grado" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/Grado.xhtml')}">
+                                            <i class="fa fa-user"></i> Grados
+                                        </h:link>
+                                    </li>
+                                </ul>
+                                
+                                
+                                
                                 <ul class="treeview-menu">
                                     <li class="#{actiTipoBeca}">
                                         <h:link outcome="/Modulo_becas/tipo_beca" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_beca.xhtml')}">
@@ -292,12 +296,21 @@ and open the template in the editor.
                                     </li>
                                 </ul>
                                 <ul class="treeview-menu">
-                                <li class="#{actiTipoReti}">
-                                    <h:link outcome="/Modulo_becas/tipo_reti" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_reti.xhtml')}">
-                                        <i class="fa fa-user"></i> Tipos de Retiros
-                                    </h:link>
-                                </li>
-                            </ul>
+                                    <li class="#{actiTipoReti}">
+                                        <h:link outcome="/Modulo_becas/tipo_reti" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_reti.xhtml')}">
+                                            <i class="fa fa-user"></i> Tipos de Retiros
+                                        </h:link>
+                                    </li>
+                                </ul>
+                                
+                                
+                                <ul class="treeview-menu">
+                                    <li class="#{actiBecaSoli}">
+                                        <h:link outcome="/Modulo_becas/dinaForm" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/dinaForm.xhtml')}">
+                                            <i class="fa fa-user"></i> Ver soli
+                                        </h:link>
+                                    </li>
+                                </ul>
                                 
                             </li>                        
                             <li class="treeview #{actiMenu3}">

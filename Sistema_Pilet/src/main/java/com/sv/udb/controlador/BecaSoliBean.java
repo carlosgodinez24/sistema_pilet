@@ -267,7 +267,7 @@ public class BecaSoliBean implements Serializable {
             this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
             this.listSoli.remove(this.objeSoli);
             this.objeSoli2.setEstaSoliBeca(3);
-            objeSoli.setBecaList(null);
+            //objeSoli.setBecaList(null);
             FCDESoli.edit(objeSoli2);
             this.listSoli.add(objeSoli2);
             this.objeSoli.setEstaSoliBeca(1);
@@ -328,7 +328,7 @@ public class BecaSoliBean implements Serializable {
             this.objeBeca2.setRetiBeca(null);
             esta.setCodiTipoEsta(1);
             this.objeBeca2.setCodiTipoEsta(esta);
-            objeSoli2.setBecaList(null);
+            //objeSoli2.setBecaList(null);
             FCDESoli.create(objeSoli2);
             this.objeSoli2 = FCDESoli.findLast();
             this.objeBeca2.setCodiSoliBeca(objeSoli2);
