@@ -26,7 +26,7 @@ import com.sv.udb.modelo.Cambiocita;
  * @author Larry Orellana
  */
 @Stateless
-public class ReportesBeanBecas {
+public class ReportesBeanBecas implements Serializable {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

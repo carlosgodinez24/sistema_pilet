@@ -29,7 +29,7 @@ import com.sv.udb.modelo.Cambiocita;
     
 @Named(value = "ReportesBeanTicket")
 @ViewScoped
-public class ReportesBeanTicket {
+public class ReportesBeanTicket implements Serializable {
     private static final long serialVersionUID = 1L;
     @Inject
     private GlobalAppBean globalAppBean; //Bean de aplicación (Instancia)
