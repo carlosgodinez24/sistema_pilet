@@ -3,6 +3,21 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="año" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select DISTINCT s.codi_soli as 'Código Solicitud', u.acce_usua as 'Identificación Usuario',
+ uu.acce_usua as 'Identificación Técnico', d.nomb_depa as 'Departamento', s.fech_hora_soli as 'Fecha de Solicitud',
+ s.tiem_reso_soli as 'Tiempo de Resolución', s.prio_soli as 'Prioridad',
+ IF(s.codi_ubic!=NULL,IF(ub.nomb_ubic=s.codi_ubic,ub.codi_ubic,''),'N/A') as 'Ubicación',
+ s.desc_soli as 'Descripción', e.opin_eval_reso as 'Opinió', e.obse_eval_reso as 'Observación'
+ from solicitudes s, evaluacion_resoluciones e, resolucion_solicitudes se, usuario u,
+ usuario uu, departamentos d, ubicaciones ub where s.esta_soli= 4 and s.codi_soli = se.codi_soli and
+ se.codi_reso_soli = e.codi_reso_soli and u.codi_usua = s.codi_usua and uu.codi_usua = s.codi_enca and
+ d.codi_depa = s.codi_depa and s.esta_soli = 4 and MONTH(s.fech_hora_soli)=$P{mes}
+ and YEAR(s.fech_hora_soli) = $P{año}]]>
+	</queryString>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

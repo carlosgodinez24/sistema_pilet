@@ -41,7 +41,7 @@ and open the template in the editor.
                                         <h:panelGrid columns="10" cellpadding="10">
 
                                             <h:outputLabel  for="aniousua" value="Ingrese el año: "/>
-                                            <p:inputMask style="float: right; width: 70%;" id="anioCitas" value="#{ReportesBeanUsuarios.aniousua}" mask="9999" class="form-control"/>
+                                            <p:inputMask style="float: right; width: 70%;" id="aniousua" value="#{ReportesBeanUsuarios.aniousua}" mask="9999" class="form-control"/>
                                             <h:commandLink style="float: right; width: 100%;" id="btonRepo" class="btn btn-success" rendered="#{true}">
                                                 <p:ajax listener="#{ReportesBeanUsuarios.procCita()}" process="@form" update="@form" />
                                                 <i class="fa fa-print"/> Procesar Reporte
