@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Complementos de beca" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3e59559f-a28c-436e-b7b9-b306e86c0134">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="27"/>
+	<queryString>
+		<![CDATA[SELECT b.codi_beca, sb.carn_alum, sb.nomb_alum, tb.nomb_tipo_beca FROM beca b INNER JOIN solicitud_beca sb ON b.codi_soli_beca = sb.codi_soli_beca INNER JOIN detalle_beca db ON b.codi_beca = db.codi_beca INNER JOIN tipo_beca tb ON db.codi_tipo_beca = tb.codi_tipo_beca WHERE sb.esta_soli_beca = 1]]>
+	</queryString>
+	<field name="codi_beca" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="carn_alum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomb_alum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomb_tipo_beca" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="490" y="0" width="70" height="79" uuid="6734dcc7-405c-4e5c-8c77-466d0899fc49"/>
+				<imageExpression><![CDATA["C:\\Users\\Larry Orellana\\Downloads\\Logo reporte.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="143" y="27" width="258" height="34" uuid="4502b1dc-e48f-42e9-8847-1f77a2540dc1"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Complementos de beca]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="143" height="20" uuid="aaf8031e-eef7-425c-8595-cfbb940550e1"/>
+				<text><![CDATA[codi_beca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="0" width="143" height="20" uuid="46da067b-08ed-4862-8f6b-c24b02226180"/>
+				<text><![CDATA[carn_alum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="0" width="143" height="20" uuid="e86d982b-3fb2-4ad1-8a73-4c578818c394"/>
+				<text><![CDATA[nomb_alum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="0" width="143" height="20" uuid="8def95d0-f38b-4b91-b94b-66dcc0d113e2"/>
+				<text><![CDATA[nomb_tipo_beca]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="143" height="20" uuid="69be067e-94f9-4cd7-b833-70286aa7d678"/>
+				<textFieldExpression><![CDATA[$F{codi_beca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="0" width="143" height="20" uuid="1a117539-222d-463a-bee1-5a912a1a8200"/>
+				<textFieldExpression><![CDATA[$F{carn_alum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="0" width="143" height="20" uuid="fd915db4-a78b-4341-9ee0-8032467a68c2"/>
+				<textFieldExpression><![CDATA[$F{nomb_alum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="429" y="0" width="143" height="20" uuid="493143dd-5a75-4079-ae95-c5fd8d32073a"/>
+				<textFieldExpression><![CDATA[$F{nomb_tipo_beca}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="461" y="18" width="100" height="20" uuid="2ca3d6c4-2cc5-4c12-a4d0-42d0c2b13209"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="19" y="11" width="542" height="1" uuid="03054949-de7f-4188-9ce5-0fb7cdfd3b4e"/>
+			</line>
+			<staticText>
+				<reportElement x="19" y="18" width="138" height="20" uuid="f92d1bca-14af-4f35-8bfa-2f5134278c19"/>
+				<text><![CDATA[Instituto Técnico Ricaldone]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

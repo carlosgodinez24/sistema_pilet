@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Empresas_y_donaciones_canceladas" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fe7bdbe2-47dc-4584-b949-b2d0fb9a1091">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Estado Donacion" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT e.codi_empr, e.nomb_empr, d.mont_tot FROM empresa e INNER JOIN donacion d ON d.codi_empr = e.codi_empr WHERE d.esta_dona = $P{Estado Donacion} ]]>
+	</queryString>
+	<field name="codi_empr" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomb_empr" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mont_tot" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="453" y="0" width="70" height="79" uuid="31bbb107-8284-4d7a-9c62-51ee8904c99e"/>
+				<imageExpression><![CDATA["C:\\Users\\Larry Orellana\\Downloads\\Logo reporte.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="18" y="12" width="399" height="50" uuid="4537a09d-a6dc-4a6a-8cfe-b01189b28e88"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Empresas y donaciones canceladas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="185" height="20" uuid="8ba073b3-4256-4b83-834c-9fd975db48a9"/>
+				<text><![CDATA[codi_empr]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="0" width="185" height="20" uuid="3419fb6f-dbd3-472f-a078-ec73456ace5f"/>
+				<text><![CDATA[mont_tot]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="185" height="20" uuid="f4e5c87b-58de-40ba-9729-a55cc832ec25"/>
+				<text><![CDATA[nomb_empr]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="185" height="20" uuid="a66e60ee-a9b0-4de6-a984-8f0234ac6aee"/>
+				<textFieldExpression><![CDATA[$F{codi_empr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="0" width="185" height="20" uuid="be8824b4-38c9-44ac-b919-6688a64e88bf"/>
+				<textFieldExpression><![CDATA[$F{mont_tot}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="0" width="185" height="20" uuid="02b3bade-13a0-499a-9fad-80071a4ec4c3"/>
+				<textFieldExpression><![CDATA[$F{nomb_empr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<line>
+				<reportElement x="13" y="20" width="532" height="1" uuid="b5e64722-f6a7-48e2-b03c-6474bd262029"/>
+			</line>
+			<staticText>
+				<reportElement x="13" y="31" width="138" height="20" uuid="98a4ada4-6fce-4ded-b225-a6b7a22f8ed8"/>
+				<text><![CDATA[Instituto Técnico Ricaldone]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="31" width="100" height="20" uuid="03ee6e6f-baaa-49da-b988-f89b767f54b2"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

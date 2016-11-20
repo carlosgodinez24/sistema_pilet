@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="General_becas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2c018cf6-f470-4f9a-ae50-d33038650864">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT b.codi_beca, sb.carn_alum, sb.nomb_alum, e.nomb_empr AS 'Patrocinador' FROM beca b INNER JOIN solicitud_beca sb ON b.codi_soli_beca = sb.codi_soli_beca INNER JOIN empresa e ON sb.codi_empr = e.codi_empr WHERE sb.esta_soli_beca = 1]]>
+	</queryString>
+	<field name="codi_beca" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="carn_alum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomb_alum" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Patrocinador" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="146" y="13" width="246" height="48" uuid="b748a7ef-e2d6-465b-891b-ead48e2a664a"/>
+				<textElement>
+					<font size="36"/>
+				</textElement>
+				<text><![CDATA[General becas]]></text>
+			</staticText>
+			<image>
+				<reportElement x="474" y="0" width="70" height="79" uuid="5ba46456-df9f-4570-a159-9ff3967f7dc5"/>
+				<imageExpression><![CDATA["C:\\Users\\Larry Orellana\\Downloads\\Logo reporte.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="143" height="20" uuid="ca61a9c7-6a58-49dc-ab68-f425a44b4e65"/>
+				<text><![CDATA[codi_beca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="0" width="143" height="20" uuid="34b247b2-fcdb-403a-9ba0-6f1ef0b66f7d"/>
+				<text><![CDATA[carn_alum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="0" width="143" height="20" uuid="bbfc5673-7cbf-4c0a-9e50-82f1665f8394"/>
+				<text><![CDATA[nomb_alum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="0" width="143" height="20" uuid="5a56dd7c-e4db-4af1-ac50-65c6e23bc0c3"/>
+				<text><![CDATA[Patrocinador]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="143" height="20" uuid="4fbd339c-d01a-4c60-a7d5-caf6f08aa19b"/>
+				<textFieldExpression><![CDATA[$F{codi_beca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="0" width="143" height="20" uuid="1de6d8e8-e1ec-4111-9138-22236b942140"/>
+				<textFieldExpression><![CDATA[$F{carn_alum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="0" width="143" height="20" uuid="a5c9f3dc-413e-4681-b5f5-6a86553ca110"/>
+				<textFieldExpression><![CDATA[$F{nomb_alum}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="429" y="0" width="143" height="20" uuid="e8ea280a-2396-4631-a867-5fc6a72014c4"/>
+				<textFieldExpression><![CDATA[$F{Patrocinador}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="14" y="21" width="138" height="20" uuid="b1ee517d-8170-441d-90ec-ce0a657af9b9"/>
+				<text><![CDATA[Instituto Técnico Ricaldone]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="456" y="21" width="100" height="20" uuid="f87488cb-a75b-4c2f-9785-79c939cf16a5"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="14" y="14" width="542" height="1" uuid="66178585-7f5d-4d70-8453-4a9d9d73fc99"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Empresas_y_donaciones_activas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="31dc9278-4767-44f5-9655-b50ed6c9d34e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT e.codi_empr, e.nomb_empr, d.mont_tot, d.mont_pend, d.fech_dona AS 'Fecha inicio' FROM empresa e INNER JOIN donacion d ON d.codi_empr = e.codi_empr WHERE d.esta_dona = 1]]>
+	</queryString>
+	<field name="codi_empr" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nomb_empr" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mont_tot" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mont_pend" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Fecha inicio" class="java.sql.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="482" y="0" width="70" height="79" uuid="551339ad-6b82-4157-8f60-5c83caf00cd9"/>
+				<imageExpression><![CDATA["C:\\Users\\Larry Orellana\\Downloads\\Logo reporte.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="73" y="18" width="343" height="43" uuid="23d3508e-e2ab-4079-b265-5fcf3d36a071"/>
+				<textElement textAlignment="Center">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Empresas y donaciones activas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="114" height="20" uuid="690ee036-e3ee-4bf4-aeb9-95f6da279888"/>
+				<text><![CDATA[codi_empr]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="114" y="0" width="114" height="20" uuid="727d39f0-342b-4d54-a193-4d5e1019ca05"/>
+				<text><![CDATA[nomb_empr]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="0" width="114" height="20" uuid="ecb00a73-37fa-45ac-b2e5-843085dec892"/>
+				<text><![CDATA[mont_pend]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="0" width="114" height="20" uuid="5cd66ccf-545b-4105-a94f-3b2f417e2460"/>
+				<text><![CDATA[mont_tot]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="456" y="0" width="114" height="20" uuid="fc90397a-44bd-4f6f-abef-47ab4b4262af"/>
+				<text><![CDATA[Fecha inicio]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="37" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="114" height="20" uuid="e8a538fb-72ae-4e80-aa7c-3fb5e886d587"/>
+				<textFieldExpression><![CDATA[$F{codi_empr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="114" y="0" width="114" height="20" uuid="712ea7bd-7bec-4cf4-ba8a-f6b59ecaed57"/>
+				<textFieldExpression><![CDATA[$F{nomb_empr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="228" y="0" width="114" height="20" uuid="ed2bcfc8-6211-4128-91f7-6f26751a2b43"/>
+				<textFieldExpression><![CDATA[$F{mont_pend}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="342" y="0" width="114" height="20" uuid="9f6ba1da-4ac0-48e2-96f2-fffb6a96407b"/>
+				<textFieldExpression><![CDATA[$F{mont_tot}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="0" width="114" height="20" uuid="d307e6e2-8e0f-4d6c-91fe-2e454c8aa67a"/>
+				<textFieldExpression><![CDATA[$F{Fecha inicio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<line>
+				<reportElement x="10" y="10" width="542" height="1" uuid="10342426-4c92-4b27-868c-2173b64ee0b5"/>
+			</line>
+			<staticText>
+				<reportElement x="10" y="17" width="138" height="20" uuid="bfe5c0db-fd98-46de-be1f-5c5c31acf894"/>
+				<text><![CDATA[Instituto Técnico Ricaldone]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="452" y="17" width="100" height="20" uuid="82ccfabb-4a0e-4725-9c57-a3ecace404f6"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

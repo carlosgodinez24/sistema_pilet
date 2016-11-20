@@ -66,6 +66,13 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                             <ul class="treeview-menu">
+                                <li class="#{actiusuariosRepo}">
+                                    <h:link outcome="/Modulo_usuarios/reportes_usuarios" rendered="#{globalAppBean.getEstaPermByName('/Modulo_usuarios/reportes_usuarios.xhtml')}">
+                                        <i class="fa fa-user"></i> Reportes
+                                    </h:link>
+                                </li>
+                            </ul>
                         </li>
                     </ui:fragment>
                     <ui:fragment  rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket')}">
@@ -122,6 +129,13 @@ and open the template in the editor.
                                 <li class="#{actiEvalReso}">
                                     <h:link outcome="/Modulo_ticket/evaluarResolucion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/evaluarResolucion.xhtml')}">
                                         <i class="fa fa-user"></i> Evaluar resoluciones
+                                    </h:link>
+                                </li>
+                            </ul>
+                            <ul class="treeview-menu">
+                                <li class="#{actiTicketRepo}">
+                                    <h:link outcome="/Modulo_ticket/reportes_ticket" rendered="#{globalAppBean.getEstaPermByName('/Modulo_ticket/reportes_ticket.xhtml')}">
+                                        <i class="fa fa-user"></i> Reportes
                                     </h:link>
                                 </li>
                             </ul>
@@ -312,6 +326,13 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                                <ul class="treeview-menu">
+                                    <li class="#{actiBecasRepo}">
+                                        <h:link outcome="/Modulo_becas/reportes_becas" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/reportes_becas.xhtml')}">
+                                            <i class="fa fa-user"></i> Reportes
+                                        </h:link>
+                                    </li>
+                                </ul>
                                 
                             </li>                        
                             <li class="treeview #{actiMenu3}">

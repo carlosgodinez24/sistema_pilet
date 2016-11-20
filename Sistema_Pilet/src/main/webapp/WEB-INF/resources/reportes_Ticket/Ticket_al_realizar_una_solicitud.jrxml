@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Ticket_al_realizar_una_solicitud" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="238eef16-3b41-49cf-9978-8d4f58a6d718">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="3"/>
+	<parameter name="CodigoSolicitud" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select codi_usua, codi_depa, fech_hora_soli, codi_ubic, desc_soli, codi_equi FROM solicitudes Where codi_soli = $P{CodigoSolicitud} ;]]>
+	</queryString>
+	<field name="codi_usua" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codi_depa" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fech_hora_soli" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codi_ubic" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="desc_soli" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codi_equi" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="39" y="17" width="328" height="44" uuid="87b366a8-3d2c-46bf-ae5e-69cb39a9ad4e"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Ticket al realizar una solicitud]]></text>
+			</staticText>
+			<image>
+				<reportElement x="464" y="0" width="70" height="79" uuid="d49d387b-647c-4384-be71-62536436aa44"/>
+				<imageExpression><![CDATA["C:\\Users\\Larry Orellana\\Downloads\\Logo reporte.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="95" height="20" uuid="0c3334fd-cf5b-4239-a759-ed72a15613e9"/>
+				<text><![CDATA[codi_usua]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="0" width="95" height="20" uuid="ad3d1633-76b7-402a-ad00-b0a4fbee5ff1"/>
+				<text><![CDATA[codi_depa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="0" width="95" height="20" uuid="35dc76c1-b0c3-4602-8a32-2adacf43aee5"/>
+				<text><![CDATA[fech_hora_soli]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="0" width="95" height="20" uuid="ef3942b4-00cf-46bb-946d-b59a465b5a9b"/>
+				<text><![CDATA[codi_ubic]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="95" height="20" uuid="43274724-9476-4c85-8681-70608a0be815"/>
+				<text><![CDATA[desc_soli]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="475" y="0" width="95" height="20" uuid="a9ad511e-8f24-451a-82d1-a86f876e1a43"/>
+				<text><![CDATA[codi_equi]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="95" height="20" uuid="8bfd2c92-8fca-4c2f-b029-339baece80c4"/>
+				<textFieldExpression><![CDATA[$F{codi_usua}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="95" y="0" width="95" height="20" uuid="fba84970-95b9-4211-b078-923367d055a9"/>
+				<textFieldExpression><![CDATA[$F{codi_depa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="0" width="95" height="20" uuid="1cf2bf38-bc7c-4248-8f4e-77609a7cae59"/>
+				<textFieldExpression><![CDATA[$F{fech_hora_soli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="285" y="0" width="95" height="20" uuid="735cbcd2-9d76-4f14-8905-5a3b96c81c51"/>
+				<textFieldExpression><![CDATA[$F{codi_ubic}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="95" height="20" uuid="2bd2309e-7a56-475d-97e2-aee9a95e9399"/>
+				<textFieldExpression><![CDATA[$F{desc_soli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="0" width="95" height="20" uuid="877c9317-55cd-4282-bd54-407dd7f7a1d1"/>
+				<textFieldExpression><![CDATA[$F{codi_equi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<line>
+				<reportElement x="15" y="10" width="542" height="1" uuid="a8113a87-3af7-4d5f-9086-edad37f5edc3"/>
+			</line>
+			<textField>
+				<reportElement x="457" y="28" width="100" height="20" uuid="45a043b3-f2db-4402-8c4e-8e2704db2cd6"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="28" width="138" height="20" uuid="1ef4115d-b56f-4e61-bf04-848b5a6b4d6a"/>
+				<text><![CDATA[Instituto Técnico Ricaldone]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Mantenimientos_activos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1e6744d2-b1f1-4467-992e-dab862c76428">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FechaDesde" class="java.lang.String"/>
+	<parameter name="FechaHasta" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM mantenimientos;]]>
+	</queryString>
+	<field name="codi_mant" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cont_dias_mant" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codi_ubic" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codi_tipo_mant" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="esta_mant_prev" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="155" y="25" width="264" height="39" uuid="972ff3e6-009d-42f9-a829-8fbfaaa28cfb"/>
+				<textElement>
+					<font fontName="Arial" size="24"/>
+				</textElement>
+				<text><![CDATA[Mantenimientos Activos]]></text>
+			</staticText>
+			<image>
+				<reportElement x="485" y="0" width="70" height="79" uuid="c86d66c4-b3fc-4d52-aaa4-1875480e74e6"/>
+				<imageExpression><![CDATA["C:\\Users\\Larry Orellana\\Downloads\\Logo reporte.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="143" height="20" uuid="5259f7a9-9946-43ff-9ff1-8b36ebca89ba"/>
+				<text><![CDATA[codi_mant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="0" width="143" height="20" uuid="55a3e5fa-3043-46e6-b91f-85d9f3667c16"/>
+				<text><![CDATA[cont_dias_mant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="0" width="143" height="20" uuid="bd6bd951-c80a-48c5-903c-8a7dcb135849"/>
+				<text><![CDATA[codi_tipo_mant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="0" width="143" height="20" uuid="9eb6c7a3-029e-43bf-9e5b-6c060dc2b85e"/>
+				<text><![CDATA[esta_mant_prev]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="143" height="20" uuid="8acefe6c-ab39-41e2-a615-3e9eb2e27686"/>
+				<textFieldExpression><![CDATA[$F{codi_mant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="0" width="143" height="20" uuid="d5acaf6e-f577-4a35-9cd6-b2ed8c7609a7"/>
+				<textFieldExpression><![CDATA[$F{cont_dias_mant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="0" width="143" height="20" uuid="be6e20a0-64e4-436d-a73d-b24ee1b57050"/>
+				<textFieldExpression><![CDATA[$F{codi_tipo_mant}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="429" y="0" width="143" height="20" uuid="e42c9440-b7e4-4110-9251-be8a62a2e03a"/>
+				<textFieldExpression><![CDATA[$F{esta_mant_prev}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="13" y="34" width="138" height="20" uuid="d6e22d3c-8eb1-42fa-8413-f8c8ab38803d"/>
+				<text><![CDATA[Instituto Técnico Ricaldone]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="455" y="34" width="100" height="20" uuid="27c7c3e2-2949-4a7e-9a4a-621ef2c8589f"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="13" y="30" width="542" height="1" uuid="ce107a0b-f68c-430e-98ca-6390abd0f590"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
