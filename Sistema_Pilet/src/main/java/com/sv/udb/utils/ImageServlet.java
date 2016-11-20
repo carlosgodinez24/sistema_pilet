@@ -53,10 +53,10 @@ public class ImageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filename = request.getPathInfo().substring(1);
+        String filename = request.getParameter("img");
         //String ruta ="C:/Users/Ariel/Desktop/becas/";    
         //String ruta = "/home/eduardo/Escritorio/asd/";
-        String ruta ="C:/DocuBecas";
+        String ruta = getServletContext().getInitParameter("docBecas.URL");
         /*DocumentoBean docu= new DocumentoBean();
         String ruta = docu.getUrl();*/
         

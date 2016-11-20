@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.DetalleFacadeLocal;
 import com.sv.udb.ejb.OpcionFacadeLocal;
 import com.sv.udb.modelo.Opcion;
+import com.sv.udb.modelo.OpcionRespuesta;
 import com.sv.udb.utils.DynamicField;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,6 +50,8 @@ public class DinamicoBean implements Serializable{
     @EJB
     private OpcionFacadeLocal FCDEOpci;
     private List<Opcion> listOpci;
+//     private List<OpcionRespuesta> listOpci;
+    
     
 
     
@@ -73,19 +76,31 @@ public class DinamicoBean implements Serializable{
         this.mapa = new HashMap<>();
         //Agrega un elemento
         consTodo();
-       
-        for (int i = 0; i <this.listOpci.size() ; i++) {
-             Opcion opci =this.listOpci.get(i);
-             this.mapa.put("elem"+(i+1), null);
-             
-            this.listCmps.add(new DynamicField(opci.getTituOpci(), "elem"+(i+1), this.listOpci.get(i), opci.getCodiEstr().getTipoEstr()));
+        for(Opcion temp : this.listOpci)
+        {
+            String codiDina = String.format("Dina%s", String.valueOf(temp.getCodiOpci()));
+            this.mapa.put(codiDina, null);
+            Map<Object, Object> listOpciTemp = null;
+            if(temp.getCodiEstr().getTipoEstr().equals("SELECT") || 
+                    temp.getCodiEstr().getTipoEstr().equals("SELECTMANYCHECKBOX"))
+            {
+                listOpciTemp = new HashMap<>();
+                for(OpcionRespuesta tempOR : temp.getOpcionRespuestaList())
+                {
+                    if(tempOR.getEstaOpci() == 1)
+                    {
+                        listOpciTemp.put(tempOR.getCodiOpciResp(), tempOR.getDescOpci());
+                    }
+                }
+            }
+            this.listCmps.add(new DynamicField(temp.getTituOpci(), codiDina, listOpciTemp, temp.getCodiEstr().getTipoEstr()));
         }
-        
-
-        
-        
-        
-        
+       
+//        for (int i = 0; i <this.listOpci.size() ; i++) {
+//             Opcion opci =this.listOpci.get(i);
+//             this.mapa.put("elem"+(i+1), null);             
+//            this.listCmps.add(new DynamicField(opci.getTituOpci(), "elem"+(i+1), this.listOpci.get(i), opci.getCodiEstr().getTipoEstr()));
+//        }
         
         /*
         this.mapa.put("elem1", "");
@@ -137,16 +152,34 @@ public class DinamicoBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            
-              for (int i = 0; i <this.listOpci.size() ; i++) {
-                  
-                  
-                  String valor1 = (String)this.mapa.get("elem"+(i+1));
-                  System.out.println(valor1);
-                  
-                  /*Object[] valor4 = (Object[])this.mapa.get("elem"+(i+1));
-                   System.out.println(valor4[0]);*/
+            for(DynamicField temp:this.listCmps)
+            {
+                String valor = "";
+                Integer codiDinaDb = Integer.parseInt(temp.getFieldKey().replace("Dina", ""));
+                if(temp.getType().equals("SELECTMANYCHECKBOX"))
+                {
+                    String respArray = "";
+                    for(Object tempResp : (Object[])this.mapa.get(temp.getFieldKey()))
+                    {
+                        respArray = respArray + "-" + tempResp;
+                    }
+                    respArray = respArray.trim();
+                    valor = "id: " + codiDinaDb + " === valor: " + respArray;
                 }
+                else
+                {
+                    valor = "id: " + codiDinaDb + " === valor: " + this.mapa.get(temp.getFieldKey());
+                }
+                System.err.println(valor);
+            }
+//              for (int i = 0; i <this.listOpci.size() ; i++) {                 
+//                  
+//                  String valor1 = (String)this.mapa.get("elem"+(i+1));
+//                  System.out.println(valor1);
+//                  
+//                  /*Object[] valor4 = (Object[])this.mapa.get("elem"+(i+1));
+//                   System.out.println(valor4[0]);*/
+//                }
             
             /*
             String valor1 = (String)this.mapa.get("elem1");
