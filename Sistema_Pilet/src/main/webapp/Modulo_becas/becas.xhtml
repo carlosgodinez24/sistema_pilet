@@ -17,7 +17,7 @@ and open the template in the editor.
         <!-- Título de la página -->
         <ui:param name="pageTitl" value="::: Página Solicitud Beca :::"/>
         <ui:param name="pageNomb" value="Página Solicitud Beca"/>
-        <ui:param name="pageDesc" value="Mantenimiento de Solicitud Beca"/>
+        <ui:param name="pageDesc" value="Mantenimiento de Solicitud Beca"/> 
         <!-- Activar el link del menú -->
         <ui:param name="actiMenu1" value=""/>
         <ui:param name="actiAlumnos" value="active"/>
@@ -68,108 +68,60 @@ and open the template in the editor.
                 
                 padding-left: 2cm;
             }
-            .block-update-card {
-  height: 100%;
-  border: 1px #FFFFFF solid;
-  width: 380px;
-  float: left;
-  margin-left: 10px;
-  margin-top: 0;
-  padding: 0;
-  box-shadow: 1px 1px 8px #d8d8d8;
-  background-color: #FFFFFF;
+
+
+/*Business Card Css */
+.business-card {
+  border: 1px solid #cccccc;
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
-.block-update-card .h-status {
-  width: 100%;
-  height: 7px;
-  background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);
+.profile-img {
+  height: 350px;
+  background: white;
 }
-.block-update-card .v-status {
-  width: 5px;
-  height: 80px;
-  float: left;
-  margin-right: 5px;
-  background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);
+.job {
+  color: #666666;
+  font-size: 17px;
 }
-.block-update-card .update-card-MDimentions {
-  width: 80px;
-  height: 80px;
+.mail {
+  font-size: 16px;
+ }
+ 
+ /*otro ejemplo xD*/
+ .panel.panel--styled {
+    background: #F4F2F3;
 }
-.block-update-card .update-card-body {
-  margin-top: 10px;
-  margin-left: 5px;
-}
-.block-update-card .update-card-body h4 {
-  color: #737373;
-  font-weight: bold;
-  font-size: 13px;
-}
-.block-update-card .update-card-body p {
-  color: #737373;
-  font-size: 12px;
-}
-.block-update-card .card-action-pellet {
-  padding: 5px;
-}
-.block-update-card .card-action-pellet div {
-  margin-right: 10px;
-  font-size: 15px;
-  cursor: pointer;
-  color: #dddddd;
-}
-.block-update-card .card-action-pellet div:hover {
-  color: #999999;
-}
-.block-update-card .card-bottom-status {
-  color: #a9a9aa;
-  font-weight: bold;
-  font-size: 14px;
-  border-top: #e0e0e0 1px solid;
-  padding-top: 5px;
-  margin: 0px;
-}
-.block-update-card .card-bottom-status:hover {
-  background-color: #dd4b39;
-  color: #FFFFFF;
-  cursor: pointer;
+.panelTop {
+    padding: 30px;
 }
 
-/*
-Creating a block for social media buttons
-*/
-.card-body-social {
-  font-size: 30px;
-  margin-top: 10px;
+.panelBottom {
+    border-top: 1px solid #e7e7e7;
+    padding-top: 20px;
 }
-.card-body-social .git {
-  color: black;
-  cursor: pointer;
-  margin-left: 10px;
+.btn-add-to-cart {
+    background: #FD5A5B;
+    color: #fff;
 }
-.card-body-social .twitter {
-  color: #19C4FF;
-  cursor: pointer;
-  margin-left: 10px;
+.btn.btn-add-to-cart.focus, .btn.btn-add-to-cart:focus, .btn.btn-add-to-cart:hover  {
+	color: #fff;   
+    background: #FD7172;
+	outline: none;
 }
-.card-body-social .google-plus {
-  color: #DD4B39;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.card-body-social .facebook {
-  color: #49649F;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.card-body-social .linkedin {
-  color: #007BB6;
-  cursor: pointer;
-  margin-left: 10px;
+.btn-add-to-cart:active {
+	background: #F9494B;
+	outline: none;
 }
 
-.music-card {
-  background-color: green;
+
+span.itemPrice {
+    font-size: 24px;
+    color: #FA5B58;
 }
+
         </style>
             <div class="row">
                 <h:panelGroup id="container">
@@ -244,7 +196,7 @@ Creating a block for social media buttons
                             </div>
                         </fieldset>
                     </ui:fragment>
-                    <ui:fragment id="FragCarnet" rendered="#{becasBean.showCarn == true and becasBean.showFich == false}">                    
+                    <ui:fragment id="FragCarnet" rendered="#{becasBean.showCarn == true and becasBean.showFich == false and becasBean.showEmpr==false}">                    
                         <h:form class="form-horizontal">
                             <fieldset>
                                 <div class="col-md-12 col-xs-12">  
@@ -271,25 +223,79 @@ Creating a block for social media buttons
                             </fieldset>
                           </h:form>
                     </ui:fragment>
-                    <ui:fragment id="FragFicha" rendered="#{becasBean.showFich}">                    
-                        <h:form id="FormRegi" class="form-horizontal">
+                    <ui:fragment id="FragFicha" rendered="#{becasBean.showFich  == true and becasBean.showEmpr==false}">                    
+                        <h:form class="form-horizontal">
                             <fieldset>
-                                <div class="col-md-12 col-xs-12">  
-                                    <div class="panel panel-primary">
-                                          Carnet: #{becasBean.objeSoli.carnAlum}
-                                            Nombre: #{becasBean.objeSoli.nombAlum}                            
-                                            Grado: #{becasBean.objeSoli.codiGrad.nombGrad}
-                                            Especialidad: #{becasBean.objeSoli.espeAlum}
-                                            Grupo: #{becasBean.objeSoli.grupAlum}
-                                            Sección academica: #{becasBean.objeSoli.seccAcad}
-                                            Seccion tecnica : #{becasBean.objeSoli.seccTecn}
-                                        
-                                    </div>
+                                <div class="col-md-12">  
+                                    
+                                            <div class="panel panel-default  panel--styled">
+                                                <div class="panel-body">
+                                                        <div class="col-md-12 panelTop">	
+                                                                <div class="col-md-4">	
+                                                                        <img class="img-responsive media-object img-circle profile-img" src="http://placehold.it/350x350" alt=""/>
+                                                                </div>
+                                                                <div class="col-md-8">	
+                                                                     <h2 class="media-heading"> #{becasBean.objeSoli.nombAlum}</h2>
+                                                                    <div class="job">Carnet: #{becasBean.objeSoli.carnAlum}</div>
+                                                                    <div class="job">Grado: #{becasBean.objeSoli.codiGrad.nombGrad}</div>                                                            
+                                                                    <div class="job">Especialidad: #{becasBean.objeSoli.espeAlum}</div>
+                                                                    <div class="job">Grupo: #{becasBean.objeSoli.grupAlum}</div>
+                                                                    <div class="job">Sección academica:   #{becasBean.objeSoli.seccAcad}</div>
+                                                                    <div class="job">Seccion tecnica :  #{becasBean.objeSoli.seccTecn}</div>
+                                                                    <h5>Matricula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
+                                                                    <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>                                                     
+                                                                </div>
+                                                        </div>						
+                                                        <div class="col-md-12 panelBottom">
+                                                                <h:commandLink id="btonCarn" class="btn btn-lg btn-add-to-cart">
+                                                                           <p:ajax listener="#{becasBean.toogEmpr()}" process="@form"  update="@form :container" global="true"/>
+                                                                           Agregar nueva solicitud
+                                                                           <i class="fa fa-plus"/>
+                                                                 </h:commandLink>
+                                                                <div class="col-md-4 text-left">								
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                        </div>
                                 </div>
                             </fieldset>
 
                          </h:form>
                     </ui:fragment>
+                     <ui:fragment id="FragSeleEmpr" rendered="#{becasBean.showEmpr}">
+                         <h:form class="form-horizontal">
+                            <fieldset>
+                                <div class="col-md-12 col-xs-12">  
+                                   <div class="panel panel-primary">
+                                       <div class="panel-heading">Nueva solicitud</div>
+                                       <div class="panel-body">
+                                           <fieldset>                                
+                                                   <h:outputLabel  for="empresa" value="Seleccione la empresa que patrocinara al estudiante "/>
+                                                   <div class="input-group col-xs-6">                                                    
+                                                       <h:message for="empresa" errorClass="field-error" />                                                    
+                                                       
+                                                       <h:selectOneMenu id="empresa" value="#{becaSoliBean.objeSoli.codiEmpr}" class="form-control input-lg" pt:data-live-search="true">
+                                                        <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                        <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
+                                                        <f:converter converterId="PooConv"/>
+                                                    </h:selectOneMenu>
+
+                                                       
+                                                       <span class="input-group-addon">
+                                                           <h:commandLink id="btonCarn" class="btn btn-default">
+                                                                   <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" global="true"/>
+                                                                   <i class="fa fa-plus"/>
+                                                           </h:commandLink>
+                                                       </span>
+
+                                                   </div>                                                                            
+                                           </fieldset>                               
+                                       </div>
+                                     </div>   
+                                   </div>
+                            </fieldset>
+                          </h:form>
+                     </ui:fragment>
                 </h:panelGroup>
             </div>
         </ui:define>

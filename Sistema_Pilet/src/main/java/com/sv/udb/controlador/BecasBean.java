@@ -8,6 +8,7 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.BecaFacadeLocal;
 import com.sv.udb.ejb.DetalleBecaFacadeLocal;
+import com.sv.udb.ejb.GradoFacadeLocal;
 import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
 import com.sv.udb.ejb.TipoBecaFacadeLocal;
 import com.sv.udb.modelo.Beca;
@@ -47,6 +48,9 @@ import org.primefaces.context.RequestContext;
 @Named(value = "becasBean")
 @ViewScoped
 public class BecasBean implements Serializable{
+
+    @EJB
+    private GradoFacadeLocal FCDEGrado;
 
      @EJB
     private TipoBecaFacadeLocal FCDETipoBeca;
@@ -515,8 +519,8 @@ public class BecasBean implements Serializable{
                 this.objeSoli.setCarnAlum(carnet.trim());
                 this.objeSoli.setNombAlum(resp.getNomb());;
                 Grado grad = new Grado();
-                String cortado= resp.getGrad().substring(0,1);
-                grad.setCodiGrad(Integer.parseInt(cortado));
+                String cortado= resp.getGrad().substring(0,1);                
+                grad=FCDEGrado.find(Integer.parseInt(cortado));   
                 this.objeSoli.setCodiGrad(grad);
                 this.objeSoli.setFotoAlum(resp.getFoto());
                 this.objeSoli.setEspeAlum(resp.getEspe());
@@ -524,6 +528,7 @@ public class BecasBean implements Serializable{
                 this.objeSoli.setSeccAcad(resp.getSeccAcad());
                 this.objeSoli.setSeccTecn(resp.getSeccTecn());                
                 this.toogFich();
+                
                 if(resp.getNomb() == null || resp.getNomb().equals(""))
                 {
                     ctx.execute("setMessage('MESS_WARN', 'Atención', 'Alumno no encontrado.')");
@@ -547,6 +552,7 @@ public class BecasBean implements Serializable{
     
     private boolean showCarn=false;
     private boolean showFich=false;
+    private boolean showEmpr=false;
     
     public boolean isShowCarn() {
         return showCarn;
@@ -554,10 +560,18 @@ public class BecasBean implements Serializable{
     public boolean isShowFich() {
         return showFich;
     }
-    
+     public boolean isShowEmpr() {
+        return showEmpr;
+    }
+    public void toogEmpr()
+    {
+        this.showEmpr = !this.showEmpr;
+              
+    }  
     public void toogFich()
     {
         this.showFich = !this.showFich;
+        
     }       
     public void toogCarn()
     {
