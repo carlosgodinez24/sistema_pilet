@@ -33,17 +33,16 @@ and open the template in the editor.
             <div class="row RegDiv">
                 <div class="col-md-12 col-xs-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Reportes control de citas</div>
+                        <div class="panel-heading">Reportes de beca</div>
                         <div class="panel-body">                            
                             <h:form id="FormVisorPdfJs"> 
                                 <p:accordionPanel activeIndex="-1">
-                                    <p:tab title="Estadisticas citas">
+                                    <p:tab title="donaciones canceladas">
                                         <h:panelGrid columns="10" cellpadding="10">
-
-                                            <h:outputLabel  for="anioCitas" value="Ingrese el año: "/>
-                                            <p:inputMask style="float: right; width: 70%;" id="anioCitas" value="#{reportesBean.anioCitas}" mask="9999" class="form-control"/>
+                                            <h:outputLabel  for="donacionescanceladas" value="Ingrese el año: "/>
+                                            <p:inputMask style="float: right; width: 70%;" id="donacionescanceladas" value="#{reportesBean.donacionescanceladas}" mask="9999" class="form-control"/>
                                             <h:commandLink style="float: right; width: 100%;" id="btonRepo" class="btn btn-success" rendered="#{true}">
-                                                <p:ajax listener="#{reportesBean.procCita()}" process="@form" update="@form" />
+                                                <p:ajax listener="#{reportesBean.donacionescanceladas()}" process="@form" update="@form" />
                                                 <i class="fa fa-print"/> Procesar Reporte
                                             </h:commandLink>
                                             <br/><br/>
@@ -52,26 +51,77 @@ and open the template in the editor.
                                         <cs:PdfViewer id="demo" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>     
                                     </p:tab> 
                                     
-                                    <p:tab title="Estadisticas visitas">
+                                    <p:tab title="donaciones activas">
                                     <h:panelGrid columns="10" cellpadding="10">
-                                        <h:outputLabel  for="anioVisi" value="Ingrese el año: "/>
-                                        <p:inputMask style="float: right; width: 70%;" id="anioVisi" value="#{reportesBean.anioVisi}" mask="9999" class="form-control"/>
+                                        <h:outputLabel  for="donacionesactivas" value="Ingrese el año: "/>
+                                        <p:inputMask style="float: right; width: 70%;" id="donacionesactivas" value="#{reportesBean.donacionesactivas}" mask="9999" class="form-control"/>
                                         <h:commandLink style="float: right; width: 100%;" id="btonRepo1" class="btn btn-success" rendered="#{true}">
-                                            <p:ajax listener="#{reportesBean.procVisi()}" process="@form" update="@form" />
+                                            <p:ajax listener="#{reportesBean.donacionesactivas()}" process="@form" update="@form" />
                                             <i class="fa fa-print"/> Procesar Reporte
                                         </h:commandLink>
                                         <br/><br/>
                                         <br/><br/> 
                                     </h:panelGrid>
                                         <cs:PdfViewer id="demo1" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>     
-
                                 </p:tab>
                                     
+                                    <p:tab title=" General becas ">
+                                    <h:panelGrid columns="10" cellpadding="10">
+                                        <h:outputLabel  for="Generalbecas" value="Ingrese el año: "/>
+                                        <p:inputMask style="float: right; width: 70%;" id="Generalbecas" value="#{reportesBean.Generalbecas}" mask="9999" class="form-control"/>
+                                        <h:commandLink style="float: right; width: 100%;" id="btonRepo1" class="btn btn-success" rendered="#{true}">
+                                            <p:ajax listener="#{reportesBean.Generalbecas()}" process="@form" update="@form" />
+                                            <i class="fa fa-print"/> Procesar Reporte
+                                        </h:commandLink>
+                                        <br/><br/>
+                                        <br/><br/> 
+                                    </h:panelGrid>
+                                        <cs:PdfViewer id="demo1" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>     
+                                </p:tab>
+                                    
+                                    <p:tab title=" Patrocinador ">
+                                    <h:panelGrid columns="10" cellpadding="10">
+                                        <h:outputLabel  for="patrocinador" value="Ingrese el año: "/>
+                                        <p:inputMask style="float: right; width: 70%;" id="patrocinador" value="#{reportesBean.patrocinador}" mask="9999" class="form-control"/>
+                                        <h:commandLink style="float: right; width: 100%;" id="btonRepo1" class="btn btn-success" rendered="#{true}">
+                                            <p:ajax listener="#{reportesBean.patrocinador()}" process="@form" update="@form" />
+                                            <i class="fa fa-print"/> Procesar Reporte
+                                        </h:commandLink>
+                                        <br/><br/>
+                                        <br/><br/> 
+                                    </h:panelGrid>
+                                        <cs:PdfViewer id="demo1" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>     
+                                </p:tab>
+                                    
+                                    <p:tab title="Complementos de beca">
+                                    <h:panelGrid columns="10" cellpadding="10">
+                                        <h:outputLabel  for="Complementosdebeca" value="Ingrese el año: "/>
+                                        <p:inputMask style="float: right; width: 70%;" id="Complementosdebeca" value="#{reportesBean.Complementosdebeca}" mask="9999" class="form-control"/>
+                                        <h:commandLink style="float: right; width: 100%;" id="btonRepo1" class="btn btn-success" rendered="#{true}">
+                                            <p:ajax listener="#{reportesBean.Complementosdebeca()}" process="@form" update="@form" />
+                                            <i class="fa fa-print"/> Procesar Reporte
+                                        </h:commandLink>
+                                        <br/><br/>
+                                        <br/><br/> 
+                                    </h:panelGrid>
+                                        <cs:PdfViewer id="demo1" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>     
+                                </p:tab>
+                                    
+                                    <p:tab title=" Filtrobeca ">
+                                    <h:panelGrid columns="10" cellpadding="10">
+                                        <h:outputLabel  for="Filtrobeca" value="Ingrese el año: "/>
+                                        <p:inputMask style="float: right; width: 70%;" id="Filtrobeca" value="#{reportesBean.Filtrobeca}" mask="9999" class="form-control"/>
+                                        <h:commandLink style="float: right; width: 100%;" id="btonRepo1" class="btn btn-success" rendered="#{true}">
+                                            <p:ajax listener="#{reportesBean.Filtrobeca()}" process="@form" update="@form" />
+                                            <i class="fa fa-print"/> Procesar Reporte
+                                        </h:commandLink>
+                                        <br/><br/>
+                                        <br/><br/> 
+                                    </h:panelGrid>
+                                        <cs:PdfViewer id="demo1" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>     
+                                </p:tab> 
                                 </p:accordionPanel>
                             </h:form>
-                            
-                            
-                            
                         </div>
                     </div>
                 </div>
