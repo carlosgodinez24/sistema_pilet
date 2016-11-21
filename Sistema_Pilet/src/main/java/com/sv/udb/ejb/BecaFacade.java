@@ -6,6 +6,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Beca;
+import com.sv.udb.modelo.SolicitudBeca;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,6 +30,14 @@ public class BecaFacade extends AbstractFacade<Beca> implements BecaFacadeLocal 
 
     public BecaFacade() {
         super(Beca.class);
+    }
+    
+    @Override
+    public Beca findLast()
+    {
+        Query q = getEntityManager().createNativeQuery("select * from beca order by beca.fech_inic DESC limit 1", Beca.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (Beca)resu.get(0);
     }
     
     @Override

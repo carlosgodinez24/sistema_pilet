@@ -104,15 +104,12 @@ public class DetalleBecaBean implements Serializable{
         this.objeDetaBeca = new DetalleBeca();
         this.vali = new DetalleBeca();
         this.guardar = true;
-        this.consTodo();
-        
+        this.consTodo();        
         if( FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean") != null)
         {
-            BecaSoliBean asd = (BecaSoliBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean");
-           Beca a = new Beca();
-         
-            this.objeDetaBeca.setCodiBeca(asd.getObjeBeca());
-            System.out.println(this.objeDetaBeca.getCodiBeca().getCodiBeca());
+           BecaSoliBean asd = (BecaSoliBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean");
+           Beca a = new Beca();         
+          this.objeDetaBeca.setCodiBeca(asd.getObjeBeca());
         }
          
     }

@@ -332,9 +332,11 @@ public class DocumentoBean implements Serializable{
             
             this.listNombFile = new ArrayList<>();
             this.rutas = new ArrayList<>();
-            //String ruta ="C:/Users/Ariel/Desktop/becas/";    
+            String ruta ="C:/Users/Ariel/Desktop/becas/";    
             //String ruta = "/home/eduardo/Escritorio/asd/";
-            String ruta = "/Users/Kevin/Desktop";
+            //String ruta = "/Users/Kevin/Desktop";
+            
+            
            rutas.add(ruta);
            DireActuInde = 0;
           this.consTodo("");
@@ -379,7 +381,7 @@ public class DocumentoBean implements Serializable{
                         try{
                             theDir.mkdir();
                             result = true;
-                            this.listNombFile.add(new Archivo(carnet,"folder"  ));
+                           
                         } 
                         catch(SecurityException se){
                             //handle it
@@ -423,12 +425,6 @@ public class DocumentoBean implements Serializable{
         try {
             if(item.getName().equals(file.getName()))
             {
-                
-                System.out.println(item.getSubmittedFileName());
-                
-                                System.out.println(item.getContentType());
-                                
-                                
                  this.listNombFile.add(new Archivo(
                         item.getSubmittedFileName(),
                         item.getInputStream(),

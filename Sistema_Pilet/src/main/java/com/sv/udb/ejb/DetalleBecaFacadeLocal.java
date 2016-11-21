@@ -5,6 +5,7 @@
  */
 package com.sv.udb.ejb;
 
+import com.sv.udb.modelo.Detalle;
 import com.sv.udb.modelo.DetalleBeca;
 import java.util.List;
 import javax.ejb.Local;
@@ -25,6 +26,8 @@ public interface DetalleBecaFacadeLocal {
     DetalleBeca find(Object id);
 
     List<DetalleBeca> findAll();
+    
+     List<DetalleBeca> findByBeca(Object id);
     
     List<DetalleBeca> findForCombo(Object id);
 

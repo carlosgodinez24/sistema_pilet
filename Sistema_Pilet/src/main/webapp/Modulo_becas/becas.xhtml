@@ -31,7 +31,7 @@ and open the template in the editor.
         <h:outputStylesheet library="css" name="bootstrap-select.css"/>
         <h:outputScript library="js" name="bootstrap-select.js"/>
         <!--Plugins custom-->
-        <h:outputScript library="js" name="custom/general.js"/>
+        <h:outputScript library="js" name="custom/becas.js"/>
         <ui:define name="CustomScripts">
         <!--Plugins custom-->
         <h:outputScript library="js" name="custom/slid.js"/>
@@ -125,7 +125,7 @@ span.itemPrice {
         </style>
             <div class="row">
                 <h:panelGroup id="container">
-                    <ui:fragment id="FragTabl" rendered="#{becasBean.showCarn == false and becasBean.showFich == false}">
+                    <ui:fragment id="FragTabl" rendered="#{becasBean.guardar}">
                         <fieldset>
                             <div class="col-md-12 col-xs-12">
                                 <div class="panel panel-default">
@@ -135,7 +135,9 @@ span.itemPrice {
                                             <div id="toolTablRegi">
                                                 <h:form>
                                                     <!--Form exclusivo para los remotos-->
-
+                                                      <p:remoteCommand name="consObje" actionListener="#{becasBean.cons()}" oncomplete="INIT_OBJE();" update="@form :container"
+                                                                global="true"/>
+                                                    
                                                     <div class="btn-group">
                                                         <h:commandLink id="btonTabl" class="btn btn-success">
                                                             <p:ajax listener="#{becasBean.toogCarn()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
@@ -223,7 +225,7 @@ span.itemPrice {
                             </fieldset>
                           </h:form>
                     </ui:fragment>
-                    <ui:fragment id="FragFicha" rendered="#{becasBean.showFich  == true and becasBean.showEmpr==false}">                    
+                    <ui:fragment id="FragFicha" rendered="#{(becasBean.showFich  == true and becasBean.showEmpr==false) or becasBean.guardar==false}">                    
                         <h:form class="form-horizontal">
                             <fieldset>
                                 <div class="col-md-12">  
@@ -236,6 +238,18 @@ span.itemPrice {
                                                                 </div>
                                                                 <div class="col-md-8">	
                                                                      <h2 class="media-heading"> #{becasBean.objeSoli.nombAlum}</h2>
+                                                                     <c:if test="#{!becasBean.guardar}">
+                                                                         <h3 class="media-heading">Estado:</h3>
+                                                                         <h:panelGroup class="label label-success" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 1}">
+                                                                            <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                                            <h:panelGroup class="label label-info" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 3}">
+                                                                            <i class="fa fa-unlock"/> Historial</h:panelGroup>
+                                                                            <h:panelGroup class="label label-danger" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta== 2}">
+                                                                            <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                                                            <h:panelGroup class="label label-warning" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta ==4}">
+                                                                            <i/> Evaluando
+                                                                        </h:panelGroup>
+                                                                     </c:if>
                                                                     <div class="job">Carnet: #{becasBean.objeSoli.carnAlum}</div>
                                                                     <div class="job">Grado: #{becasBean.objeSoli.codiGrad.nombGrad}</div>                                                            
                                                                     <div class="job">Especialidad: #{becasBean.objeSoli.espeAlum}</div>
@@ -247,11 +261,31 @@ span.itemPrice {
                                                                 </div>
                                                         </div>						
                                                         <div class="col-md-12 panelBottom">
+                                                            
+                                                            
+                                                             <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 4}">
+                                                                <h:commandLink id="btonActi" class="btn btn-info" rendered="#{!becaSoliBean.detalle}">
+                                                                    <p:ajax listener="#{becaSoliBean.reActi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                    <i class="fa fa-edit"/> Activar
+                                                                </h:commandLink>
+                                                             </c:if>
+                                                             <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta != 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta != 4}">
+                                                                <h:commandLink id="btondesa" class="btn btn-primary" rendered="#{!becaSoliBean.guardar}">
+                                                                    <p:ajax listener="#{becaSoliBean.desa()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                    <i class="fa fa-edit"/> Desactivar Beca
+                                                                </h:commandLink>
+                                                                
+
+                                                             </c:if>
+                                                            
+                                                            <c:if test="#{becasBean.guardar}">
                                                                 <h:commandLink id="btonCarn" class="btn btn-lg btn-add-to-cart">
                                                                            <p:ajax listener="#{becasBean.toogEmpr()}" process="@form"  update="@form :container" global="true"/>
                                                                            Agregar nueva solicitud
                                                                            <i class="fa fa-plus"/>
                                                                  </h:commandLink>
+                                                            </c:if>
+                                                                
                                                                 <div class="col-md-4 text-left">								
                                                                 </div>
                                                         </div>
@@ -261,6 +295,111 @@ span.itemPrice {
                             </fieldset>
 
                          </h:form>
+                        
+                        <c:if test="#{!becasBean.guardar}">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Tipos de beca que poseé este alumno</div>
+                                    <div class="panel-body">
+                                        <h:panelGroup id="ContDetalle">
+                                            <div id="toolTablDetalle">
+                                                <h:form>
+                                                    
+                                                    
+                                                    
+                                                </h:form>
+                                            </div>
+                                            <h:dataTable pt:data-id="TablDetalle" id="TablDetalle" value="#{becasBean.listDetaBeca}"
+                                                         var="fila" class="boottable" pt:data-toolbar="#toolTablDetalle"
+                                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                         pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                         pt:data-single-select="true">                                
+                                                <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                </h:column>
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idTipoBeca">
+                                                    <f:facet name="header">Código</f:facet>
+                                                    <h:outputText value="#{fila.codiDetaBeca}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="nombTipoBeca">
+                                                    <f:facet name="header">Becado</f:facet>
+                                                    <h:outputText value="#{fila.codiBeca.codiSoliBeca.nombAlum}"/>   
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Tipo Beca</f:facet>
+                                                    <h:outputText value="#{fila.codiTipoBeca.nombTipoBeca}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Meses</f:facet>
+                                                    <h:outputText value="#{fila.cantMese}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Estado</f:facet> 
+                                                    <h:panelGroup class="label label-success" rendered="#{fila.estaDetaBeca eq '1'}">
+                                                   <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                    <h:panelGroup class="label label-danger" rendered="#{fila.estaDetaBeca ne '1'}">
+                                                   <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                                </h:column>
+                                            </h:dataTable>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Documentos que poseé este alumno</div>
+                                    <div class="panel-body">
+                                        <h:panelGroup id="ContDocu">
+                                            <div id="toolTablDocu">
+                                                <h:form id="FormDocus" class="form-horizontal" enctype="multipart/form-data">
+                                                    <!--Form exclusivo para los remotos-->
+
+                                                </h:form>
+                                            </div>
+                                            <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{becasBean.listDocu}"
+                                                         var="fila" class="boottable" pt:data-toolbar="#toolTablDocu"
+                                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                         pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                         pt:data-single-select="true">                                
+                                                <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                </h:column>
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idDocu">
+                                                    <f:facet name="header">Código</f:facet>
+                                                    <h:outputText value="#{fila.codiDocu}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Nombre</f:facet>
+                                                    <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true"  pt:data-field="tipoDocu">
+                                                    <f:facet name="header">Tipo documento</f:facet>
+                                                    <h:outputText value="#{fila.codiTipoDocu.nombTipoDocu}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="fechDocu">
+                                                    <f:facet name="header">Fecha </f:facet>
+                                                     <h:outputText value="#{fila.fechDocu}">
+                                                       <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    </h:outputText>
+                                                </h:column>
+
+                                                <h:column pt:data-sortable="true" pt:data-field="ruta">
+                                                    <f:facet name="header">Ruta </f:facet>
+                                                    <h:outputText value="#{fila.rutaDocu}">
+                                                       <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    </h:outputText>
+                                                </h:column>
+                                            </h:dataTable>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </c:if>
                     </ui:fragment>
                      <ui:fragment id="FragSeleEmpr" rendered="#{becasBean.showEmpr}">
                          <h:form class="form-horizontal">
@@ -274,19 +413,20 @@ span.itemPrice {
                                                    <div class="input-group col-xs-6">                                                    
                                                        <h:message for="empresa" errorClass="field-error" />                                                    
                                                        
-                                                       <h:selectOneMenu id="empresa" value="#{becaSoliBean.objeSoli.codiEmpr}" class="form-control input-lg" pt:data-live-search="true">
-                                                        <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                       <h:selectOneMenu id="empresa" value="#{becasBean.objeSoli.codiEmpr}" class="form-control input-lg" pt:data-live-search="true">                                                       
                                                         <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                         <f:converter converterId="PooConv"/>
-                                                    </h:selectOneMenu>
-
+                                                         </h:selectOneMenu>
+                                                       <c:if test="#{becasBean.guardar}">
+                                                           <span class="input-group-addon">
+                                                                <h:commandLink id="btonCarn" class="btn btn-default">
+                                                                        <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" global="true"/>
+                                                                        <i class="fa fa-plus"/>
+                                                                </h:commandLink>
+                                                            </span>
                                                        
-                                                       <span class="input-group-addon">
-                                                           <h:commandLink id="btonCarn" class="btn btn-default">
-                                                                   <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" global="true"/>
-                                                                   <i class="fa fa-plus"/>
-                                                           </h:commandLink>
-                                                       </span>
+                                                       </c:if>
+                                                       
 
                                                    </div>                                                                            
                                            </fieldset>                               

@@ -80,7 +80,7 @@ public class SolicitudBeca implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "fech_soli_beca")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechSoliBeca;
     @Basic(optional = false)
     @NotNull

@@ -5,6 +5,7 @@
  */
 package com.sv.udb.ejb;
 
+import com.sv.udb.modelo.Detalle;
 import com.sv.udb.modelo.DetalleBeca;
 import java.util.Arrays;
 import java.util.List;
@@ -57,6 +58,15 @@ public class DetalleBecaFacade extends AbstractFacade<DetalleBeca> implements De
         return Integer.parseInt(String.valueOf(q.getSingleResult()));
     }
     
+      
+    @Override
+    public List<DetalleBeca> findByBeca(Object id) {
+        String query="select*from detalle_beca where detalle_beca.codi_beca = ?1";
+         Query q = getEntityManager().createNativeQuery(query,DetalleBeca.class);
+        q.setParameter(1, id);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
     @Override
     public void desa_deta(int codi_beca)
     {
