@@ -215,12 +215,9 @@ public class BecasBean implements Serializable{
         this.guardar = true;
         this.objeBeca = new Beca();
         this.consTodo();
-        this.consTodoH();
-        if (this.objeSoli.getCodiSoliBeca() != null) {
-            DetalleBecaBean asd = (DetalleBecaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("detalleBecaBean");
-            /*asd.setObjeCombPadr(objeSoli);
-            asd.onAlumBecaSelect();*/
-        }
+        this.consTodoH();        
+        initDetalle();
+        initDocus();      
         
     }
     
@@ -284,16 +281,11 @@ public class BecasBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            //this.listSoli.remove(this.objeSoli); //Limpia el objeto viejo
-            System.out.println(this.objeSoli);
-            System.out.println(this.objeSoli.getNombAlum());
             objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());
-            System.out.println(this.objeSoli2.getNombAlum());
             this.objeBeca = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());
             this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
             this.listSoli.remove(this.objeSoli);
             this.objeSoli2.setEstaSoliBeca(3);
-            //objeSoli.setBecaList(null);
             FCDESoli.edit(objeSoli2);
             this.listSoli.add(objeSoli2);
             this.objeSoli.setEstaSoliBeca(1);
@@ -304,17 +296,14 @@ public class BecasBean implements Serializable{
             es.setCodiTipoEsta(3);
             this.objeBeca2.setCodiTipoEsta(es);
             this.objeBeca2.setFechBaja(new Date());
-            FCDEBeca.edit(objeBeca2);
-            //this.listBeca.add(objeBeca2);
+            FCDEBeca.edit(objeBeca2);            
             this.objeSoli = FCDESoli.findLast();
-            System.out.println(this.objeSoli.getCodiSoliBeca());
+            this.objeSoli.setFechSoliBeca(new Date());
             this.objeBeca.setCodiSoliBeca(objeSoli);
             es.setCodiTipoEsta(this.objeSoli.getEstaSoliBeca());
             this.objeBeca.setCodiTipoEsta(es);
             FCDEBeca.create(objeBeca);
             this.listBeca.add(objeBeca);
-            //FCDESoli.edit(this.objeSoli);
-            //this.listSoli.add(this.objeSoli); //Agrega el objeto modificado
             this.consTodoH();
             this.consTodo();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
@@ -341,11 +330,13 @@ public class BecasBean implements Serializable{
             //this.listBeca.remove(this.objeBeca);
             this.objeSoli2 = this.objeSoli;
             this.objeSoli.setEstaSoliBeca(3);
-            FCDESoli.edit(objeSoli);              //edita
+            FCDESoli.edit(objeSoli);     
+             this.objeBeca = FCDEBeca.find(objeSoli.getCodiSoliBeca());
             this.objeBeca2 = this.objeBeca;
             TipoEstado esta = new TipoEstado();
             esta.setCodiTipoEsta(3);
             this.objeBeca.setCodiTipoEsta(esta);
+            System.out.println(objeBeca.getCodiSoliBeca().getNombAlum());
             FCDEBeca.edit(objeBeca);                          
             this.objeSoli2.setEstaSoliBeca(1);            
             TipoRetiro reti = new TipoRetiro();
@@ -355,6 +346,7 @@ public class BecasBean implements Serializable{
             esta.setCodiTipoEsta(1);
             this.objeBeca2.setCodiTipoEsta(esta);
             //objeSoli2.setBecaList(null);
+            objeSoli2.setFechSoliBeca(new Date());
             FCDESoli.create(objeSoli2);
             this.objeSoli2 = FCDESoli.findLast();
             this.objeBeca2.setCodiSoliBeca(objeSoli2);
@@ -423,6 +415,8 @@ public class BecasBean implements Serializable{
             this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());
             this.listDocu = FCDEDocu.findBySoli(codi);
             this.listDetaBeca = FCDEDetaBeca.findByBeca(objeBeca.getCodiBeca());
+            
+             listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getCodiSoliBeca().getCodiGrad().getNivelGrad());
           
             this.guardar = false;
             this.carnet = objeSoli.getCarnAlum();
@@ -605,6 +599,16 @@ public class BecasBean implements Serializable{
     private String rutaC;
     private byte[] esto;
     private String tokens = "";
+    private boolean guardarDocumentos;
+
+    public boolean isGuardarDocumentos() {
+        return guardarDocumentos;
+    }
+
+    public void setGuardarDocumentos(boolean guadarDocumentos) {
+        this.guardarDocumentos = guadarDocumentos;
+    }
+    
 
     public byte[] getEsto() {
         return esto;
@@ -642,7 +646,7 @@ public class BecasBean implements Serializable{
     public void initDocus()
     {
         this.objeDocu = new Documento();
-        this.guardar = true;
+        this.guardarDocumentos= true;
         this.consTodo();
         this.objeDocu.setFechDocu(new Date());
         this.inicializar();
@@ -653,35 +657,11 @@ public class BecasBean implements Serializable{
     public void limpFormDocus()
     {
         this.objeDocu = new Documento();
-        this.guardar = true;  
+        this.guardarDocumentos = true;  
         this.showImag=false;
         this.objeDocu.setFechDocu(new Date());
     }
-    
-    public void esta()
-    {
-        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        try
-        {
-            this.objeDocu.setEstaDocu(1);                   
-            this.objeDocu.setRutaDocu("mis heuvos");
-            FCDEDocu.create(this.objeDocu);
-            this.listDocu.add(this.objeDocu);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Documento Consultado");
-        }
-        catch (Exception e) 
-        {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(e).getMessage());
-        }
-        finally
-        {
-            
-        }
-    }
-    
+   
     public void guarDocus()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -693,8 +673,6 @@ public class BecasBean implements Serializable{
             FCDEDocu.create(this.objeDocu);
             this.listDocu.add(this.objeDocu);
             this.limpForm();
-            //this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();
-            //this.uploFile();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Documento Consultado");
         }
@@ -735,21 +713,15 @@ public class BecasBean implements Serializable{
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
-        {
-          
+        {          
             this.objeDocu.setEstaDocu(0);
-            String ruta = this.rutas.get(0) + this.objeDocu.getRutaDocu();
-            
+            String ruta = this.rutas.get(0) + this.objeDocu.getRutaDocu();            
     		File file = new File(ruta);
-
     		if(file.delete()){
     			System.out.println(file.getName() + " is deleted!");
     		}else{
     			System.out.println("Delete operation is failed.");
     		}
-
-
-            
             FCDEDocu.remove(this.objeDocu);
             this.listDocu.remove(this.objeDocu); //Limpia el objeto viejo
             //this.listDocu.add(this.objeDocu); //Agrega el objeto modificado
@@ -766,8 +738,6 @@ public class BecasBean implements Serializable{
             
         }
     }
-     
-    
     public void consTodoDocus()
     {
         try
@@ -799,7 +769,7 @@ public class BecasBean implements Serializable{
             //System.out.println(h + this.objeDocu.getRutaDocu());
             rutaC = h + this.objeDocu.getRutaDocu();
             //this.objeDocu.setRutaDocu(h + this.objeDocu.getRutaDocu());
-            this.guardar = false;
+            this.guardarDocumentos = false;
             this.showDocu = false;
             this.showImag=false;
             String ruta = this.rutas.get(0) + this.objeDocu.getRutaDocu();
@@ -826,8 +796,6 @@ public class BecasBean implements Serializable{
             
         }
     }
-    
-    
     
     /*para archivos xd*/
     
@@ -898,10 +866,8 @@ public class BecasBean implements Serializable{
                     File theDir = new File(newPath);
 
                     // if the directory does not exist, create it
-                    if (!theDir.exists()) {
-                        
+                    if (!theDir.exists()) {                        
                         boolean result = false;
-
                         try{
                             theDir.mkdir();
                             result = true;
@@ -915,14 +881,11 @@ public class BecasBean implements Serializable{
                         }
                     }
                     else
-                    {
-                        
+                    {                        
                         moveFilePart(item, newPath);
                     }
-                }
-               
-            }
-            
+                }               
+            }            
         }
         catch(Exception ex)
         {
@@ -948,23 +911,13 @@ public class BecasBean implements Serializable{
     {
         try {
             if(item.getName().equals(file.getName()))
-            {
-                
-                System.out.println(item.getSubmittedFileName());
-                
-                                System.out.println(item.getContentType());
-                                
-                                
+            {                  
                  this.listNombFile.add(new Archivo(
                         item.getSubmittedFileName(),
                         item.getInputStream(),
                         item.getContentType(),
                         readFully(item.getInputStream())
                 ));
-
-               // System.out.println(item.getSubmittedFileName() +" "+item.getInputStream()+" "+ item.getContentType());
-                System.out.println("RUTA:" + item.getSubmittedFileName());//Aqui esta la ruta :3 
-                
                 this.processFilePart(item, String.format("%s%s",path, item.getSubmittedFileName()));
                 this.objeDocu.setRutaDocu(this.objeDocu.getCodiSoliBeca().getCarnAlum() + "/" + item.getSubmittedFileName());
              }
@@ -986,8 +939,7 @@ public class BecasBean implements Serializable{
             for (int length = 0; ((length = input.read(buffer)) > 0);)
             {
                 output.write(buffer, 0, length);
-            }
-            
+            }            
         }
         finally
         {
@@ -1008,12 +960,8 @@ public class BecasBean implements Serializable{
                 {
                 }
         }
-
-        // how to get the result
-
         part.delete();
     }
-    
     
     //Lógica slider para docuemntos
     private  boolean showDocu = false;
@@ -1021,8 +969,6 @@ public class BecasBean implements Serializable{
     public boolean isShowDocu() {
         return showDocu;
     }
-    
-    
     public void toogDocu()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -1031,29 +977,32 @@ public class BecasBean implements Serializable{
     
      //Lógica slider para imagenes
     private  boolean showImag = false;
-
     public boolean isShowImag() {
         return showImag;
     }
-    
-    
     public void toogImag()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         
         this.showImag = !this.showImag;
-        System.out.println(this.showImag);
-        
-    }
-    
+        System.out.println(this.showImag);        
+    }    
     /*para detalles xd*/
     
-   
+   private boolean guardarDetalle;
     private DetalleBeca objeDetaBeca;
     private List<DetalleBeca> listDetaBeca;
 
     public DetalleBeca getObjeDetaBeca() {
         return objeDetaBeca;
+    }
+
+    public boolean isGuardarDetalle() {
+        return guardarDetalle;
+    }
+
+    public void setGuardarDetalle(boolean guardarDetalle) {
+        this.guardarDetalle = guardarDetalle;
     }
 
     public void setObjeDetaBeca(DetalleBeca objeDetaBecaBeca) {
@@ -1098,21 +1047,15 @@ public class BecasBean implements Serializable{
     {
         this.objeDetaBeca = new DetalleBeca();
         this.vali = new DetalleBeca();
-        this.guardar = true;
-        this.consTodo();        
-        if( FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean") != null)
-        {
-           BecaSoliBean asd = (BecaSoliBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean");
-           Beca a = new Beca();         
-          this.objeDetaBeca.setCodiBeca(asd.getObjeBeca());
-        }
-         
+        this.guardarDetalle = true;
+        this.consTodo();       
+                
     }
     
     public void limpFormDetalle()
     {
         this.objeDetaBeca = new DetalleBeca();
-        this.guardar = true;        
+        this.guardarDetalle = true;        
     }
     
     public void guarDetalle()
@@ -1149,39 +1092,33 @@ public class BecasBean implements Serializable{
                         guardarDeta = false;
                         break;
                 }
-                System.out.println(guardarDeta);
-                System.out.println("AQUI VE"+this.objeCombPadr.getCodiBeca());
-                this.objeDetaBeca.setCodiBeca(objeCombPadr);
-                System.out.println("AQUI VE"+this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+                this.objeDetaBeca.setCodiBeca(this.objeBeca);
                 if (guardarDeta) {
-                    System.out.println("Resultadisimo:"+this.FCDEDetaBeca.validar(this.objeCombPadr.getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca()));
-                    int resuVali=this.FCDEDetaBeca.validar(this.objeCombPadr.getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
-                    System.out.println("Estoy apunto de entrar en una validación");
+                    int resuVali=this.FCDEDetaBeca.validar(this.objeBeca.getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());                 
                     if(resuVali>= 1)
                     {
-                        System.out.println("Entro en la validacion");
                         ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El alumno ya tiene asignado este tipo de beca.')");
                     }
                     else
                     {
-                        System.out.println("Pase");
-                        this.objeDetaBeca.setCodiBeca(objeCombPadr);
+                        this.objeDetaBeca.setCodiBeca(this.objeBeca);
                         this.objeDetaBeca.setEstaDetaBeca(1);
                         this.FCDEDetaBeca.create(objeDetaBeca);
+                        if(this.listDetaBeca == null)
+                            {
+                                this.listDetaBeca = new ArrayList<>();
+                            }
                         this.listDetaBeca.add(this.objeDetaBeca);
-                        this.limpForm();
+                        this.limpFormDetalle();
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                         log.info("Detalle Guardado");
                     }
                 }
-
             }
             else 
             {
                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'La cantidad de meses no puede ser 0')");
             }
-                    
-            
         }
         catch(Exception ex)
         {
@@ -1264,7 +1201,7 @@ public class BecasBean implements Serializable{
         try
         {
             this.objeDetaBeca = FCDEDetaBeca.find(codi);
-            this.guardar = false;
+            this.guardarDetalle = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDetaBeca.getCantMese()) + "')");
             log.info("Detalle Consultado");

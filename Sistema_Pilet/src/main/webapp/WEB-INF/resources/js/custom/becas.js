@@ -10,7 +10,22 @@ $(document).ready(function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            consObje([{name : 'codiObjePara', value : row.id.trim()}]);
+            console.log(this.id);            
+            
+            if(this.id == "TablRegi"){
+            consObje([{name : 'codiObjePara', value : row.id.trim()}]); 
+            }
+            
+            if(this.id == "TablDetalle"){
+            consObjeDetalle([{name : 'codiObjePara', value : row.idTipoBeca.trim()}]); 
+              
+ 
+            }
+            if(this.id == "TablDocu"){
+            consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
+            }
+            
+            
         });
         return false;
     };
@@ -32,6 +47,9 @@ $(document).ready(function() {
     $('#ModaForm').on('show.bs.modal', function() {
         INIT_OBJE_MODA();
     });
+    $('#ModaDocuForm').on('show.bs.modal', function() {
+       INIT_OBJE_MODA();        
+    });
     $('#ModaForm').on('hide.bs.modal', function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
     });
@@ -45,8 +63,8 @@ function INIT_OBJE()
     $("#TablDocu").initBootTable();
     $(".select").selectpicker();    
     INIT_OBJE_MODA();
+    INIT_OBJE_FILE();
 }
-
 function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
