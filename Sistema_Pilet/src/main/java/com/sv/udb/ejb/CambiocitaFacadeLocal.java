@@ -7,6 +7,7 @@ package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Cambiocita;
 import com.sv.udb.modelo.Cita;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -34,6 +35,8 @@ public interface CambiocitaFacadeLocal {
     Cambiocita findByCita(Cita codi);
     
     boolean findCambioCitaByParams(String fecha, String horaInic, String horaFin, Integer codiUsua);
+    
+    List<Cambiocita> findCambioCitaByFechaAndUsua(Date fechaInicial, Date fechaFinal, Integer codiUsua, Integer estaCita);
     
     int count();
     

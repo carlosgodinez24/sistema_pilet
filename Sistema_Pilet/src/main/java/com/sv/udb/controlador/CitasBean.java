@@ -130,7 +130,78 @@ public class CitasBean implements Serializable{
     private String buscEmpl="";
     private int codiUsua;
     private List<DatosUsuariosByCrit> listDoceBusc;
+    private List<Cambiocita> listCambCita;
+    
+    private Date fechInicBusq;
+    private Date fechFinaBusq;
+    private int estaCitaSele=10;
 
+    public List<Cambiocita> getListCambCita() {
+        consCambCita();
+        return listCambCita;
+    }
+
+    public void setListCambCita(List<Cambiocita> listCambCita) {
+        this.listCambCita = listCambCita;
+    }
+    
+    private void consCambCita()
+    {
+        if(this.getFechInicBusq().after(this.getFechFinaBusq()))
+        {
+            RequestContext ctx = RequestContext.getCurrentInstance();
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Fechas Incorrectas')");
+        }
+        else
+        {
+            try
+            {
+                this.listCambCita = FCDECambCita.findCambioCitaByFechaAndUsua(this.getFechInicBusq(),this.getFechFinaBusq(),new LoginBean().getObjeWSconsEmplByAcce().getCodi(),estaCitaSele);
+            }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public int getEstaCitaSele() {
+        return estaCitaSele;
+    }
+
+    public void setEstaCitaSele(int estaCitaSele) {
+        this.estaCitaSele = estaCitaSele;
+    }    
+
+    public Date getFechInicBusq() {
+        if(fechInicBusq == null)
+        {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, -15);
+            fechInicBusq = c.getTime();
+        }
+        return fechInicBusq;
+    }
+
+    public void setFechInicBusq(Date fechInicBusq) {
+        this.fechInicBusq = fechInicBusq;
+    }
+
+    public Date getFechFinaBusq() {
+        if(fechFinaBusq == null)
+        {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, 15);
+            fechFinaBusq = c.getTime();
+        }
+        return fechFinaBusq;
+    }
+
+    public void setFechFinaBusq(Date fechFinaBusq) {
+        this.fechFinaBusq = fechFinaBusq;
+    }
     
     //log4j
     private LOG4J<CitasBean> lgs = new LOG4J<CitasBean>(CitasBean.class) {
