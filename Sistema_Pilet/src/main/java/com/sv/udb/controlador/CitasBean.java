@@ -696,7 +696,8 @@ public class CitasBean implements Serializable{
             }
         }
         if(listHoraCitaDoce.isEmpty() && (this.objeCita.getCodiUsua()!= null && this.objeCita.getCodiUsua()!=0)){
-            FacesContext.getCurrentInstance().addMessage("FormRegi:moti", new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron Horarios Disponibles, Especificár la urgencia y los dias de convenniencia",  null));
+            FacesContext.getCurrentInstance().addMessage("FormRegi:moti", new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron Horarios Disponibles, Especificár la urgencia y sugerir un horario para la cita",  null));
+            FacesContext.getCurrentInstance().addMessage("FormSoliCita:moti", new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se encontraron Horarios Disponibles, Especificár la urgencia y sugerir un horario para la cita",  null));
         }
     }
      
@@ -1061,16 +1062,16 @@ public class CitasBean implements Serializable{
                 
                 
                 objeCambCita.setFechCambCita(new Date());
-                
-                
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                objeCambCita.setFechInicCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
-                objeCambCita.setFechFinCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
-
                 DateFormat df = new SimpleDateFormat("hh:mm a");
+                if(!listHoraCitaDoce.isEmpty() && horaSeleSoliCita != null){
+                    objeCambCita.setFechInicCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
+                    objeCambCita.setFechFinCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
+                    objeCambCita.setHoraInicCitaNuev(this.horaSeleSoliCita.getHoraInic());
+                    objeCambCita.setHoraFinCitaNuev(this.horaSeleSoliCita.getHoraFina());
+                }
+                
                 objeCambCita.setHoraCambCita(df.format(new Date()));
-                objeCambCita.setHoraInicCitaNuev(this.horaSeleSoliCita.getHoraInic());
-                objeCambCita.setHoraFinCitaNuev(this.horaSeleSoliCita.getHoraFina());
                 objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                 FCDECambCita.create(objeCambCita);
                 objeVisiCita.setCodiCita(this.objeCita);
@@ -1328,14 +1329,9 @@ public class CitasBean implements Serializable{
     {
         try
         {
-            this.listCitaAlumUsua = FCDECita.findCitaByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
+            this.listCitaAlumUsua = FCDECita.findCitaAlumByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
             if(this.listCitaAlumUsua == null)this.listCitaAlumUsua = new ArrayList<Cita>();
-            List<Cita> listCitaAlumUsuaTemp = new ArrayList<Cita>(); 
-            listCitaAlumUsuaTemp.addAll(listCitaAlumUsua);
-            for(Cita obje : listCitaAlumUsuaTemp){
-               Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
-               if(objeAlumVisiTemp.getCarnAlum() == null && listCitaAlumUsua.contains(obje))listCitaAlumUsua.remove(obje);
-            }
+            
         }
         catch(Exception ex)
         {
@@ -1351,14 +1347,8 @@ public class CitasBean implements Serializable{
     {
         try
         {
-            this.listCitaVisiUsua = FCDECita.findCitaByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
+            this.listCitaVisiUsua = FCDECita.findCitaVisiByCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());
             if(this.listCitaVisiUsua == null)this.listCitaVisiUsua = new ArrayList<Cita>();
-            List<Cita> listCitaVisiUsuaTemp = new ArrayList<Cita>(); 
-            listCitaVisiUsuaTemp.addAll(listCitaVisiUsua);
-            for(Cita obje : listCitaVisiUsuaTemp){
-               Visitantecita objeAlumVisiTemp = FCDEVisiCita.findByCodiCita(obje).get(0);
-               if(objeAlumVisiTemp.getCarnAlum() != null && listCitaVisiUsua.contains(obje))listCitaVisiUsua.remove(obje);
-            }
             
         }
         catch(Exception ex)
@@ -1740,7 +1730,12 @@ public class CitasBean implements Serializable{
             if(valiDatoProgVisiUsua()){
                 objeCita.setEstaCita(2);
                 objeCita.setDescCita(motivo);
-                objeCita.setTipoCita(1);
+                if(padre){
+                    objeCita.setTipoCita(1);
+                }else{
+                    objeCita.setTipoCita(3);
+                }
+                
                 objeCita.setTipoDura(2);
                 objeCita.setTipoVisi(2);
                 objeCita.setCodiUsua(LoginBean.getObjeWSconsEmplByAcce().getCodi());

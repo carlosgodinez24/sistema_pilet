@@ -71,7 +71,7 @@ and open the template in the editor.
                                     <h:column pt:data-field="state" pt:data-checkbox="true">
                                         #{citasBean.consDepeListCitaUsua(fila)}
                                     </h:column>
-                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id"  pt:data-visible='true'>
+                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id"  pt:data-visible='false'>
                                         <f:facet name="header">Código</f:facet>
                                         <h:outputText value="#{fila.codiCita}"/>
                                     </h:column>
@@ -316,7 +316,7 @@ and open the template in the editor.
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                         </div>
-                                        <h:panelGroup rendered="#{citasBean.programar || citasBean.reprogramar || (((citasBean.objeCambCita.fechInicCitaNuev eq null) or (citasBean.objeCambCita.fechInicCitaNuev eq '')) or ((citasBean.objeCambCita.fechFinCitaNuev eq null) or (citasBean.objeCambCita.fechFinCitaNuev or '')))}">
+                                        <h:panelGroup rendered="#{citasBean.programar || citasBean.reprogramar || ((citasBean.objeCambCita.fechInicCitaNuev.toString().trim() eq '') || (citasBean.objeCambCita.fechFinCitaNuev.toString().trim() eq ''))}">
                                             <br/>
                                             <div class="input-group col-xs-12">
                                                 <h:outputLabel  for="ignoHoraDisp" value="Ignorar Horario Disponible "/>
