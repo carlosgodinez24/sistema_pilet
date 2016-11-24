@@ -74,6 +74,7 @@ public class SeguimientoBean implements Serializable{
     @PostConstruct
     public void init()
     {
+        
         this.objeSegu = new Seguimiento();
         this.guardar = true;
         this.objeBeca = new BecasBean();
@@ -87,6 +88,8 @@ public class SeguimientoBean implements Serializable{
     
     public void limpForm()
     {
+        this.objeSegu.setFechFin(new Date());
+        this.objeSegu.setFechFin(new Date());
         this.objeSegu = new Seguimiento();
         this.guardar = true;        
     }

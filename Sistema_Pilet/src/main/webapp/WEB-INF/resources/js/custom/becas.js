@@ -76,4 +76,9 @@ function INIT_OBJE_MODA()
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
     $("#FormRegi\\:fech").initDatePick();
     $("#FormRegi\\:fech2").initDatePick();
+    
+    
+    
+    $("#FormRegiSegu\\:fechFin").initDatePick();
+    $("#FormRegiSegu\\:fechIni").initDatePick();
 }

@@ -20,7 +20,6 @@ import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoBeca;
 import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.modelo.TipoRetiro;
-import com.sv.udb.utils.AlumnosPojo;
 import com.sv.udb.utils.Archivo;
 import com.sv.udb.utils.pojos.DatosAlumnos;
 import java.io.BufferedInputStream;
@@ -63,15 +62,10 @@ import org.primefaces.context.RequestContext;
 @Named(value = "becasBean")
 @ViewScoped
 public class BecasBean implements Serializable{
-
-    
-    
     @EJB
     private GradoFacadeLocal FCDEGrado;
-
-     @EJB
+    @EJB
     private TipoBecaFacadeLocal FCDETipoBeca;
-
     @EJB
     private DetalleBecaFacadeLocal FCDEDetaBeca;
     private List<TipoBeca> listTipoBeca;
@@ -83,8 +77,6 @@ public class BecasBean implements Serializable{
     public void setListTipoBeca(List<TipoBeca> listTipoBeca) {
         this.listTipoBeca = listTipoBeca;
     }
-    
-    
     @EJB
     private SolicitudBecaFacadeLocal FCDESoli;
     private SolicitudBeca objeSoli;
@@ -94,8 +86,6 @@ public class BecasBean implements Serializable{
     private List<SolicitudBeca> listSoliActivos;
     private String carnet; //Filotro de búsqueda
 
-    
-    
     @EJB
     private BecaFacadeLocal FCDEBeca;
     private Beca objeBeca;
@@ -104,7 +94,6 @@ public class BecasBean implements Serializable{
     private List<Beca> listBecaH;
     private List<Beca> listBecaActivos;
     private List<Beca> listBecaDocu;
-
     public String getCarnet() {
         return carnet;
     }
@@ -114,7 +103,7 @@ public class BecasBean implements Serializable{
     }
     
     private boolean guardar; 
-    private static Logger log = Logger.getLogger(BecaSoliBean.class);
+    private static Logger log = Logger.getLogger(BecasBean.class);
 
     public SolicitudBeca getObjeSoli() {
         return objeSoli;
@@ -143,9 +132,6 @@ public class BecasBean implements Serializable{
     public List<Beca> getListBecaActivos() {
         return listBecaActivos;
     }
-    
-    
-
     public List<SolicitudBeca> getListSoli() {
         return listSoli;
     }
@@ -157,8 +143,6 @@ public class BecasBean implements Serializable{
     public List<Beca> getListBecaDocu() {
         return listBecaDocu;
     }
-    
-    
     
     @PersistenceContext(unitName = "PILETPU")
     private EntityManager em;

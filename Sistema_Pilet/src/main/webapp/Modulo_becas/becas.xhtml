@@ -326,13 +326,13 @@ and open the template in the editor.
                                                                      oncomplete="INIT_OBJE();" global="true"/>
                                                     <h:commandLink id="btonNuev" class="btn btn-success">
                                                         <p:ajax listener="#{detalleBecaBean.limpForm()}" update=" :ContDetalle" global="true" 
-                                                                oncomplete="$('#ModaForm').modal('show');INIT_OBJE();"/>
+                                                                oncomplete="$('#ModaForm').modal('show');"/>
                                                         <i class="fa fa-plus"/> Agregar un  nuevo tipo de beca a este alumno
                                                     </h:commandLink>
 
                                                 </h:form>
                                             </div>
-                                            <h:dataTable pt:data-id="TablDetalle" id="TablDetalle" value="#{becasBean.listDetaBeca}"
+                                            <h:dataTable pt:data-id="TablDetalle" id="TablDetalle" value="#{detalleBecaBean.listDetaBeca}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablDetalle"
                                                          styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                          pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -384,20 +384,19 @@ and open the template in the editor.
                                                 </div>
                                                 <div class="modal-body" style="padding-top: 2px;">
                                                     <fieldset class="col-md-12">
-                                                        <h:inputHidden id="codi" value="#{becasBean.objeDetaBeca.codiDetaBeca}" />
-                                                        <div class="form-group input-group-xs">
-
-                                                            <h:outputLabel  for="detaBeca" value="Tipo de beca: "/>
-                                                            <h:selectOneMenu id="detaBeca" value="#{becasBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
-                                                                <f:selectItems value="#{becasBean.listTipoBeca}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
-                                                                <f:converter converterId="PooConv"/>
-                                                            </h:selectOneMenu>                                      
-                                                            <h:message for="detaBeca" errorClass="field-error" />           
-                                                        </div>
+                                                        <h:inputHidden id="codi" value="#{detalleBecaBean.objeDetaBeca.codiDetaBeca}" />
+                                                         <div class="form-group input-group-xs">
+                                                        <h:outputLabel  for="detaBeca" value="Tipo de beca: "/>
+                                                            <h:selectOneMenu id="detaBeca" value="#{detalleBecaBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
+                                                                <f:selectItems value="#{detalleBecaBean.listTipoBeca}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
+                                                                  <f:converter converterId="PooConv"/>
+                                                              </h:selectOneMenu>                                      
+                                                              <h:message for="detaBeca" errorClass="field-error" />
+                                                         </div>               
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="cant" value="Meses"/>
                                                             <h:message for="cant" errorClass="field-error" />
-                                                            <h:inputText id="cant" value="#{becasBean.objeDetaBeca.cantMese}" class="form-control" />
+                                                            <h:inputText id="cant" value="#{detalleBecaBean.objeDetaBeca.cantMese}" class="form-control" />
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -405,19 +404,19 @@ and open the template in the editor.
                                                     <div class="input-group-btn right" style="padding-top: 5px;">
                                                         <div class="btn-group">
                                                             <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                                <p:ajax listener="#{becasBean.limpFormDetalle()}" process="@form" update="@form" global="true"/>
+                                                                <p:ajax listener="#{detalleBecaBean.limpForm()}" process="@form" update="@form" global="true"/>
                                                                 <i class="fa fa-mail-forward"/> Cerrar
                                                             </h:commandLink>
-                                                            <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{becasBean.guardarDetalle}">
-                                                                <p:ajax listener="#{becasBean.guarDetalle()}" process="@form" update="@form :ContDetalle" oncomplete="INIT_OBJE();" />
+                                                            <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{detalleBecaBean.guardar}">
+                                                                <p:ajax listener="#{detalleBecaBean.guar()}" process="@form" update="@form :ContDetalle" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-plus"/> Guardar
                                                             </h:commandLink>
-                                                            <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!becasBean.guardarDetalle}">
-                                                                <p:ajax listener="#{becasBean.limpFormDetalle()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                            <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!detalleBecaBean.guardar}">
+                                                                <p:ajax listener="#{detalleBecaBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
                                                                 <i class="fa fa-plus"/> Nuevo
                                                             </h:commandLink>
-                                                            <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becasBean.guardarDetalle}">
-                                                                <p:ajax listener="#{becasBean.modiDetalle()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                            <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!detalleBecaBean.guardar}">
+                                                                <p:ajax listener="#{detalleBecaBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-edit"/> Modificar
                                                             </h:commandLink>
                                                             <!--
@@ -427,7 +426,7 @@ and open the template in the editor.
                                                                 3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
                                                                 4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
                                                             -->
-                                                            <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!becasBean.guardarDetalle}" value="#" pt:data-placement="left"
+                                                            <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!detalleBecaBean.guardar}" value="#" pt:data-placement="left"
                                                                           pt:data-toggle="modal" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                           pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                                           pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
@@ -612,17 +611,11 @@ and open the template in the editor.
                                                                     <p:ajax listener="#{documentoBean.toogImag}" oncomplete="INIT_OBJE_FILE();" process="@this" update="@form" global="true"/>
                                                                     <i class="fa fa-undo"/> Regresar
                                                                 </h:commandLink>
-
                                                             </c:if>
-
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                             </h:form>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -636,7 +629,7 @@ and open the template in the editor.
                                     <div class="panel-body">
                                         <h:panelGroup id="ContSegu">
                                             <div id="toolTablSegu">
-                                                <h:form id="FormSegu" class="form-horizontal" enctype="multipart/form-data">
+                                                <h:form id="FormSegu" >
                                                     <!--Form exclusivo para los remotos-->
                                                     <p:remoteCommand name="consObjeSegu" actionListener="#{seguimientoBean.cons()}" update=":FormRegiSegu" 
                                                                      oncomplete="$('#ModaFormSegu').modal('show');" global="true"/>
@@ -645,7 +638,7 @@ and open the template in the editor.
                                                     <h:commandLink id="btonNuevSegu" class="btn btn-success">
                                                         <p:ajax listener="#{seguimientoBean.limpForm()}" update=":FormRegiSegu" global="true" 
                                                                 oncomplete="$('#ModaFormSegu').modal('show');"/>
-                                                        <i class="fa fa-plus"/> Nuevo
+                                                        <i class="fa fa-plus"/> Agregar una nueva bitacora a este alumno
                                                     </h:commandLink>
                                                 </h:form>
                                             </div>
@@ -709,14 +702,7 @@ and open the template in the editor.
                                                 <div class="modal-body" style="padding-top: 2px;">
                                                     <fieldset class="col-md-12">
                                                         <h:inputHidden id="codi" value="#{seguimientoBean.objeSegu.codiSegu}" />
-                                                        <div class="form-group input-group-xs">
-                                                            <h:outputLabel  for="Soli" value="Solicitud: "/>
-                                                            <h:selectOneMenu id="Soli" value="#{seguimientoBean.objeSegu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.carnAlum}" itemValue="#{lst}"/>
-                                                                <f:converter converterId="PooConv"/>
-                                                            </h:selectOneMenu>
-                                                            <h:message for="Soli" errorClass="field-error" />
-                                                        </div>
+                                                       
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="Tipo" value="Tipo Seguimiento: "/>
                                                             <h:selectOneMenu id="Tipo" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control" pt:data-live-search="true">

@@ -332,11 +332,8 @@ public class DocumentoBean implements Serializable{
             
             this.listNombFile = new ArrayList<>();
             this.rutas = new ArrayList<>();
-            String ruta ="C:/Users/Ariel/Desktop/becas/";    
-            //String ruta = "/home/eduardo/Escritorio/asd/";
-            //String ruta = "/Users/Kevin/Desktop";
-            
-            
+           FacesContext facsCtxt = FacesContext.getCurrentInstance();            
+           String ruta = facsCtxt.getExternalContext().getInitParameter("docBecas.URL"); 
            rutas.add(ruta);
            DireActuInde = 0;
           this.consTodo("");

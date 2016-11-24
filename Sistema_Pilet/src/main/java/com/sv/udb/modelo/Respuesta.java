@@ -63,6 +63,14 @@ public class Respuesta implements Serializable {
         this.codiResp = codiResp;
     }
 
+    public Respuesta(SolicitudBeca codiSoliBeca, Opcion codiOpci,String descOpci, Integer estaResp ) {
+        this.descOpci = descOpci;
+        this.estaResp = estaResp;
+        this.codiOpci = codiOpci;
+        this.codiSoliBeca = codiSoliBeca;
+    }
+    
+
     public Respuesta(Integer codiResp, String descOpci) {
         this.codiResp = codiResp;
         this.descOpci = descOpci;
