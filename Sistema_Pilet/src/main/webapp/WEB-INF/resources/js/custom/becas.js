@@ -18,10 +18,14 @@ $(document).ready(function() {
             
             if(this.id == "TablDetalle"){
             consObjeDetalle([{name : 'codiObjePara', value : row.idTipoBeca.trim()}]); 
-              
- 
             }
             if(this.id == "TablDocu"){
+            consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
+            }
+            if(this.id == "TablSegu"){
+            consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
+            }
+            if(this.id == "TablRegiHist"){
             consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
             }
             
@@ -61,6 +65,8 @@ function INIT_OBJE()
     $("#TablRegi").initBootTable();
     $("#TablDetalle").initBootTable();
     $("#TablDocu").initBootTable();
+    $("#TablRegiSegu").initBootTable();
+    $("#TablRegiHist").initBootTable();
     $(".select").selectpicker();    
     INIT_OBJE_MODA();
     INIT_OBJE_FILE();
@@ -68,6 +74,6 @@ function INIT_OBJE()
 function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
-     $("#FormRegi\\:fech").initDatePick();
-     $("#FormRegi\\:fech2").initDatePick();
+    $("#FormRegi\\:fech").initDatePick();
+    $("#FormRegi\\:fech2").initDatePick();
 }

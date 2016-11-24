@@ -13,7 +13,7 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"      
       xmlns:cs="http://xmlns.udb.edu.sv/component">
-    
+
     <ui:composition template="../WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
         <ui:param name="pageTitl" value="::: Página Solicitud Beca :::"/>
@@ -24,115 +24,115 @@ and open the template in the editor.
         <ui:param name="actiAlumnos" value="active"/>
         <!-- Scripts personalizados -->
         <ui:define name="CustomScripts">
-        <!--Plugins Selector de Fecha-->
-        <h:outputStylesheet library="css" name="datepicker3.css"/>
-        <h:outputScript library="js" name="bootstrap-datepicker.js"/>
-        <h:outputScript library="js" name="bootstrap-datepicker.es.js"/>
-        <!--Plugins Select-->
-        <h:outputStylesheet library="css" name="bootstrap-select.css"/>
-        <h:outputScript library="js" name="bootstrap-select.js"/>
-        <!--Plugins custom-->
-        
-        
-                 <h:outputScript library="js" name="bootstrap-filestyle.js"/>
-        <h:outputScript library="js" name="custom/file.js"/>
-        <h:outputScript library="js" name="custom/becas.js"/>
-        
-        <ui:define name="CustomScripts">
-        <!--Plugins custom-->
-        <h:outputScript library="js" name="custom/slid.js"/>
-        
+            <!--Plugins Selector de Fecha-->
+            <h:outputStylesheet library="css" name="datepicker3.css"/>
+            <h:outputScript library="js" name="bootstrap-datepicker.js"/>
+            <h:outputScript library="js" name="bootstrap-datepicker.es.js"/>
+            <!--Plugins Select-->
+            <h:outputStylesheet library="css" name="bootstrap-select.css"/>
+            <h:outputScript library="js" name="bootstrap-select.js"/>
+            <!--Plugins custom-->
 
 
-        
-        </ui:define>
+            <h:outputScript library="js" name="bootstrap-filestyle.js"/>
+            <h:outputScript library="js" name="custom/file.js"/>
+            <h:outputScript library="js" name="custom/becas.js"/>
+
+            <ui:define name="CustomScripts">
+                <!--Plugins custom-->
+                <h:outputScript library="js" name="custom/slid.js"/>
+
+
+
+
+            </ui:define>
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
-        <style>
-            .field-error
-            {
-                color: #a94442; 
-                display: inline;
-                font-size: 10px;
-            }
-            .field-error:first-letter
-            {
-                text-transform: capitalize;
-                color: #003399;
-            }
-            .form-group
-            {
-                margin-bottom: 5px !important;
-            }
-            .bootstrap-select > .btn {
-                padding-top: 2px;
-                padding-bottom: 2px;
-            }
-            .simple {
-                border-left: 6px solid grey;
-                background-color: white;
-            }  
-            .btonTabl
-            {
+            <style>
+                .field-error
+                {
+                    color: #a94442; 
+                    display: inline;
+                    font-size: 10px;
+                }
+                .field-error:first-letter
+                {
+                    text-transform: capitalize;
+                    color: #003399;
+                }
+                .form-group
+                {
+                    margin-bottom: 5px !important;
+                }
+                .bootstrap-select > .btn {
+                    padding-top: 2px;
+                    padding-bottom: 2px;
+                }
+                .simple {
+                    border-left: 6px solid grey;
+                    background-color: white;
+                }  
+                .btonTabl
+                {
                 
-                padding-left: 2cm;
-            }
+                    padding-left: 2cm;
+                }
 
 
-            /*Business Card Css */
-            .business-card {
-              border: 1px solid #cccccc;
-              background: #f8f8f8;
-              padding: 10px;
-              border-radius: 4px;
-              margin-bottom: 10px;
-            }
-            .profile-img {
-              height: 350px;
-              background: white;
-            }
-            .job {
-              color: #666666;
-              font-size: 17px;
-            }
-            .mail {
-              font-size: 16px;
-             }
+                /*Business Card Css */
+                .business-card {
+                  border: 1px solid #cccccc;
+                  background: #f8f8f8;
+                  padding: 10px;
+                  border-radius: 4px;
+                  margin-bottom: 10px;
+                }
+                .profile-img {
+                  height: 350px;
+                  background: white;
+                }
+                .job {
+                  color: #666666;
+                  font-size: 17px;
+                }
+                .mail {
+                  font-size: 16px;
+                 }
 
-             /*otro ejemplo xD*/
-             .panel.panel--styled {
-                background: #F4F2F3;
-            }
-            .panelTop {
-                padding: 30px;
-            }
+                 /*otro ejemplo xD*/
+                 .panel.panel--styled {
+                    background: #F4F2F3;
+                }
+                .panelTop {
+                    padding: 30px;
+                }
 
-            .panelBottom {
-                border-top: 1px solid #e7e7e7;
-                padding-top: 20px;
-            }
-            .btn-add-to-cart {
-                background: #FD5A5B;
-                color: #fff;
-            }
-            .btn.btn-add-to-cart.focus, .btn.btn-add-to-cart:focus, .btn.btn-add-to-cart:hover  {
-                    color: #fff;   
-                background: #FD7172;
-                    outline: none;
-            }
-            .btn-add-to-cart:active {
-                    background: #F9494B;
-                    outline: none;
-            }
+                .panelBottom {
+                    border-top: 1px solid #e7e7e7;
+                    padding-top: 20px;
+                }
+                .btn-add-to-cart {
+                    background: #FD5A5B;
+                    color: #fff;
+                }
+                .btn.btn-add-to-cart.focus, .btn.btn-add-to-cart:focus, .btn.btn-add-to-cart:hover  {
+                        color: #fff;   
+                    background: #FD7172;
+                        outline: none;
+                }
+                .btn-add-to-cart:active {
+                        background: #F9494B;
+                        outline: none;
+                }
 
 
-            span.itemPrice {
-                font-size: 24px;
-                color: #FA5B58;
-            }
+                span.itemPrice {
+                    font-size: 24px;
+                    color: #FA5B58;
+                }
 
-        </style>
+            </style>
             <div class="row">
                 <h:panelGroup id="container">
                     <ui:fragment id="FragTabl" rendered="#{becasBean.guardar==true and becasBean.showCarn==false}">
@@ -145,9 +145,9 @@ and open the template in the editor.
                                             <div id="toolTablRegi">
                                                 <h:form>
                                                     <!--Form exclusivo para los remotos-->
-                                                      <p:remoteCommand name="consObje" actionListener="#{becasBean.cons()}" oncomplete="INIT_OBJE();" update="@form :container"
-                                                                global="true"/>
-                                                    
+                                                    <p:remoteCommand name="consObje" actionListener="#{becasBean.cons()}" oncomplete="INIT_OBJE();" update="@form :container"
+                                                                     global="true"/>
+
                                                     <div class="btn-group">
                                                         <h:commandLink id="btonTabl" class="btn btn-success">
                                                             <p:ajax listener="#{becasBean.toogCarn()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
@@ -172,9 +172,9 @@ and open the template in the editor.
                                                 <h:column pt:data-sortable="true">
                                                     <f:facet name="header">Empresa</f:facet> 
                                                     <h:panelGroup class="label label-info" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr eq null}">
-                                                   <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
+                                                        <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
                                                     <h:panelGroup class="label label-default" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr ne null}">
-                                                  <h:outputText value="#{fila.codiSoliBeca.codiEmpr.nombEmpr}"/></h:panelGroup>
+                                                        <h:outputText value="#{fila.codiSoliBeca.codiEmpr.nombEmpr}"/></h:panelGroup>
                                                 </h:column>
                                                 <h:column pt:data-sortable="true">
                                                     <f:facet name="header">Alumno</f:facet>
@@ -187,7 +187,7 @@ and open the template in the editor.
                                                 <h:column pt:data-sortable="true">
                                                     <f:facet name="header">Fecha Solicitud</f:facet>
                                                     <h:outputText value="#{fila.codiSoliBeca.fechSoliBeca}">
-                                                       <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                                     </h:outputText>
                                                 </h:column>
                                                 <h:column pt:data-sortable="true">
@@ -212,113 +212,113 @@ and open the template in the editor.
                         <h:form class="form-horizontal">
                             <fieldset>
                                 <div class="col-md-12 col-xs-12">  
-                                   <div class="panel panel-primary">
-                                       <div class="panel-heading">Nueva solicitud</div>
-                                       <div class="panel-body">
-                                           <fieldset>                                
-                                                   <h:outputLabel  for="carnet" value="Ingrese el carnet del alumno: "/>
-                                                   <div class="input-group col-xs-3">                                                    
-                                                       <h:message for="carnet" errorClass="field-error" />
-                                                       <h:inputText id="carnet" value="#{becasBean.carnet}" class="form-control  input-lg" required="true" requiredMessage="Debe Registrar El carnet"></h:inputText>
-                                                       <span class="input-group-addon">
-                                                           <h:commandLink id="btonCarn" class="btn btn-default">
-                                                                   <p:ajax listener="#{becasBean.consW()}" process="@form" update="@form :container" global="true"/>
-                                                                   <i class="fa fa-search"/>
-                                                           </h:commandLink>
-                                                       </span>
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">Nueva solicitud</div>
+                                        <div class="panel-body">
+                                            <fieldset>                                
+                                                <h:outputLabel  for="carnet" value="Ingrese el carnet del alumno: "/>
+                                                <div class="input-group col-xs-3">                                                    
+                                                    <h:message for="carnet" errorClass="field-error" />
+                                                    <h:inputText id="carnet" value="#{becasBean.carnet}" class="form-control  input-lg" required="true" requiredMessage="Debe Registrar El carnet"></h:inputText>
+                                                    <span class="input-group-addon">
+                                                        <h:commandLink id="btonCarn" class="btn btn-default">
+                                                            <p:ajax listener="#{becasBean.consW()}" process="@form" update="@form :container" global="true"/>
+                                                            <i class="fa fa-search"/>
+                                                        </h:commandLink>
+                                                    </span>
 
-                                                   </div>                                                                            
-                                           </fieldset>                               
-                                       </div>
-                                     </div>   
-                                   </div>
+                                                </div>                                                                            
+                                            </fieldset>                               
+                                        </div>
+                                    </div>   
+                                </div>
                             </fieldset>
-                          </h:form>
+                        </h:form>
                     </ui:fragment>
                     <ui:fragment id="FragFicha" rendered="#{(becasBean.showFich  == true and becasBean.showEmpr==false) or becasBean.guardar==false}">                    
                         <h:form class="form-horizontal">
                             <fieldset>
                                 <div class="col-md-12">  
-                                    
-                                            <div class="panel panel-default  panel--styled">
-                                                <div class="panel-body">
-                                                        <div class="col-md-12 panelTop">	
-                                                                <div class="col-md-4">	
-                                                                        <img class="img-responsive media-object img-circle profile-img" src="http://placehold.it/350x350" alt=""/>
-                                                                </div>
-                                                                <div class="col-md-8">	
-                                                                     <h2 class="media-heading"> #{becasBean.objeSoli.nombAlum}</h2>
-                                                                     <c:if test="#{!becasBean.guardar}">
-                                                                         <h3 class="media-heading">Estado:</h3>
-                                                                         <h:panelGroup class="label label-success" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 1}">
-                                                                            <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                                                            <h:panelGroup class="label label-info" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 3}">
-                                                                            <i class="fa fa-unlock"/> Historial</h:panelGroup>
-                                                                            <h:panelGroup class="label label-danger" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta== 2}">
-                                                                            <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
-                                                                            <h:panelGroup class="label label-warning" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta ==4}">
-                                                                            <i/> Evaluando
-                                                                        </h:panelGroup>
-                                                                         
-                                                                         <h:panelGroup class="label label-info" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta > 4}">
-                                                                             <i/> #{becasBean.objeBeca.codiTipoEsta.descTipoEsta}
-                                                                        </h:panelGroup>
-                                                                     </c:if>
-                                                                    <div class="job">Carnet: #{becasBean.objeSoli.carnAlum}</div>
-                                                                    <div class="job">Grado: #{becasBean.objeSoli.codiGrad.nombGrad}</div>                                                            
-                                                                    <div class="job">Especialidad: #{becasBean.objeSoli.espeAlum}</div>
-                                                                    <div class="job">Grupo: #{becasBean.objeSoli.grupAlum}</div>
-                                                                    <div class="job">Sección academica:   #{becasBean.objeSoli.seccAcad}</div>
-                                                                    <div class="job">Seccion tecnica :  #{becasBean.objeSoli.seccTecn}</div>
-                                                                    <h5>Matricula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
-                                                                    <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>                                                     
-                                                                </div>
-                                                        </div>						
-                                                        <div class="col-md-12 panelBottom">
-                                                            
-                                                            
-                                                             <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 4}">
-                                                                <h:commandLink id="btonActi" class="btn btn-info" rendered="#{!becaSoliBean.detalle}">
-                                                                    <p:ajax listener="#{becasBean.reActi()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
-                                                                    <i class="fa fa-edit"/> Activar
-                                                                </h:commandLink>
-                                                             </c:if>
-                                                             <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1}">
-                                                                <h:commandLink id="btondesa" class="btn btn-primary" >
-                                                                    <p:ajax listener="#{becasBean.desa()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                                    <i class="fa fa-edit"/> Desactivar Beca
-                                                                </h:commandLink>
-                                                                
 
-                                                             </c:if>
-                                                            
-                                                            <c:if test="#{becasBean.guardar}">
-                                                                <h:commandLink id="btonCarn" class="btn btn-lg btn-add-to-cart">
-                                                                           <p:ajax listener="#{becasBean.toogEmpr()}" process="@form"  update="@form :container" global="true"/>
-                                                                           Agregar nueva solicitud
-                                                                           <i class="fa fa-plus"/>
-                                                                 </h:commandLink>
-                                                            </c:if>
-                                                                
-                                                                <div class="col-md-4 text-left">								
-                                                                </div>
-                                                        </div>
+                                    <div class="panel panel-default  panel--styled">
+                                        <div class="panel-body">
+                                            <div class="col-md-12 panelTop">	
+                                                <div class="col-md-4">	
+                                                    <img class="img-responsive media-object img-circle profile-img" src="http://placehold.it/350x350" alt=""/>
                                                 </div>
+                                                <div class="col-md-8">	
+                                                    <h2 class="media-heading"> #{becasBean.objeSoli.nombAlum}</h2>
+                                                    <c:if test="#{!becasBean.guardar}">
+                                                        <h3 class="media-heading">Estado:</h3>
+                                                        <h:panelGroup class="label label-success" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 1}">
+                                                            <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                        <h:panelGroup class="label label-info" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 3}">
+                                                            <i class="fa fa-unlock"/> Historial</h:panelGroup>
+                                                        <h:panelGroup class="label label-danger" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta== 2}">
+                                                            <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                                        <h:panelGroup class="label label-warning" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta ==4}">
+                                                            <i/> Evaluando
+                                                        </h:panelGroup>
+
+                                                        <h:panelGroup class="label label-info" rendered="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta > 4}">
+                                                            <i/> #{becasBean.objeBeca.codiTipoEsta.descTipoEsta}
+                                                        </h:panelGroup>
+                                                    </c:if>
+                                                    <div class="job">Carnet: #{becasBean.objeSoli.carnAlum}</div>
+                                                    <div class="job">Grado: #{becasBean.objeSoli.codiGrad.nombGrad}</div>                                                            
+                                                    <div class="job">Especialidad: #{becasBean.objeSoli.espeAlum}</div>
+                                                    <div class="job">Grupo: #{becasBean.objeSoli.grupAlum}</div>
+                                                    <div class="job">Sección academica:   #{becasBean.objeSoli.seccAcad}</div>
+                                                    <div class="job">Seccion tecnica :  #{becasBean.objeSoli.seccTecn}</div>
+                                                    <h5>Matricula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
+                                                    <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>                                                     
+                                                </div>
+                                            </div>						
+                                            <div class="col-md-12 panelBottom">
+
+
+                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 4}">
+                                                    <h:commandLink id="btonActi" class="btn btn-info" rendered="#{!becaSoliBean.detalle}">
+                                                        <p:ajax listener="#{becasBean.reActi()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
+                                                        <i class="fa fa-edit"/> Activar
+                                                    </h:commandLink>
+                                                </c:if>
+                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1}">
+                                                    <h:commandLink id="btondesa" class="btn btn-primary" >
+                                                        <p:ajax listener="#{becasBean.desa()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                        <i class="fa fa-edit"/> Desactivar Beca
+                                                    </h:commandLink>
+
+
+                                                </c:if>
+
+                                                <c:if test="#{becasBean.guardar}">
+                                                    <h:commandLink id="btonCarn" class="btn btn-lg btn-add-to-cart">
+                                                        <p:ajax listener="#{becasBean.toogEmpr()}" process="@form"  update="@form :container" global="true"/>
+                                                        Agregar nueva solicitud
+                                                        <i class="fa fa-plus"/>
+                                                    </h:commandLink>
+                                                </c:if>
+
+                                                <div class="col-md-4 text-left">								
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
                                 </div>
                             </fieldset>
 
-                         </h:form>
+                        </h:form>
                         <!-- Tabla de detalle-->
                         <c:if test="#{!becasBean.guardar}">
                             <div class="col-md-12 col-xs-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">Tipos de beca que poseé este alumno</div>
+                                    <div class="panel-heading">Tipos de beca que posee este alumno</div>
                                     <div class="panel-body">
                                         <h:panelGroup id="ContDetalle">
                                             <div id="toolTablDetalle">
                                                 <h:form>
-                                                    
+
                                                     <!--Form exclusivo para los remotos-->
                                                     <p:remoteCommand name="consObjeDetalle" actionListener="#{detalleBecaBean.cons()}" update=" :ContDetalle" 
                                                                      oncomplete="$('#ModaForm').modal('show');" global="true"/>
@@ -329,7 +329,7 @@ and open the template in the editor.
                                                                 oncomplete="$('#ModaForm').modal('show');INIT_OBJE();"/>
                                                         <i class="fa fa-plus"/> Agregar un  nuevo tipo de beca a este alumno
                                                     </h:commandLink>
-                                                    
+
                                                 </h:form>
                                             </div>
                                             <h:dataTable pt:data-id="TablDetalle" id="TablDetalle" value="#{becasBean.listDetaBeca}"
@@ -360,9 +360,9 @@ and open the template in the editor.
                                                 <h:column pt:data-sortable="true">
                                                     <f:facet name="header">Estado</f:facet> 
                                                     <h:panelGroup class="label label-success" rendered="#{fila.estaDetaBeca eq '1'}">
-                                                   <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                        <i class="fa fa-unlock"/> Activo</h:panelGroup>
                                                     <h:panelGroup class="label label-danger" rendered="#{fila.estaDetaBeca ne '1'}">
-                                                   <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                                        <i class="fa fa-lock"/> Inactivo</h:panelGroup>
                                                 </h:column>
                                             </h:dataTable>
                                         </h:panelGroup>
@@ -371,7 +371,7 @@ and open the template in the editor.
                             </div>
                             <!-- /tabla de detalle --> 
                             <!-- modal de detalle-->
-                             <div class="row">
+                            <div class="row">
                                 <!-- Modal -->
                                 <div id="ModaForm" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
@@ -386,10 +386,10 @@ and open the template in the editor.
                                                     <fieldset class="col-md-12">
                                                         <h:inputHidden id="codi" value="#{becasBean.objeDetaBeca.codiDetaBeca}" />
                                                         <div class="form-group input-group-xs">
-                                                           
-                                                          <h:outputLabel  for="detaBeca" value="Tipo de beca: "/>
-                                                          <h:selectOneMenu id="detaBeca" value="#{becasBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
-                                                              <f:selectItems value="#{becasBean.listTipoBeca}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
+
+                                                            <h:outputLabel  for="detaBeca" value="Tipo de beca: "/>
+                                                            <h:selectOneMenu id="detaBeca" value="#{becasBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
+                                                                <f:selectItems value="#{becasBean.listTipoBeca}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
                                                                 <f:converter converterId="PooConv"/>
                                                             </h:selectOneMenu>                                      
                                                             <h:message for="detaBeca" errorClass="field-error" />           
@@ -402,40 +402,40 @@ and open the template in the editor.
                                                     </fieldset>
                                                 </div>
                                                 <div class="modal-footer">
-                                                        <div class="input-group-btn right" style="padding-top: 5px;">
-                                                            <div class="btn-group">
-                                                                <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                                    <p:ajax listener="#{becasBean.limpFormDetalle()}" process="@form" update="@form" global="true"/>
-                                                                    <i class="fa fa-mail-forward"/> Cerrar
-                                                                </h:commandLink>
-                                                                <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{becasBean.guardarDetalle}">
-                                                                    <p:ajax listener="#{becasBean.guarDetalle()}" process="@form" update="@form :ContDetalle" oncomplete="INIT_OBJE();" />
-                                                                    <i class="fa fa-plus"/> Guardar
-                                                                </h:commandLink>
-                                                                <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!becasBean.guardarDetalle}">
-                                                                    <p:ajax listener="#{becasBean.limpFormDetalle()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
-                                                                    <i class="fa fa-plus"/> Nuevo
-                                                                </h:commandLink>
-                                                                <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becasBean.guardarDetalle}">
-                                                                    <p:ajax listener="#{becasBean.modiDetalle()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                                    <i class="fa fa-edit"/> Modificar
-                                                                </h:commandLink>
-                                                                <!--
-                                                                    # Para corregir el error que redirecciona hice una serie de pasos
-                                                                    1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
-                                                                    2. Quitar la referencia: bootstrap-confirmation.min.js del fragmento head.xhtml
-                                                                    3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
-                                                                    4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
-                                                                -->
-                                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!becasBean.guardarDetalle}" value="#" pt:data-placement="left"
-                                                                              pt:data-toggle="modal" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
-                                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
-                                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
-                                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
-                                                                    <i class="fa fa-times"/> Eliminar
-                                                                </h:outputLink>
-                                                            </div>
+                                                    <div class="input-group-btn right" style="padding-top: 5px;">
+                                                        <div class="btn-group">
+                                                            <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
+                                                                <p:ajax listener="#{becasBean.limpFormDetalle()}" process="@form" update="@form" global="true"/>
+                                                                <i class="fa fa-mail-forward"/> Cerrar
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{becasBean.guardarDetalle}">
+                                                                <p:ajax listener="#{becasBean.guarDetalle()}" process="@form" update="@form :ContDetalle" oncomplete="INIT_OBJE();" />
+                                                                <i class="fa fa-plus"/> Guardar
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!becasBean.guardarDetalle}">
+                                                                <p:ajax listener="#{becasBean.limpFormDetalle()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                                <i class="fa fa-plus"/> Nuevo
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becasBean.guardarDetalle}">
+                                                                <p:ajax listener="#{becasBean.modiDetalle()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <i class="fa fa-edit"/> Modificar
+                                                            </h:commandLink>
+                                                            <!--
+                                                                # Para corregir el error que redirecciona hice una serie de pasos
+                                                                1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
+                                                                2. Quitar la referencia: bootstrap-confirmation.min.js del fragmento head.xhtml
+                                                                3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
+                                                                4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
+                                                            -->
+                                                            <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!becasBean.guardarDetalle}" value="#" pt:data-placement="left"
+                                                                          pt:data-toggle="modal" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                                          pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                                          pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                                          pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                                <i class="fa fa-times"/> Eliminar
+                                                            </h:outputLink>
                                                         </div>
+                                                    </div>
                                                 </div>
                                             </h:form>
                                         </div>
@@ -444,17 +444,17 @@ and open the template in the editor.
                             </div>
                             <!-- /modal de detalle -->
 
-                             <!-- tabla de documentos -->   
+                            <!-- tabla de documentos -->   
                             <div class="col-md-12 col-xs-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">Documentos que poseé este alumno</div>
+                                    <div class="panel-heading">Documentos que posee este alumno</div>
                                     <div class="panel-body">
                                         <h:panelGroup id="ContDocu">
                                             <div id="toolTablDocu">
                                                 <h:form id="FormDocu" class="form-horizontal" enctype="multipart/form-data">
                                                     <!--Form exclusivo para los remotos-->
                                                     <p:remoteCommand name="consObjeDocu" actionListener="#{documentoBean.cons()}" update=":FormRegiDocu" 
-                                                         oncomplete="$('#ModaDocuForm').modal('show');" global="true"/>
+                                                                     oncomplete="$('#ModaDocuForm').modal('show');" global="true"/>
                                                     <p:remoteCommand name="elimObjeDocu" actionListener="#{documentoBean.elim()}" update="@form :ContDocu" 
                                                                      oncomplete="INIT_OBJE();" global="true">
 
@@ -463,7 +463,7 @@ and open the template in the editor.
                                                         <p:ajax listener="#{documentoBean.limpForm()}" update=":ContDocu" global="true" 
                                                                 oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE();" />
 
-                                                        <i class="fa fa-plus"/> Agregar un nuevo documentoa  este alumno
+                                                        <i class="fa fa-plus"/> Agregar un nuevo documento al alumno
                                                     </h:commandLink>
 
                                                 </h:form>
@@ -491,15 +491,15 @@ and open the template in the editor.
                                                 </h:column>
                                                 <h:column pt:data-sortable="true" pt:data-field="fechDocu">
                                                     <f:facet name="header">Fecha </f:facet>
-                                                     <h:outputText value="#{fila.fechDocu}">
-                                                       <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    <h:outputText value="#{fila.fechDocu}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                                     </h:outputText>
                                                 </h:column>
 
                                                 <h:column pt:data-sortable="true" pt:data-field="ruta">
                                                     <f:facet name="header">Ruta </f:facet>
                                                     <h:outputText value="#{fila.rutaDocu}">
-                                                       <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                                     </h:outputText>
                                                 </h:column>
                                             </h:dataTable>
@@ -507,74 +507,74 @@ and open the template in the editor.
                                     </div>
                                 </div>
                             </div>
-                        <!-- /tabla de documentos --> 
-                        <!-- modal de documentos-->
-                        <div class="row">
-                            <!-- Modal -->
-                            <div id="ModaDocuForm" class="modal fade" role="dialog">
-                                <div class="modal-dialog">
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <h:form id="FormRegiDocu" class="form-horizontal" enctype="multipart/form-data">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
-                                                <h4 class="modal-title">Gestión documento</h4>
-                                            </div>
-                                            <div class="modal-body" style="padding-top: 2px;">
-                                                <ui:fragment id="FragBusc" rendered="#{!documentoBean.showImag}">
-                                                <fieldset class="col-md-12">
-                                                    <h:inputHidden id="codi" value="#{documentoBean.objeDocu.codiDocu}" />
-                                                    <div class="form-group input-group-xs">
-                                                        <h:outputLabel  for="beca" value="Numero de beca "/>
-                                                        <h:selectOneMenu id="beca" value="#{documentoBean.objeDocu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                            <f:selectItems value="#{documentoBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
-                                                            <f:converter converterId="PooConv"/>
-                                                        </h:selectOneMenu>
-                                                        <h:message for="beca" errorClass="field-error" />           
-                                                    </div>
-                                                    <div class="form-group input-group-xs">
-                                                        <h:outputLabel  for="fech" value="Fecha "/>
-                                                        <h:inputText id="fech" value="#{documentoBean.objeDocu.fechDocu}" class="form-control">
-                                                           <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-                                                        </h:inputText>
-                                                        <h:message for="fech" errorClass="field-error" />
-                                                    </div>
-                                                    <div class="form-group input-group-xs">
-                                                        <h:outputLabel  for="tipo" value="Tipo de documento"/>
-                                                        <h:selectOneMenu id="tipo" value="#{documentoBean.objeDocu.codiTipoDocu}" class="form-control" pt:data-live-search="true">
-                                                            <f:selectItems value="#{tipoDocumentoBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDocu}" itemValue="#{lst}"/>
-                                                            <f:converter converterId="PooConv"/>
-                                                        </h:selectOneMenu>
-                                                        <h:message for="tipo" errorClass="field-error" />           
-                                                    </div>
-                                                     <div class="form-group input-group-xs">
-                                                         <c:if test="#{documentoBean.guardar}">
-                                                            <h:outputLabel  for="file" value="Selecciona tu archivo"/>
-                                                            <h:inputFile pt:data-id="file" value="#{documentoBean.file}" pt:multiple="true"/>
-                                                         </c:if>
-                                                          </div>
+                            <!-- /tabla de documentos --> 
+                            <!-- modal de documentos-->
+                            <div class="row">
+                                <!-- Modal -->
+                                <div id="ModaDocuForm" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <h:form id="FormRegiDocu" class="form-horizontal" enctype="multipart/form-data">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                                    <h4 class="modal-title">Gestión documento</h4>
+                                                </div>
+                                                <div class="modal-body" style="padding-top: 2px;">
+                                                    <ui:fragment id="FragBusc" rendered="#{!documentoBean.showImag}">
+                                                        <fieldset class="col-md-12">
+                                                            <h:inputHidden id="codi" value="#{documentoBean.objeDocu.codiDocu}" />
+                                                            <div class="form-group input-group-xs">
+                                                                <h:outputLabel  for="beca" value="Numero de beca "/>
+                                                                <h:selectOneMenu id="beca" value="#{documentoBean.objeDocu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
+                                                                    <f:selectItems value="#{documentoBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
+                                                                    <f:converter converterId="PooConv"/>
+                                                                </h:selectOneMenu>
+                                                                <h:message for="beca" errorClass="field-error" />           
+                                                            </div>
+                                                            <div class="form-group input-group-xs">
+                                                                <h:outputLabel  for="fech" value="Fecha "/>
+                                                                <h:inputText id="fech" value="#{documentoBean.objeDocu.fechDocu}" class="form-control">
+                                                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                                                </h:inputText>
+                                                                <h:message for="fech" errorClass="field-error" />
+                                                            </div>
+                                                            <div class="form-group input-group-xs">
+                                                                <h:outputLabel  for="tipo" value="Tipo de documento"/>
+                                                                <h:selectOneMenu id="tipo" value="#{documentoBean.objeDocu.codiTipoDocu}" class="form-control" pt:data-live-search="true">
+                                                                    <f:selectItems value="#{tipoDocumentoBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDocu}" itemValue="#{lst}"/>
+                                                                    <f:converter converterId="PooConv"/>
+                                                                </h:selectOneMenu>
+                                                                <h:message for="tipo" errorClass="field-error" />           
+                                                            </div>
+                                                            <div class="form-group input-group-xs">
+                                                                <c:if test="#{documentoBean.guardar}">
+                                                                    <h:outputLabel  for="file" value="Selecciona tu archivo"/>
+                                                                    <h:inputFile pt:data-id="file" value="#{documentoBean.file}" pt:multiple="true"/>
+                                                                </c:if>
+                                                            </div>
 
-                                                </fieldset>
+                                                        </fieldset>
                                                     </ui:fragment>
-                                                <ui:fragment id="FragGrad" rendered="#{documentoBean.showImag}">
-                                                    <c:if test="#{!documentoBean.imagen}">
-                                                        <div>
-                                                            <h:panelGroup>
-                                                                <h:graphicImage height="500px" class="img-responsive" value="/images/?img=#{documentoBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
-                                                            </h:panelGroup>
-                                                        </div>
-                                                    </c:if>
-                                                    <c:if test="#{documentoBean.imagen}">
-                                                        <div>
-                                                            <h:panelGroup>
-                                                                <cs:PdfViewer id="demo" value="#{documentoBean.esto}" width="100%" height="500px"/>                                                                                                                                                                              
-                                                            </h:panelGroup>
-                                                        </div>
-                                                    </c:if>
-                                                </ui:fragment>
-                                            </div>
+                                                    <ui:fragment id="FragGrad" rendered="#{documentoBean.showImag}">
+                                                        <c:if test="#{!documentoBean.imagen}">
+                                                            <div>
+                                                                <h:panelGroup>
+                                                                    <h:graphicImage height="500px" class="img-responsive" value="/images/?img=#{documentoBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
+                                                                </h:panelGroup>
+                                                            </div>
+                                                        </c:if>
+                                                        <c:if test="#{documentoBean.imagen}">
+                                                            <div>
+                                                                <h:panelGroup>
+                                                                    <cs:PdfViewer id="demo" value="#{documentoBean.esto}" width="100%" height="500px"/>                                                                                                                                                                              
+                                                                </h:panelGroup>
+                                                            </div>
+                                                        </c:if>
+                                                    </ui:fragment>
+                                                </div>
 
-                                            <div class="modal-footer">
+                                                <div class="modal-footer">
                                                     <div class="input-group-btn right" style="padding-top: 5px;">
                                                         <div class="btn-group">
                                                             <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
@@ -587,84 +587,303 @@ and open the template in the editor.
                                                                     <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
                                                                     <i class="fa fa-cloud-upload"/> Subir
                                                                 </h:commandLink>
-                                                             </c:if>
+                                                            </c:if>
 
                                                             <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==false}">
-                                                            <h:commandLink id="btonMostBusc" class="btn btn-default btn-md">
-                                                                <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
-                                                                <i class="fa fa-chevron-down"/> Ver #{documentoBean.tokens}
-                                                            </h:commandLink>
+                                                                <h:commandLink id="btonMostBusc" class="btn btn-default btn-md">
+                                                                    <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
+                                                                    <i class="fa fa-chevron-down"/> Ver #{documentoBean.tokens}
+                                                                </h:commandLink>
 
 
                                                                 <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!documentoBean.guardar}" value="#" pt:data-placement="left"
+                                                                              pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                                    <i class="fa fa-times"/> Eliminar
+                                                                </h:outputLink>
+
+                                                            </c:if>
+
+                                                            <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==true}">
+                                                                <h:commandLink id="btonOculEsta" class="btn btn-default btn-md">
+
+                                                                    <p:ajax listener="#{documentoBean.toogImag}" oncomplete="INIT_OBJE_FILE();" process="@this" update="@form" global="true"/>
+                                                                    <i class="fa fa-undo"/> Regresar
+                                                                </h:commandLink>
+
+                                                            </c:if>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </h:form>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /modal de documentos -->
+
+                            <!-- tabla de seguimientos -->
+                            <div class="col-md-12 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Seguimientos que posee el alumno</div>
+                                    <div class="panel-body">
+                                        <h:panelGroup id="ContSegu">
+                                            <div id="toolTablSegu">
+                                                <h:form id="FormSegu" class="form-horizontal" enctype="multipart/form-data">
+                                                    <!--Form exclusivo para los remotos-->
+                                                    <p:remoteCommand name="consObjeSegu" actionListener="#{seguimientoBean.cons()}" update=":FormRegiSegu" 
+                                                                     oncomplete="$('#ModaFormSegu').modal('show');" global="true"/>
+                                                    <p:remoteCommand name="elimObjeSegu" actionListener="#{seguimientoBean.elim()}" update=":FormRegiSegu :ContSegu" 
+                                                                     oncomplete="INIT_OBJE();" global="true"/>
+                                                    <h:commandLink id="btonNuevSegu" class="btn btn-success">
+                                                        <p:ajax listener="#{seguimientoBean.limpForm()}" update=":FormRegiSegu" global="true" 
+                                                                oncomplete="$('#ModaFormSegu').modal('show');"/>
+                                                        <i class="fa fa-plus"/> Nuevo
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                            <h:dataTable pt:data-id="TablRegiSegu" id="TablRegiSegu" value="#{seguimientoBean.listSoli}"
+                                                         var="fila" class="boottable" pt:data-toolbar="#toolTablRegiSegu"
+                                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                         pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                         pt:data-single-select="true">                                
+                                                <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                </h:column>
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                                    <f:facet name="header">Código</f:facet>
+                                                    <h:outputText value="#{fila.codiSegu}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                                    <f:facet name="header">Fecha </f:facet>
+                                                    <h:outputText value="#{fila.fechSegu}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Fech Inicio</f:facet>
+                                                    <h:outputText value="#{fila.fechInicio}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Fech Fin</f:facet>
+                                                    <h:outputText value="#{fila.fechFin}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Nombre</f:facet>
+                                                    <h:outputText value="#{fila.nombSegu}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Solicitud</f:facet>
+                                                    <h:outputText value="#{fila.codiSoliBeca.carnAlum}"/>
+                                                </h:column>
+                                            </h:dataTable>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /tabla de seguimientos -->
+                            <!-- modal de seguimientos -->
+                            <div class="row">
+                                <!-- Modal -->
+                                <div id="ModaFormSegu" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <h:form id="FormRegiSegu" class="form-horizontal">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                                    <h4 class="modal-title">Gestión seguimiento</h4>
+                                                </div>
+                                                <div class="modal-body" style="padding-top: 2px;">
+                                                    <fieldset class="col-md-12">
+                                                        <h:inputHidden id="codi" value="#{seguimientoBean.objeSegu.codiSegu}" />
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="Soli" value="Solicitud: "/>
+                                                            <h:selectOneMenu id="Soli" value="#{seguimientoBean.objeSegu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
+                                                                <f:selectItems value="#{solicitudBecaBean.listSoli}" var="lst" itemLabel="#{lst.carnAlum}" itemValue="#{lst}"/>
+                                                                <f:converter converterId="PooConv"/>
+                                                            </h:selectOneMenu>
+                                                            <h:message for="Soli" errorClass="field-error" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="Tipo" value="Tipo Seguimiento: "/>
+                                                            <h:selectOneMenu id="Tipo" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control" pt:data-live-search="true">
+                                                                <f:selectItems value="#{tipoSeguBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoSegui}" itemValue="#{lst}"/>
+                                                                <f:converter converterId="PooConv"/>
+                                                            </h:selectOneMenu>
+                                                            <h:message for="Tipo" errorClass="field-error" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="fechIni" value="Fecha Inicio: "/>
+                                                            <h:inputText id="fechIni" value="#{seguimientoBean.objeSegu.fechInicio}" class="form-control">
+                                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                            </h:inputText>
+                                                            <h:message for="fechIni" errorClass="field-error" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="fechFin" value="Fecha Fin: "/>
+                                                            <h:inputText id="fechFin" value="#{seguimientoBean.objeSegu.fechFin}" class="form-control">
+                                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                            </h:inputText>
+                                                            <h:message for="fechFin" errorClass="field-error" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="nomb" value="Nombre seguimiento "/>
+                                                            <h:message for="nomb" errorClass="field-error" />
+                                                            <h:inputText id="nomb" value="#{seguimientoBean.objeSegu.nombSegu}" class="form-control" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="desc" value="Descripción"/>
+                                                            <h:message for="desc" errorClass="field-error" />
+                                                            <h:inputTextarea  id="desc" value="#{seguimientoBean.objeSegu.descSegu}" class="form-control" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="padr" value="Padre "/>
+                                                            <h:selectOneMenu id="padr" value="#{seguimientoBean.objeSegu.padrSegu}" class="form-control" pt:data-live-search="true">
+                                                                <f:selectItems value="#{seguimientoBean.listSegu}" var="lst" itemLabel="#{lst.nombSegu}" itemValue="#{lst}"/>
+                                                                <f:converter converterId="PooConv"/>
+                                                            </h:selectOneMenu>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="input-group-btn right" style="padding-top: 5px;">
+                                                        <div class="btn-group">
+                                                            <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
+                                                                <p:ajax listener="#{seguimientoBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                                <i class="fa fa-mail-forward"/> Cerrar
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonGuarSegu" class="btn btn-success" rendered="#{seguimientoBean.guardar}">
+                                                                <p:ajax listener="#{seguimientoBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <i class="fa fa-plus"/> Guardar
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonNuevSegu" class="btn btn-success" rendered="#{!seguimientoBean.guardar}">
+                                                                <p:ajax listener="#{seguimientoBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                                <i class="fa fa-plus"/> Nuevo
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonModiSegu" class="btn btn-primary" rendered="#{!seguimientoBean.guardar}">
+                                                                <p:ajax listener="#{seguimientoBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <i class="fa fa-edit"/> Modificar
+                                                            </h:commandLink>
+                                                            <h:outputLink id="btonElimSegu" class="btn btn-danger" rendered="#{!seguimientoBean.guardar}" value="#" pt:data-placement="left"
                                                                           pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                           pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                                           pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
                                                                           pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
                                                                 <i class="fa fa-times"/> Eliminar
                                                             </h:outputLink>
-
-                                                            </c:if>
-
-                                                            <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==true}">
-                                                             <h:commandLink id="btonOculEsta" class="btn btn-default btn-md">
-
-                                                        <p:ajax listener="#{documentoBean.toogImag}" oncomplete="INIT_OBJE_FILE();" process="@this" update="@form" global="true"/>
-                                                            <i class="fa fa-undo"/> Regresar
-                                                        </h:commandLink>
-
-                                                                   </c:if>
-
                                                         </div>
                                                     </div>
-                                            </div>
-
-
-                                        </h:form>
-
-
+                                                </div>
+                                            </h:form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- /modal de documentos -->
+                            <!-- /modal de seguimientos -->
+                            <!-- tabla de historial -->
+                            <div class="col-md-12 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Historial del alumno</div>
+                                    <div class="panel-body">
+                                        <h:panelGroup id="ContRegiHist">
+                                            <h:dataTable pt:data-id="TablRegiHist" id="TablRegiHist" value="#{becaSoliBean.listBecaH}"
+                                                         var="fila" class="boottable" pt:data-toolbar="#toolTablRegiHist"
+                                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                         pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                         pt:data-single-select="true">                                
+                                                <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                </h:column>
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idh">
+                                                    <f:facet name="header">Código</f:facet>
+                                                    <h:outputText value="#{fila.codiSoliBeca.codiSoliBeca}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Empresa</f:facet> 
+                                                    <h:panelGroup class="label label-info" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr eq null}">
+                                                        <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
+                                                    <h:panelGroup class="label label-default" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr ne null}">
+                                                        <h:outputText value="#{fila.codiSoliBeca.codiEmpr.nombEmpr}"/></h:panelGroup>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Alumno</f:facet>
+                                                    <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Grado Alumno</f:facet>
+                                                    <h:outputText value="#{fila.codiSoliBeca.codiGrad.nombGrad}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Fecha Solicitud</f:facet>
+                                                    <h:outputText value="#{fila.codiSoliBeca.fechSoliBeca}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Estado beca</f:facet> 
+                                                    <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta == 1}">
+                                                        <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                    <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 3}">
+                                                        <i class="fa fa-unlock"/> Historial</h:panelGroup>
+                                                    <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta == 2}">
+                                                        <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                                    <h:panelGroup class="label label-warning" rendered="#{fila.codiTipoEsta.codiTipoEsta == 4}">
+                                                        <i/> Evaluando</h:panelGroup>
+                                                </h:column>
+                                            </h:dataTable>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /tabla de historial -->
                         </c:if>
                     </ui:fragment>
-                     <ui:fragment id="FragSeleEmpr" rendered="#{becasBean.showEmpr}">
-                         <h:form class="form-horizontal">
+                    <ui:fragment id="FragSeleEmpr" rendered="#{becasBean.showEmpr}">
+                        <h:form class="form-horizontal">
                             <fieldset>
                                 <div class="col-md-12 col-xs-12">  
-                                   <div class="panel panel-primary">
-                                       <div class="panel-heading">Nueva solicitud</div>
-                                       <div class="panel-body">
-                                           <fieldset>                                
-                                                   <h:outputLabel  for="empresa" value="Seleccione la empresa que patrocinara al estudiante "/>
-                                                   <div class="input-group col-xs-6">                                                    
-                                                       <h:message for="empresa" errorClass="field-error" />                                                    
-                                                       
-                                                       <h:selectOneMenu id="empresa" value="#{becasBean.objeSoli.codiEmpr}" class="form-control input-lg" pt:data-live-search="true">                                                       
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">Nueva solicitud</div>
+                                        <div class="panel-body">
+                                            <fieldset>                                
+                                                <h:outputLabel  for="empresa" value="Seleccione la empresa que patrocinara al estudiante "/>
+                                                <div class="input-group col-xs-6">                                                    
+                                                    <h:message for="empresa" errorClass="field-error" /> 
+                                                    <h:selectOneMenu id="empresa" value="#{becasBean.objeSoli.codiEmpr}" class="form-control input-lg" pt:data-live-search="true">                                                       
                                                         <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                         <f:converter converterId="PooConv"/>
-                                                         </h:selectOneMenu>
-                                                       <c:if test="#{becasBean.guardar}">
-                                                           <span class="input-group-addon">
-                                                                <h:commandLink id="btonCarn" class="btn btn-default">
-                                                                        <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" global="true"/>
-                                                                        <i class="fa fa-plus"/>
-                                                                </h:commandLink>
-                                                            </span>
-                                                       
-                                                       </c:if>
-                                                       
+                                                    </h:selectOneMenu>
+                                                    <c:if test="#{becasBean.guardar}">
+                                                        <span class="input-group-addon">
+                                                            <h:commandLink id="btonCarn" class="btn btn-default">
+                                                                <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" global="true"/>
+                                                                <i class="fa fa-plus"/>
+                                                            </h:commandLink>
+                                                        </span>
 
-                                                   </div>                                                                            
-                                           </fieldset>                               
-                                       </div>
-                                     </div>   
-                                   </div>
+                                                    </c:if>
+                                                </div>                                                                            
+                                            </fieldset>                               
+                                        </div>
+                                    </div>   
+                                </div>
                             </fieldset>
-                          </h:form>
-                     </ui:fragment>
+                        </h:form>
+                    </ui:fragment>
                 </h:panelGroup>
             </div>
         </ui:define>

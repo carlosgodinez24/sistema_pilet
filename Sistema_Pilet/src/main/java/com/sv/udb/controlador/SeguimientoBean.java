@@ -69,14 +69,20 @@ public class SeguimientoBean implements Serializable{
     public SeguimientoBean() {
     }
     
+    private BecasBean objeBeca;
+    
     @PostConstruct
     public void init()
     {
         this.objeSegu = new Seguimiento();
         this.guardar = true;
+        this.objeBeca = new BecasBean();
         this.consTodo();
         this.consEmpr();
         this.consSoli();
+        if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
+            objeBeca = (BecasBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean");
+        }
     }
     
     public void limpForm()
@@ -87,6 +93,7 @@ public class SeguimientoBean implements Serializable{
     
     public void guar()
     {
+        this.objeSegu.setCodiSoliBeca(this.objeBeca.getObjeSoli());
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {

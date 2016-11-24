@@ -589,6 +589,10 @@ public class BecasBean implements Serializable{
         this.showCarn = !this.showCarn;
     }
     
+    /*-----------------------------------------------------------*/
+    //Aquí termina  toda la logica necesaria para los barridos, slider    
+    /*-----------------------------------------------------------*/
+    
     /*todo lo de documentos xd*/
     
      @EJB
@@ -1040,9 +1044,7 @@ public class BecasBean implements Serializable{
     /**
      * Creates a new instance of DetalleBecaBean
      */
-   
-    
-    
+
     public void initDetalle()
     {
         this.objeDetaBeca = new DetalleBeca();
@@ -1216,6 +1218,9 @@ public class BecasBean implements Serializable{
             
         }
     }
+    
+    
+    
     
     public void persist(Object object) {
         try {
