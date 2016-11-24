@@ -636,7 +636,7 @@ and open the template in the editor.
                                                     <p:remoteCommand name="elimObjeSegu" actionListener="#{seguimientoBean.elim()}" update=":FormRegiSegu :ContSegu" 
                                                                      oncomplete="INIT_OBJE();" global="true"/>
                                                     <h:commandLink id="btonNuevSegu" class="btn btn-success">
-                                                        <p:ajax listener="#{seguimientoBean.limpForm()}" update=":FormRegiSegu" global="true" 
+                                                        <p:ajax listener="#{seguimientoBean.limpForm()}" update=":ContSegu" global="true" 
                                                                 oncomplete="$('#ModaFormSegu').modal('show');"/>
                                                         <i class="fa fa-plus"/> Agregar una nueva bitacora a este alumno
                                                     </h:commandLink>
