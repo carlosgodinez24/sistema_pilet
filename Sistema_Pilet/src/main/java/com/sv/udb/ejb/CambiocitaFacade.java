@@ -3,6 +3,7 @@ package com.sv.udb.ejb;
 import com.sv.udb.modelo.Alumnovisitante;
 import com.sv.udb.modelo.Cambiocita;
 import com.sv.udb.modelo.Cita;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -44,6 +45,40 @@ public class CambiocitaFacade extends AbstractFacade<Cambiocita> implements Camb
         q.setParameter("codiCita", codi);
         Cambiocita resu = q.getSingleResult();
         return (resu == null) ? null : resu;
+    }
+
+    @Override
+    public List<Cambiocita> findCambioCitaByFechaAndUsua(Date fechaInicial, Date fechaFinal, Integer codiUsua, Integer estaCita)
+    {
+        List<Cambiocita> resu;
+        if(estaCita==10)
+        {
+            String sql = "SELECT * FROM cambio_cita cc WHERE cc.codi_camb_cita in(SELECT MAX(codi_camb_cita) from cambio_cita, cita where cambio_cita.codi_cita = cita.codi_cita and codi_usua = ? and ((fech_camb_cita between ? and ?) or (fech_inic_cita_nuev between ? and ?) or (fech_fin_cita_nuev between ? and ?)) group by cita.codi_cita)";
+            Query query = em.createNativeQuery(sql, Cambiocita.class);
+            query.setParameter(1, codiUsua);
+            query.setParameter(2, fechaInicial);
+            query.setParameter(3, fechaFinal);
+            query.setParameter(4, fechaInicial);
+            query.setParameter(5, fechaFinal);
+            query.setParameter(6, fechaInicial);
+            query.setParameter(7, fechaFinal);
+            resu =(List<Cambiocita>) query.getResultList();
+        }
+        else
+        {
+            String sql = "SELECT cc.* FROM cambio_cita cc WHERE cc.esta_camb_cita=? AND cc.codi_camb_cita in(SELECT MAX(codi_camb_cita) from cambio_cita, cita where cambio_cita.codi_cita = cita.codi_cita and codi_usua = ? and ((fech_camb_cita between ? and ?) or (fech_inic_cita_nuev between ? and ?) or (fech_fin_cita_nuev between ? and ?)) group by cita.codi_cita)";
+            Query query = em.createNativeQuery(sql, Cambiocita.class);
+            query.setParameter(1, estaCita);
+            query.setParameter(2, codiUsua);
+            query.setParameter(3, fechaInicial);
+            query.setParameter(4, fechaFinal);
+            query.setParameter(5, fechaInicial);
+            query.setParameter(6, fechaFinal);
+            query.setParameter(7, fechaInicial);
+            query.setParameter(8, fechaFinal);
+            resu =(List<Cambiocita>) query.getResultList();
+        }
+        return resu;
     }
     
     @Override

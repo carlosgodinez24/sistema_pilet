@@ -503,7 +503,7 @@ public class BecaSoliBean implements Serializable {
     {
         RequestContext ctx = RequestContext.getCurrentInstance();
         Client client = ClientBuilder.newClient();
-        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consAlum/%s", this.filt.trim());
+        String url = String.format("http://localhost:27435/WebService/MiServicio/consAlum/%s", this.filt.trim());
         
        if(this.cons(filt.trim()))
        {

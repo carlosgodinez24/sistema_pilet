@@ -137,7 +137,7 @@ public class UsuarioBean implements Serializable{
     {
         UsuariosPojo resp;
         Client client = ClientBuilder.newClient();
-        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consUsua/%s", usua);
+        String url = String.format("http://localhost:27435/WebService/MiServicio/consUsua/%s", usua);
         WebTarget resource = client.target(url);
         Invocation.Builder request = resource.request();
         request.accept(MediaType.APPLICATION_JSON);
