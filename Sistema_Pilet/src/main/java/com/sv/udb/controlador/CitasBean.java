@@ -56,7 +56,9 @@ public class CitasBean implements Serializable{
     //Bean Sesion
     @Inject
     private LoginBean logiBean; 
-   
+    
+    @Inject
+    private GlobalAppBean globalAppBean;
     //FACADE
     @EJB
     private VisitantecitaFacadeLocal FCDEVisiCita;
@@ -731,6 +733,7 @@ public class CitasBean implements Serializable{
                 objeVisiCita.setCodiVisi(alumVisiSelec.getCodiVisi());
                 objeVisiCita.setCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
                 FCDEVisiCita.create(objeVisiCita);
+                globalAppBean.addNotificacion(this.logiBean.getObjeUsua().getCodiUsua(), "SE HA GUARDADO UN EVENTO"  , "Modulo citas", "");
                 log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha solicitado la cita, espere por la respuesta");
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Se ha solicitado la cita, espere por la respuesta.')");
                 this.limpForm();
