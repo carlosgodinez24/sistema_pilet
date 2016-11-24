@@ -85,7 +85,8 @@ public class EmpresaBean implements Serializable{
                 this.listEmpr = new ArrayList<>();
             }
             this.listEmpr.add(this.objeEmpr);
-            this.limpForm();
+            this.guardar = false;
+            this.showEmpr = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
             log.info("Empresa Guardada");
         }
@@ -186,4 +187,13 @@ public class EmpresaBean implements Serializable{
         }
     }
     
+    private boolean showEmpr = false;
+    public boolean isShowEmpr() {
+        return showEmpr;
+    }
+    public void toogEmpr()
+    {
+        this.showEmpr = !this.showEmpr;
+        this.limpForm();
+    }
 }
