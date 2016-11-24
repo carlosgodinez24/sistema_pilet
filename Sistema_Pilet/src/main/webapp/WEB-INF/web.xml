@@ -19,7 +19,7 @@
     </context-param>
     <context-param>  
         <param-name>docBecas.URL</param-name>  
-        <param-value>C:/Users/Ariel/Desktop/becas</param-value>  
+        <param-value>C:/Users/Ariel/Desktop/becas/</param-value>  
     </context-param>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
