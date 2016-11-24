@@ -140,11 +140,24 @@ public class GlobalAppBean {
         {
             HttpServletRequest requ = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String page = String.format("%s%s%s", requ.getContextPath(), requ.getServletPath(), role);
-            return FCDEUsua.findPermByAcceAndDire(usua, page);
+            //return FCDEUsua.findPermByAcceAndDire(usua, page);
+            return this.exisPerm(page);
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            return false;
+        }
+    }
+    
+    private boolean exisPerm(String page)
+    {
+        if(this.logiBean != null)
+        {
+            return this.logiBean.getListPerm().contains(page);
+        }
+        else
+        {
             return false;
         }
     }

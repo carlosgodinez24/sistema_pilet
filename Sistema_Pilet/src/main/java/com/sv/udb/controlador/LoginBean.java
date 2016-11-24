@@ -55,6 +55,7 @@ public class LoginBean implements Serializable {
     private String cont;
     private String imagPerf;
     private List<Notificacion> listNoti;//Lista de Notificaciones
+    private List<String> listPerm;//Lista de Notificaciones
     private static WSconsEmplByUser objeWSconsEmplByAcce;
 
     public static WSconsEmplByUser getObjeWSconsEmplByAcce() {
@@ -123,6 +124,10 @@ public class LoginBean implements Serializable {
     public void setUsuaPojo(UsuariosPojo usuaPojo) {
         this.usuaPojo = usuaPojo;
     }
+    
+    public List<String> getListPerm() {
+        return listPerm;
+    }
 
     public void consNoti(){
         this.listNoti = null;
@@ -152,6 +157,9 @@ public class LoginBean implements Serializable {
                     //Cargar una imagen de usuario (Puede ser de una BD)
                     this.imagPerf = "images/userDemo.png";
                     //Llenar lista de notif icaciones.... puede salir de la DB
+                    this.listNoti = FCDENoti.findByUsua(this.objeUsua.getCodiUsua());
+                    //Llenar lista de permisos
+                    this.listPerm = FCDEUsua.findAllPermByAcce(objeUsua.getAcceUsua());
                     this.consNoti();
                     //Redireccionar
                     

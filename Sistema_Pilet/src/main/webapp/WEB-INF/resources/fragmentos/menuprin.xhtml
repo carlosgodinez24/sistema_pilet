@@ -135,6 +135,16 @@ and open the template in the editor.
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/HorarioDisponible.xhtml')}">
+                                <ul class="treeview-menu">
+                                    <li class="#{actiHoraDisp}">
+                                        <h:link outcome="/Modulo_citas/HorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/HorarioDisponible.xhtml')}">
+                                            <i class="fa fa-user"></i> Horario Disponible
+                                        </h:link>
+                                    </li>
+                                </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/ExcepcionHorarioDisponible.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiHoraDisp}">
                                     <h:link outcome="/Modulo_citas/HorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/HorarioDisponible.xhtml')}">
@@ -142,6 +152,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/ExcepcionHorarioDisponible.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiExceHoraDisp}">
                                     <h:link outcome="/Modulo_citas/ExcepcionHorarioDisponible" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/ExcepcionHorarioDisponible.xhtml')}">
@@ -149,6 +161,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Eventos.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiEven}">
                                     <h:link outcome="/Modulo_citas/Eventos" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Eventos.xhtml')}">
@@ -156,6 +170,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Visitantes.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiVisi}">
                                     <h:link outcome="/Modulo_citas/Visitantes" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Visitantes.xhtml')}">
@@ -163,6 +179,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/AlumnoVisitante.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiAlumVisi}">
                                     <h:link outcome="/Modulo_citas/AlumnoVisitante" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/AlumnoVisitante.xhtml')}">
@@ -170,7 +188,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
-                            
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaCalendario.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiCale}">
                                     <h:link outcome="/Modulo_citas/CitaCalendario" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaCalendario.xhtml')}">
@@ -178,6 +197,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Citas.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiCita}">
                                     <h:link outcome="/Modulo_citas/Citas" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Citas.xhtml')}">
@@ -185,6 +206,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitasVisitante.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiCitaVisi}">
                                     <h:link outcome="/Modulo_citas/CitasVisitante" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitasVisitante.xhtml')}">
@@ -192,6 +215,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Visitas.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiVisiTas}">
                                     <h:link outcome="/Modulo_citas/Visitas" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Visitas.xhtml')}">
@@ -199,6 +224,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Recepcion.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiRece}">
                                     <h:link outcome="/Modulo_citas/Recepcion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/Recepcion.xhtml')}">
@@ -206,6 +233,17 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
+                            <ul class="treeview-menu">
+                                <li class="#{actiCitaAlum}">
+                                    <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
+                                        <i class="fa fa-user"></i> Cita Alumno
+                                    </h:link>
+                                </li>
+                            </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiCitaAlum}">
                                     <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
@@ -213,6 +251,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/RegistrarseRepresentanteAlumno.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiRegiReprAlum}">
                                     <h:link outcome="/Modulo_citas/RegistrarseRepresentanteAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/RegistrarseRepresentanteAlumno.xhtml')}">
@@ -220,6 +260,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaRecepcion.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiCitaRecep}">
                                     <h:link outcome="/Modulo_citas/CitaRecepcion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaRecepcion.xhtml')}">
@@ -227,6 +269,8 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/reportes.xhtml')}">
                             <ul class="treeview-menu">
                                 <li class="#{actiCitaRepo}">
                                     <h:link outcome="/Modulo_citas/reportes" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/reportes.xhtml')}">
@@ -234,6 +278,7 @@ and open the template in the editor.
                                     </h:link>
                                 </li>
                             </ul>
+                            </ui:fragment>
                         </li>
                     </ui:fragment>  
                     <ui:fragment  rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas')}">
