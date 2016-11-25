@@ -10,7 +10,6 @@ $(document).ready(function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            console.log(this.id);            
             
             if(this.id == "TablRegi"){
             consObje([{name : 'codiObjePara', value : row.id.trim()}]); 
@@ -28,7 +27,6 @@ $(document).ready(function() {
             if(this.id == "TablRegiHist"){
             consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
             }
-            
             
         });
         return false;
@@ -49,13 +47,30 @@ $(document).ready(function() {
         });
     };
     $('#ModaForm').on('show.bs.modal', function() {
-        INIT_OBJE_MODA();
-    });
+        
+            });
     $('#ModaDocuForm').on('show.bs.modal', function() {
-       INIT_OBJE_MODA();        
+       
     });
+    $('#ModaFormSegu').on('show.bs.modal', function() {
+         
+    });
+    
     $('#ModaForm').on('hide.bs.modal', function() {
-        $("#TablRegi").bootstrapTable('uncheckAll');
+        $("#TablDetalle").bootstrapTable('uncheckAll');
+         INIT_OBJE();
+         console.log("Cierro detalle")
+    });
+    
+    $('#ModaDocuForm').on('hide.bs.modal', function() {
+        $("#TablDocu").bootstrapTable('uncheckAll');
+         INIT_OBJE();
+         console.log("Cierro documentos")
+    });
+     $('#ModaFormSegu').on('hide.bs.modal', function() {
+        $("#TablRegiSegu").bootstrapTable('uncheckAll');
+         INIT_OBJE();
+         console.log("Cierro seguimientos")
     });
     INIT_OBJE();
 });
@@ -76,9 +91,14 @@ function INIT_OBJE_MODA()
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
     $("#FormRegi\\:fech").initDatePick();
     $("#FormRegi\\:fech2").initDatePick();
-    
-    
-    
     $("#FormRegiSegu\\:fechFin").initDatePick();
     $("#FormRegiSegu\\:fechIni").initDatePick();
+}
+
+function INIT_OBJE_FINA(tipo)
+{
+    if(tipo === 1)
+    {
+       $("#TablDetalle").initBootTable();
+    }
 }

@@ -132,12 +132,14 @@ public class DocumentoBean implements Serializable{
     public DocumentoBean() {
     }
     
+    private BecasBean objeBeca;
+    
     @PostConstruct
     public void init()
     {
         this.objeDocu = new Documento();
         this.guardar = true;
-        this.consTodo();
+       
         this.objeDocu.setFechDocu(new Date());       
         this.imagen = false;
         this.tokens = "Imagen";        
@@ -148,7 +150,10 @@ public class DocumentoBean implements Serializable{
        rutas.add(ruta);
        DireActuInde = 0;
        this.carnet = "";
-        
+        if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
+            objeBeca = (BecasBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean");
+        }
+         this.consTodo();
     }
     
     public void limpForm()
@@ -190,7 +195,7 @@ public class DocumentoBean implements Serializable{
             this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();
             this.uploFile();
             this.objeDocu.setEstaDocu(1);   
-            FCDEDocu.create(this.objeDocu);
+            this.FCDEDocu.create(this.objeDocu);
             this.listDocu.add(this.objeDocu);
             this.limpForm();
             //this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();

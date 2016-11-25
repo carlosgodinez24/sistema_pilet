@@ -243,8 +243,8 @@ and open the template in the editor.
                                     <div class="panel panel-default  panel--styled">
                                         <div class="panel-body">
                                             <div class="col-md-12 panelTop">	
-                                                <div class="col-md-4">	
-                                                    <img class="img-responsive media-object img-circle profile-img" src="http://placehold.it/350x350" alt=""/>
+                                                <div class="col-md-4">
+                                                    <p:graphicImage value="#{becasBean.fotoAlum}" width="350px" class="img-responsive media-object img-circle profile-img" alt="Alumno"/>
                                                 </div>
                                                 <div class="col-md-8">	
                                                     <h2 class="media-heading"> #{becasBean.objeSoli.nombAlum}</h2>
@@ -274,7 +274,7 @@ and open the template in the editor.
                                                     <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>                                                     
                                                 </div>
                                             </div>						
-                                            <div class="col-md-12 panelBottom">
+                                            <div class="col-md-12 panelBottom btn-group">
 
 
                                                 <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 4}">
@@ -289,6 +289,13 @@ and open the template in the editor.
                                                         <i class="fa fa-edit"/> Desactivar Beca
                                                     </h:commandLink>
 
+                                                </c:if>
+                                                
+                                                <c:if test="#{!becasBean.guardar}">
+                                                    <h:commandLink id="btonRegr" class="btn btn-primary" >
+                                                        <p:ajax listener="#{becasBean.toogRegre()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
+                                                        <i class="fa fa-edit"/> Regresar
+                                                    </h:commandLink>
 
                                                 </c:if>
 
@@ -320,12 +327,12 @@ and open the template in the editor.
                                                 <h:form>
 
                                                     <!--Form exclusivo para los remotos-->
-                                                    <p:remoteCommand name="consObjeDetalle" actionListener="#{detalleBecaBean.cons()}" update=" :ContDetalle" 
+                                                    <p:remoteCommand name="consObjeDetalle" actionListener="#{detalleBecaBean.cons()}"  
                                                                      oncomplete="$('#ModaForm').modal('show');" global="true"/>
                                                     <p:remoteCommand name="elimObjeDetalle" actionListener="#{detalleBecaBean.elim()}" update="@form :ContDetalle" 
                                                                      oncomplete="INIT_OBJE();" global="true"/>
                                                     <h:commandLink id="btonNuev" class="btn btn-success">
-                                                        <p:ajax listener="#{detalleBecaBean.limpForm()}" update=" :ContDetalle" global="true" 
+                                                        <p:ajax listener="#{detalleBecaBean.limpForm()}" global="true" 
                                                                 oncomplete="$('#ModaForm').modal('show');"/>
                                                         <i class="fa fa-plus"/> Agregar un  nuevo tipo de beca a este alumno
                                                     </h:commandLink>
@@ -344,10 +351,6 @@ and open the template in the editor.
                                                 <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idTipoBeca">
                                                     <f:facet name="header">Código</f:facet>
                                                     <h:outputText value="#{fila.codiDetaBeca}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="nombTipoBeca">
-                                                    <f:facet name="header">Becado</f:facet>
-                                                    <h:outputText value="#{fila.codiBeca.codiSoliBeca.nombAlum}"/>   
                                                 </h:column>
                                                 <h:column pt:data-sortable="true">
                                                     <f:facet name="header">Tipo Beca</f:facet>
@@ -408,7 +411,7 @@ and open the template in the editor.
                                                                 <i class="fa fa-mail-forward"/> Cerrar
                                                             </h:commandLink>
                                                             <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{detalleBecaBean.guardar}">
-                                                                <p:ajax listener="#{detalleBecaBean.guar()}" process="@form" update="@form :ContDetalle" oncomplete="INIT_OBJE();" />
+                                                                <p:ajax listener="#{detalleBecaBean.guar()}" process="@form" update="@form :ContDetalle" oncomplete="INIT_OBJE_FINA(1);" />
                                                                 <i class="fa fa-plus"/> Guardar
                                                             </h:commandLink>
                                                             <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!detalleBecaBean.guardar}">
@@ -479,10 +482,6 @@ and open the template in the editor.
                                                 <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idDocu">
                                                     <f:facet name="header">Código</f:facet>
                                                     <h:outputText value="#{fila.codiDocu}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Nombre</f:facet>
-                                                    <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>
                                                 </h:column>
                                                 <h:column pt:data-sortable="true"  pt:data-field="tipoDocu">
                                                     <f:facet name="header">Tipo documento</f:facet>
@@ -631,12 +630,12 @@ and open the template in the editor.
                                             <div id="toolTablSegu">
                                                 <h:form id="FormSegu" >
                                                     <!--Form exclusivo para los remotos-->
-                                                    <p:remoteCommand name="consObjeSegu" actionListener="#{seguimientoBean.cons()}" update=":FormRegiSegu" 
+                                                    <p:remoteCommand name="consObjeSegu" actionListener="#{seguimientoBean.cons()}"
                                                                      oncomplete="$('#ModaFormSegu').modal('show');" global="true"/>
                                                     <p:remoteCommand name="elimObjeSegu" actionListener="#{seguimientoBean.elim()}" update=":FormRegiSegu :ContSegu" 
                                                                      oncomplete="INIT_OBJE();" global="true"/>
                                                     <h:commandLink id="btonNuevSegu" class="btn btn-success">
-                                                        <p:ajax listener="#{seguimientoBean.limpForm()}" update=":ContSegu" global="true" 
+                                                        <p:ajax listener="#{seguimientoBean.limpForm()}"  global="true" 
                                                                 oncomplete="$('#ModaFormSegu').modal('show');"/>
                                                         <i class="fa fa-plus"/> Agregar una nueva bitacora a este alumno
                                                     </h:commandLink>
@@ -785,7 +784,7 @@ and open the template in the editor.
                                     <div class="panel-heading">Historial del alumno</div>
                                     <div class="panel-body">
                                         <h:panelGroup id="ContRegiHist">
-                                            <h:dataTable pt:data-id="TablRegiHist" id="TablRegiHist" value="#{becaSoliBean.listBecaH}"
+                                            <h:dataTable pt:data-id="TablRegiHist" id="TablRegiHist" value="#{becasBean.listBecaH}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablRegiHist"
                                                          styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                          pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -856,7 +855,7 @@ and open the template in the editor.
                                                     <c:if test="#{becasBean.guardar}">
                                                         <span class="input-group-addon">
                                                             <h:commandLink id="btonCarn" class="btn btn-default">
-                                                                <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" global="true"/>
+                                                                <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" global="true"/>
                                                                 <i class="fa fa-plus"/>
                                                             </h:commandLink>
                                                         </span>

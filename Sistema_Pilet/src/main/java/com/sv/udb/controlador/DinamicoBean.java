@@ -103,6 +103,7 @@ public class DinamicoBean implements Serializable{
             for(Opcion temp : this.listOpci)
             {
                 String codiDina = String.format("Dina%s", String.valueOf(temp.getCodiOpci()));
+                /*codigo y respuesta xd*/
                 this.mapa.put(codiDina, null);
                 Map<Object, Object> listOpciTemp = null;
                 if(temp.getCodiEstr().getTipoEstr().equals("SELECT") || temp.getCodiEstr().getTipoEstr().equals("SELECTMANYCHECKBOX"))

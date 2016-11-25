@@ -81,11 +81,11 @@ public class DetalleBecaBean implements Serializable{
     public void init()
     {
         this.objeDetaBeca = new DetalleBeca();       
-        this.guardar = true;
-        this.consTodo();        
+        this.guardar = true;                
           if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
             objeBeca = (BecasBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean");
-        }      
+        }
+          this.consTodo();
     }
     
     public void limpForm()
@@ -101,7 +101,8 @@ public class DetalleBecaBean implements Serializable{
         try
         {
             if (this.objeDetaBeca.getCantMese() > 0) 
-            {
+            {        
+                System.out.println(this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca());
                 switch (this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca()) {
                     case 1:
                         //Matricula
@@ -149,6 +150,10 @@ public class DetalleBecaBean implements Serializable{
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                         log.info("Detalle Guardado");
                     }
+                }
+                else
+                {
+                    ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
                 }
             }
             else 
@@ -249,6 +254,8 @@ public class DetalleBecaBean implements Serializable{
         try
         {
             this.objeDetaBeca = FCDEDetaBeca.find(codi);
+            System.out.println("Detalle:"+objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+           System.out.println("Meses"+objeDetaBeca.getCantMese());
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDetaBeca.getCantMese()) + "')");

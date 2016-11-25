@@ -24,6 +24,7 @@ import com.sv.udb.utils.Archivo;
 import com.sv.udb.utils.pojos.DatosAlumnos;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +34,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,6 +56,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -85,6 +89,7 @@ public class BecasBean implements Serializable{
     private List<SolicitudBeca> listSoliH;
     private List<SolicitudBeca> listSoliActivos;
     private String carnet; //Filotro de búsqueda
+    private StreamedContent fotoAlum;
 
     @EJB
     private BecaFacadeLocal FCDEBeca;
@@ -143,6 +148,10 @@ public class BecasBean implements Serializable{
     public List<Beca> getListBecaDocu() {
         return listBecaDocu;
     }
+
+    public StreamedContent getFotoAlum() {
+        return fotoAlum;
+    }    
     
     @PersistenceContext(unitName = "PILETPU")
     private EntityManager em;
@@ -513,7 +522,17 @@ public class BecasBean implements Serializable{
                 this.objeSoli.setEspeAlum(resp.getEspe());
                 this.objeSoli.setGrupAlum(resp.getGrup());
                 this.objeSoli.setSeccAcad(resp.getSeccAcad());
-                this.objeSoli.setSeccTecn(resp.getSeccTecn());                
+                this.objeSoli.setSeccTecn(resp.getSeccTecn());
+                if(resp.getFoto() != null)
+                {
+                    String base64Image = new String(Base64.getDecoder().decode(resp.getFoto()));
+                    System.err.println("Base:" +base64Image);
+//                    this.fotoAlum = new DefaultStreamedContent(base64Image, "image/jpeg", "Demo.jpg");
+                }
+                else
+                {
+                    this.fotoAlum = new DefaultStreamedContent();
+                }
                 this.toogFich();
                 
                 if(resp.getNomb() == null || resp.getNomb().equals(""))
@@ -558,6 +577,13 @@ public class BecasBean implements Serializable{
     public void toogCarn()
     {
         this.showCarn = !this.showCarn;
+    }
+    public void toogRegre()
+    {
+       showCarn=false;   
+       showFich=false;
+       showEmpr=false;
+       this.guardar=true;
     }
     
     /*-----------------------------------------------------------*/
