@@ -3,7 +3,10 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="anioVisi" class="java.lang.String">
+	<parameter name="fech_inic_cita_nuev" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fech_fin_cita_nuev" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -15,7 +18,9 @@
      when 12 then 'DICIEMBRE' END AS MES
 FROM
      `cita` cita INNER JOIN `cambio_cita` cambio_cita ON cita.`codi_cita` = cambio_cita.`codi_cita`
-WHERE cita.`tipo_cita` = 2 AND YEAR(cambio_cita.`fech_inic_cita_nuev`) = $P{anioVisi} GROUP BY  MONTH(cambio_cita.`fech_inic_cita_nuev`)]]>
+WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{fech_inic_cita_nuev} or DATE(`cambio_cita`.`fech_fin_cita_nuev`)=$P{fech_fin_cita_nuev}) GROUP BY  MONTH(cambio_cita.`fech_inic_cita_nuev`)
+
+]]>
 	</queryString>
 	<field name="CANTIDAD" class="java.lang.Long"/>
 	<field name="MES" class="java.lang.String"/>
@@ -35,12 +40,33 @@ WHERE cita.`tipo_cita` = 2 AND YEAR(cambio_cita.`fech_inic_cita_nuev`) = $P{anio
 				</textElement>
 				<text><![CDATA[ESTADISTICAS DE VISITAS POR AÑO]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="186" y="43" width="347" height="20" uuid="92460c4c-0a72-4950-824f-e215769f939d"/>
+			<staticText>
+				<reportElement x="347" y="54" width="116" height="28" uuid="a48b0b45-a0ef-45b6-9e16-3de7561aff6b"/>
 				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="15" isBold="true"/>
+					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{anioVisi}]]></textFieldExpression>
+				<text><![CDATA[Fecha final:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="54" width="116" height="28" uuid="41b06325-b8fd-47cc-a617-2222183f9dee"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha inicio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="265" y="54" width="82" height="28" uuid="be15111c-c053-4554-9db8-3b7707f687ef"/>
+				<textElement>
+					<font fontName="Calibri" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fech_inic_cita_nuev}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="463" y="54" width="82" height="28" uuid="4176a6cf-7460-4b79-8076-1b868b4a14e0"/>
+				<textElement>
+					<font fontName="Calibri" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fech_fin_cita_nuev}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

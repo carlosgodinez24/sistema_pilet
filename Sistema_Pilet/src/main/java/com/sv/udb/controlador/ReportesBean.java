@@ -19,6 +19,8 @@ import org.primefaces.context.RequestContext;
 
 import com.sv.udb.ejb.CambiocitaFacadeLocal;
 import com.sv.udb.modelo.Cambiocita;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -31,8 +33,13 @@ public class ReportesBean implements Serializable{
     @Inject
     private GlobalAppBean globalAppBean; //Bean de aplicación (Instancia)
     private byte[] docuRepo; 
-    private String anioCitas="";
-    private String anioVisi="";
+    //Estadistica de citas
+    private Date fechNuevCita;
+    private Date fechFinCita;
+    //Estadistica de visitas
+    private Date fechNuevVisi;
+    private Date fechFinVisi;
+    
     
     /**
      * Creates a new instance of ReportesBean
@@ -40,25 +47,59 @@ public class ReportesBean implements Serializable{
     public ReportesBean() {
     }
 
-    public String getAnioVisi() {
-        return anioVisi;
-    }
-
-    public void setAnioVisi(String anioVisi) {
-        this.anioVisi = anioVisi;
-    }
-
-    public String getanioCitas() {
-        return anioCitas;
-    }
-
-    public void setanioCitas(String anioCitas) {
-        this.anioCitas = anioCitas;
-    }
+    
 
     public byte[] getDocuRepo() {
         return docuRepo;
     }
+
+    public Date getFechNuevCita() {
+        return fechNuevCita;
+    }
+
+    public void setFechNuevCita(Date fechNuevCita) {
+        this.fechNuevCita = fechNuevCita;
+    }
+
+    public Date getFechFinCita() {
+        return fechFinCita;
+    }
+
+    public void setFechFinCita(Date fechFinCita) {
+        this.fechFinCita = fechFinCita;
+    }
+
+    public Date getFechNuevVisi() {
+        return fechNuevVisi;
+    }
+
+    public void setFechNuevVisi(Date fechNuevVisi) {
+        this.fechNuevVisi = fechNuevVisi;
+    }
+
+    public Date getFechFinVisi() {
+        return fechFinVisi;
+    }
+
+    public void setFechFinVisi(Date fechFinVisi) {
+        this.fechFinVisi = fechFinVisi;
+    }
+    
+//    private Date getFecha(String date) 
+//    {
+//        
+//        Date fecha = null;
+//        if (date != null){
+//            try {
+//                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//                fecha = sdf.parse(date);
+//                System.out.println(fecha);
+//            } catch (Exception e) {
+//                fecha = null;
+//            }
+//        }
+//        return fecha;
+//    }
     
      
     
@@ -72,8 +113,10 @@ public class ReportesBean implements Serializable{
             Connection cn = new Conexion().getCn(); //La conexión
             Map params = new HashMap(); //Mapa de parámetros
             
-            params.put("anioCitas", anioCitas); //Para este ejemplo no es necesario
-            System.out.println(anioCitas);
+            params.put("fech_inic_cita_nuev", (fechNuevCita));
+            params.put("fech_fin_cita_nuev", (fechFinCita));
+//            System.out.println(fechNuevCita);
+//            System.out.println(fechFinCita);
             String pathRepo = globalAppBean.getResourcePath("reportes_citas/EstadisticasCitas.jasper");
             this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
@@ -95,8 +138,8 @@ public class ReportesBean implements Serializable{
             Connection cn = new Conexion().getCn(); //La conexión
             Map params = new HashMap(); //Mapa de parámetros
             
-            params.put("anioVisi", anioVisi); //Para este ejemplo no es necesario
-            System.out.println(anioVisi);
+            params.put("fech_inic_cita_nuev", fechNuevVisi);
+            params.put("fech_fin_cita_nuev", fechFinVisi);//Para este ejemplo no es necesario
             String pathRepo = globalAppBean.getResourcePath("reportes_citas/EstadisticaVisitas.jasper");
             this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
@@ -150,3 +193,4 @@ public class ReportesBean implements Serializable{
         }
     }
 }
+

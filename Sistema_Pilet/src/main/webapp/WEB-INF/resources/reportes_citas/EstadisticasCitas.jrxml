@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstadisticasCitas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d3aeefd7-be22-4429-b7af-bc8e642763fb">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="43"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -24,12 +24,16 @@
 		</box>
 	</style>
 	<subDataset name="Table Dataset 1" uuid="cc15ba02-8895-4143-b52a-1c90165a9900"/>
-	<parameter name="anioCitas" class="java.lang.String">
+	<parameter name="fech_inic_cita_nuev" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fech_fin_cita_nuev" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT count(`cambio_cita`.`codi_camb_cita`) AS CANTIDAD, case `cambio_cita`.`esta_camb_cita` WHEN 1 then 'Solicitada' WHEN 2 THEN 'Programada' WHEN 3 THEN 'Rechazada' WHEN 6 THEN 'Finalizada' END as ESTADO FROM `cambio_cita`
-WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or `cambio_cita`.`esta_camb_cita`= 3 or `cambio_cita`.`esta_camb_cita`= 6) AND (YEAR(`cambio_cita`.`fech_inic_cita_nuev`) = $P{anioCitas} or YEAR(`cambio_cita`.`fech_fin_cita_nuev`)=$P{anioCitas}) GROUP BY `cambio_cita`.`esta_camb_cita`]]>
+		<![CDATA[SELECT count(`cambio_cita`.`codi_camb_cita`) AS CANTIDAD,
+case `cambio_cita`.`esta_camb_cita`WHEN 0 THEN 'Cancelada' WHEN 1 THEN 'Solicitada' WHEN 2 THEN 'Programada' WHEN 3 THEN 'Rechazada' WHEN 4 THEN 'Reprogramación Solicitada' WHEN 5 THEN 'Cancelación Solicitada' WHEN 6 THEN 'Finalizada' END as ESTADO FROM `cambio_cita`
+WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or `cambio_cita`.`esta_camb_cita`= 3 or `cambio_cita`.`esta_camb_cita`= 6) AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{fech_inic_cita_nuev} or DATE(`cambio_cita`.`fech_fin_cita_nuev`)=$P{fech_fin_cita_nuev}) GROUP BY `cambio_cita`.`esta_camb_cita`]]>
 	</queryString>
 	<field name="CANTIDAD" class="java.lang.Long"/>
 	<field name="ESTADO" class="java.lang.String"/>
@@ -56,12 +60,33 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 				</textElement>
 				<text><![CDATA[ESTADISTICAS DE CITA POR AÑO]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="296" y="51" width="132" height="27" uuid="a725eb0a-0cc3-496c-9d3b-dd82a41c0a61"/>
-				<textElement>
+			<staticText>
+				<reportElement x="124" y="59" width="116" height="28" uuid="4ff984d9-9db8-4727-a4af-9290ce7e76f1"/>
+				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{anioCitas}]]></textFieldExpression>
+				<text><![CDATA[Fecha inicio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="240" y="59" width="93" height="28" uuid="1ed62972-d3bc-45bb-9f81-8d56e4cfa2b6"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fech_inic_cita_nuev}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="59" width="116" height="28" uuid="2c9c9184-fb3a-4028-a385-2d2a3756424d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha final:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="449" y="59" width="93" height="28" uuid="78a6c3b3-1712-425c-8971-d2780307aae7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fech_fin_cita_nuev}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
