@@ -3,10 +3,10 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="fech_inic_cita_nuev" class="java.util.Date">
+	<parameter name="fech_inic_cita_nuev" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="fech_fin_cita_nuev" class="java.util.Date">
+	<parameter name="fech_fin_cita_nuev" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -18,9 +18,7 @@
      when 12 then 'DICIEMBRE' END AS MES
 FROM
      `cita` cita INNER JOIN `cambio_cita` cambio_cita ON cita.`codi_cita` = cambio_cita.`codi_cita`
-WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{fech_inic_cita_nuev} or DATE(`cambio_cita`.`fech_fin_cita_nuev`)=$P{fech_fin_cita_nuev}) GROUP BY  MONTH(cambio_cita.`fech_inic_cita_nuev`)
-
-]]>
+WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{fech_inic_cita_nuev} or DATE(`cambio_cita`.`fech_fin_cita_nuev`)=$P{fech_fin_cita_nuev}) GROUP BY  MONTH(cambio_cita.`fech_inic_cita_nuev`)]]>
 	</queryString>
 	<field name="CANTIDAD" class="java.lang.Long"/>
 	<field name="MES" class="java.lang.String"/>
@@ -41,28 +39,28 @@ WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{f
 				<text><![CDATA[ESTADISTICAS DE VISITAS POR AÑO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="347" y="54" width="116" height="28" uuid="a48b0b45-a0ef-45b6-9e16-3de7561aff6b"/>
+				<reportElement x="337" y="54" width="116" height="28" uuid="a48b0b45-a0ef-45b6-9e16-3de7561aff6b"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha final:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="149" y="54" width="116" height="28" uuid="41b06325-b8fd-47cc-a617-2222183f9dee"/>
+				<reportElement x="125" y="54" width="116" height="28" uuid="41b06325-b8fd-47cc-a617-2222183f9dee"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha inicio:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="265" y="54" width="82" height="28" uuid="be15111c-c053-4554-9db8-3b7707f687ef"/>
+				<reportElement x="241" y="54" width="96" height="28" uuid="be15111c-c053-4554-9db8-3b7707f687ef"/>
 				<textElement>
 					<font fontName="Calibri" size="18"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fech_inic_cita_nuev}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="463" y="54" width="82" height="28" uuid="4176a6cf-7460-4b79-8076-1b868b4a14e0"/>
+				<reportElement x="451" y="54" width="98" height="28" uuid="4176a6cf-7460-4b79-8076-1b868b4a14e0"/>
 				<textElement>
 					<font fontName="Calibri" size="18"/>
 				</textElement>

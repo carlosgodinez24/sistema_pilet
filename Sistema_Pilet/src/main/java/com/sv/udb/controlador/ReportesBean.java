@@ -19,6 +19,7 @@ import org.primefaces.context.RequestContext;
 
 import com.sv.udb.ejb.CambiocitaFacadeLocal;
 import com.sv.udb.modelo.Cambiocita;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,26 +29,24 @@ import java.util.Date;
  */
 @Named(value = "reportesBean")
 @ViewScoped
-public class ReportesBean implements Serializable{
+public class ReportesBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Inject
     private GlobalAppBean globalAppBean; //Bean de aplicación (Instancia)
-    private byte[] docuRepo; 
+    private byte[] docuRepo;
     //Estadistica de citas
     private Date fechNuevCita;
     private Date fechFinCita;
     //Estadistica de visitas
     private Date fechNuevVisi;
     private Date fechFinVisi;
-    
-    
+
     /**
      * Creates a new instance of ReportesBean
      */
     public ReportesBean() {
     }
-
-    
 
     public byte[] getDocuRepo() {
         return docuRepo;
@@ -84,113 +83,91 @@ public class ReportesBean implements Serializable{
     public void setFechFinVisi(Date fechFinVisi) {
         this.fechFinVisi = fechFinVisi;
     }
-    
-//    private Date getFecha(String date) 
-//    {
-//        
-//        Date fecha = null;
-//        if (date != null){
-//            try {
-//                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//                fecha = sdf.parse(date);
-//                System.out.println(fecha);
-//            } catch (Exception e) {
-//                fecha = null;
-//            }
-//        }
-//        return fecha;
-//    }
-    
-     
-    
-    //Procesar reporte
-    public void procCita()
-    {
+
+    public void procCita() {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        try
-        {
-            
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Connection cn = new Conexion().getCn(); //La conexión
             Map params = new HashMap(); //Mapa de parámetros
-            
-            params.put("fech_inic_cita_nuev", (fechNuevCita));
-            params.put("fech_fin_cita_nuev", (fechFinCita));
-//            System.out.println(fechNuevCita);
-//            System.out.println(fechFinCita);
+            System.out.println(fechNuevCita + " - " + fechFinCita);
+            params.put("fech_inic_cita_nuev", df.format(fechNuevCita));
+            params.put("fech_fin_cita_nuev", df.format(fechFinCita)); 
             String pathRepo = globalAppBean.getResourcePath("reportes_citas/EstadisticasCitas.jasper");
             this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");            
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
         }
     }
     
-   
-    public void procVisi()
-    {
+    public void procVisi() {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        try
-        {
-            
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Connection cn = new Conexion().getCn(); //La conexión
             Map params = new HashMap(); //Mapa de parámetros
-            
-            params.put("fech_inic_cita_nuev", fechNuevVisi);
-            params.put("fech_fin_cita_nuev", fechFinVisi);//Para este ejemplo no es necesario
+            System.out.println(fechNuevVisi + " - " + fechFinVisi);
+            params.put("fech_inic_cita_nuev", df.format(fechNuevVisi));
+            params.put("fech_fin_cita_nuev", df.format(fechFinVisi));
             String pathRepo = globalAppBean.getResourcePath("reportes_citas/EstadisticaVisitas.jasper");
             this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cagar reporte ')");            
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
         }
     }
-    
-    public void procSegu(int codiCita)
-    {
+
+    public void procSegu(int codiCita) {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        try
-        {
+        try {
             Connection cn = new Conexion().getCn(); //La conexión
             Map params = new HashMap(); //Mapa de parámetros
-            
+
             params.put("codi_cita", codiCita); //Para este ejemplo no es necesario
             System.out.println(codiCita);
             String pathRepo = globalAppBean.getResourcePath("reportes_citas/SeguimientoCita.jasper");
             this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");            
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
         }
     }
-    
-     public void procAsis(int codiCita)
-    {
+
+    public void procAsis(int codiCita) {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        try
-        {
+        try {
             Connection cn = new Conexion().getCn(); //La conexión
             Map params = new HashMap(); //Mapa de parámetros
-            
+
             params.put("codi_cita", codiCita); //Para este ejemplo no es necesario
             System.out.println(codiCita);
             String pathRepo = globalAppBean.getResourcePath("reportes_citas/AsistenciaCitas.jasper");
             this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");            
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
+    public void procAsisVisi(int codiVisi) {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+
+            params.put("codi_visi", codiVisi); //Para este ejemplo no es necesario
+            System.out.println(codiVisi);
+            String pathRepo = globalAppBean.getResourcePath("reportes_citas/VisitanteAsistencia.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
         }
     }
 }
-

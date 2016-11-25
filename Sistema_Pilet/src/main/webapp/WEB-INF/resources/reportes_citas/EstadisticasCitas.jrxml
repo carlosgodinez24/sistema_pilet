@@ -24,10 +24,10 @@
 		</box>
 	</style>
 	<subDataset name="Table Dataset 1" uuid="cc15ba02-8895-4143-b52a-1c90165a9900"/>
-	<parameter name="fech_inic_cita_nuev" class="java.util.Date">
+	<parameter name="fech_inic_cita_nuev" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="fech_fin_cita_nuev" class="java.util.Date">
+	<parameter name="fech_fin_cita_nuev" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
