@@ -24,8 +24,10 @@ and open the template in the editor.
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
-            <p:graphicImage style="width:20%; margin-top: 3%; margin-left: 38%" value="#{globalAppBean.getImage('images/logoitr.png')}"/>
-            <h1 style='width:80%; margin-top: 2%'>Bienvenido <strong>#{loginBean.usuaPojo.nomb}</strong></h1>
+            <div class="col-md-12 col-xs-12">
+            <p:graphicImage style="width:15%; margin-top: 3%; margin-left: 43%" value="#{globalAppBean.getImage('images/logoitr.png')}"/>
+            <h1 style='margin-top: 10%'>Bienvenido <strong>#{loginBean.usuaPojo.nomb}</strong> <p:clock  class="fondDefa" pattern="dd/mm/yyyy" mode="server" /> <br/> <p:clock class="fondDefa" pattern="hh:mm:ss aa" mode="server" /></h1>
+            </div>
         </ui:define>
     </ui:composition>
 </html>

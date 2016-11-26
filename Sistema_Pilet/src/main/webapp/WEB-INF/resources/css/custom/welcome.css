@@ -2,14 +2,16 @@
 
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700|Dosis:200,400,600);
 
+body {
+  background-color: #252527;
+}
 h1 {
-  color: black;
   font-family: Dosis;
   font-weight: 200;
   position: absolute;
   text-align: center;
   display: block;
-  color: black;
+  color: #fff;
   top: 50%;
   width: 100%;
   margin-top: -55px;
@@ -33,51 +35,56 @@ strong {
 
 @-webkit-keyframes anim {
   0% {
-    text-shadow: 0 0 50px black;
+    text-shadow: 0 0 50px #fff;
     letter-spacing: 80px;
     opacity: 0;
     -webkit-transform: rotateY(-90deg);
   }
   50% {
-    text-shadow: 0 0 1px black;
+    text-shadow: 0 0 1px #fff;
     opacity: 0.8;
     -webkit-transform: rotateY(0deg);
   }
   75% {
-    text-shadow: 0 0 1px black;
+    text-shadow: 0 0 1px #fff;
     opacity: 0.8;
-    -webkit-transform: rotateY(0deg) translateZ(20%);
+    -webkit-transform: rotateY(0deg) translateZ(60px);
   }
   100% {
-    text-shadow: 0 0 1px black;
+    text-shadow: 0 0 1px #fff;
     opacity: 0.8;
     letter-spacing: 8px;
-    -webkit-transform: rotateY(0deg) translateZ(20%);
+    -webkit-transform: rotateY(0deg) translateZ(100px);
   }
 
 }
 @keyframes anim {
   0% {
-    text-shadow: 0 0 50px black;
+    text-shadow: 0 0 50px #fff;
     letter-spacing: 80px;
     opacity: 0;
     -moz-transform: rotateY(-90deg);
   }
   50% {
-    text-shadow: 0 0 1px black;
+    text-shadow: 0 0 1px #fff;
     opacity: 0.8;
     -moz-transform: rotateY(0deg);
   }
   75% {
-    text-shadow: 0 0 1px black;
+    text-shadow: 0 0 1px #fff;
     opacity: 0.8;
-    -moz-transform: rotateY(0deg) translateZ(20%);
+    -moz-transform: rotateY(0deg) translateZ(60px);
   }
   100% {
-    text-shadow: 0 0 1px black;
+    text-shadow: 0 0 1px #fff;
     opacity: 0.8;
     letter-spacing: 8px;
-    -moz-transform: rotateY(0deg) translateZ(20%);
+    -moz-transform: rotateY(0deg) translateZ(100px);
   }
 
+}
+
+.fondDefa
+{
+    background-color: #ECF0F5;
 }
