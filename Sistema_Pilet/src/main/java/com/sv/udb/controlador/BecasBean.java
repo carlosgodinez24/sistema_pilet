@@ -481,14 +481,16 @@ public class BecasBean implements Serializable{
             
         }
     }
-    public void consW()
+    public boolean consW()
     {
+        boolean respFunc = false;
         RequestContext ctx = RequestContext.getCurrentInstance();
         Client client = ClientBuilder.newClient();
         String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consAlum/%s", this.carnet.trim());        
        if(this.cons(carnet.trim()))
        {           
              ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El Alumno ya se encuentra')");
+             
        }
        else
        {
@@ -499,39 +501,46 @@ public class BecasBean implements Serializable{
             if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
             {
                 DatosAlumnos resp = response.readEntity(DatosAlumnos.class); //La respuesta de captura en un pojo que esta en el paquete utils
-                this.objeSoli.setCarnAlum(carnet.trim());
-                this.objeSoli.setNombAlum(resp.getNomb());;
-                Grado grad = new Grado();
-                String cortado= resp.getGrad().substring(0,1);                
-                grad=FCDEGrado.find(Integer.parseInt(cortado));   
-                this.objeSoli.setCodiGrad(grad);
-                this.objeSoli.setFotoAlum(resp.getFoto());
-                this.objeSoli.setEspeAlum(resp.getEspe());
-                this.objeSoli.setGrupAlum(resp.getGrup());
-                this.objeSoli.setSeccAcad(resp.getSeccAcad());
-                this.objeSoli.setSeccTecn(resp.getSeccTecn());
-                if(resp.getFoto() != null)
-                {
-                    //String base64Image = new String(Base64.getDecoder().decode(resp.getFoto()));
-                    //System.err.println("Base:" +base64Image);
-//                    this.fotoAlum = new DefaultStreamedContent(base64Image, "image/jpeg", "Demo.jpg");
-                }
-                else
-                {
-                    this.fotoAlum = new DefaultStreamedContent();
-                }
-                this.toogFich();
                 
                 if(resp.getNomb() == null || resp.getNomb().equals(""))
                 {
                     ctx.execute("setMessage('MESS_WARN', 'Atención', 'Alumno no encontrado.')");
+                    respFunc = false;
+                }
+                else
+                {                
+                    this.objeSoli.setCarnAlum(carnet.trim());
+                    this.objeSoli.setNombAlum(resp.getNomb());;
+                    Grado grad = new Grado();
+                    String cortado= resp.getGrad().substring(0,1);                
+                    grad=FCDEGrado.find(Integer.parseInt(cortado));   
+                    this.objeSoli.setCodiGrad(grad);
+                    this.objeSoli.setFotoAlum(resp.getFoto());
+                    this.objeSoli.setEspeAlum(resp.getEspe());
+                    this.objeSoli.setGrupAlum(resp.getGrup());
+                    this.objeSoli.setSeccAcad(resp.getSeccAcad());
+                    this.objeSoli.setSeccTecn(resp.getSeccTecn());
+                    if(resp.getFoto() != null)
+                    {
+                      //  String base64Image = new String(Base64.getDecoder().decode(resp.getFoto()));
+                       // System.err.println("Base:" +base64Image);
+    //                    this.fotoAlum = new DefaultStreamedContent(base64Image, "image/jpeg", "Demo.jpg");
+                    }
+                    else
+                    {
+                        this.fotoAlum = new DefaultStreamedContent();
+                    }
+                    this.toogFich();
+                    respFunc = true;
                 }
             }
             else
             {
                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar alumno')");
+                respFunc = false;
             }       
        }
+       return respFunc;
     }
     /*-----------------------------------------------------------*/
     //Aquí abajo estan toda la logica necesaria para los barridos, slider    

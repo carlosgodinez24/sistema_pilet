@@ -113,7 +113,7 @@ public class DinamicoBean implements Serializable{
                     {
                         if(tempOR.getEstaOpci() == 1)
                         {
-                            listOpciTemp.put(tempOR.getCodiOpciResp(), tempOR.getDescOpci());
+                            listOpciTemp.put(tempOR.getCodiOpciResp(),tempOR.getDescOpci());
                         }
                     }
                 }
@@ -181,7 +181,14 @@ public class DinamicoBean implements Serializable{
     
     public void guar()
     {
-        System.out.println("Codigo de usuario: "+logiBean.getObjeUsua().getCodiUsua());
+        BecasBean objeBeca = new BecasBean();
+        objeBeca.setCarnet(logiBean.getObjeUsua().getAcceUsua());
+        System.out.println("Codigo de usuario: "+logiBean.getObjeUsua().getAcceUsua());   
+        objeBeca.consW();       
+             
+        
+        
+        
         
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
@@ -195,7 +202,12 @@ public class DinamicoBean implements Serializable{
                     String respArray = "";
                     for(Object tempResp : (Object[])this.mapa.get(temp.getFieldKey()))
                     {
+                        int codigoOpcionRespuesta = Integer.parseInt(String.valueOf(tempResp));
+                        System.out.println("Guarar: "+codigoOpcionRespuesta);
                         respArray = respArray + "-" + tempResp;
+                        Respuesta respuesta = new Respuesta(new SolicitudBeca(1),new Opcion(codiDinaDb),new OpcionRespuesta(codigoOpcionRespuesta),1);
+                        respuesta.setDescOpci("S/R");
+                        FCDEResp.create(respuesta);
                     }
                     respArray = respArray.trim();
                     valor = "id: " + codiDinaDb + " === valor: " + respArray;
@@ -230,9 +242,10 @@ public class DinamicoBean implements Serializable{
             
             
             
-           ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos " + valor4[0] + "')");
-
+           
 */
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+
         }
         catch(Exception ex)
         {
@@ -260,6 +273,7 @@ public class DinamicoBean implements Serializable{
                 form.getChildren().add(this.createUIOutput(seccion.getNombSecc()));
                 form.getChildren().add(this.createUIOutput("</div>"));
                 form.getChildren().add(this.createUIOutput(" <div class=\"panel-body\">"));         
+                form.getChildren().add(this.createUIOutput(" <h3>Indicaciones: "+seccion.getIndiSecc()+"</h3>"));       
                 form.getChildren().add(this.createUIOutput("<fieldset>"));
                 
                     for(Pregunta pregunta :this.listPreg)

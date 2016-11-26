@@ -53,6 +53,8 @@ public class OpcionRespuesta implements Serializable {
     @JoinColumn(name = "codi_opci", referencedColumnName = "codi_opci")
     @ManyToOne(fetch = FetchType.EAGER)
     private Opcion codiOpci;
+    
+    
 
     public OpcionRespuesta() {
     }
