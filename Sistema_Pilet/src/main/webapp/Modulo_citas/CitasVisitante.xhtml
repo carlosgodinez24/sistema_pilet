@@ -60,7 +60,7 @@ and open the template in the editor.
                                         
                                     </h:form>
                                 </div>
-                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{citasBean.listCitaVisiUsua}"
+                                <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{citasBean.consListCambCitaEmplVisi()}"
                                         var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -68,11 +68,11 @@ and open the template in the editor.
                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
                                         pt:data-single-select="true">                                
                                <h:column pt:data-field="state" pt:data-checkbox="true">
-                                   #{citasBean.consDepeListCitaUsua(fila)}
+                                   #{citasBean.consDepeListCitaUsua(fila.codiCita)}
                                </h:column>
                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id" pt:data-visible='false'>
                                    <f:facet name="header">Código</f:facet>
-                                   <h:outputText value="#{fila.codiCita}"/>
+                                   <h:outputText value="#{fila.codiCita.codiCita}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="visi">
                                    <f:facet name="header">Visitante</f:facet>
@@ -85,44 +85,52 @@ and open the template in the editor.
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="fech">
                                    <f:facet name="header">Fecha y Hora</f:facet>
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.fechInicCitaNuev}"> 
+                                   <h:outputText value="#{fila.fechInicCitaNuev}"> 
                                     <f:convertDateTime pattern="EEEE dd/MM/yyyy" timeZone="GMT-6"/>
                                    </h:outputText><br/>de
-                                   <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} a #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
+                                   <h:outputText value="#{fila.horaInicCitaNuev} a #{fila.horaFinCitaNuev}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="luga">
                                    <f:facet name="header">Lugar </f:facet>
-                                   <h:outputText value="#{fila.codiUbic.nombUbic}"/>
+                                   <h:outputText value="#{fila.codiCita.codiUbic.nombUbic}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="moti">
                                    <f:facet name="header">Motivo ó Descripción</f:facet>
                                    <span style="font-weight: bold;">Motivo: </span><br/>
-                                   <h:outputText value="#{fila.descCita}"/>   
-                                   <h:panelGroup rendered="#{citasBean.objeCambCitaDepe.motiCambCita ne null}">
+                                   <h:outputText value="#{fila.codiCita.descCita}"/>   
+                                   <h:panelGroup rendered="#{fila.motiCambCita ne null}">
                                        <hr style="margin: 3px 1px 3px 1px;" />
                                        <span style="font-weight: bold;">Ultimo Cambio: </span><br/>
-                                       <h:outputText value="#{citasBean.objeCambCitaDepe.motiCambCita}"/>
+                                       <h:outputText value="#{fila.motiCambCita}"/>
                                    </h:panelGroup>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="esta">
                                    <f:facet name="header">Estado</f:facet>
-                                   <h:panelGroup class="label label-info" rendered="#{fila.estaCita eq '1'}">
-                                       <i class="fa fa-calendar-o"/> Solicitada</h:panelGroup>
-                                   <h:panelGroup class="label label-success" rendered="#{fila.estaCita eq '2'}">
-                                       <i class="fa fa-calendar-o"/> Programada</h:panelGroup> 
-                                   <h:panelGroup class="label label-danger" rendered="#{fila.estaCita eq '3'}">
-                                       <i class="fa fa-calendar-o"/> Rechazada</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiCita.estaCita eq '0'}">
+                                            <i class="fa fa-calendar-o"/> Cancelada</h:panelGroup>
+                                        <h:panelGroup class="label label-info" rendered="#{fila.codiCita.estaCita eq '1'}">
+                                            <i class="fa fa-calendar-o"/> Solicitada</h:panelGroup>
+                                        <h:panelGroup class="label label-success" rendered="#{fila.codiCita.estaCita eq '2'}">
+                                            <i class="fa fa-calendar-o"/> Programada</h:panelGroup> 
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiCita.estaCita eq '3'}">
+                                            <i class="fa fa-calendar-o"/> Rechazada</h:panelGroup>
+                                        <h:panelGroup class="label label-warning" rendered="#{fila.codiCita.estaCita eq '4'}">
+                                            <i class="fa fa-calendar-o"/> Reprogramación Solicitada</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{fila.codiCita.estaCita eq '5'}">
+                                            <i class="fa fa-calendar-o"/> Cancelación Solicitada</h:panelGroup>
+                                        <h:panelGroup class="label label-info" rendered="#{fila.codiCita.estaCita eq '6'}">
+                                            <i class="fa fa-calendar-o"/>Finalizada</h:panelGroup>
                                </h:column>
                                 <h:column pt:data-sortable="true" pt:data-field="acci" pt:data-click-to-select="false" >
                                     <f:facet name="header">Acciones</f:facet>
                                     <div style="width: 120px">
-                                        <h:form>
+                                        <h:form>    
                                             <h:commandLink  onclick="PF('ModaRepo').show();" class="btn btn-primary" style="margin-bottom: 5px; width: 100%;">
-                                                    <p:ajax listener="#{reportesBean.procSegu(fila.codiCita)}"  update=":ModaRepoView"  global="true"/>
+                                                <p:ajax listener="#{reportesBean.procSegu(fila.codiCita.codiCita)}"  update=":ModaRepoView"  global="true"/>
                                                     <i class="fa fa-file-text-o"/> Seguimiento
                                                 </h:commandLink>
                                             <h:commandLink  onclick="PF('ModaRepo').show();" class="btn btn-primary" style="width: 100%;">
-                                                    <p:ajax listener="#{reportesBean.procAsis(fila.codiCita)}"  update=":ModaRepoView"  global="true"/>
+                                                <p:ajax listener="#{reportesBean.procAsis(fila.codiCita.codiCita)}"  update=":ModaRepoView"  global="true"/>
                                                     <i class="fa fa-file-text-o"/> Asistencias
                                                 </h:commandLink>
                                         </h:form>
@@ -130,6 +138,28 @@ and open the template in the editor.
 
                                 </h:column>
                             </h:dataTable>
+                                <h:form>
+                                    <h4>Mostrar Registros</h4>
+                                    <p>Entre las fechas:</p>
+                                        <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
+                                            <h:message for="fech" errorClass="field-error" />
+                                            <h:inputText id="fechXD" value="#{citasBean.fechInicBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:inputText> 
+                                        </div>
+                                        <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
+                                            <h:message for="fech" errorClass="field-error" />
+                                            <h:inputText id="fechxd2" value="#{citasBean.fechFinaBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            </h:inputText> 
+                                        </div>       
+                                    <div style="display: inline-block; vertical-align: top; height: 40px;" class="input-group col-xs-6">
+                                        <h:commandLink style="width: 50%" id="btonBusqParam" class="btn btn-success" >
+                                                    <p:ajax  process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                    Buscar
+                                                </h:commandLink>
+                                        </div>
+                                </h:form>
                             </h:panelGroup>
                         </div>
                     </div>

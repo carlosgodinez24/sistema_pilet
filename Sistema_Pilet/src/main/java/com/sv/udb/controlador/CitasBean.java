@@ -136,30 +136,60 @@ public class CitasBean implements Serializable{
     private Date fechFinaBusq;
     private int estaCitaSele=10;
 
+    public List<Cambiocita> consListCambCitaEmplVisi() {
+        consCambCitaEmpl(false);
+        return listCambCita;
+    }
     
-    public void consCambCita()
+    public List<Cambiocita> consListCambCitaEmplAlum() {
+        consCambCitaEmpl(true);
+        return listCambCita;
+    }
+        
+    public List<Cambiocita> consListCambCitaVisiAlum() {
+        consCambCitaVisiAlum();
+        return listCambCita;
+    }
+    
+    public void setListCambCita(List<Cambiocita> listCambCita) {
+        this.listCambCita = listCambCita;
+    }
+    
+    
+    public void consCambCitaVisiAlum()
     {
-        if(this.fechInicBusq.after(this.fechFinaBusq))
+        if(this.getFechInicBusq().after(this.getFechFinaBusq()))
         {
             RequestContext ctx = RequestContext.getCurrentInstance();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Fechas Incorrectas')");
         }
         else
         {
-            System.out.println("ENTRO EN EL ElSE");
             try
             {
-                this.listCambCita = FCDECambCita.findCambioCitaByFechaAndUsua(this.fechInicBusq, this.fechFinaBusq, new LoginBean().getObjeWSconsEmplByAcce().getCodi(),estaCitaSele);
-                if(listCambCita == null)listCambCita = new ArrayList<Cambiocita>();
-                this.listCitaAlumUsua = new ArrayList<Cita>();
-                this.listCitaVisiUsua = new ArrayList<Cita>();
-                System.out.println("CITAS: "+listCambCita.size());
-                System.out.println("LISTA ALUMNOS: "+listCitaAlumUsua.size()+" LISTA VISITANTES: "+listCitaVisiUsua.size());
-                for(Cambiocita obje: listCambCita){
-                    System.out.println(obje.getFechCambCita());
-                    listCitaAlumUsua.add(obje.getCodiCita());
-                    listCitaVisiUsua.add(obje.getCodiCita());
-                }
+                this.listCambCita = FCDECambCita.findCambioCitaByCarnAlum(this.fechInicBusq, this.fechFinaBusq, logiBean.getObjeUsua().getAcceUsua());
+                
+            }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void consCambCitaEmpl(boolean padre)
+    {
+        if(this.getFechInicBusq().after(this.getFechFinaBusq()))
+        {
+            RequestContext ctx = RequestContext.getCurrentInstance();
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Fechas Incorrectas')");
+        }
+        else
+        {
+            try
+            {
+                this.listCambCita = FCDECambCita.findCambioCitaByFechaAndUsua(this.fechInicBusq, this.fechFinaBusq, new LoginBean().getObjeWSconsEmplByAcce().getCodi(),estaCitaSele, padre);
+                
             }
             catch(Exception ex)
             {
@@ -872,6 +902,7 @@ public class CitasBean implements Serializable{
                     break;
                 }
                 estaCita();
+                
                 limpForm();
             }
         }
@@ -1620,11 +1651,11 @@ public class CitasBean implements Serializable{
                         objeCita.setEstaCita(2);
                     break;
                 }
-                if(padre){
+                /*if(padre){
                     listCitaAlumUsua.remove(objeCita);
                 }else{
                     listCitaVisiUsua.remove(objeCita);
-                }
+                }*/
                 objeCambCita.setCodiCita(objeCita);
                 objeCambCita.setMotiCambCita(motivo);
                 objeCambCita.setEstaCambCita(objeCita.getEstaCita());
@@ -1634,13 +1665,14 @@ public class CitasBean implements Serializable{
                 FCDECita.edit(objeCita);
                 FCDECambCita.create(objeCambCita);
                 objeCambCita.setCodiCita(objeCita);
-                if(objeCita.getEstaCita() != 0){
+                /*if(objeCita.getEstaCita() != 0){
                     if(padre){
                         listCitaAlumUsua.add(objeCita);
                     }else{
                         listCitaVisiUsua.add(objeCita);
                     }
                 }
+                */
                 switch(acci){
                     case 1:
                         log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha confirmado cita ");
@@ -1657,6 +1689,7 @@ public class CitasBean implements Serializable{
                     }
                 }
                 estaCita();
+                consCambCitaEmpl(padre);               
             }
         }
         catch(Exception ex)
