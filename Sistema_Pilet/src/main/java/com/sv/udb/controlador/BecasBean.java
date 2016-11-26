@@ -8,33 +8,19 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.BecaFacadeLocal;
 import com.sv.udb.ejb.DetalleBecaFacadeLocal;
-import com.sv.udb.ejb.DocumentoFacadeLocal;
 import com.sv.udb.ejb.GradoFacadeLocal;
 import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
 import com.sv.udb.ejb.TipoBecaFacadeLocal;
 import com.sv.udb.modelo.Beca;
-import com.sv.udb.modelo.DetalleBeca;
-import com.sv.udb.modelo.Documento;
 import com.sv.udb.modelo.Grado;
 import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoBeca;
 import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.modelo.TipoRetiro;
-import com.sv.udb.utils.Archivo;
 import com.sv.udb.utils.pojos.DatosAlumnos;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Base64;
+//import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -46,8 +32,6 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -271,33 +255,36 @@ public class BecasBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());
-            this.objeBeca = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());
-            this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
-            this.listSoli.remove(this.objeSoli);
-            this.objeSoli2.setEstaSoliBeca(3);
-            FCDESoli.edit(objeSoli2);
-            this.listSoli.add(objeSoli2);
-            this.objeSoli.setEstaSoliBeca(1);
-            FCDESoli.create(objeSoli);
-            this.listSoli.add(objeSoli);
-            this.listBeca.remove(this.objeBeca2);
+            //el objeto objeSoli tiene los datos de la solicitud pero modificados, entonces hay que consultar la misma solicitud
+            //pero con los datos viejos.
+            objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());//Consulta la solicitud "vieja"
+            this.objeBeca = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());//Consulta la beca de la solicitud actual
+            this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());//consulta la beca de la solicitud "vieja"
+            this.listSoli.remove(this.objeSoli);//quita la solicitud de la lista
+            this.objeSoli2.setEstaSoliBeca(3);//le setea a la solicitud "vieja" el estado 3 de historial
+            FCDESoli.edit(objeSoli2);//edita el registro de la solicitud en la base
+            this.listSoli.add(objeSoli2);//Agrega la solicitud "vieja" a la lista 
+            this.objeSoli.setEstaSoliBeca(1);//Mmmm la verda no se por que es esto xD
+            FCDESoli.create(objeSoli);//crea el nuevo registro de la solicitud
+            this.listSoli.add(objeSoli);//lo agrega a la lista
+            this.listBeca.remove(this.objeBeca2);//quita la beca de la lista
             TipoEstado es = new TipoEstado();
             es.setCodiTipoEsta(3);
-            this.objeBeca2.setCodiTipoEsta(es);
-            this.objeBeca2.setFechBaja(new Date());
-            FCDEBeca.edit(objeBeca2);            
-            this.objeSoli = FCDESoli.findLast();
-            this.objeSoli.setFechSoliBeca(new Date());
-            this.objeBeca.setCodiSoliBeca(objeSoli);
-            es.setCodiTipoEsta(this.objeSoli.getEstaSoliBeca());
+            this.objeBeca2.setCodiTipoEsta(es);//le setea el estado de la beca de 3 de historial
+            this.objeBeca2.setFechBaja(new Date());//le setea la fecha de baja
+            FCDEBeca.edit(objeBeca2);//edita el registro viejo de la base
+            this.objeSoli = FCDESoli.findLast();//busca la ultima solicitud creada
+            this.objeSoli.setFechSoliBeca(new Date());//le seta la fecha
+            this.objeBeca.setCodiSoliBeca(objeSoli);//le setea el codigo de la solicitud
+            es.setCodiTipoEsta(this.objeSoli.getEstaSoliBeca());//le setea el mismo estado de la soli a la beca
             this.objeBeca.setCodiTipoEsta(es);
-            FCDEBeca.create(objeBeca);
-            this.listBeca.add(objeBeca);
-            this.consTodoH();
-            this.consTodo();
+            FCDEBeca.create(objeBeca);//crea el nuevo registro de la beca
+            this.listBeca.add(objeBeca);//lo agrega a la lista
+            this.consTodoH();//consulta los registros con estado 3
+            this.consTodo();//consulta los registros con estado diferente a 3
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Solicitud Modificada");
+
             
         }
         catch(Exception ex)
@@ -525,8 +512,8 @@ public class BecasBean implements Serializable{
                 this.objeSoli.setSeccTecn(resp.getSeccTecn());
                 if(resp.getFoto() != null)
                 {
-                    String base64Image = new String(Base64.getDecoder().decode(resp.getFoto()));
-                    System.err.println("Base:" +base64Image);
+                    //String base64Image = new String(Base64.getDecoder().decode(resp.getFoto()));
+                    //System.err.println("Base:" +base64Image);
 //                    this.fotoAlum = new DefaultStreamedContent(base64Image, "image/jpeg", "Demo.jpg");
                 }
                 else

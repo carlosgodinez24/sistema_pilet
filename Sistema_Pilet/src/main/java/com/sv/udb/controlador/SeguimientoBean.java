@@ -204,9 +204,7 @@ public class SeguimientoBean implements Serializable{
     {
         try
         {
-            System.out.println("Aqui 1");
             this.listSegu = FCDESegu.findByAll();
-            System.out.println("Aqui 2");
             log.info("Seguimientos Consultados");
         }
         catch(Exception ex)
@@ -267,7 +265,7 @@ public class SeguimientoBean implements Serializable{
             this.objeSegu = FCDESegu.find(codi);
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s", this.objeSegu.getDescSegu()) + "')");
+            String.format("%s", this.objeSegu.getDescSegu()) + "')");
             log.info("Seguimiento Consultado");
         }
         catch(Exception ex)

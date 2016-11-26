@@ -271,12 +271,15 @@ and open the template in the editor.
                                                     <div class="job">Sección academica:   #{becasBean.objeSoli.seccAcad}</div>
                                                     <div class="job">Seccion tecnica :  #{becasBean.objeSoli.seccTecn}</div>
                                                     <h5>Matricula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
-                                                    <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>                                                     
+                                                    <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>
+                                                    <h5>Patrocinador: #{becasBean.objeSoli.codiEmpr.nombEmpr}</h5> 
+                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becaSoliBean.guardar}">
+                                                        <p:ajax global="true" oncomplete="$('#CambPatr').modal('show');"/>
+                                                        <i class="fa fa-edit"/> Cambiar de patrocinador
+                                                    </h:commandLink>
                                                 </div>
                                             </div>						
                                             <div class="col-md-12 panelBottom btn-group">
-
-
                                                 <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 4}">
                                                     <h:commandLink id="btonActi" class="btn btn-info" rendered="#{!becaSoliBean.detalle}">
                                                         <p:ajax listener="#{becasBean.reActi()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
@@ -288,7 +291,6 @@ and open the template in the editor.
                                                         <p:ajax listener="#{becasBean.desa()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Desactivar Beca
                                                     </h:commandLink>
-
                                                 </c:if>
                                                 
                                                 <c:if test="#{!becasBean.guardar}">
@@ -419,7 +421,7 @@ and open the template in the editor.
                                                                 <i class="fa fa-plus"/> Nuevo
                                                             </h:commandLink>
                                                             <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!detalleBecaBean.guardar}">
-                                                                <p:ajax listener="#{detalleBecaBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <p:ajax listener="#{detalleBecaBean.modi()}" process="@form" update="@form :ContDetalle" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-edit"/> Modificar
                                                             </h:commandLink>
                                                             <!--
@@ -751,7 +753,7 @@ and open the template in the editor.
                                                                 <i class="fa fa-mail-forward"/> Cerrar
                                                             </h:commandLink>
                                                             <h:commandLink id="btonGuarSegu" class="btn btn-success" rendered="#{seguimientoBean.guardar}">
-                                                                <p:ajax listener="#{seguimientoBean.guar()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <p:ajax listener="#{seguimientoBean.guar()}" process="@form" update="@form :ContSegu" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-plus"/> Guardar
                                                             </h:commandLink>
                                                             <h:commandLink id="btonNuevSegu" class="btn btn-success" rendered="#{!seguimientoBean.guardar}">
@@ -759,7 +761,7 @@ and open the template in the editor.
                                                                 <i class="fa fa-plus"/> Nuevo
                                                             </h:commandLink>
                                                             <h:commandLink id="btonModiSegu" class="btn btn-primary" rendered="#{!seguimientoBean.guardar}">
-                                                                <p:ajax listener="#{seguimientoBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <p:ajax listener="#{seguimientoBean.modi()}" process="@form" update="@form :ContSegu" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-edit"/> Modificar
                                                             </h:commandLink>
                                                             <h:outputLink id="btonElimSegu" class="btn btn-danger" rendered="#{!seguimientoBean.guardar}" value="#" pt:data-placement="left"

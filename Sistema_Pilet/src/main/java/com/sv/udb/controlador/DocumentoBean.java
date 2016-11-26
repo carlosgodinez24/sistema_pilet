@@ -164,29 +164,7 @@ public class DocumentoBean implements Serializable{
         this.objeDocu.setFechDocu(new Date());
     }
     
-    public void esta()
-    {
-        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        try
-        {
-            this.objeDocu.setEstaDocu(1);                   
-            this.objeDocu.setRutaDocu("mis heuvos");
-            FCDEDocu.create(this.objeDocu);
-            this.listDocu.add(this.objeDocu);
-            this.limpForm();
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Documento Consultado");
-        }
-        catch (Exception e) 
-        {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(e).getMessage());
-        }
-        finally
-        {
-            
-        }
-    }    
+    
     public void guar()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página

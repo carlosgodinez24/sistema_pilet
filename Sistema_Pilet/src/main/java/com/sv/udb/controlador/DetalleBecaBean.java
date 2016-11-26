@@ -233,7 +233,7 @@ public class DetalleBecaBean implements Serializable{
         {
             System.out.println("Codigo beca: "+ objeBeca.getObjeBeca().getCodiBeca());
             this.listDetaBeca = FCDEDetaBeca.findByBeca(objeBeca.getObjeBeca().getCodiBeca());            
-              listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getObjeBeca().getCodiSoliBeca().getCodiGrad().getNivelGrad());
+            listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getObjeBeca().getCodiSoliBeca().getCodiGrad().getNivelGrad());
             log.info("Detalles Consultados");
         }
         catch(Exception ex)
