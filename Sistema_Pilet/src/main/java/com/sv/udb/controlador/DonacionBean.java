@@ -39,6 +39,7 @@ public class DonacionBean implements Serializable{
     private DonacionFacadeLocal FCDEDona;
     private Donacion objeDona;
     private List<Donacion> listDona;
+    private List<Donacion> listDonaEmpr;
     private boolean guardar;
     private boolean empresa = false;
     private boolean tipo = false;
@@ -76,19 +77,31 @@ public class DonacionBean implements Serializable{
     public List<Donacion> getListDona() {
         return listDona;
     }
+
+    public List<Donacion> getListDonaEmpr() {
+        return listDonaEmpr;
+    }
+    
+    
+    
     /**
      * Creates a new instance of DonacionBean
      */
     public DonacionBean() {
     }
     
+    private EmpresaBean objeEmpr;
+    
     @PostConstruct
     public void init()
     {
         this.objeDona = new Donacion();
-        this.guardar = true;
-        this.consTodo();
-    }
+        this.guardar = true;        
+        if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean") != null) {
+            objeEmpr = (EmpresaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean");
+        } 
+        this.consTodo(); 
+   }
     
     public void limpForm()
     {
@@ -132,6 +145,41 @@ public class DonacionBean implements Serializable{
         }
     }
     
+    public void guar2()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            
+            this.objeDona.setCodiEmpr(objeEmpr.getObjeEmpr());
+            BigDecimal total = this.objeDona.getCantCuot().multiply(BigDecimal.valueOf(objeDona.getPlazDona()));
+            this.objeDona.setMontTot(total);
+            char recaudacion=  this.objeDona.getCodiTipoDona().getRecaTipoDona();
+            if ( recaudacion== 'F') {
+                this.objeDona.setMontPend(total);
+            } else {
+                objeDona.setMontPend(BigDecimal.ZERO);
+            }
+            
+            this.objeDona.setEstaDona(1);
+            FCDEDona.create(this.objeDona);
+            this.listDona.add(this.objeDona);
+            this.limpForm();
+            this.consTodo();
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Donacion guardada");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar D')");
+            log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
     public void modi()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -161,6 +209,7 @@ public class DonacionBean implements Serializable{
             }  
             FCDEDona.edit(this.objeDona);
             this.listDona.add(this.objeDona); //Agrega el objeto modificado
+            this.consTodo();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Donacion Modificada");
         }
@@ -183,6 +232,8 @@ public class DonacionBean implements Serializable{
             this.objeDona.setEstaDona(0);
             this.listDona.remove(this.objeDona); //Limpia el objeto viejo
             FCDEDona.edit(this.objeDona);
+            
+            this.consTodo();
            //this.listDona.add(this.objeDona); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
             log.info("Donacion Eliminada");
@@ -202,7 +253,9 @@ public class DonacionBean implements Serializable{
     {
         try
         {
+            //aqui va consulta personalizada
             this.listDona = FCDEDona.findAllActive();
+            this.listDonaEmpr = FCDEDona.findDona(objeEmpr.getObjeEmpr().getCodiEmpr());
             log.info("Donaciones Consultadas");
         }
         catch(Exception ex)
@@ -223,6 +276,7 @@ public class DonacionBean implements Serializable{
         try
         {
             this.objeDona = FCDEDona.find(codi);
+            System.out.println(codi);
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDona.getMontTot()) + "')");

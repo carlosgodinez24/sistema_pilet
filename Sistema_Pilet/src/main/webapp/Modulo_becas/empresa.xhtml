@@ -167,7 +167,7 @@ and open the template in the editor.
                                         <div class="panel-body">
                                             <div class="col-md-12 panelTop">	
                                                 <div class="col-md-4">	
-                                                    <img class="img-responsive media-object img-circle profile-img" src="http://placehold.it/350x350" alt=""/>
+                                                    <img class="img-responsive media-object img-circle profile-img" src="http://placehold.it/200x200" alt=""/>
                                                 </div>
                                                 <div class="col-md-8">	
                                                     <h2 class="media-heading"> #{empresaBean.objeEmpr.nombEmpr}</h2>
@@ -191,24 +191,24 @@ and open the template in the editor.
                         </h:form>
                         <div class="col-md-12 col-xs-12">
                             <div class="panel panel-default">
-                                <div class="panel-heading">Tabla de Datos</div>
+                                <div class="panel-heading">Donaciones a pagar por esta empresa</div>
                                 <div class="panel-body">
                                     <h:panelGroup id="ContDona">
                                         <div id="toolTablDona">
                                             <h:form>
                                                 <!--Form exclusivo para los remotos-->
-                                                <p:remoteCommand name="consObje" actionListener="#{donacionBean.cons()}" update=":FormDona" 
-                                                                 oncomplete="$('#ModaForm').modal('show');" global="true"/>
-                                                <p:remoteCommand name="elimObje" actionListener="#{donacionBean.elim()}" update=":FormDona :ContDona" 
+                                                <p:remoteCommand name="consDonaObje" actionListener="#{donacionBean.cons()}" 
+                                                                 oncomplete="$('#ModaDonaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();" global="true" update=":container"/>
+                                                <p:remoteCommand name="elimObje" actionListener="#{donacionBean.elim()}" update="@form :ContDona :TablDona"
                                                                  oncomplete="INIT_OBJE();" global="true"/>
                                                 <h:commandLink id="btonNuevDona" class="btn btn-success">
                                                     <p:ajax listener="#{donacionBean.limpForm()}" update=":FormDona" global="true" 
                                                             oncomplete="$('#ModaDonaForm').modal('show');"/>
-                                                    <i class="fa fa-plus"/> Nuevo
+                                                    <i class="fa fa-plus"/> Agregar una nueva donación a esta empresa
                                                 </h:commandLink>
                                             </h:form>
                                         </div>
-                                        <h:dataTable pt:data-id="TablDona" id="TablDona" value="#{donacionBean.listDona}"
+                                        <h:dataTable pt:data-id="TablDona" id="TablDona" value="#{donacionBean.listDonaEmpr}"
                                                      var="fila" class="boottable" pt:data-toolbar="#toolTablDona"
                                                      styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                      pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -217,7 +217,7 @@ and open the template in the editor.
                                                      pt:data-single-select="true">                                
                                             <h:column pt:data-field="state" pt:data-checkbox="true">
                                             </h:column>
-                                            <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                            <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idDona">
                                                 <f:facet name="header">Código</f:facet>
                                                 <h:outputText value="#{fila.codiDona}"/>
                                             </h:column>
@@ -282,14 +282,6 @@ and open the template in the editor.
                                                 <ui:fragment id="FragDona" rendered="#{!donacionBean.donacion}">
                                                     <fieldset class="col-md-12">
                                                         <h:inputHidden id="codiDona" value="#{donacionBean.objeDona.codiDona}" />
-                                                        <div class="form-group input-group-xs col-md-11">
-                                                            <h:outputLabel  for="soli" value="Nombre empresa "/>
-                                                            <h:selectOneMenu id="soliDona" value="#{donacionBean.objeDona.codiEmpr}" class="form-control" pt:data-live-search="true">
-                                                                <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
-                                                                <f:converter converterId="PooConv"/>
-                                                            </h:selectOneMenu>
-                                                            <h:message for="soli" errorClass="field-error" />           
-                                                        </div>
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="nomb" value="Nombre Donacion"/>
                                                             <h:message for="nomb" errorClass="field-error" />
@@ -298,22 +290,22 @@ and open the template in the editor.
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="mens" value="Plazo Donacion"/>
                                                             <h:message for="mens" errorClass="field-error" />
-                                                            <h:inputText id="mensDona" value="#{donacionBean.objeDona.plazDona}" class="form-control" />
+                                                            <h:inputText id="mens" value="#{donacionBean.objeDona.plazDona}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="cant" value="Cantidad cuota"/>
                                                             <h:message for="cant" errorClass="field-error" />
-                                                            <h:inputText id="cantDona" value="#{donacionBean.objeDona.cantCuot}" class="form-control" />
+                                                            <h:inputText id="cant" value="#{donacionBean.objeDona.cantCuot}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="mont" value="Monto total"/>
                                                             <h:message for="mont" errorClass="field-error" />
-                                                            <h:inputText id="montDona" value="#{donacionBean.objeDona.montTot}" class="form-control" />
+                                                            <h:inputText id="mont" value="#{donacionBean.objeDona.montTot}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="montp" value="Monto pendiente"/>
                                                             <h:message for="montp" errorClass="field-error" />
-                                                            <h:inputText id="montpDona" value="#{donacionBean.objeDona.montPend}" class="form-control" />
+                                                            <h:inputText id="montp" value="#{donacionBean.objeDona.montPend}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs col-md-11">
                                                             <h:outputLabel  for="tipoDona" value="Tipo donación: "/>
@@ -341,15 +333,15 @@ and open the template in the editor.
                                                                 <i class="fa fa-mail-forward"/> Cerrar
                                                             </h:commandLink>
                                                             <h:commandLink id="btonGuar" class="btn btn-success" rendered="#{donacionBean.guardar}">
-                                                                <p:ajax listener="#{donacionBean.guar()}" process="@form" update="@form :ContDona" oncomplete="INIT_OBJE();" />
+                                                                <p:ajax listener="#{donacionBean.guar2()}" process="@form" update="@form :ContDona :TablDona" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-plus"/> Guardar
                                                             </h:commandLink>
                                                             <h:commandLink id="btonNuev" class="btn btn-success" rendered="#{!donacionBean.guardar}">
-                                                                <p:ajax listener="#{donacionBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                                <p:ajax listener="#{donacionBean.limpForm()}" process="@form" update="@form :ContDona :TablDona" oncomplete="INIT_OBJE_MODA();" />
                                                                 <i class="fa fa-plus"/> Nuevo
                                                             </h:commandLink>
                                                             <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!donacionBean.guardar}">
-                                                                <p:ajax listener="#{donacionBean.modi()}" process="@form" update="@form :ContDona" oncomplete="INIT_OBJE();" />
+                                                                <p:ajax listener="#{donacionBean.modi()}" process="@form" update="@form :ContDona :TablDona" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-edit"/> Modificar
                                                             </h:commandLink>
                                                             <!--
@@ -357,7 +349,7 @@ and open the template in the editor.
                                                                 1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
                                                                 2. Quitar la referencia: bootstrap-confirmation.min.js del fragmento head.xhtml
                                                                 3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
-                                                                4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
+                                                                4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLinke agregué el value="#"
                                                             -->
                                                             <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!donacionBean.guardar}" value="#" pt:data-placement="left"
                                                                           pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
