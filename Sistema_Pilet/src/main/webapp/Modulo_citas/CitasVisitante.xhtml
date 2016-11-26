@@ -271,9 +271,10 @@ and open the template in the editor.
                                                 <div class="input-group col-xs-12">
                                                     <h:outputLabel  for="ignoHoraDisp" value="Ignorar Horario Disponible "/>
                                                     <span>  </span>
-                                                    <p:selectBooleanCheckbox value="#{citasBean.ignoHoraDisp}" id="ignoHoraDisp">
+                                                    <br/>
+                                                    <p:selectBooleanButton class="btn btn-success" onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close" value="#{citasBean.ignoHoraDisp}" id="ignoHoraDisp">
                                                         <p:ajax update="@this,paneHoraDisp @this,paneHoraHoraDispIgno" process="@this,ignoHoraDisp" global="true" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA(); INIT_OBJE_TABL();" />
-                                                    </p:selectBooleanCheckbox>
+                                                    </p:selectBooleanButton>
                                                     <h:message for="ignoHoraDisp" errorClass="field-error" />
                                                 </div>
                                                 <br/>
