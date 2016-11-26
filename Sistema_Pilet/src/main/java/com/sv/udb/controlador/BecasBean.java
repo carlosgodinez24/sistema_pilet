@@ -204,8 +204,9 @@ public class BecasBean implements Serializable{
         this.guardar = true; 
         this.carnet = "";
     }
-    public void guar()
+    public boolean guar()
     {        
+        boolean respGuar = false;
         this.objeSoli.setFechSoliBeca(new Date());
         this.objeBeca.setFechInic(new Date());
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -214,6 +215,7 @@ public class BecasBean implements Serializable{
             if(objeSoli.getCarnAlum() == null || objeSoli.getNombAlum() == null)
             {
                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Busque un alumno')");
+                respGuar = false;
             }
             else
             {
@@ -236,6 +238,7 @@ public class BecasBean implements Serializable{
                     this.guardar = false;
                     objeSoli =FCDESoli.findLast();
                     objeBeca=FCDEBeca.findLast();
+                    respGuar = true;
             
             }
         }
@@ -243,11 +246,13 @@ public class BecasBean implements Serializable{
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             log.error(getRootCause(ex).getMessage());
+            respGuar = false;
         }
         finally
         {
             
         }
+        return respGuar;
     }
     
     public void modi()

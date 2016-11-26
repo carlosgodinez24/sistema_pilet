@@ -11,6 +11,7 @@ import com.sv.udb.ejb.OpcionFacadeLocal;
 import com.sv.udb.ejb.PreguntaFacadeLocal;
 import com.sv.udb.ejb.RespuestaFacadeLocal;
 import com.sv.udb.ejb.SeccionFacadeLocal;
+import com.sv.udb.modelo.Empresa;
 import com.sv.udb.modelo.Opcion;
 import com.sv.udb.modelo.OpcionRespuesta;
 import com.sv.udb.modelo.Pregunta;
@@ -181,18 +182,24 @@ public class DinamicoBean implements Serializable{
     
     public void guar()
     {
-        BecasBean objeBeca = new BecasBean();
-        objeBeca.setCarnet(logiBean.getObjeUsua().getAcceUsua());
-        System.out.println("Codigo de usuario: "+logiBean.getObjeUsua().getAcceUsua());   
-        objeBeca.consW();       
-             
-        
-        
-        
-        
-        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+       
         try
         {
+            /*Crear la nuva solicitud*/
+            BecasBean objeBeca = new BecasBean();
+            objeBeca.setCarnet(logiBean.getObjeUsua().getAcceUsua());
+            System.out.println("Codigo de usuario: "+logiBean.getObjeUsua().getAcceUsua());   
+            if(objeBeca.consW())
+            {
+                objeBeca.getObjeSoli().setCodiEmpr(new Empresa(1));
+                objeBeca.guar();
+            }
+            else
+            {
+                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Solicitud en aprobación')");
+            }  
+            
             for(DynamicField temp:this.listCmps)
             {
                 String valor = "";
