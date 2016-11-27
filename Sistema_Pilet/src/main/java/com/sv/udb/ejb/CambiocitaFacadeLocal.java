@@ -36,7 +36,9 @@ public interface CambiocitaFacadeLocal {
     
     boolean findCambioCitaByParams(String fecha, String horaInic, String horaFin, Integer codiUsua);
     
-    List<Cambiocita> findCambioCitaByFechaAndUsua(Date fechaInicial, Date fechaFinal, Integer codiUsua, Integer estaCita, boolean padre);
+    List<Cambiocita> findCambioCitaByFechaAndUsua(Date fechaInicial, Date fechaFinal, Integer codiUsua, Integer estaCita, int tipoCita);
+    
+    List<Cambiocita> findCambioVisiByFech(Date fechaInicial, Date fechaFinal);
     
     List<Cambiocita> findCambioCitaByCarnAlum(Date fechaInicial, Date fechaFinal, String carnAlum);
     

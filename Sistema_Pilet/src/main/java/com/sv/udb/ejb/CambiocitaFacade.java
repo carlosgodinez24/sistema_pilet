@@ -1,6 +1,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Alumnovisitante;
+import com.sv.udb.modelo.Beca_;
 import com.sv.udb.modelo.Cambiocita;
 import com.sv.udb.modelo.Cita;
 import java.util.Date;
@@ -65,17 +66,8 @@ public class CambiocitaFacade extends AbstractFacade<Cambiocita> implements Camb
     }
     
     @Override
-    public List<Cambiocita> findCambioCitaByFechaAndUsua(Date fechaInicial, Date fechaFinal, Integer codiUsua, Integer estaCita, boolean padre)
+    public List<Cambiocita> findCambioCitaByFechaAndUsua(Date fechaInicial, Date fechaFinal, Integer codiUsua, Integer estaCita, int tipoCita)
     {
-        int tipoCita;
-        if(padre==true)
-        {
-            tipoCita = 1;
-        }
-        else
-        {
-            tipoCita = 3;
-        }
         List<Cambiocita> resu;
         if(estaCita==10)
         {
@@ -118,12 +110,6 @@ public class CambiocitaFacade extends AbstractFacade<Cambiocita> implements Camb
         query.setParameter(2, horaInic);
         query.setParameter(3, horaFin);
         query.setParameter(4, fecha);
-        
-        
-        /*q.setParameter("codiUsua", codiUsua);
-        q.setParameter("fecha", codiUsua);
-        q.setParameter("horaInic", horaInic);
-        q.setParameter("horaFina", horaFin);*/
         List<Cambiocita> resu =(List<Cambiocita>) query.getResultList();
         if(resu.size()==0)
         {
@@ -133,5 +119,22 @@ public class CambiocitaFacade extends AbstractFacade<Cambiocita> implements Camb
         {
             return false;
         }
+    }
+    
+    @Override
+    public List<Cambiocita> findCambioVisiByFech(Date fechaInicial, Date fechaFinal)
+    {
+        List<Cambiocita> resu;
+        String sql = "SELECT cc.* FROM cambio_cita cc, cita c WHERE c.tipo_cita = ? AND c.codi_cita = cc.codi_cita AND cc.codi_camb_cita in(SELECT MAX(codi_camb_cita) from cambio_cita, cita where cambio_cita.codi_cita = cita.codi_cita  and ((fech_camb_cita between ? and ?) or (fech_inic_cita_nuev between ? and ?) or (fech_fin_cita_nuev between ? and ?)) group by cita.codi_cita)  ORDER BY cc.codi_camb_cita DESC";
+        Query query = em.createNativeQuery(sql, Cambiocita.class);
+        query.setParameter(1, 2);
+        query.setParameter(2, fechaInicial);
+        query.setParameter(3, fechaFinal);
+        query.setParameter(4, fechaInicial);
+        query.setParameter(5, fechaFinal);
+        query.setParameter(6, fechaInicial);
+        query.setParameter(7, fechaFinal);
+        resu =(List<Cambiocita>) query.getResultList();
+        return resu;
     }
 }

@@ -132,17 +132,23 @@ public class CitasBean implements Serializable{
     private List<DatosUsuariosByCrit> listDoceBusc;
     private List<Cambiocita> listCambCita;
     
+    public List<Cambiocita> consListCambVisi()
+    {
+        consCambVisi();
+        return listCambCita;
+    }
+    
     private Date fechInicBusq;
     private Date fechFinaBusq;
     private int estaCitaSele=10;
 
     public List<Cambiocita> consListCambCitaEmplVisi() {
-        consCambCitaEmpl(false);
+        consCambCitaEmpl(3);
         return listCambCita;
     }
     
     public List<Cambiocita> consListCambCitaEmplAlum() {
-        consCambCitaEmpl(true);
+        consCambCitaEmpl(1);
         return listCambCita;
     }
         
@@ -177,7 +183,7 @@ public class CitasBean implements Serializable{
         }
     }
     
-    public void consCambCitaEmpl(boolean padre)
+    public void consCambVisi()
     {
         if(this.getFechInicBusq().after(this.getFechFinaBusq()))
         {
@@ -188,7 +194,28 @@ public class CitasBean implements Serializable{
         {
             try
             {
-                this.listCambCita = FCDECambCita.findCambioCitaByFechaAndUsua(this.fechInicBusq, this.fechFinaBusq, new LoginBean().getObjeWSconsEmplByAcce().getCodi(),estaCitaSele, padre);
+                this.listCambCita = FCDECambCita.findCambioVisiByFech(this.fechInicBusq, this.fechFinaBusq);
+                
+            }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void consCambCitaEmpl(int tipoCita)
+    {
+        if(this.getFechInicBusq().after(this.getFechFinaBusq()))
+        {
+            RequestContext ctx = RequestContext.getCurrentInstance();
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Fechas Incorrectas')");
+        }
+        else
+        {
+            try
+            {
+                this.listCambCita = FCDECambCita.findCambioCitaByFechaAndUsua(this.fechInicBusq, this.fechFinaBusq, new LoginBean().getObjeWSconsEmplByAcce().getCodi(),estaCitaSele, tipoCita);
                 
             }
             catch(Exception ex)
@@ -1689,7 +1716,14 @@ public class CitasBean implements Serializable{
                     }
                 }
                 estaCita();
-                consCambCitaEmpl(padre);               
+                if(padre)
+                {
+                    consCambCitaEmpl(1);  
+                }
+                else
+                {
+                    consCambCitaEmpl(3); 
+                }                             
             }
         }
         catch(Exception ex)
