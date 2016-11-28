@@ -262,24 +262,43 @@ public class BecasBean implements Serializable{
         {
             //el objeto objeSoli tiene los datos de la solicitud pero modificados, entonces hay que consultar la misma solicitud
             //pero con los datos viejos.
-            objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());//Consulta la solicitud "vieja"
-            this.objeBeca = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());//Consulta la beca de la solicitud actual
-            this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());//consulta la beca de la solicitud "vieja"
-            this.listSoli.remove(this.objeSoli);//quita la solicitud de la lista
-            this.objeSoli2.setEstaSoliBeca(3);//le setea a la solicitud "vieja" el estado 3 de historial
+            //Objetos viejitos
+            objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());
+            this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
+            //Objetos nuevitos (El de la soli ya lo tiene el objeSoli actual)
+            this.objeBeca = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());
+            
+            //Operaciones a objetos viejitos
+            this.objeSoli2.setEstaSoliBeca(3);//3 de historial
             FCDESoli.edit(objeSoli2);//edita el registro de la solicitud en la base
-            this.listSoli.add(objeSoli2);//Agrega la solicitud "vieja" a la lista 
-            this.objeSoli.setEstaSoliBeca(1);//Mmmm la verda no se por que es esto xD
-            FCDESoli.create(objeSoli);//crea el nuevo registro de la solicitud
-            this.listSoli.add(objeSoli);//lo agrega a la lista
-            this.listBeca.remove(this.objeBeca2);//quita la beca de la lista
+            this.listSoli.add(objeSoli2);//Agrega la solicitud "vieja" a la lista
             TipoEstado es = new TipoEstado();
             es.setCodiTipoEsta(3);
+            //Setearle la razón a la criatura
+            //this.objeBeca2.setRetiBeca(this.objeBeca.getRetiBeca());
             this.objeBeca2.setCodiTipoEsta(es);//le setea el estado de la beca de 3 de historial
             this.objeBeca2.setFechBaja(new Date());//le setea la fecha de baja
             FCDEBeca.edit(objeBeca2);//edita el registro viejo de la base
+            
+            
+            //Cosas que no sé que hacen aquí
+            this.listSoli.remove(this.objeSoli2);//quita la solicitud de la lista
+            this.listBeca.remove(this.objeBeca2);//quita la beca de la lista
+            
+            //Operaciones a los objetos nuevitos
+            /**********************CAMEO DE ARIEL xd**************************/
+            /* Dato importante de las consultas findLast
+            estas consultas ven el ultimo registro por la fecha! si no lo hacen deberian!
+            así que , cuando se cree un nuevo objeto o se copie de otro que ya exttia va a tener
+            la fecha anterior, así que cuando se quiera consultar por el ultimo va a ver el registro anterior
+            porque va a tener una fecha mas reciente y pa solucionar eso solo seteamos una nueva fecha
+            antes de crear el registro! */
+           /**********************CAMEO DE ARIEL xd**************************/
+            this.objeSoli.setFechSoliBeca(new Date());
+            FCDESoli.create(objeSoli);//crea el nuevo registro de la solicitud
+            this.listSoli.add(objeSoli);//lo agrega a la lista
             this.objeSoli = FCDESoli.findLast();//busca la ultima solicitud creada
-            this.objeSoli.setFechSoliBeca(new Date());//le seta la fecha
+            
             this.objeBeca.setCodiSoliBeca(objeSoli);//le setea el codigo de la solicitud
             es.setCodiTipoEsta(this.objeSoli.getEstaSoliBeca());//le setea el mismo estado de la soli a la beca
             this.objeBeca.setCodiTipoEsta(es);
@@ -302,6 +321,7 @@ public class BecasBean implements Serializable{
             
         }
     }
+    
     
     public void reActi()
     {
@@ -551,10 +571,51 @@ public class BecasBean implements Serializable{
     //Aquí abajo estan toda la logica necesaria para los barridos, slider    
     /*-----------------------------------------------------------*/
     
-    
+    //Otra variable que pertece a laogica para los barridos es guardar
     private boolean showCarn=false;
     private boolean showFich=false;
     private boolean showEmpr=false;
+    
+    /*Explicación de como funciona:
+    
+    Guardar: Cuando por ejemplo guardar sea true, eso quiere decir que no se esta modificando. Eso quiere decir,que cuando sea true
+    se pueden mostrar formularios que no deben mostrarse cuando se esta modificando, por ejemplo para ingresar el carnet o
+    para ingresar la empresa. En ambos casos no se esta guardando, ah! pero son barridos diferentes, eso corresponde a otras
+    variables. 
+    
+    showCarn: esta varible, solo define si se muestra el campo donde requerimos el carnet para hacer una nueva solicitud, 
+    esto quiere decir que cuando esta variable sea true Y la variable de guardar sea true, solo se mostrara el campo que pida
+    el carnet. Porque cuando pida el carnet, quiere decir que esta agregando una nueva solicitud y no esta modificando. 
+    
+    showEmpr: Es igual a showCarn, las dos variables se utilizan cuando se esta agregando una nueva solicitud, por lo tanto
+    cuando guardar es igual a true , cuando no se esta modificando, lo complicado es que son dos variables, dos barridos que 
+    deben activarse y desactivarse mientras guardar esta true
+    
+    Proceso para guardar -->            Pedir Carnet --> Mostrar Ficha --> Pedir Empresa --> Formulario para modificar
+                        | Guardar         true              true            true                 false
+                        | showCarnt       true              false           false                false    
+                        | showFich        false             true            false                true
+                        | showEmpres      false             false           true                 false
+    
+    
+    En la tabla anterior se puede obsservar como es el comportamiento de las variables durante todo el proceso 
+    se puede observar que empieza que hasta que se llega al formulario de modificar la variable de guardar va a ser true
+    y segun sea el paso  o "step" de agregar solicitud las otras variablas van a ir cambiando, podes ver a "Empresa", "Ficha",
+    "Carnet" como bloques, nosotros definimos que loque se muestra en cada paso, en el paso numero 1 donde pedimos el carnet
+    decimos que solo muestre el bloque del carnet y así. 
+    
+    Ficha: este es un bloque ambiguo. Se puede interpretar de dos maneras, se puede utilizar para guardar y para modificar
+    varios elementos de el se muestra y no se muestran  dependiente si se este guardando(gaurdar = true) o modificando
+    (guardar = false) Por ejemplo cuando se esta guardando solo muestra la información del alumno y el boton "Agregar nueva soli"
+    pero cuando se esta modificando  no  muestra ese boton si no, que muesta las tablas de documentos y detalles
+                        
+    
+    
+    
+    
+    
+    
+    */
     
     public boolean isShowCarn() {
         return showCarn;
