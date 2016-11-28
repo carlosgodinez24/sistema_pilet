@@ -370,9 +370,12 @@ and open the template in the editor.
                             <!-- fin de modal -->
                            
                         </div>
+                        
+                         <!-- tabla de seguimientos -->
+                           
                         <div class="col-md-12 col-xs-12">
                             <div class="panel panel-default">
-                                <div class="panel-heading">Tabla de Datos</div>
+                                <div class="panel-heading">Bitacoras de esta empresa</div>
                                 <div class="panel-body">
                                     <h:panelGroup id="ContSegu">
                                         <div id="toolTablSegu">
@@ -389,7 +392,7 @@ and open the template in the editor.
                                                 </h:commandLink>
                                             </h:form>
                                         </div>
-                                        <h:dataTable pt:data-id="TablSegu" id="TablSegu" value="#{seguimientoBean.listEmprU}"
+                                        <h:dataTable pt:data-id="TablSegu" id="TablSegu" value="#{seguimientoBean.listSegu}"
                                                      var="fila" class="boottable" pt:data-toolbar="#toolTablSegu"
                                                      styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                      pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -434,8 +437,10 @@ and open the template in the editor.
                                 </div>
                             </div>
                         </div>
+                          <!-- fin tabla de seguimientos -->
+                            <!--  modal de seguimeintos -->
+                           
                         <div class="row">
-                            <!-- Modal -->
                             <div id="ModaSeguForm" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->
@@ -480,20 +485,13 @@ and open the template in the editor.
                                                         <h:message for="descSegu" errorClass="field-error" />
                                                         <h:inputTextarea  id="descSegu" value="#{seguimientoBean.objeSegu.descSegu}" class="form-control" />
                                                     </div>
-                                                    <div class="form-group input-group-xs">
-                                                        <h:outputLabel  for="padrSegu" value="Padre "/>
-                                                        <h:selectOneMenu id="padrSegu" value="#{seguimientoBean.objeSegu.padrSegu}" class="form-control" pt:data-live-search="true">
-                                                            <f:selectItems value="#{seguimientoBean.listSegu}" var="lst" itemLabel="#{lst.nombSegu}" itemValue="#{lst}"/>
-                                                            <f:converter converterId="PooConv"/>
-                                                        </h:selectOneMenu>
-                                                    </div>
                                                 </fieldset>
                                             </div>
                                             <div class="modal-footer">
                                                     <div class="input-group-btn right" style="padding-top: 5px;">
                                                         <div class="btn-group">
                                                             <h:commandLink id="btonCancSegu" class="btn btn-default" pt:data-dismiss="modal">
-                                                                <p:ajax listener="#{seguimientoBean.limpForm()}" process="@form" update="@form :ContSegu :TablSegu" global="true"/>
+                                                                <p:ajax listener="#{seguimientoBean.limpForm()}" process="@form"  global="true"/>
                                                                 <i class="fa fa-mail-forward"/> Cerrar
                                                             </h:commandLink>
                                                             <h:commandLink id="btonGuarSegu" class="btn btn-success" rendered="#{seguimientoBean.guardar}">
@@ -505,7 +503,7 @@ and open the template in the editor.
                                                                 <i class="fa fa-plus"/> Nuevo
                                                             </h:commandLink>
                                                             <h:commandLink id="btonModiSegu" class="btn btn-primary" rendered="#{!seguimientoBean.guardar}">
-                                                                <p:ajax listener="#{seguimientoBean.modiE()}" process="@form" update="@form :ContSegu :TablSegu" oncomplete="INIT_OBJE();" />
+                                                                <p:ajax listener="#{seguimientoBean.modi()}" process="@form" update="@form :ContSegu :TablSegu" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-edit"/> Modificar
                                                             </h:commandLink>
                                                             <!--
@@ -530,6 +528,8 @@ and open the template in the editor.
                                 </div>
                             </div>
                         </div>
+                             <!-- fin de modal -->
+                           
                     </ui:fragment>
                 </h:panelGroup>
             </div>
