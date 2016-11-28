@@ -10,7 +10,6 @@ $(document).ready(function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
         unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            console.log(this.id);            
             
             if(this.id == "TablRegi"){
             consObje([{name : 'codiObjePara', value : row.id.trim()}]); 
@@ -20,11 +19,8 @@ $(document).ready(function() {
             consDonaObje([{name : 'codiObjePara', value : row.idDona.trim()}]); 
             console.log(row.idDona.trim());
             }
-            if(this.id == "TablDocu"){
-            consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
-            }
             if(this.id == "TablSegu"){
-            consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
+            consSeguObje([{name : 'codiObjePara', value : row.idSegu.trim()}]); 
             }
             if(this.id == "TablRegiHist"){
             consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
@@ -62,6 +58,15 @@ $(document).ready(function() {
          INIT_OBJE();
          console.log("Cierro donaciones");
     });
+    $('#ModaSeguForm').on('show.bs.modal', function() {
+       console.log("asafads");
+       $("#TablSegu").bootstrapTable('uncheckAll');
+    });
+    $('#ModaSeguForm').on('hide.bs.modal', function() {
+        $("#TablSegu").bootstrapTable('uncheckAll');
+         INIT_OBJE();
+         console.log("Cierro donaciones");
+    });
     INIT_OBJE();
 });
 
@@ -69,18 +74,16 @@ function INIT_OBJE()
 {
     $("#TablRegi").initBootTable();
     $("#TablDona").initBootTable();
-    
-    $("#TablRegiSegu").initBootTable();
-    
+    $("#TablSegu").initBootTable();
     $(".select").selectpicker();    
-    INIT_OBJE_MODA();
 }
 function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
     $("#FormDona\\:btonElim").confirmation({container: '#FormDona'});
-    $("#FormRegi\\:fech").initDatePick();
+    $("#FormSegu\\:btonElim").confirmation({container: '#FormSegu'});
+    $("#FormEmpr\\:fech").initDatePick();
     $("#FormRegi\\:fech2").initDatePick();
-    $("#FormRegiSegu\\:fechFin").initDatePick();
-    $("#FormRegiSegu\\:fechIni").initDatePick();
+    $("#FormSegu\\:fech").initDatePick();
+    $("#FormSegu\\:fech2").initDatePick();
 }

@@ -89,5 +89,13 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> implements Se
         Seguimiento resu = q.getSingleResult();
         return (resu == null) ? null : resu;
     }
-    
+ 
+    @Override
+    public List<Seguimiento> findByEmprU(int codi)
+    {
+        Query q = getEntityManager().createNativeQuery("select * from seguimiento where codi_empr = ?1", Seguimiento.class);
+        q.setParameter(1, codi); 
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
 }
