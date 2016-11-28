@@ -163,6 +163,15 @@ public class SeguimientoBean implements Serializable{
     
     public void elim()
     {
+         if(this.objeBeca != null)
+            {
+                 this.objeSegu.setCodiSoliBeca(this.objeBeca.getObjeSoli());
+            }
+            if(this.objeEmpr != null)
+            {
+               this.objeSegu.setCodiEmpr(this.objeEmpr.getObjeEmpr());
+                 
+            }
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
