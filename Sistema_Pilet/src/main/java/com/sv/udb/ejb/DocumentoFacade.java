@@ -45,6 +45,16 @@ public class DocumentoFacade extends AbstractFacade<Documento> implements Docume
         List resu = q.getResultList();
         return resu.isEmpty() ? null : resu;
     }
+    
+    @Override
+    public List<Documento> findByEmpr(Object id) {
+        String query="select * from documento where documento.codi_empr = ?1";
+         Query q = getEntityManager().createNativeQuery(query,Documento.class);
+        q.setParameter(1, id);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
+
 
     public DocumentoFacade() {
         super(Documento.class);

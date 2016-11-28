@@ -69,6 +69,9 @@ function INIT_OBJE()
 {
     $("#TablRegi").initBootTable();
     $("#TablDona").initBootTable();
+    
+    $("#TablRegiSegu").initBootTable();
+    
     $(".select").selectpicker();    
     INIT_OBJE_MODA();
 }
@@ -76,6 +79,8 @@ function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
     $("#FormDona\\:btonElim").confirmation({container: '#FormDona'});
-    $("#FormEmpr\\:fech").initDatePick();
+    $("#FormRegi\\:fech").initDatePick();
     $("#FormRegi\\:fech2").initDatePick();
+    $("#FormRegiSegu\\:fechFin").initDatePick();
+    $("#FormRegiSegu\\:fechIni").initDatePick();
 }

@@ -6,6 +6,7 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Documento;
+import com.sv.udb.modelo.Seguimiento;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -23,9 +24,10 @@ public interface DocumentoFacadeLocal {
     void remove(Documento documento);
 
     Documento find(Object id);
-
     List<Documento> findAll();
-      List<Documento> findBySoli(Object id);
+    List<Documento> findBySoli(Object id);
+    List<Documento> findByEmpr(Object id);
+      
     Documento findLast();
 
     List<Documento> findRange(int[] range);

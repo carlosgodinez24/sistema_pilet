@@ -12,6 +12,7 @@ import com.sv.udb.ejb.TransaccionFacadeLocal;
 import com.sv.udb.modelo.Transaccion;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -163,6 +164,10 @@ public class DonacionBean implements Serializable{
             
             this.objeDona.setEstaDona(1);
             FCDEDona.create(this.objeDona);
+             if(this.listDona == null)
+                    {
+                        this.listDona = new ArrayList<>();
+                    }
             this.listDona.add(this.objeDona);
             this.limpForm();
             this.consTodo();

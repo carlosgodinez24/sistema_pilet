@@ -283,6 +283,14 @@ and open the template in the editor.
                                                     <fieldset class="col-md-12">
                                                         <h:inputHidden id="codiDona" value="#{donacionBean.objeDona.codiDona}" />
                                                         <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="tipoDona" value="Tipo donación: "/>
+                                                             <h:selectOneMenu id="tipoDona" value="#{donacionBean.objeDona.codiTipoDona}" class="form-control" pt:data-live-search="true">
+                                                            <f:selectItems value="#{tipoTipoDonacionBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDona}" itemValue="#{lst}"/>
+                                                                <f:converter converterId="PooConv"/>
+                                                            </h:selectOneMenu>
+                                                            <h:message for="tipoDona" errorClass="field-error" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="nomb" value="Nombre Donacion"/>
                                                             <h:message for="nomb" errorClass="field-error" />
                                                             <h:inputText id="nombDona" value="#{donacionBean.objeDona.nombDona}" class="form-control" />
@@ -300,22 +308,14 @@ and open the template in the editor.
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="mont" value="Monto total"/>
                                                             <h:message for="mont" errorClass="field-error" />
-                                                            <h:inputText id="mont" value="#{donacionBean.objeDona.montTot}" class="form-control" />
+                                                            <h:inputText  disabled="true" id="mont" value="#{donacionBean.objeDona.montTot}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="montp" value="Monto pendiente"/>
                                                             <h:message for="montp" errorClass="field-error" />
-                                                            <h:inputText id="montp" value="#{donacionBean.objeDona.montPend}" class="form-control" />
-                                                        </div>
-                                                        <div class="form-group input-group-xs col-md-11">
-                                                            <h:outputLabel  for="tipoDona" value="Tipo donación: "/>
-                                                             <h:selectOneMenu id="tipoDona" value="#{donacionBean.objeDona.codiTipoDona}" class="form-control" pt:data-live-search="true">
-                                                            <f:selectItems value="#{tipoTipoDonacionBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDona}" itemValue="#{lst}"/>
-                                                                <f:converter converterId="PooConv"/>
-                                                            </h:selectOneMenu>
-                                                            <h:message for="tipoDona" errorClass="field-error" />
-                                                        </div>
-                                                        <div class="form-group input-group-xs col-md-12">
+                                                            <h:inputText disabled="true" id="montp" value="#{donacionBean.objeDona.montPend}" class="form-control" />
+                                                        </div>                                                        
+                                                        <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="fech" value="Fecha Inicio "/>
                                                             <h:message for="fech" errorClass="field-error" />
                                                             <h:inputText id="fech" value="#{donacionBean.objeDona.fechDona}" class="form-control">
@@ -365,6 +365,167 @@ and open the template in the editor.
                                     </div>
                                 </div>
                             </div>
+                            
+                            
+                            <!-- fin de modal -->
+                            
+                            <!-- tabla de seguimientos -->
+                            <div class="col-md-12 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Seguimientos que posee el alumno</div>
+                                    <div class="panel-body">
+                                        <h:panelGroup id="ContSegu">
+                                            <div id="toolTablSegu">
+                                                <h:form id="FormSegu" >
+                                                    <!--Form exclusivo para los remotos-->
+                                                    <p:remoteCommand name="consObjeSegu" actionListener="#{seguimientoBean.cons()}"
+                                                                     oncomplete="$('#ModaFormSegu').modal('show');" global="true"/>
+                                                    <p:remoteCommand name="elimObjeSegu" actionListener="#{seguimientoBean.elim()}" update=":FormRegiSegu :ContSegu" 
+                                                                     oncomplete="INIT_OBJE();" global="true"/>
+                                                    <h:commandLink id="btonNuevSegu" class="btn btn-success">
+                                                        <p:ajax listener="#{seguimientoBean.limpForm()}"  global="true" 
+                                                                oncomplete="$('#ModaFormSegu').modal('show');"/>
+                                                        <i class="fa fa-plus"/> Agregar una nueva bitacora a esta empresa
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </div>
+                                            <h:dataTable pt:data-id="TablRegiSegu" id="TablRegiSegu" value="#{seguimientoBean.listSegu}"
+                                                         var="fila" class="boottable" pt:data-toolbar="#toolTablRegiSegu"
+                                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                         pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                         pt:data-single-select="true">                                
+                                                <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                </h:column>
+                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="id">
+                                                    <f:facet name="header">Código</f:facet>
+                                                    <h:outputText value="#{fila.codiSegu}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true" pt:data-field="nomb">
+                                                    <f:facet name="header">Fecha </f:facet>
+                                                    <h:outputText value="#{fila.fechSegu}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Fech Inicio</f:facet>
+                                                    <h:outputText value="#{fila.fechInicio}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Fech Fin</f:facet>
+                                                    <h:outputText value="#{fila.fechFin}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
+                                                    </h:outputText>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Nombre</f:facet>
+                                                    <h:outputText value="#{fila.nombSegu}"/>
+                                                </h:column>
+                                                <h:column pt:data-sortable="true">
+                                                    <f:facet name="header">Solicitud</f:facet>
+                                                    <h:outputText value="#{fila.codiSoliBeca.carnAlum}"/>
+                                                </h:column>
+                                            </h:dataTable>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /tabla de seguimientos -->
+                            <!-- modal de seguimientos -->
+                            <div class="row">
+                                <!-- Modal -->
+                                <div id="ModaFormSegu" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <h:form id="FormRegiSegu" class="form-horizontal">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                                    <h4 class="modal-title">Gestión seguimiento</h4>
+                                                </div>
+                                                <div class="modal-body" style="padding-top: 2px;">
+                                                    <fieldset class="col-md-12">
+                                                        <h:inputHidden id="codi" value="#{seguimientoBean.objeSegu.codiSegu}" />
+                                                       
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="Tipo" value="Tipo Seguimiento: "/>
+                                                            <h:selectOneMenu id="Tipo" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control" pt:data-live-search="true">
+                                                                <f:selectItems value="#{tipoSeguBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoSegui}" itemValue="#{lst}"/>
+                                                                <f:converter converterId="PooConv"/>
+                                                            </h:selectOneMenu>
+                                                            <h:message for="Tipo" errorClass="field-error" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="fechIni" value="Fecha Inicio: "/>
+                                                            <h:inputText id="fechIni" value="#{seguimientoBean.objeSegu.fechInicio}" class="form-control">
+                                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                            </h:inputText>
+                                                            <h:message for="fechIni" errorClass="field-error" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="fechFin" value="Fecha Fin: "/>
+                                                            <h:inputText id="fechFin" value="#{seguimientoBean.objeSegu.fechFin}" class="form-control">
+                                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                            </h:inputText>
+                                                            <h:message for="fechFin" errorClass="field-error" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="nomb" value="Nombre seguimiento "/>
+                                                            <h:message for="nomb" errorClass="field-error" />
+                                                            <h:inputText id="nomb" value="#{seguimientoBean.objeSegu.nombSegu}" class="form-control" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="desc" value="Descripción"/>
+                                                            <h:message for="desc" errorClass="field-error" />
+                                                            <h:inputTextarea  id="desc" value="#{seguimientoBean.objeSegu.descSegu}" class="form-control" />
+                                                        </div>
+                                                        <div class="form-group input-group-xs">
+                                                            <h:outputLabel  for="padr" value="Padre "/>
+                                                            <h:selectOneMenu id="padr" value="#{seguimientoBean.objeSegu.padrSegu}" class="form-control" pt:data-live-search="true">
+                                                                <f:selectItems value="#{seguimientoBean.listSegu}" var="lst" itemLabel="#{lst.nombSegu}" itemValue="#{lst}"/>
+                                                                <f:converter converterId="PooConv"/>
+                                                            </h:selectOneMenu>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="input-group-btn right" style="padding-top: 5px;">
+                                                        <div class="btn-group">
+                                                            <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
+                                                                <p:ajax listener="#{seguimientoBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                                <i class="fa fa-mail-forward"/> Cerrar
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonGuarSegu" class="btn btn-success" rendered="#{seguimientoBean.guardar}">
+                                                                <p:ajax listener="#{seguimientoBean.guar()}" process="@form" update="@form :ContSegu" oncomplete="INIT_OBJE();" />
+                                                                <i class="fa fa-plus"/> Guardar
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonNuevSegu" class="btn btn-success" rendered="#{!seguimientoBean.guardar}">
+                                                                <p:ajax listener="#{seguimientoBean.limpForm()}" process="@form" update="@form" oncomplete="INIT_OBJE_MODA();" />
+                                                                <i class="fa fa-plus"/> Nuevo
+                                                            </h:commandLink>
+                                                            <h:commandLink id="btonModiSegu" class="btn btn-primary" rendered="#{!seguimientoBean.guardar}">
+                                                                <p:ajax listener="#{seguimientoBean.modi()}" process="@form" update="@form :ContSegu" oncomplete="INIT_OBJE();" />
+                                                                <i class="fa fa-edit"/> Modificar
+                                                            </h:commandLink>
+                                                            <h:outputLink id="btonElimSegu" class="btn btn-danger" rendered="#{!seguimientoBean.guardar}" value="#" pt:data-placement="left"
+                                                                          pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                                          pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                                          pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                                          pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                                <i class="fa fa-times"/> Eliminar
+                                                            </h:outputLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /modal de seguimientos -->
                         </div>
                     </ui:fragment>
                 </h:panelGroup>

@@ -646,7 +646,7 @@ and open the template in the editor.
                                                     </h:commandLink>
                                                 </h:form>
                                             </div>
-                                            <h:dataTable pt:data-id="TablRegiSegu" id="TablRegiSegu" value="#{seguimientoBean.listSeguSoli}"
+                                            <h:dataTable pt:data-id="TablRegiSegu" id="TablRegiSegu" value="#{seguimientoBean.listSegu}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablRegiSegu"
                                                          styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                          pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -783,63 +783,7 @@ and open the template in the editor.
                                 </div>
                             </div>
                             <!-- /modal de seguimientos -->
-                            <!-- tabla de historial -->
-                            <div class="col-md-12 col-xs-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">Historial del alumno</div>
-                                    <div class="panel-body">
-                                        <h:panelGroup id="ContRegiHist">
-                                            <h:dataTable pt:data-id="TablRegiHist" id="TablRegiHist" value="#{becasBean.listBecaH}"
-                                                         var="fila" class="boottable" pt:data-toolbar="#toolTablRegiHist"
-                                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
-                                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
-                                                         pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
-                                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
-                                                         pt:data-single-select="true">                                
-                                                <h:column pt:data-field="state" pt:data-checkbox="true">
-                                                </h:column>
-                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idh">
-                                                    <f:facet name="header">Código</f:facet>
-                                                    <h:outputText value="#{fila.codiSoliBeca.codiSoliBeca}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Empresa</f:facet> 
-                                                    <h:panelGroup class="label label-info" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr eq null}">
-                                                        <i class="fa fa-lock"/> Sin Empresa</h:panelGroup>
-                                                    <h:panelGroup class="label label-default" rendered="#{fila.codiSoliBeca.codiEmpr.nombEmpr ne null}">
-                                                        <h:outputText value="#{fila.codiSoliBeca.codiEmpr.nombEmpr}"/></h:panelGroup>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Alumno</f:facet>
-                                                    <h:outputText value="#{fila.codiSoliBeca.nombAlum}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Grado Alumno</f:facet>
-                                                    <h:outputText value="#{fila.codiSoliBeca.codiGrad.nombGrad}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Fecha Solicitud</f:facet>
-                                                    <h:outputText value="#{fila.codiSoliBeca.fechSoliBeca}">
-                                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-                                                    </h:outputText>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Estado beca</f:facet> 
-                                                    <h:panelGroup class="label label-success" rendered="#{fila.codiTipoEsta.codiTipoEsta == 1}">
-                                                        <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                                    <h:panelGroup class="label label-info" rendered="#{fila.codiTipoEsta.codiTipoEsta == 3}">
-                                                        <i class="fa fa-unlock"/> Historial</h:panelGroup>
-                                                    <h:panelGroup class="label label-danger" rendered="#{fila.codiTipoEsta.codiTipoEsta == 2}">
-                                                        <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
-                                                    <h:panelGroup class="label label-warning" rendered="#{fila.codiTipoEsta.codiTipoEsta == 4}">
-                                                        <i/> Evaluando</h:panelGroup>
-                                                </h:column>
-                                            </h:dataTable>
-                                        </h:panelGroup>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /tabla de historial -->
+                            
                             <!-- Modal para cambiar de empresa-->
                             <div class="row">
                                 <!-- Modal -->
