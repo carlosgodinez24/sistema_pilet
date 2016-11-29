@@ -5,42 +5,34 @@
  */
 package com.sv.udb.utils.pojos;
 
+import com.sv.udb.modelo.Permiso;
+
 /**
  *
  * @author Carlos
  */
 public class PermisoRolPojo {
-    private int codiPermRole;
-    private int codiModu;
-    private int codiPagi;
+    private Permiso codiModu;
+    private Permiso codiPagi;
     
     
     public PermisoRolPojo(){
         
     }
     
-    public int getCodiPermRole() {
-        return codiPermRole;
-    }
-
-    public void setCodiPermRole(int codiPermRole) {
-        this.codiPermRole = codiPermRole;
-    }
-
-    public int getCodiModu() {
+    public Permiso getCodiModu() {
         return codiModu;
     }
 
-    public void setCodiModu(int codiModu) {
+    public void setCodiModu(Permiso codiModu) {
         this.codiModu = codiModu;
     }
 
-    public int getCodiPagi() {
+    public Permiso getCodiPagi() {
         return codiPagi;
     }
 
-    public void setCodiPagi(int codiPagi) {
+    public void setCodiPagi(Permiso codiPagi) {
         this.codiPagi = codiPagi;
     }
-
 }

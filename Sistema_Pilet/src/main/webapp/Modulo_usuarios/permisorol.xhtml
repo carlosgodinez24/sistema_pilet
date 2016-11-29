@@ -145,6 +145,7 @@ and open the template in the editor.
                                             <h:selectOneMenu id="modu" value="#{permisoRolBean.pojoPermRole.codiModu}" class="form-control" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{permisoBean.listModu}" var="lst3" itemLabel="#{lst3.descPerm}" itemValue="#{lst3}"/>
+                                                <p:ajax update="pagi" listener="#{permisoBean.fillPagiCmbx(permisoRolBean.pojoPermRole.codiModu)}" process="@this"/> 
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                         </div>
@@ -154,17 +155,20 @@ and open the template in the editor.
                                             <h:selectOneMenu id="pagi" value="#{permisoRolBean.pojoPermRole.codiPagi}" class="form-control" pt:data-live-search="true">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{permisoBean.listPagi}" var="lst4" itemLabel="#{lst4.descPerm}" itemValue="#{lst4}"/>
+                                                <p:ajax update="valo" listener="#{permisoBean.creaAcciChkb(permisoRolBean.pojoPermRole.codiPagi)}" process="@this"/> 
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                         </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="valo" value="El rol tendrá permisos para:"/> 
-                                            <h:selectManyCheckbox id="valo" value="#{permisoRolBean.acciones}" layout="pageDirection">
-                                                <f:selectItems value="#{permisoBean.listAcci}" var="acci" 
-                                                               itemLabel="#{acci.descPerm}" itemValue="#{acci.codiPerm}" />
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectManyCheckbox>
-                                        </div>
+                                        <h:panelGroup id="ContChkb">
+                                            <div class="form-group input-group-xs">
+                                                <h:outputLabel  for="valo" value="El rol tendrá permisos para:"/> 
+                                                <h:selectManyCheckbox id="valo" value="#{permisoRolBean.acciones}" layout="pageDirection">
+                                                    <f:selectItems value="#{permisoBean.listAcci}" var="acci" 
+                                                                   itemLabel="#{acci.descPerm}" itemValue="#{acci.codiPerm}" />
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectManyCheckbox>
+                                            </div>
+                                        </h:panelGroup>
                                         <h:panelGroup rendered="#{globalAppBean.getEstaPermByName('/Modulo_usuarios/permisorol.xhtml/estado')}">
                                             <div class="form-group input-group-xs">
                                                 <h:outputLabel  for="esta" value="Estado: "/>
@@ -227,4 +231,3 @@ and open the template in the editor.
             </ui:define>
     </ui:composition>
 </html>
-            

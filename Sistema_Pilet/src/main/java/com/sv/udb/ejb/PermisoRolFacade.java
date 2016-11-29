@@ -32,10 +32,11 @@ public class PermisoRolFacade extends AbstractFacade<PermisoRol> implements Perm
     }
  
     @Override
-    public PermisoRol findByPermAndRole(Object perm, Object codiRole) {
-        Query q = getEntityManager().createQuery("SELECT u FROM PermisoRol u WHERE u.codiPerm = :codiPerm AND u.codiRole = :codiRole", PermisoRol.class);        
-        q.setParameter("codiPerm", perm);
-        q.setParameter("codiRole", codiRole);
+    public PermisoRol findByPermAndRole(Object perm, Object role) {
+        String query = "SELECT * FROM permiso_rol WHERE codi_perm = ?1 AND codi_role = ?2 AND esta_perm_role = 1";
+        Query q = getEntityManager().createNativeQuery(query, PermisoRol.class);
+        q.setParameter(1, perm);
+        q.setParameter(2, role);
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (PermisoRol)resu.get(0);
     }

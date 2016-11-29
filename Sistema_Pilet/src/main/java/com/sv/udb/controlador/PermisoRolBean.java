@@ -5,7 +5,6 @@
  */
 package com.sv.udb.controlador;
 
-import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.PermisoRolFacadeLocal;
 import com.sv.udb.modelo.Permiso;
 import com.sv.udb.modelo.PermisoRol;
@@ -43,7 +42,7 @@ public class PermisoRolBean implements Serializable{
     private PermisoRol objeOldPermRole;
     private PermisoRol objeVali;
     private List<PermisoRol> listPermRole;
-    private List<String> acciones;
+    private List<Integer> acciones;
     private boolean guardar;
     
     private LOG4J<PermisoRolBean> lgs = new LOG4J<PermisoRolBean>(PermisoRolBean.class) {
@@ -91,11 +90,11 @@ public class PermisoRolBean implements Serializable{
         this.listPermRole = listPermRole;
     }
 
-    public List<String> getAcciones() {
+    public List<Integer> getAcciones() {
         return acciones;
     }
 
-    public void setAcciones(List<String> acciones) {
+    public void setAcciones(List<Integer> acciones) {
         this.acciones = acciones;
     }
     
@@ -131,6 +130,11 @@ public class PermisoRolBean implements Serializable{
     public void limpForm()
     {
         this.objePermRole= new PermisoRol();
+        this.pojoPermRole = new PermisoRolPojo();
+        if(this.acciones != null)
+        {
+            this.acciones.clear();
+        }
         this.guardar = true;        
     }
     
@@ -139,12 +143,12 @@ public class PermisoRolBean implements Serializable{
     * @param perm código de un permiso
     * @return el valor de true = si no hay registros duplicados y false = si hay registros duplicados para posteriormente mostrar un error
     */
-    public boolean valiPermRole(int perm)
+    public boolean valiPermRole()
     {
         boolean resp = true;
-        this.objeVali = FCDEPermRole.findByPermAndRole(perm, this.objePermRole.getCodiRole());
+        this.objeVali = FCDEPermRole.findByPermAndRole(this.objePermRole.getCodiPerm(), this.objePermRole.getCodiRole());
         if(this.objeVali != null)
-            resp = (this.objeVali.getCodiPermRole() == perm) ? true : false;
+            resp = (this.objeVali.getCodiPermRole() == this.objePermRole.getCodiPermRole()) ? true : false;
         return resp;
     }
     
@@ -153,6 +157,7 @@ public class PermisoRolBean implements Serializable{
     {
         this.objePermRole.setCodiPerm(perm);
         FCDEPermRole.create(this.objePermRole);
+        //this.listPermRole.add(this.objePermRole);
     }
     
     /**
@@ -164,20 +169,18 @@ public class PermisoRolBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            Permiso objePerm = new Permiso();
-            if(valiPermRole(this.pojoPermRole.getCodiModu()))
+            if(valiPermRole())
             {
-                objePerm.setCodiPerm(this.pojoPermRole.getCodiModu());
-                this.creaPerm(objePerm);
-                if(valiPermRole(this.pojoPermRole.getCodiPagi()))
+                this.creaPerm(this.pojoPermRole.getCodiModu());
+                if(valiPermRole())
                 {
-                    objePerm.setCodiPerm(this.pojoPermRole.getCodiPagi());
-                    this.creaPerm(objePerm);
-                    for(String val: this.acciones)
+                    this.creaPerm(this.pojoPermRole.getCodiPagi());
+                    for(int val: this.acciones)
                     {
-                        if(valiPermRole(Integer.parseInt(val)))
+                        Permiso objePerm = new Permiso();
+                        objePerm.setCodiPerm(val);
+                        if(valiPermRole())
                         {
-                            objePerm.setCodiPerm(Integer.parseInt(val));
                             this.creaPerm(objePerm);
                         }
                         else 
@@ -202,7 +205,7 @@ public class PermisoRolBean implements Serializable{
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             ex.printStackTrace();
-            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Error creando Usuariorol: "+getRootCause(ex).getMessage());
+            //log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"PermisoRol"+"-"+"Error creando PermisoRol: "+getRootCause(ex).getMessage());
         }
         finally
         {

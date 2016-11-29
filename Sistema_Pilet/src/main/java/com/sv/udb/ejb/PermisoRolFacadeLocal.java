@@ -24,7 +24,7 @@ public interface PermisoRolFacadeLocal {
 
     PermisoRol find(Object id);
     
-    PermisoRol findByPermAndRole(Object perm, Object codiRole);
+    PermisoRol findByPermAndRole(Object perm, Object role);
 
     List<PermisoRol> findAll();
 

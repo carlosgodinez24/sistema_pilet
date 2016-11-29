@@ -107,8 +107,40 @@ public class PermisoBean implements Serializable{
         {
             this.listPerm = FCDEPermiso.findAll();
             this.listModu = FCDEPermiso.findAllModu();
-            this.listPagi = FCDEPermiso.findPagiByModu(2);
-            this.listAcci = FCDEPermiso.findAcciByPagi(17);
+            //this.listPagi = FCDEPermiso.findPagiByModu(2);
+            //this.listAcci = FCDEPermiso.findAcciByPagi(17);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    public void fillPagiCmbx(Permiso modu)
+    {
+        try
+        {
+            this.listPagi = FCDEPermiso.findPagiByModu(modu.getCodiPerm());
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    public void creaAcciChkb(Permiso pagi)
+    {
+        try
+        {
+            this.listAcci = FCDEPermiso.findAcciByPagi(pagi.getCodiPerm());
         }
         catch(Exception ex)
         {
