@@ -70,10 +70,12 @@ and open the template in the editor.
                                         <div id="toolTablRegi">
                                             <h:form>
                                                 <!--Form exclusivo para los remotos-->
+                                                 <p:remoteCommand name="elimObjeEmpr" actionListener="#{empresaBean.elim()}" update=":container" 
+                                                         oncomplete="INIT_OBJE();" global="true"/>
                                                 <p:remoteCommand name="consObje" actionListener="#{empresaBean.cons()}" oncomplete="INIT_OBJE();" update=":container"/>
                                                 <h:commandLink id="btonNuev" class="btn btn-success">
                                                     <p:ajax listener="#{empresaBean.toogEmpr()}" process="@form :container" update=":container" oncomplete="INIT_OBJE();"/>
-                                                    <i class="fa fa-plus"/> Nuevo
+                                                    <i class="fa fa-plus"/> Agregar una nueva empresa
                                                 </h:commandLink>
                                             </h:form>
                                         </div>
@@ -119,6 +121,83 @@ and open the template in the editor.
                             </div>
                         </div>
                     </ui:fragment>
+                    <div class="row">
+                        <!-- Modal de empresa pa modificar-->
+                        <div id="ModaForm" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <h:form id="FormRegi" class="form-horizontal">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                            <h4 class="modal-title">Gestión de Empresas</h4>
+                                        </div>
+                                        <div class="modal-body" style="padding-top: 2px;">
+                                            <fieldset class="col-md-12">
+                                                <h:inputHidden id="codi" value="#{empresaBean.objeEmpr.codiEmpr}" />
+                                                <div class="form-group input-group-xs">
+                                                    <h:outputLabel  for="nomb" value="Nombre: "/>
+                                                    <h:message for="nomb" errorClass="field-error" />
+                                                    <h:inputText id="nomb" value="#{empresaBean.objeEmpr.nombEmpr}" class="form-control" />
+                                                </div>
+                                                <div class="form-group input-group-xs">
+                                                    <h:outputLabel  for="dire" value="Dirección: "/>
+                                                    <h:inputText id="dire" value="#{empresaBean.objeEmpr.direEmpr}" class="form-control"/>
+                                                    <h:message for="dire" errorClass="field-error" />
+                                                </div>
+                                                <div class="form-group input-group-xs">
+                                                    <h:outputLabel  for="emai" value="Correo electronico: "/>
+                                                    <h:inputText id="emai" value="#{empresaBean.objeEmpr.emaiEmpr}" class="form-control"/>
+                                                    <h:message for="emai" errorClass="field-error" />
+                                                </div>
+                                                <div class="form-group input-group-xs">
+                                                    <h:outputLabel  for="enca" value="Encargado: "/>
+                                                    <h:inputText id="enca" value="#{empresaBean.objeEmpr.encaEmpr}" class="form-control"/>
+                                                    <h:message for="enca" errorClass="field-error" />
+                                                </div>
+                                                <div class="form-group input-group-xs">
+                                                    <h:outputLabel  for="fech" value="Fecha de ingreso: "/>
+                                                    <h:inputText id="fech" value="#{empresaBean.objeEmpr.fechEmpr}" class="form-control">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                                    </h:inputText>
+                                                    <h:message for="fech" errorClass="field-error" />
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="modal-footer">
+                                                <div class="input-group-btn right" style="padding-top: 5px;">
+                                                    <div class="btn-group">
+                                                        <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
+                                                            <p:ajax listener="#{empresaBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                            <i class="fa fa-mail-forward"/> Cerrar
+                                                        </h:commandLink>
+                                                        <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!empresaBean.guardar}">
+                                                            <p:ajax listener="#{empresaBean.modi()}" process="@form" update="@form :FragOtro" oncomplete="INIT_OBJE();" />
+                                                            <i class="fa fa-edit"/> Modificar
+                                                        </h:commandLink>
+                                                        <!--
+                                                            # Para corregir el error que redirecciona hice una serie de pasos
+                                                            1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
+                                                            2. Quitar la referencia: bootstrap-confirmation.min.js del fragmento head.xhtml
+                                                            3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
+                                                            4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
+                                                        -->
+                                                        <h:outputLink id="btonElim2" class="btn btn-danger" rendered="#{!empresaBean.guardar}" value="#" pt:data-placement="left"
+                                                                      pt:data-toggle="confirmation" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                                      pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                                      pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                                      pt:data-on-confirm="elimObjeEmpr"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                            <i class="fa fa-times"/> Eliminar
+                                                        </h:outputLink>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                     <!-- /Modal de empresa pa modificar-->
                     <ui:fragment id="NuevEmpr" rendered="#{empresaBean.showEmpr == true}">
                         <div class="panel panel-primary" style="margin-left: 1%; margin-right: 2%;"> 
                             <div class="panel-heading"> 
@@ -187,6 +266,15 @@ and open the template in the editor.
                                                     <h5>Monto: <span class="itemPrice">$#{empresaBean.objeEmpr.montEmpr}</span></h5>                                                    
                                                 </div>
                                             </div>
+                                             <div class="col-md-12 panelBottom btn-group">
+                                                 <c:if test="#{!empresaBean.guardar}">
+                                                    <h:commandLink id="btonActi" class="btn btn-info" >
+                                                        <p:ajax update=":FormRegi" global="true" 
+                                                         oncomplete="$('#ModaForm').modal('show');INIT_OBJE();INIT_OBJE_MODA();"/>
+                                                        <i class="fa fa-edit"/> Modificar
+                                                    </h:commandLink>
+                                                </c:if>
+                                             </div>
                                         </div>
                                     </div>
                                 </div>

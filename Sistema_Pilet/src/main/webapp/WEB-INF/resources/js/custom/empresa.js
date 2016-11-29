@@ -84,7 +84,7 @@ function INIT_OBJE()
 }
 function INIT_OBJE_MODA()
 {
-    $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
+    $("#FormRegi\\:btonElim2").confirmation({container: '#FormRegi'});
     $("#FormDona\\:btonElim").confirmation({container: '#FormDona'});
     $("#FormSegu\\:btonElim").confirmation({container: '#FormSegu'}); 
      $("#FormRegiDocu\\:btonElimDocu").confirmation({container: '#FormRegiDocu'});
