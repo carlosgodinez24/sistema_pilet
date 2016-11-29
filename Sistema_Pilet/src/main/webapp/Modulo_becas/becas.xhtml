@@ -331,15 +331,17 @@ and open the template in the editor.
                                         <h:panelGroup id="ContDetalle">
                                             <div id="toolTablDetalle">
                                                 <h:form>
+                                                    <!--Form exclusivo para los remotos-->
+                                                
 
                                                     <!--Form exclusivo para los remotos-->
                                                     <p:remoteCommand name="consObjeDetalle" actionListener="#{detalleBecaBean.cons()}"  
-                                                                     oncomplete="$('#ModaForm').modal('show');" global="true"/>
+                                                                     oncomplete="$('#ModaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();" global="true" update=":container" />
                                                     <p:remoteCommand name="elimObjeDetalle" actionListener="#{detalleBecaBean.elim()}" update="@form :ContDetalle" 
                                                                      oncomplete="INIT_OBJE();" global="true"/>
                                                     <h:commandLink id="btonNuev" class="btn btn-success">
-                                                        <p:ajax listener="#{detalleBecaBean.limpForm()}" global="true" 
-                                                                oncomplete="$('#ModaForm').modal('show');"/>
+                                                        <p:ajax listener="#{detalleBecaBean.limpForm()}" update="@form :ContSegu :TablSegu :container"  global="true" 
+                                                                oncomplete="$('#ModaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();"/>
                                                         <i class="fa fa-plus"/> Agregar un  nuevo tipo de beca a este alumno
                                                     </h:commandLink>
 
@@ -432,7 +434,7 @@ and open the template in the editor.
                                                                           pt:data-toggle="modal" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                           pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                                           pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
-                                                                          pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                                          pt:data-on-confirm="elimObjeDetalle"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
                                                                 <i class="fa fa-times"/> Eliminar
                                                             </h:outputLink>
                                                         </div>
@@ -455,7 +457,7 @@ and open the template in the editor.
                                                 <h:form id="FormDocu" class="form-horizontal" enctype="multipart/form-data">
                                                     <!--Form exclusivo para los remotos-->
                                                     <p:remoteCommand name="consObjeDocu" actionListener="#{documentoBean.cons()}" update=":FormRegiDocu" 
-                                                                     oncomplete="$('#ModaDocuForm').modal('show');" global="true"/>
+                                                                     oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE(); INIT_OBJE_MODA();" global="true"/>
                                                     <p:remoteCommand name="elimObjeDocu" actionListener="#{documentoBean.elim()}" update="@form :ContDocu" 
                                                                      oncomplete="INIT_OBJE();" global="true">
 
@@ -521,14 +523,7 @@ and open the template in the editor.
                                                     <ui:fragment id="FragBusc" rendered="#{!documentoBean.showImag}">
                                                         <fieldset class="col-md-12">
                                                             <h:inputHidden id="codi" value="#{documentoBean.objeDocu.codiDocu}" />
-                                                            <div class="form-group input-group-xs">
-                                                                <h:outputLabel  for="beca" value="Numero de beca "/>
-                                                                <h:selectOneMenu id="beca" value="#{documentoBean.objeDocu.codiSoliBeca}" class="form-control" pt:data-live-search="true">
-                                                                    <f:selectItems value="#{documentoBean.listSoli}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
-                                                                    <f:converter converterId="PooConv"/>
-                                                                </h:selectOneMenu>
-                                                                <h:message for="beca" errorClass="field-error" />           
-                                                            </div>
+                                                   
                                                             <div class="form-group input-group-xs">
                                                                 <h:outputLabel  for="fech" value="Fecha "/>
                                                                 <h:inputText id="fech" value="#{documentoBean.objeDocu.fechDocu}" class="form-control">
@@ -581,7 +576,7 @@ and open the template in the editor.
 
                                                             <c:if test="#{documentoBean.guardar}">
                                                                 <h:commandLink id="btonSubira" class="btn btn-success btn-md" actionListener="#{documentoBean.guar()}">
-                                                                    <f:ajax execute="@all" render="@form" onevent="INIT_OBJE_FILE"/>
+                                                                    <f:ajax execute="@all" render="@form :ContDocu" onevent="INIT_OBJE" />
                                                                     <i class="fa fa-cloud-upload"/> Subir
                                                                 </h:commandLink>
                                                             </c:if>
@@ -593,11 +588,11 @@ and open the template in the editor.
                                                                 </h:commandLink>
 
 
-                                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!documentoBean.guardar}" value="#" pt:data-placement="left"
+                                                                <h:outputLink id="btonElimDocu" class="btn btn-danger" rendered="#{!documentoBean.guardar}" value="#" pt:data-placement="left"
                                                                               pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                                               pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
-                                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                                              pt:data-on-confirm="elimObjeDocu"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
                                                                     <i class="fa fa-times"/> Eliminar
                                                                 </h:outputLink>
 
@@ -619,6 +614,7 @@ and open the template in the editor.
                                 </div>
                             </div>
                             <!-- /modal de documentos -->
+                        
 
                              <!-- tabla de seguimientos -->
                            
