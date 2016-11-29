@@ -44,5 +44,5 @@ function INIT_OBJE_MODA()
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
     $("#FormRegi\\:role").selectpicker();
     $("#FormRegi\\:modu").selectpicker();
-    $("#FormRegi\\:pagi").selectpicker();
+    //$("#FormRegi\\:pagi").selectpicker();
 }
