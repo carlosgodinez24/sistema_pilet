@@ -255,52 +255,74 @@ public class BecasBean implements Serializable{
         return respGuar;
     }
     
-    public void modi()
+    /*ORDEN DE LAS COSAS A GUARDAR EN LOS RETIROS Y ACTUALIZACIONES DEL ESTADO
+    Tipo de operación (Ej. Cambio de empresa, cambio de condiciones, cancelación de beca)
+    Estado antiguo (Ej. empresa antigua, antigua condición)
+    Razón del cambio
+    Nuevo estado (nombre de la nueva empresa padrino, nueva condición)*/
+ 
+    //Variables para la razón de retiro
+    String tipo, anti,razon, nuev;
+    
+    public void modi(int num)
     {
+        
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            TipoEstado es = new TipoEstado();
+            int tipoEsta = 0;
+            razon = "["+this.objeBeca.getRetiBeca()+"]";
             //el objeto objeSoli tiene los datos de la solicitud pero modificados, entonces hay que consultar la misma solicitud
             //pero con los datos viejos.
             //Objetos viejitos
             objeSoli2 = FCDESoli.find(this.objeSoli.getCodiSoliBeca());
             this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
+            switch (num) {
+                case 1:
+                    tipo = "[Cambio de empresa patrocinador]";
+                    //Empresa antigua
+                    anti = "[" + this.objeSoli2.getCodiEmpr().getNombEmpr() + "]";
+                    //Empresa nueva
+                    nuev = "[" + this.objeSoli.getCodiEmpr().getNombEmpr() + "]";
+                    break;
+                case 2:
+                    tipoEsta = this.objeBeca.getCodiTipoEsta().getCodiTipoEsta();
+                    tipo = "[Cambio de estado]";
+                    //Estado antiguo
+                    anti = "["+this.objeBeca2.getCodiTipoEsta().getNombTipoEsta()+"]";
+                    //Nuevo estado
+                    nuev = "["+this.objeBeca.getCodiReti().getNombReti()+"]";
+                    break;
+                default:
+                    ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+                    break;
+            }
             //Objetos nuevitos (El de la soli ya lo tiene el objeSoli actual)
             this.objeBeca = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());
-            
             //Operaciones a objetos viejitos
             this.objeSoli2.setEstaSoliBeca(3);//3 de historial
             FCDESoli.edit(objeSoli2);//edita el registro de la solicitud en la base
             this.listSoli.add(objeSoli2);//Agrega la solicitud "vieja" a la lista
-            TipoEstado es = new TipoEstado();
             es.setCodiTipoEsta(3);
             //Setearle la razón a la criatura
-            //this.objeBeca2.setRetiBeca(this.objeBeca.getRetiBeca());
+            this.objeBeca2.setRetiBeca(tipo+anti+razon+nuev);
             this.objeBeca2.setCodiTipoEsta(es);//le setea el estado de la beca de 3 de historial
             this.objeBeca2.setFechBaja(new Date());//le setea la fecha de baja
             FCDEBeca.edit(objeBeca2);//edita el registro viejo de la base
-            
-            
+
             //Cosas que no sé que hacen aquí
             this.listSoli.remove(this.objeSoli2);//quita la solicitud de la lista
             this.listBeca.remove(this.objeBeca2);//quita la beca de la lista
             
             //Operaciones a los objetos nuevitos
-            /**********************CAMEO DE ARIEL xd**************************/
-            /* Dato importante de las consultas findLast
-            estas consultas ven el ultimo registro por la fecha! si no lo hacen deberian!
-            así que , cuando se cree un nuevo objeto o se copie de otro que ya exttia va a tener
-            la fecha anterior, así que cuando se quiera consultar por el ultimo va a ver el registro anterior
-            porque va a tener una fecha mas reciente y pa solucionar eso solo seteamos una nueva fecha
-            antes de crear el registro! */
-           /**********************CAMEO DE ARIEL xd**************************/
             this.objeSoli.setFechSoliBeca(new Date());
             FCDESoli.create(objeSoli);//crea el nuevo registro de la solicitud
             this.listSoli.add(objeSoli);//lo agrega a la lista
             this.objeSoli = FCDESoli.findLast();//busca la ultima solicitud creada
             
             this.objeBeca.setCodiSoliBeca(objeSoli);//le setea el codigo de la solicitud
-            es.setCodiTipoEsta(this.objeSoli.getEstaSoliBeca());//le setea el mismo estado de la soli a la beca
+            es.setCodiTipoEsta(tipoEsta);//le setea el mismo estado de la soli a la beca
             this.objeBeca.setCodiTipoEsta(es);
             FCDEBeca.create(objeBeca);//crea el nuevo registro de la beca
             this.listBeca.add(objeBeca);//lo agrega a la lista
@@ -308,8 +330,6 @@ public class BecasBean implements Serializable{
             this.consTodo();//consulta los registros con estado diferente a 3
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Solicitud Modificada");
-
-            
         }
         catch(Exception ex)
         {
@@ -328,12 +348,12 @@ public class BecasBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-             /*Busca el objeto viejo le setea el estado 3 de historial y lo modifica*/
+            /*Busca el objeto viejo le setea el estado 3 de historial y lo modifica*/
             //this.listBeca.remove(this.objeBeca);
             this.objeSoli2 = this.objeSoli;
             this.objeSoli.setEstaSoliBeca(3);
             FCDESoli.edit(objeSoli);     
-             this.objeBeca = FCDEBeca.find(objeSoli.getCodiSoliBeca());
+            this.objeBeca = FCDEBeca.find(objeSoli.getCodiSoliBeca());
             this.objeBeca2 = this.objeBeca;
             TipoEstado esta = new TipoEstado();
             esta.setCodiTipoEsta(3);
@@ -371,33 +391,38 @@ public class BecasBean implements Serializable{
         }
     }
     
+    //Funcion que desactiva de un solo
     public void desa()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
+            //Para el retiro
+            String tipoCamb = "[Cancelación de beca]";
+            this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());
+            String antiEsta = "["+this.objeBeca2.getCodiTipoEsta().getNombTipoEsta()+"]";
+            String razon = "["+this.objeBeca.getRetiBeca()+"]";
+            String nuevEsta = "[Beca cancelada]";
+            
             this.listBeca.remove(this.objeBeca); //Limpia el objeto viejo
             TipoEstado esta = new TipoEstado();
             esta.setCodiTipoEsta(2);
             this.objeBeca.setCodiTipoEsta(esta);
+            this.objeBeca.setRetiBeca(tipoCamb+antiEsta+razon+nuevEsta);
             this.objeBeca.setFechBaja(new Date());
             this.objeSoli.setEstaSoliBeca(2);
             FCDEBeca.edit(this.objeBeca);
             FCDESoli.edit(objeSoli);
             FCDEDetaBeca.desa_deta(this.objeBeca.getCodiBeca());
             this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
-            log.info("Beca reactivada");
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca desactivada')");
+            log.info("Beca desactivada");
             this.consTodo();
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
             log.error(getRootCause(ex).getMessage());
-            System.out.println("AQUI "+ex);
-            System.out.println("AQUI "+ex.getMessage());
-            System.out.println("AQUI "+ex.getCause());
-            System.out.println("AQUI "+getRootCause(ex).getMessage());
         }
         finally
         {

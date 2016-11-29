@@ -287,23 +287,24 @@ and open the template in the editor.
                                                         <i class="fa fa-edit"/> Activar
                                                     </h:commandLink>
                                                 </c:if>
-                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1}">
-                                                    <h:commandLink id="btondesa" class="btn btn-primary" >
-                                                        <p:ajax listener="#{becasBean.desa()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                        <i class="fa fa-edit"/> Desactivar Beca
+                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta gt 4}">
+                                                    <h:commandLink id="btondesa" class="btn btn-danger" >
+                                                        <p:ajax global="true" oncomplete="$('#CancBeca').modal('show');"/>
+                                                        <i class="fa fa-edit"/> Cancelar Beca
                                                     </h:commandLink>
                                                 </c:if>
-                                                
+                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta gt 4}">
+                                                    <h:commandLink id="btonCambEsta" class="btn btn-default" >
+                                                        <p:ajax global="true" oncomplete="$('#CambEsta').modal('show');"/>
+                                                        <i class="fa fa-edit"/> Condicionar beca
+                                                    </h:commandLink>
+                                                </c:if>
                                                 <c:if test="#{!becasBean.guardar}">
                                                     <h:commandLink id="btonRegr" class="btn btn-primary" >
                                                         <p:ajax listener="#{becasBean.toogRegre()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Regresar
                                                     </h:commandLink>
-
                                                 </c:if>
-                                                <c:if test="#{!becasBean.guardar}">
-                                                </c:if>
-
                                                 <c:if test="#{becasBean.guardar}">
                                                     <h:commandLink id="btonCarn" class="btn btn-lg btn-add-to-cart">
                                                         <p:ajax listener="#{becasBean.toogEmpr()}" process="@form"  update="@form :container" global="true"/>
@@ -427,13 +428,6 @@ and open the template in the editor.
                                                                 <p:ajax listener="#{detalleBecaBean.modi()}" process="@form" update="@form :ContDetalle" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-edit"/> Modificar
                                                             </h:commandLink>
-                                                            <!--
-                                                                # Para corregir el error que redirecciona hice una serie de pasos
-                                                                1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
-                                                                2. Quitar la referencia: bootstrap-confirmation.min.js del fragmento head.xhtml
-                                                                3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
-                                                                4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
-                                                            -->
                                                             <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!detalleBecaBean.guardar}" value="#" pt:data-placement="left"
                                                                           pt:data-toggle="modal" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                           pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
@@ -761,13 +755,6 @@ and open the template in the editor.
                                                                 <p:ajax listener="#{seguimientoBean.modi()}" process="@form" update="@form :ContSegu :TablSegu" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-edit"/> Modificar
                                                             </h:commandLink>
-                                                            <!--
-                                                                # Para corregir el error que redirecciona hice una serie de pasos
-                                                                1. Actualizar el bootstrap-confirmation, yo usé este: http://bootstrap-confirmation.js.org/
-                                                                2. Quitar la referencia: bootstrap-confirmation.min.js del fragmento head.xhtml
-                                                                3. Modifiqué el custom alum.js(en este ejemplo) quitando la función y dejando todo en una sola línea
-                                                                4. Y por último y lo mas importante que creo era lo único necesario al elemento h:outputLink le agregué el value="#"
-                                                            -->
                                                             <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{!seguimientoBean.guardar}" value="#" pt:data-placement="left"
                                                                           pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                           pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
@@ -792,7 +779,7 @@ and open the template in the editor.
                                     <div class="modal-dialog">
                                         <!-- Modal content-->
                                         <div class="modal-content">
-                                            <h:form id="FormRegiSegu" class="form-horizontal">
+                                            <h:form id="FormRegiCambPatr" class="form-horizontal">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
                                                     <h4 class="modal-title">Cambiar de patrocinador</h4>
@@ -818,7 +805,7 @@ and open the template in the editor.
                                                     <div class="input-group-btn right" style="padding-top: 5px;">
                                                         <div class="btn-group">
                                                             <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becasBean.guardar}">
-                                                                <p:ajax listener="#{becasBean.modi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <p:ajax listener="#{becasBean.modi(1)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
                                                                 <i class="fa fa-edit"/> Modificar
                                                             </h:commandLink>
                                                         </div>
@@ -830,6 +817,90 @@ and open the template in the editor.
                                 </div>
                             </div>
                             <!-- /Modal para cambiar de empresa-->
+                            <!-- Modal para cancelar la beca-->
+                            <div class="row">
+                                <!-- Modal -->
+                                <div id="CancBeca" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <h:form id="FormRegiCancBeca" class="form-horizontal">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                                    <h4 class="modal-title">Cancelar beca</h4>
+                                                </div>
+                                                <div class="modal-body" style="padding-top: 2px;">
+                                                    <fieldset class="col-md-12">
+                                                        <h:inputHidden id="codiSoli" value="#{becasBean.objeSoli.codiSoliBeca}" />
+                                                        <h:inputHidden id="codiBeca" value="#{becasBean.objeBeca.codiBeca}" />
+                                                        <div class="form-group input-group-xs">
+                                                        <h:outputLabel  for="razo" value="Razón de cancelación: "/>
+                                                        <h:inputTextarea  id="razo" value="#{becasBean.objeBeca.retiBeca}" class="form-control"/>
+                                                        <h:message for="razo" errorClass="field-error" />
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="input-group-btn right" style="padding-top: 5px;">
+                                                        <div class="btn-group">
+                                                            <h:commandLink id="btonCancBeca" class="btn btn-primary" rendered="#{!becasBean.guardar}">
+                                                                <p:ajax listener="#{becasBean.desa()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <i class="fa fa-edit"/> Cancelar beca
+                                                            </h:commandLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Modal para cancelar la beca-->
+                            <!-- Modal para condicionar/ cambiar de estados-->
+                            <div class="row">
+                                <!-- Modal -->
+                                <div id="CambEsta" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <h:form id="FormRegiCambEsta" class="form-horizontal">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
+                                                    <h4 class="modal-title">Condicionar beca</h4>
+                                                </div>
+                                                <div class="modal-body" style="padding-top: 2px;">
+                                                    <fieldset class="col-md-12">
+                                                        <h:inputHidden id="codiSoli" value="#{becasBean.objeSoli.codiSoliBeca}" />
+                                                        <h:inputHidden id="codiBeca" value="#{becasBean.objeBeca.codiBeca}" />
+                                                        <div class="form-group input-group-xs">
+                                                        <h:outputLabel  for="tipoEsta" value="Nuevo estado: "/>
+                                                        <h:selectOneMenu id="tipoEsta" value="#{becasBean.objeBeca.codiTipoEsta}" class="form-control" pt:data-live-search="true">
+                                                            <f:selectItems value="#{tipoEstadoBean.listTipoEsta}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
+                                                            <f:converter converterId="PooConv"/>
+                                                        </h:selectOneMenu>         
+                                                        <h:message for="tipoEsta" errorClass="field-error" />
+                                                        <h:outputLabel  for="razo" value="Razón de cambio: "/>
+                                                        <h:inputTextarea  id="razo" value="#{becasBean.objeBeca.retiBeca}" class="form-control"/>
+                                                        <h:message for="razo" errorClass="field-error" />
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="input-group-btn right" style="padding-top: 5px;">
+                                                        <div class="btn-group">
+                                                            <h:commandLink id="btonCambEsta" class="btn btn-primary" rendered="#{!becasBean.guardar}">
+                                                                <p:ajax listener="#{becasBean.modi(2)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <i class="fa fa-edit"/> Modificar
+                                                            </h:commandLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Modal para condicionar/ cambiar de estados-->
                         </c:if>
                     </ui:fragment> <!--FIN DE LAS COSAS QUE PUEDEN GESTIONARSE DE LA FICHA DEL ALUMNO-->
                     <ui:fragment id="FragSeleEmpr" rendered="#{becasBean.showEmpr}">
