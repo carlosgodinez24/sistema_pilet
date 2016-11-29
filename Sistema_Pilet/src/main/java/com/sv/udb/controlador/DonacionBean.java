@@ -231,6 +231,7 @@ public class DonacionBean implements Serializable{
     
     public void elim()
     {
+        System.out.println("He entrado a eliminar donacion");
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {

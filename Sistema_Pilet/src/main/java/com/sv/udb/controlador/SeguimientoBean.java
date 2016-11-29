@@ -209,10 +209,6 @@ public class SeguimientoBean implements Serializable{
                  
             }
             
-            for(Seguimiento temp : this.listSegu)
-            {
-                System.out.println("Seguimiento" + temp.getNombSegu());
-             }
             log.info("Seguimientos Consultados");
         }
         catch(Exception ex)
@@ -228,6 +224,7 @@ public class SeguimientoBean implements Serializable{
     
     public void cons()
     {
+        
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try

@@ -132,14 +132,33 @@ public class DocumentoBean implements Serializable{
     public DocumentoBean() {
     }
     
-    private BecasBean objeBeca;
+   private BecasBean objeBeca;
+      private EmpresaBean objeEmpr;
+    private boolean paBeca = false;
+    private boolean paEmpresa= false;
+
+    public boolean isPaBeca() {
+        return paBeca;
+    }
+
+    public void setPaBeca(boolean paBeca) {
+        this.paBeca = paBeca;
+    }
+
+    public boolean isPaEmpresa() {
+        return paEmpresa;
+    }
+
+    public void setPaEmpresa(boolean paEmpresa) {
+        this.paEmpresa = paEmpresa;
+    }
+    
     
     @PostConstruct
     public void init()
     {
         this.objeDocu = new Documento();
-        this.guardar = true;
-       
+        this.guardar = true;       
         this.objeDocu.setFechDocu(new Date());       
         this.imagen = false;
         this.tokens = "Imagen";        
@@ -150,9 +169,15 @@ public class DocumentoBean implements Serializable{
        rutas.add(ruta);
        DireActuInde = 0;
        this.carnet = "";
-        if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
+       
+       if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
             objeBeca = (BecasBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean");
+            this.paBeca = true;
         }
+        if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean") != null) {
+            objeEmpr = (EmpresaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean");
+            this.paEmpresa= false;
+        }    
          this.consTodo();
     }
     
@@ -169,8 +194,17 @@ public class DocumentoBean implements Serializable{
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
-        {
-            this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();
+        {            
+            if(this.objeBeca != null)
+            {
+                 this.objeDocu.setCodiSoliBeca(this.objeBeca.getObjeSoli());
+                  this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum().trim();
+            }
+            if(this.objeEmpr != null)
+            {
+               this.objeDocu.setCodiEmpr(this.objeEmpr.getObjeEmpr());
+                 this.carnet  = objeDocu.getCodiEmpr().getNombEmpr().trim();
+            }
             this.uploFile();
             this.objeDocu.setEstaDocu(1);   
             this.FCDEDocu.create(this.objeDocu);
@@ -191,27 +225,6 @@ public class DocumentoBean implements Serializable{
             
         }
     }
-    public void modi()
-    {
-        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        try
-        {
-            this.listDocu.remove(this.objeDocu); //Limpia el objeto viejo
-            FCDEDocu.edit(this.objeDocu);
-            this.listDocu.add(this.objeDocu); //Agrega el objeto modificado
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Documento Modificado");
-        }
-        catch(Exception ex)
-        {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
-        }
-        finally
-        {
-            
-        }
-    }    
     public void elim()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -246,6 +259,7 @@ public class DocumentoBean implements Serializable{
     {
         try
         {
+            
             this.listDocu = FCDEDocu.findAll();
             this.listSoli = FCDESoli.findAllDocu();
             log.info("Documentos Consultados");
@@ -377,15 +391,21 @@ public class DocumentoBean implements Serializable{
                         item.getContentType(),
                         readFully(item.getInputStream())
                 ));
-
-               // System.out.println(item.getSubmittedFileName() +" "+item.getInputStream()+" "+ item.getContentType());
-                System.out.println("RUTA:" + String.format("%s%s",path, item.getSubmittedFileName()));//Aqui esta la ruta :3 
+            this.processFilePart(item, String.format("%s%s",path, item.getSubmittedFileName()));                
+            if(this.objeBeca != null)
+            {
+                 this.objeDocu.setRutaDocu(this.objeDocu.getCodiSoliBeca().getCarnAlum() + "/" + item.getSubmittedFileName());
+            }
+            if(this.objeEmpr != null)
+            {
+              this.objeDocu.setRutaDocu(this.carnet + "/" + item.getSubmittedFileName());
+            }
+            
+            
                 
-                this.processFilePart(item, String.format("%s%s",path, item.getSubmittedFileName()));
-                this.objeDocu.setRutaDocu(this.objeDocu.getCodiSoliBeca().getCarnAlum() + "/" + item.getSubmittedFileName());
              }
         } catch (Exception e) {
-            System.out.println("Error en moveFilePart"+e.getMessage());
+            System.out.println("Error en moveFilePart "+e.getMessage());
         }
         
     }
@@ -432,22 +452,17 @@ public class DocumentoBean implements Serializable{
     public boolean isShowDocu() {
         return showDocu;
     }
-    
-    
     public void toogDocu()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         this.showDocu = !this.showDocu;
     }
-    
      //Lógica slider para imagenes
     private  boolean showImag = false;
 
     public boolean isShowImag() {
         return showImag;
     }
-    
-    
     public void toogImag()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página

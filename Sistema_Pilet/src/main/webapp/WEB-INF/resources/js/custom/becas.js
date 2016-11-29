@@ -67,8 +67,13 @@ $(document).ready(function() {
          INIT_OBJE();
          console.log("Cierro documentos")
     });
-     $('#ModaFormSegu').on('hide.bs.modal', function() {
-        $("#TablRegiSegu").bootstrapTable('uncheckAll');
+     $('#FormRegiSegu').on('hide.bs.modal', function() {
+        $("#TablSegu").bootstrapTable('uncheckAll');
+         INIT_OBJE();
+         console.log("Cierro seguimientos")
+    });
+    $('#FormRegiDocu').on('hide.bs.modal', function() {
+        $("#TablDocu").bootstrapTable('uncheckAll');
          INIT_OBJE();
          console.log("Cierro seguimientos")
     });
