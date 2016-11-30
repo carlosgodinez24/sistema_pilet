@@ -247,7 +247,8 @@ and open the template in the editor.
                                         <div class="panel-body">
                                             <div class="col-md-12 panelTop">	
                                                 <div class="col-md-4">
-                                                    <p:graphicImage value="#{becasBean.fotoAlum}" width="350px" class="img-responsive media-object img-circle profile-img" alt="Alumno"/>
+                                                  <!--  <p:graphicImage value="#{becasBean.fotoAlum}" width="350px" class="img-responsive media-object img-circle profile-img" alt="Alumno"/> -->
+                                                    <p:graphicImage value="#{globalAppBean.getImage('images/student.png')}" width="350px" class="img-responsive media-object img-circle profile-img" alt="Alumno"/>
                                                 </div>
                                                 <div class="col-md-8">	
                                                     <h2 class="media-heading"> #{becasBean.objeSoli.nombAlum}</h2>

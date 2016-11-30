@@ -7,7 +7,9 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,12 +21,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -46,6 +50,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SolicitudBeca.findByEstaSoliBeca", query = "SELECT s FROM SolicitudBeca s WHERE s.estaSoliBeca = :estaSoliBeca")})
 public class SolicitudBeca implements Serializable {
 
+    @Lob
+    @Column(name = "foto_alum")
+    private byte[] fotoAlum;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,9 +70,6 @@ public class SolicitudBeca implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "nomb_alum")
     private String nombAlum;
-    @Lob
-    @Column(name = "foto_alum")
-    private byte[] fotoAlum;
     @Size(max = 100)
     @Column(name = "espe_alum")
     private String espeAlum;
@@ -92,7 +97,8 @@ public class SolicitudBeca implements Serializable {
     @JoinColumn(name = "codi_grad", referencedColumnName = "codi_grad")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Grado codiGrad;
-
+    
+    
     public SolicitudBeca() {
     }
 
@@ -228,5 +234,7 @@ public class SolicitudBeca implements Serializable {
     public String toString() {
         return "com.sv.udb.modelo.SolicitudBeca[ codiSoliBeca=" + codiSoliBeca + " ]";
     }
+
+   
     
 }

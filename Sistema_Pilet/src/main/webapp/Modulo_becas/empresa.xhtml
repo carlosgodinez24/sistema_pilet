@@ -73,14 +73,16 @@ and open the template in the editor.
                                                  <p:remoteCommand name="elimObjeEmpr" actionListener="#{empresaBean.elim()}" oncomplete="INIT_OBJE();"  update="@form :ContRegi :TablRegi" 
                                                           global="true"/>
                                                 <p:remoteCommand name="consObje" actionListener="#{empresaBean.cons()}" oncomplete="INIT_OBJE();" update=":container"/>
+                                                <div class="btn-group">
                                                 <h:commandLink id="btonNuev" class="btn btn-success">
                                                     <p:ajax listener="#{empresaBean.toogEmpr()}" process="@form :container" update=":container" oncomplete="INIT_OBJE();"/>
                                                     <i class="fa fa-plus"/> Agregar una nueva empresa
                                                 </h:commandLink>
-                                                <h:commandLink id="btonSABER" class="btn btn-success" >
+                                                <h:commandLink id="btonSABER" class="btn btn-warning" >
                                                     <p:ajax oncomplete="PF('ModaRepo').show();" process="@form" listener="#{empresaBean.procVisi()}"  update=":ModaRepoView"  global="true"/>
                                                     Generar reporte
                                                 </h:commandLink>
+                                                    </div>
                                             </h:form>
                                         </div>
                                         <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{empresaBean.listEmpr}"
@@ -261,7 +263,9 @@ and open the template in the editor.
                                         <div class="panel-body">
                                             <div class="col-md-12 panelTop">	
                                                 <div class="col-md-4">	
-                                                    <img class="img-responsive media-object img-circle profile-img" src="http://simpleicon.com/wp-content/uploads/building-3.png" alt=""/>
+                                                   <!--  <img class="img-responsive media-object img-circle profile-img" src="http://simpleicon.com/wp-content/uploads/building-3.png" alt=""/> -->
+                                                   
+                                                   <p:graphicImage value="#{globalAppBean.getImage('images/building.png')}" width="350px" class="img-responsive media-object img-circle profile-img" alt="Empresa"/>
                                                 </div>
                                                 <div class="col-md-8">	
                                                     <h2 class="media-heading"> #{empresaBean.objeEmpr.nombEmpr}</h2>

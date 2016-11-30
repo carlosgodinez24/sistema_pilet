@@ -405,7 +405,7 @@ public class BecasBean implements Serializable{
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Solicitud Modificada");
             //Enviar al método de las modificaciones en las otra tablas
-            //this.cambios(objeBeca2.getCodiBeca(), 1);
+            this.cambios(objeBeca2.getCodiBeca(), 1);
         }
         catch(Exception ex)
         {
@@ -663,8 +663,16 @@ public class BecasBean implements Serializable{
             //Listas de datos de las diferentes tablas
             //Detalles de beca
             this.listDetaBeca = this.FCDEDetaBeca.findByBeca(codiBecaAnt);
+            System.out.println("Codigo de la solicitud: "+objeBeca2.getCodiSoliBeca().getCodiSoliBeca());
             this.listSegu = this.FCDESegu.findBySoliInSpec(objeBeca2.getCodiSoliBeca().getCodiSoliBeca());
             this.listDocu = this.FCDEDocu.findBySoli(objeBeca2.getCodiSoliBeca().getCodiSoliBeca());
+            if(listDetaBeca == null)
+                listDetaBeca = new ArrayList<>();
+                 if(listSegu == null)
+                     listSegu = new ArrayList<>();
+                     if(listDocu == null)
+                         listDocu =new ArrayList<>();
+                
             switch (tipo) {
                 //Caso 1 son modificaciones
                 case 1:
@@ -677,6 +685,10 @@ public class BecasBean implements Serializable{
                         FCDEDetaBeca.edit(temp);
                         }*/
                     }
+                    else
+                    {
+                         System.out.println("No  tiene detalles");
+                    }
                     if (!listSegu.isEmpty()) {
                         System.out.println("Si tiene seguimientos");
                         /*//Seguimientos
@@ -685,6 +697,10 @@ public class BecasBean implements Serializable{
                             FCDESegu.edit(temp);
                         }*/
                     }
+                    else
+                    {
+                         System.out.println("No tiene seguimientos");
+                    }
                     if (!listDocu.isEmpty()) {
                         System.out.println("Si tiene documentos");
                         /*Documentos
@@ -692,6 +708,10 @@ public class BecasBean implements Serializable{
                             temp.setCodiSoliBeca(this.objeBeca.getCodiSoliBeca());
                             FCDEDocu.edit(temp);
                         }  */
+                    }
+                    else
+                    {
+                         System.out.println("No tiene documentos");
                     }
                     break;
                 default:
