@@ -6,8 +6,6 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Documento;
-import com.sv.udb.modelo.Transaccion;
-import com.sv.udb.modelo.Ubicaciones;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

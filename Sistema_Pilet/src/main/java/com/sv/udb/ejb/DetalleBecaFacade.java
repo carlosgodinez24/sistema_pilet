@@ -5,7 +5,6 @@
  */
 package com.sv.udb.ejb;
 
-import com.sv.udb.modelo.Detalle;
 import com.sv.udb.modelo.DetalleBeca;
 import java.util.Arrays;
 import java.util.List;
