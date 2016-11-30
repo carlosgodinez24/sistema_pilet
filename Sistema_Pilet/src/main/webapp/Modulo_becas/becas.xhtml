@@ -277,7 +277,7 @@ and open the template in the editor.
                                                     <h5>Matricula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
                                                     <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>
                                                     <h5>Patrocinador: #{becasBean.objeSoli.codiEmpr.nombEmpr}</h5> 
-                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{becaSoliBean.guardar==false and dinamicoBean.alum == false}">
+                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{becaSoliBean.guardar==false or dinamicoBean.alum == false}">
                                                         <p:ajax global="true" oncomplete="$('#CambPatr').modal('show');"/>
                                                         <i class="fa fa-edit"/> Cambiar de patrocinador
                                                     </h:commandLink>
@@ -818,7 +818,7 @@ and open the template in the editor.
                                                         <div class="btn-group">
                                                             <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becasBean.guardar}">
                                                                 <p:ajax listener="#{becasBean.modi(1)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                                <i class="fa fa-edit"/> Modificar
+                                                                <i class="fa fa-edit"/> Cambiar de patrocinador
                                                             </h:commandLink>
                                                         </div>
                                                     </div>
@@ -908,7 +908,7 @@ and open the template in the editor.
                                                         <div class="btn-group">
                                                             <h:commandLink id="btonCambEsta" class="btn btn-primary" rendered="#{!becasBean.guardar}">
                                                                 <p:ajax listener="#{becasBean.modi(2)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                                <i class="fa fa-edit"/> Modificar
+                                                                <i class="fa fa-edit"/> Modificar estado de la beca
                                                             </h:commandLink>
                                                         </div>
                                                     </div>

@@ -91,7 +91,7 @@ public class BecasBean implements Serializable{
     @Resource
     private javax.transaction.UserTransaction utx;
     
-    private static final long serialVersionUID = -5196715359527212081L;
+    private static final long serialVersionUID = -5196715359527212082L;
     
     
      @EJB
@@ -881,8 +881,12 @@ public class BecasBean implements Serializable{
                             listOpciTemp.put(tempOR.getCodiOpciResp(),tempOR.getDescOpci());
                         }
                     }
+                    //this.mapa.put(codiDina, new Object());
                 }
-                System.out.println(codiDina);
+                else{
+                    //this.mapa.put(codiDina, "Demo " + codiDina);
+                }
+                System.out.println("XXXXXXXXXXXXXXXXXXXX: " + codiDina);
                 this.listCmps.add(new DynamicField(temp.getTituOpci(), codiDina, listOpciTemp, temp.getCodiEstr().getTipoEstr(),temp.getCodiPreg()));
             }
             
@@ -914,68 +918,72 @@ public class BecasBean implements Serializable{
     
     public void guarDina()
     {
-         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
        
         try
-        {            
-            Beca objeBecaLoca;
-                        
-            //if(this.objeBecaBean.getCarnet()!=null)
-            //{
-                objeBecaLoca = this.objeBeca;
-            //}
-            /*else
+        {
+            for (Map.Entry<String, Object> entry : this.mapa.entrySet())
             {
-                objeBecaLoca = objeBecaBean;
-                objeBecaLoca.setObjeSoli(objeSoli);
-                objeBecaLoca.setCarnet(logiBean.getObjeUsua().getAcceUsua());
-                if(objeBecaLoca.consW())
-                {
-                    objeBecaLoca.getObjeSoli().setCodiEmpr(new Empresa(1));
-                    if(objeBecaLoca.guar())
-                    {
-                        objeSoli = FCDESoli.findLast();
-                    }
-                }
-                else
-                {
-                    objeSoli = FCDESoli.findCarnet(logiBean.getObjeUsua().getAcceUsua());
-                }
-            }*/
-            /*Crear la nuva solicitud*/
-                      
-            for(DynamicField temp:this.listCmps)
-            {
-                String valor = "";
-                Integer codiDinaDb = Integer.parseInt(temp.getFieldKey().replace("Dina", ""));
-                if(temp.getType().equals("SELECTMANYCHECKBOX"))
-                {
-                    String respArray = "";
-                    for(Object tempResp : (Object[])this.mapa.get(temp.getFieldKey()))
-                    {
-                        int codigoOpcionRespuesta = Integer.parseInt(String.valueOf(tempResp));
-                        respArray = respArray + "-" + tempResp;
-                        Respuesta respuesta = new Respuesta( objeSoli,new Opcion(codiDinaDb),new OpcionRespuesta(codigoOpcionRespuesta),1);
-                        respuesta.setDescOpci("S/R");
-                        FCDEResp.create(respuesta);
-                    }
-                    respArray = respArray.trim();
-                    valor = "id: " + codiDinaDb + " === valor: " + respArray;
-                }
-                else
-                {
-                    String valorDb = this.mapa.get(temp.getFieldKey()).toString();                    
-                    Respuesta respuesta = new Respuesta(objeSoli,new Opcion(codiDinaDb),valorDb,1);
-                    FCDEResp.create(respuesta);
-                    valor = "id: " + codiDinaDb + " === valor: " + this.mapa.get(temp.getFieldKey());
-                }
-                System.err.println(valor);
+                System.err.println(String.format("Key: %s, value: %s", entry.getKey(), entry.getValue()));
             }
+//            Beca objeBecaLoca;
+//                        
+//            //if(this.objeBecaBean.getCarnet()!=null)
+//            //{
+//                objeBecaLoca = this.objeBeca;
+//            //}
+//            /*else
+//            {
+//                objeBecaLoca = objeBecaBean;
+//                objeBecaLoca.setObjeSoli(objeSoli);
+//                objeBecaLoca.setCarnet(logiBean.getObjeUsua().getAcceUsua());
+//                if(objeBecaLoca.consW())
+//                {
+//                    objeBecaLoca.getObjeSoli().setCodiEmpr(new Empresa(1));
+//                    if(objeBecaLoca.guar())
+//                    {
+//                        objeSoli = FCDESoli.findLast();
+//                    }
+//                }
+//                else
+//                {
+//                    objeSoli = FCDESoli.findCarnet(logiBean.getObjeUsua().getAcceUsua());
+//                }
+//            }*/
+//            /*Crear la nuva solicitud*/
+//                      
+//            for(DynamicField temp:this.listCmps)
+//            {
+//                String valor = "";
+//                Integer codiDinaDb = Integer.parseInt(temp.getFieldKey().replace("Dina", ""));
+//                if(temp.getType().equals("SELECTMANYCHECKBOX"))
+//                {
+//                    String respArray = "";
+//                    for(Object tempResp : (Object[])this.mapa.get(temp.getFieldKey()))
+//                    {
+//                        int codigoOpcionRespuesta = Integer.parseInt(String.valueOf(tempResp));
+//                        respArray = respArray + "-" + tempResp;
+//                        Respuesta respuesta = new Respuesta( objeSoli,new Opcion(codiDinaDb),new OpcionRespuesta(codigoOpcionRespuesta),1);
+//                        respuesta.setDescOpci("S/R");
+//                        FCDEResp.create(respuesta);
+//                    }
+//                    respArray = respArray.trim();
+//                    valor = "id: " + codiDinaDb + " === valor: " + respArray;
+//                }
+//                else
+//                {
+//                    String valorDb = this.mapa.get(temp.getFieldKey()).toString();                    
+//                    Respuesta respuesta = new Respuesta(objeSoli,new Opcion(codiDinaDb),valorDb,1);
+//                    FCDEResp.create(respuesta);
+//                    valor = "id: " + codiDinaDb + " === valor: " + this.mapa.get(temp.getFieldKey());
+//                }
+//                System.err.println(valor);
+//            }
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-
         }
         catch(Exception ex)
         {
+            ex.printStackTrace();
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             System.out.println("Error: "+ex.getMessage());
             System.out.println("Error: "+getRootCause(ex).getMessage());
