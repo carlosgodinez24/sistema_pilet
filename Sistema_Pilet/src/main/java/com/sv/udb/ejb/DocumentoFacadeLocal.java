@@ -6,7 +6,6 @@
 package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Documento;
-import com.sv.udb.modelo.Seguimiento;
 import java.util.List;
 import javax.ejb.Local;
 

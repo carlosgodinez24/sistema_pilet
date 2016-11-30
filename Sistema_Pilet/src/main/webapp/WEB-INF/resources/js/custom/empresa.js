@@ -1,32 +1,21 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 $(document).ready(function() {
-   
-
     $.fn.initBootTable = function() {
         $(this).bootstrapTable('destroy');
         $(this).bootstrapTable().
-        unbind('check.bs.table').on('check.bs.table', function (e, row) {
-            
-            if(this.id == "TablRegi"){
+        unbind('check.bs.table').on('check.bs.table', function (e, row) {            
+            if(this.id === "TablRegi" || $(this).id === "TablRegi"){
             consObje([{name : 'codiObjePara', value : row.id.trim()}]); 
             }            
-            if(this.id == "TablDona"){
+            if(this.id === "TablDona" || $(this).id === "TablDona"){
             consDonaObje([{name : 'codiObjePara', value : row.idDona.trim()}]); 
-            console.log(row.idDona.trim());
             }
-            if(this.id == "TablSegu"){
+            if(this.id === "TablSegu" || $(this).id === "TablSegu"){
             consSeguObje([{name : 'codiObjePara', value : row.idSegu.trim()}]); 
             }
-            if(this.id == "TablRegiHist"){
+            if(this.id === "TablRegiHist" || $(this).id === "TablRegiHist"){
             consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
             }
-            if(this.id == "TablDocu"){
+            if(this.id === "TablDocu" || $(this).id === "TablDocu"){
             consObjeDocu([{name : 'codiObjePara', value : row.idDocu.trim()}]); 
             }
         });
@@ -47,12 +36,16 @@ $(document).ready(function() {
             e.stopPropagation();
         });
     };
-   
+   $('#ModaForm').on('show.bs.modal', function() {
+       $("#TablRegi").bootstrapTable('uncheckAll');
+    });
     $('#ModaForm').on('hide.bs.modal', function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
+        INIT_OBJE();
+        console.log("Cierro donaciones");
     });
     $('#ModaDonaForm').on('show.bs.modal', function() {
-       $("#TablRegi").bootstrapTable('uncheckAll');
+       $("#TablDona").bootstrapTable('uncheckAll');
     });
     $('#ModaDonaForm').on('hide.bs.modal', function() {
         $("#TablDona").bootstrapTable('uncheckAll');
@@ -73,25 +66,25 @@ $(document).ready(function() {
 
 function INIT_OBJE()
 {
-    $("#TablRegi").initBootTable();
-    $("#TablDona").initBootTable();
-    $("#TablSegu").initBootTable();
-    $(".select").selectpicker();    
-    $("#TablDocu").initBootTable();
+    try{$("#TablDona").initBootTable();}catch(err){}
+    try{$("#TablSegu").initBootTable();}catch(err){}
+    try{$("#TablDocu").initBootTable();}catch(err){}
+    try{$("#TablRegi").initBootTable();}catch(err){}
+    try{$(".select").selectpicker();}catch(err){}
     INIT_OBJE_MODA();
     INIT_OBJE_FILE();
     
 }
 function INIT_OBJE_MODA()
 {
-    $("#FormRegi\\:btonElim2").confirmation({container: '#FormRegi'});
-    $("#FormDona\\:btonElim").confirmation({container: '#FormDona'});
-    $("#FormSegu\\:btonElim").confirmation({container: '#FormSegu'}); 
-     $("#FormRegiDocu\\:btonElimDocu").confirmation({container: '#FormRegiDocu'});
-    $("#FormEmpr\\:fech").initDatePick();
-    $("#FormRegiDocu\\:fech").initDatePick();
-    $("#FormRegi\\:fech2").initDatePick();
-    $("#FormSegu\\:fech").initDatePick();
-    $("#FormSegu\\:fech2").initDatePick();
+    try{$("#FormRegi\\:btonElim2").confirmation({container: '#FormRegi'});}catch(err){}
+    try{$("#FormDona\\:btonElim").confirmation({container: '#FormDona'});}catch(err){}
+    try{$("#FormSegu\\:btonElim").confirmation({container: '#FormSegu'}); }catch(err){}
+    try{$("#FormRegiDocu\\:btonElimDocu").confirmation({container: '#FormRegiDocu'});}catch(err){}
+    try{$("#FormEmpr\\:fech").initDatePick();}catch(err){}
+    try{$("#FormRegiDocu\\:fech").initDatePick();}catch(err){}
+    try{$("#FormRegi\\:fech2").initDatePick();}catch(err){}
+    try{$("#FormSegu\\:fech").initDatePick();}catch(err){}
+    try{$("#FormSegu\\:fech2").initDatePick();}catch(err){}
   
 }

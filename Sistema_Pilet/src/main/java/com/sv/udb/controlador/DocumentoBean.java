@@ -62,6 +62,12 @@ public class DocumentoBean implements Serializable{
     
     
      private List<SolicitudBeca> listSoli;
+     private List<Documento> listEmpr;
+
+    public List<Documento> getListEmpr() {
+        return listEmpr;
+    }
+     
 
     public List<SolicitudBeca> getListSoli() {
         return listSoli;
@@ -260,8 +266,12 @@ public class DocumentoBean implements Serializable{
         try
         {
             
-            this.listDocu = FCDEDocu.findAll();
+            this.listDocu = FCDEDocu.findBySoli(this.objeBeca.getObjeSoli().getCodiSoliBeca());
             this.listSoli = FCDESoli.findAllDocu();
+            System.out.println("1");
+            this.listEmpr = FCDEDocu.findByEmpr(this.objeEmpr.getObjeEmpr().getCodiEmpr());
+            System.out.println("2");
+//estoy filtrndo los documentos por alumno y empresa
             log.info("Documentos Consultados");
         }
         catch(Exception ex)

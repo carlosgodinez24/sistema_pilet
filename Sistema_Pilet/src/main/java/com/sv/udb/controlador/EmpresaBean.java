@@ -8,17 +8,24 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.Empresa;
 import com.sv.udb.ejb.EmpresaFacadeLocal;
+import com.sv.udb.utils.Conexion;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
@@ -34,11 +41,19 @@ public class EmpresaBean implements Serializable{
     private Empresa objeEmpr;
     private List<Empresa> listEmpr;
     private boolean guardar; 
+    private static final long serialVersionUID = 1L;
+    @Inject
+    private GlobalAppBean globalAppBean; //Bean de aplicación (Instancia)
+    private byte[] docuRepo;
     private static Logger log = Logger.getLogger(EmpresaBean.class);
     public Empresa getObjeEmpr() {
         return objeEmpr;
     }
 
+    public byte[] getDocuRepo() {
+        return docuRepo;
+    }
+    
     public void setObjeEmpr(Empresa objeEmpr) {
         this.objeEmpr = objeEmpr;
     }
@@ -125,6 +140,7 @@ public class EmpresaBean implements Serializable{
     
     public void elim()
     {
+        System.out.println("Eliminando");
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
@@ -184,6 +200,20 @@ public class EmpresaBean implements Serializable{
         finally
         {
             
+        }
+    }
+    
+    public void procVisi() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/EmpresasDonacionesActivas.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
         }
     }
     

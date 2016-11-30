@@ -54,8 +54,8 @@ initList = function()
    
 function INIT_OBJE_FILE()
 {
-    $(':file').initFile();
-    $('#FormRegiDocu\\:file').initFile();
-    $('#ModaForm\\:file').initFile();
-    initList();
+    try{$(':file').initFile();}catch(err){}
+    try{$('#FormRegiDocu\\:file').initFile();}catch(err){}
+    try{$('#ModaForm\\:file').initFile();}catch(err){}
+    try{initList();}catch(err){}
 }

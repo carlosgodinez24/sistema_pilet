@@ -70,12 +70,16 @@ and open the template in the editor.
                                         <div id="toolTablRegi">
                                             <h:form>
                                                 <!--Form exclusivo para los remotos-->
-                                                 <p:remoteCommand name="elimObjeEmpr" actionListener="#{empresaBean.elim()}" update=":container" 
-                                                         oncomplete="INIT_OBJE();" global="true"/>
+                                                 <p:remoteCommand name="elimObjeEmpr" actionListener="#{empresaBean.elim()}" oncomplete="INIT_OBJE();"  update="@form :ContRegi :TablRegi" 
+                                                          global="true"/>
                                                 <p:remoteCommand name="consObje" actionListener="#{empresaBean.cons()}" oncomplete="INIT_OBJE();" update=":container"/>
                                                 <h:commandLink id="btonNuev" class="btn btn-success">
                                                     <p:ajax listener="#{empresaBean.toogEmpr()}" process="@form :container" update=":container" oncomplete="INIT_OBJE();"/>
                                                     <i class="fa fa-plus"/> Agregar una nueva empresa
+                                                </h:commandLink>
+                                                <h:commandLink id="btonSABER" class="btn btn-success" >
+                                                    <p:ajax oncomplete="PF('ModaRepo').show();" process="@form" listener="#{empresaBean.procVisi()}"  update=":ModaRepoView"  global="true"/>
+                                                    Generar reporte
                                                 </h:commandLink>
                                             </h:form>
                                         </div>
@@ -119,6 +123,13 @@ and open the template in the editor.
                                     </h:panelGroup>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <p:dialog header="" widgetVar="ModaRepo" minHeight="40" width="1000px" style="z-index: 9999999;">
+                                <h:panelGroup id="ModaRepoView">
+                                    <cs:PdfViewer id="pdfViewer" value="#{empresaBean.docuRepo}" width="100%" height="500px"/>
+                                </h:panelGroup>
+                            </p:dialog>
                         </div>
                     </ui:fragment>
                     <div class="row">
@@ -172,7 +183,7 @@ and open the template in the editor.
                                                             <i class="fa fa-mail-forward"/> Cerrar
                                                         </h:commandLink>
                                                         <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!empresaBean.guardar}">
-                                                            <p:ajax listener="#{empresaBean.modi()}" process="@form" update="@form :FragOtro" oncomplete="INIT_OBJE();" />
+                                                            <p:ajax listener="#{empresaBean.modi()}" process="@form" update="@form :ContEmpre" oncomplete="INIT_OBJE; INIT_OBJE_MODA;"/>
                                                             <i class="fa fa-edit"/> Modificar
                                                         </h:commandLink>
                                                         <!--
@@ -185,7 +196,7 @@ and open the template in the editor.
                                                         <h:outputLink id="btonElim2" class="btn btn-danger" rendered="#{!empresaBean.guardar}" value="#" pt:data-placement="left"
                                                                       pt:data-toggle="confirmation" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                       pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
-                                                                      pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                                      pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar empresa?"
                                                                       pt:data-on-confirm="elimObjeEmpr"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
                                                             <i class="fa fa-times"/> Eliminar
                                                         </h:outputLink>
@@ -242,6 +253,7 @@ and open the template in the editor.
                         </div>
                     </ui:fragment><!-- Aqui empieza lo que sale luego de guardar la empresa! -->
                     <ui:fragment id="FragOtro" rendered="#{empresaBean.guardar == false and empresaBean.showEmpr == false}">
+                        <h:panelGroup id="ContEmpre">
                         <h:form class="form-horizontal">
                             <fieldset>
                                 <div class="col-md-12">  
@@ -280,6 +292,7 @@ and open the template in the editor.
                                 </div>
                             </fieldset>
                         </h:form>
+                            </h:panelGroup>
                         <div class="col-md-12 col-xs-12">
                             <div class="panel panel-default">
                                 <div class="panel-heading">Donaciones a pagar por esta empresa</div>
@@ -477,7 +490,7 @@ and open the template in the editor.
                                                                      oncomplete="INIT_OBJE();" global="true">
 
                                                     </p:remoteCommand>
-                                                    <h:commandLink id="btonNuev" class="btn btn-success">
+                                                    <h:commandLink id="btonNuevDocu" class="btn btn-success">
                                                         <p:ajax listener="#{documentoBean.limpForm()}" update=":ContDocu" global="true" 
                                                                 oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE();" />
 
@@ -486,7 +499,7 @@ and open the template in the editor.
 
                                                 </h:form>
                                             </div>
-                                            <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{documentoBean.listDocu}"
+                                            <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{documentoBean.listEmpr}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablDocu"
                                                          styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                          pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 

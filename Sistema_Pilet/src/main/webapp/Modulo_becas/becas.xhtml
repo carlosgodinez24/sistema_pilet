@@ -200,6 +200,8 @@ and open the template in the editor.
                                                         <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
                                                     <h:panelGroup class="label label-warning" rendered="#{fila.codiTipoEsta.codiTipoEsta eq 4}">
                                                         <i/> Evaluando</h:panelGroup>
+                                                    <h:panelGroup class="label label-warning" rendered="#{fila.codiTipoEsta.codiTipoEsta gt 4}">
+                                                    <i/>Condicionado</h:panelGroup>
                                                 </h:column>
                                             </h:dataTable>
                                         </h:panelGroup>
@@ -843,9 +845,15 @@ and open the template in the editor.
                                                         <h:inputHidden id="codiSoli" value="#{becasBean.objeSoli.codiSoliBeca}" />
                                                         <h:inputHidden id="codiBeca" value="#{becasBean.objeBeca.codiBeca}" />
                                                         <div class="form-group input-group-xs">
-                                                        <h:outputLabel  for="razo" value="Razón de cancelación: "/>
-                                                        <h:inputTextarea  id="razo" value="#{becasBean.objeBeca.retiBeca}" class="form-control"/>
-                                                        <h:message for="razo" errorClass="field-error" />
+                                                            <h:outputLabel  for="reti" value="Tipo de cancelación: "/>
+                                                            <h:selectOneMenu id="reti" value="#{becasBean.objeBeca.codiReti}" class="form-control" pt:data-live-search="true">
+                                                                <f:selectItems value="#{tipoRetiBean.listTipoReti}" var="lst" itemLabel="#{lst.nombReti}" itemValue="#{lst}"/>
+                                                                <f:converter converterId="PooConv"/>
+                                                            </h:selectOneMenu>         
+                                                            <h:message for="Empr" errorClass="field-error" />
+                                                            <h:outputLabel  for="razo" value="Razón de cancelación: "/>
+                                                            <h:inputTextarea  id="razo" value="#{becasBean.objeBeca.retiBeca}" class="form-control"/>
+                                                            <h:message for="razo" errorClass="field-error" />
                                                         </div>
                                                     </fieldset>
                                                 </div>

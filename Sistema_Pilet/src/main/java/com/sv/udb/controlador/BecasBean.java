@@ -8,20 +8,25 @@ package com.sv.udb.controlador;
 import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.BecaFacadeLocal;
 import com.sv.udb.ejb.DetalleBecaFacadeLocal;
+import com.sv.udb.ejb.DocumentoFacadeLocal;
 import com.sv.udb.ejb.GradoFacadeLocal;
 import com.sv.udb.ejb.OpcionFacadeLocal;
 import com.sv.udb.ejb.PreguntaFacadeLocal;
 import com.sv.udb.ejb.RespuestaFacadeLocal;
 import com.sv.udb.ejb.SeccionFacadeLocal;
+import com.sv.udb.ejb.SeguimientoFacadeLocal;
 import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
 import com.sv.udb.ejb.TipoBecaFacadeLocal;
 import com.sv.udb.modelo.Beca;
+import com.sv.udb.modelo.DetalleBeca;
+import com.sv.udb.modelo.Documento;
 import com.sv.udb.modelo.Grado;
 import com.sv.udb.modelo.Opcion;
 import com.sv.udb.modelo.OpcionRespuesta;
 import com.sv.udb.modelo.Pregunta;
 import com.sv.udb.modelo.Respuesta;
 import com.sv.udb.modelo.Seccion;
+import com.sv.udb.modelo.Seguimiento;
 import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoBeca;
 import com.sv.udb.modelo.TipoEstado;
@@ -88,6 +93,11 @@ public class BecasBean implements Serializable{
     
     private static final long serialVersionUID = -5196715359527212081L;
     
+    
+     @EJB
+     private DocumentoFacadeLocal FCDEDocu;
+     @EJB
+     private SeguimientoFacadeLocal FCDESegu;
     @EJB
     private GradoFacadeLocal FCDEGrado;
     @EJB
@@ -121,6 +131,12 @@ public class BecasBean implements Serializable{
     private List<Beca> listBecaH;
     private List<Beca> listBecaActivos;
     private List<Beca> listBecaDocu;
+    
+    //Para las modificaciones de las demás tablas
+    private List<DetalleBeca> listDetaBeca;
+    private List<Seguimiento> listSegu;
+    private List<Documento> listDocu;
+    
     public String getCarnet() {
         return carnet;
     }
@@ -174,6 +190,31 @@ public class BecasBean implements Serializable{
     public StreamedContent getFotoAlum() {
         return fotoAlum;
     }    
+
+    public List<DetalleBeca> getListDetaBeca() {
+        return listDetaBeca;
+    }
+
+    public void setListDetaBeca(List<DetalleBeca> listDetaBeca) {
+        this.listDetaBeca = listDetaBeca;
+    }
+
+    public List<Seguimiento> getListSegu() {
+        return listSegu;
+    }
+
+    public void setListSegu(List<Seguimiento> listSegu) {
+        this.listSegu = listSegu;
+    }
+
+    public List<Documento> getListDocu() {
+        return listDocu;
+    }
+
+    public void setListDocu(List<Documento> listDocu) {
+        this.listDocu = listDocu;
+    }
+    
     
     public Beca getObjeBeca() {
         return objeBeca;
@@ -299,7 +340,6 @@ public class BecasBean implements Serializable{
     
     public void modi(int num)
     {
-        
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
@@ -318,14 +358,16 @@ public class BecasBean implements Serializable{
                     anti = "[" + this.objeSoli2.getCodiEmpr().getNombEmpr() + "]";
                     //Empresa nueva
                     nuev = "[" + this.objeSoli.getCodiEmpr().getNombEmpr() + "]";
+                    tipoEsta = this.objeBeca2.getCodiTipoEsta().getCodiTipoEsta();
                     break;
                 case 2:
+                    System.out.println("Estado: " + this.objeBeca.getCodiTipoEsta().getNombTipoEsta());
                     tipoEsta = this.objeBeca.getCodiTipoEsta().getCodiTipoEsta();
                     tipo = "[Cambio de estado]";
                     //Estado antiguo
                     anti = "["+this.objeBeca2.getCodiTipoEsta().getNombTipoEsta()+"]";
                     //Nuevo estado
-                    nuev = "["+this.objeBeca.getCodiReti().getNombReti()+"]";
+                    nuev = "["+this.objeBeca.getCodiTipoEsta().getNombTipoEsta()+"]";
                     break;
                 default:
                     ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
@@ -362,6 +404,8 @@ public class BecasBean implements Serializable{
             this.consTodo();//consulta los registros con estado diferente a 3
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Solicitud Modificada");
+            //Enviar al método de las modificaciones en las otra tablas
+            //this.cambios(objeBeca2.getCodiBeca(), 1);
         }
         catch(Exception ex)
         {
@@ -414,7 +458,6 @@ public class BecasBean implements Serializable{
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
             log.error(getRootCause(ex).getMessage());
-            System.out.println("AQUI "+ex);
         }
         finally
         {
@@ -422,7 +465,9 @@ public class BecasBean implements Serializable{
         }
     }
     
-    //Funcion que desactiva de un solo
+    /**
+     * Función que cancela una beca por diversos motivos consultados desde la tabla tipo de retiro, así mismo debe 
+     */
     public void desa()
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
@@ -432,14 +477,14 @@ public class BecasBean implements Serializable{
             String tipoCamb = "[Cancelación de beca]";
             this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli.getCodiSoliBeca());
             String antiEsta = "["+this.objeBeca2.getCodiTipoEsta().getNombTipoEsta()+"]";
-            String razon = "["+this.objeBeca.getRetiBeca()+"]";
+            String razo = "["+this.objeBeca.getRetiBeca()+"]";
             String nuevEsta = "[Beca cancelada]";
             
             this.listBeca.remove(this.objeBeca); //Limpia el objeto viejo
             TipoEstado esta = new TipoEstado();
             esta.setCodiTipoEsta(2);
             this.objeBeca.setCodiTipoEsta(esta);
-            this.objeBeca.setRetiBeca(tipoCamb+antiEsta+razon+nuevEsta);
+            this.objeBeca.setRetiBeca(tipoCamb+antiEsta+razo+nuevEsta);
             this.objeBeca.setFechBaja(new Date());
             this.objeSoli.setEstaSoliBeca(2);
             FCDEBeca.edit(this.objeBeca);
@@ -510,7 +555,6 @@ public class BecasBean implements Serializable{
         boolean variable=false;
         try
         {
-           
            SolicitudBeca s1 = new SolicitudBeca();
             s1 = FCDESoli.findCarnet(obje);
             if(s1 != null)
@@ -584,9 +628,9 @@ public class BecasBean implements Serializable{
                     this.objeSoli.setSeccTecn(resp.getSeccTecn());
                     if(resp.getFoto() != null)
                     {
-                      //  String base64Image = new String(Base64.getDecoder().decode(resp.getFoto()));
-                       // System.err.println("Base:" +base64Image);
-    //                    this.fotoAlum = new DefaultStreamedContent(base64Image, "image/jpeg", "Demo.jpg");
+                        //String base64Image = new String(Base64.getDecoder().decode(resp.getFoto()));
+                        //System.err.println("Base:" +base64Image);
+                        //this.fotoAlum = new DefaultStreamedContent(base64Image, "image/jpeg", "Demo.jpg");
                     }
                     else
                     {
@@ -604,6 +648,63 @@ public class BecasBean implements Serializable{
        }
        return respFunc;
     }
+    
+    /**
+     * Funcion para actualizar los registros de las tablas seguimientos, detalle de beca y documentos cuando se haga algun cambio en la beca
+     * @param codiBecaAnt codigo de la beca que se ha modificado, sus detalles deben de pasar a la nueva beca
+     * @param  tipo si son modificaciones para cambiar el código de la beca o desactivación de la beca para cancelar todos los elementos relacionados
+     */
+    public void cambios(int codiBecaAnt, int tipo){
+        RequestContext ctx = RequestContext.getCurrentInstance();
+        try {
+            //Nueva beca que se ha creado y a la que hay que asignarle las cosas de antes
+            this.objeBeca = this.FCDEBeca.findLast();
+            this.objeBeca2 = this.FCDEBeca.findBeca(codiBecaAnt);
+            //Listas de datos de las diferentes tablas
+            //Detalles de beca
+            this.listDetaBeca = this.FCDEDetaBeca.findByBeca(codiBecaAnt);
+            this.listSegu = this.FCDESegu.findBySoliInSpec(objeBeca2.getCodiSoliBeca().getCodiSoliBeca());
+            this.listDocu = this.FCDEDocu.findBySoli(objeBeca2.getCodiSoliBeca().getCodiSoliBeca());
+            switch (tipo) {
+                //Caso 1 son modificaciones
+                case 1:
+                    //Si cada lista no está vacia debería cambiar el codigo de la beca en todos los registros dentro de las listas
+                    if (!listDetaBeca.isEmpty()) {
+                        System.out.println("Si tiene detalles");
+                        //Para los detalles
+                        /*for (DetalleBeca temp : listDetaBeca) {
+                        temp.setCodiBeca(objeBeca);
+                        FCDEDetaBeca.edit(temp);
+                        }*/
+                    }
+                    if (!listSegu.isEmpty()) {
+                        System.out.println("Si tiene seguimientos");
+                        /*//Seguimientos
+                        for (Seguimiento temp : listSegu) {
+                            temp.setCodiSoliBeca(this.objeBeca.getCodiSoliBeca());
+                            FCDESegu.edit(temp);
+                        }*/
+                    }
+                    if (!listDocu.isEmpty()) {
+                        System.out.println("Si tiene documentos");
+                        /*Documentos
+                        for (Documento temp : listDocu) {
+                            temp.setCodiSoliBeca(this.objeBeca.getCodiSoliBeca());
+                            FCDEDocu.edit(temp);
+                        }  */
+                    }
+                    break;
+                default:
+                    ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar alumno')");
+                    break;
+        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
+        }
+    }
+    
+    
     /*-----------------------------------------------------------*/
     //Aquí abajo estan toda la logica necesaria para los barridos, slider    
     /*-----------------------------------------------------------*/
@@ -692,6 +793,8 @@ public class BecasBean implements Serializable{
        showFich=false;
        showEmpr=false;
        this.guardar=true;
+       this.objeBeca = new Beca();
+       this.objeSoli = new SolicitudBeca();
     }
     
     /*-----------------------------------------------------------*/

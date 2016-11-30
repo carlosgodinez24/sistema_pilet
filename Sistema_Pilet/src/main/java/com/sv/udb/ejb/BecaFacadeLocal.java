@@ -28,8 +28,9 @@ public interface BecaFacadeLocal {
 
     List<Beca> findAll();
     
-   Beca findLast();
+    Beca findLast();
     
+    Beca findBeca(Object id);
     
     List<Beca> findAllH();
     
