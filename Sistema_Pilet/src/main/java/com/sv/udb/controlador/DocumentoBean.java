@@ -62,12 +62,6 @@ public class DocumentoBean implements Serializable{
     
     
      private List<SolicitudBeca> listSoli;
-     private List<Documento> listEmpr;
-
-    public List<Documento> getListEmpr() {
-        return listEmpr;
-    }
-     
 
     public List<SolicitudBeca> getListSoli() {
         return listSoli;
@@ -208,8 +202,8 @@ public class DocumentoBean implements Serializable{
             }
             if(this.objeEmpr != null)
             {
-               this.objeDocu.setCodiEmpr(this.objeEmpr.getObjeEmpr());
-                 this.carnet  = objeDocu.getCodiEmpr().getNombEmpr().trim();
+                this.objeDocu.setCodiEmpr(this.objeEmpr.getObjeEmpr());
+                this.carnet  = objeDocu.getCodiEmpr().getNombEmpr().trim();
             }
             this.uploFile();
             this.objeDocu.setEstaDocu(1);   
@@ -265,13 +259,20 @@ public class DocumentoBean implements Serializable{
     {
         try
         {
-            
-            this.listDocu = FCDEDocu.findBySoli(this.objeBeca.getObjeSoli().getCodiSoliBeca());
+            if(this.objeBeca != null)
+            {
+                 this.objeDocu.setCodiSoliBeca(this.objeBeca.getObjeSoli());
+                  this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum().trim();
+                  System.out.println(this.carnet);
+            }
+            if(this.objeEmpr != null)
+            {
+                this.objeDocu.setCodiEmpr(this.objeEmpr.getObjeEmpr());
+                this.carnet  = objeDocu.getCodiEmpr().getNombEmpr().trim();
+                System.out.println(this.carnet);
+            }
+            this.listDocu = FCDEDocu.findAll();
             this.listSoli = FCDESoli.findAllDocu();
-            System.out.println("1");
-            this.listEmpr = FCDEDocu.findByEmpr(this.objeEmpr.getObjeEmpr().getCodiEmpr());
-            System.out.println("2");
-//estoy filtrndo los documentos por alumno y empresa
             log.info("Documentos Consultados");
         }
         catch(Exception ex)
