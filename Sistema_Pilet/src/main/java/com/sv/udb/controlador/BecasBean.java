@@ -9,27 +9,56 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.BecaFacadeLocal;
 import com.sv.udb.ejb.DetalleBecaFacadeLocal;
 import com.sv.udb.ejb.GradoFacadeLocal;
+import com.sv.udb.ejb.OpcionFacadeLocal;
+import com.sv.udb.ejb.PreguntaFacadeLocal;
+import com.sv.udb.ejb.RespuestaFacadeLocal;
+import com.sv.udb.ejb.SeccionFacadeLocal;
 import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
 import com.sv.udb.ejb.TipoBecaFacadeLocal;
 import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.Grado;
+import com.sv.udb.modelo.Opcion;
+import com.sv.udb.modelo.OpcionRespuesta;
+import com.sv.udb.modelo.Pregunta;
+import com.sv.udb.modelo.Respuesta;
+import com.sv.udb.modelo.Seccion;
 import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoBeca;
 import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.modelo.TipoRetiro;
+import com.sv.udb.modelo.UsuarioRol;
+import com.sv.udb.utils.DynamicField;
 import com.sv.udb.utils.pojos.DatosAlumnos;
 import java.io.Serializable;
 import java.util.ArrayList;
 //import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.el.ValueExpression;
+import javax.faces.application.Application;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlForm;
+import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlInputTextarea;
+import javax.faces.component.html.HtmlOutputLabel;
+import javax.faces.component.html.HtmlSelectManyCheckbox;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.client.Client;
@@ -50,6 +79,15 @@ import org.primefaces.model.StreamedContent;
 @Named(value = "becasBean")
 @ViewScoped
 public class BecasBean implements Serializable{
+    
+    
+    @PersistenceContext(unitName = "PILETPU")
+    private EntityManager em;
+    @Resource
+    private javax.transaction.UserTransaction utx;
+    
+    private static final long serialVersionUID = -5196715359527212081L;
+    
     @EJB
     private GradoFacadeLocal FCDEGrado;
     @EJB
@@ -137,11 +175,6 @@ public class BecasBean implements Serializable{
         return fotoAlum;
     }    
     
-    @PersistenceContext(unitName = "PILETPU")
-    private EntityManager em;
-    @Resource
-    private javax.transaction.UserTransaction utx;
-
     public Beca getObjeBeca() {
         return objeBeca;
     }
@@ -192,7 +225,7 @@ public class BecasBean implements Serializable{
         this.guardar = true;
         this.objeBeca = new Beca();
         this.consTodo();
-        this.consTodoH();                      
+        initDina();
     }
     
     public void limpForm()
@@ -326,7 +359,6 @@ public class BecasBean implements Serializable{
             this.objeBeca.setCodiTipoEsta(es);
             FCDEBeca.create(objeBeca);//crea el nuevo registro de la beca
             this.listBeca.add(objeBeca);//lo agrega a la lista
-            this.consTodoH();//consulta los registros con estado 3
             this.consTodo();//consulta los registros con estado diferente a 3
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
             log.info("Solicitud Modificada");
@@ -377,7 +409,6 @@ public class BecasBean implements Serializable{
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
             log.info("Beca reactivada");
             this.consTodo();
-            this.consTodoH();
         }
         catch(Exception ex)
         {
@@ -512,25 +543,6 @@ public class BecasBean implements Serializable{
             
         }
     }
-    
-    public void consTodoH()
-    {
-        try
-        {
-            this.listSoliH = FCDESoli.findAll();
-            this.listBecaH = FCDEBeca.findAllHisto();
-            log.info("Beca Consultadas");
-        }
-        catch(Exception ex)
-        {
-            ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
-        }
-        finally
-        {
-            
-        }
-    }
     public boolean consW()
     {
         boolean respFunc = false;
@@ -600,7 +612,7 @@ public class BecasBean implements Serializable{
     private boolean showCarn=false;
     private boolean showFich=false;
     private boolean showEmpr=false;
-    
+    private boolean showSoci=false;
     /*Explicación de como funciona:
     
     Guardar: Cuando por ejemplo guardar sea true, eso quiere decir que no se esta modificando. Eso quiere decir,que cuando sea true
@@ -633,14 +645,16 @@ public class BecasBean implements Serializable{
     varios elementos de el se muestra y no se muestran  dependiente si se este guardando(gaurdar = true) o modificando
     (guardar = false) Por ejemplo cuando se esta guardando solo muestra la información del alumno y el boton "Agregar nueva soli"
     pero cuando se esta modificando  no  muestra ese boton si no, que muesta las tablas de documentos y detalles
-                        
-    
-    
-    
-    
-    
-    
+      
     */
+
+    public boolean isShowSoci() {
+        return showSoci;
+    }
+
+    public void setShowSoci(boolean showSoci) {
+        this.showSoci = showSoci;
+    }
     
     public boolean isShowCarn() {
         return showCarn;
@@ -665,6 +679,13 @@ public class BecasBean implements Serializable{
     {
         this.showCarn = !this.showCarn;
     }
+     public void toogSoci()
+    {
+        this.showSoci = !this.showSoci;
+         showCarn=false;   
+       showFich=false;
+       showEmpr=false;
+    }
     public void toogRegre()
     {
        showCarn=false;   
@@ -676,8 +697,411 @@ public class BecasBean implements Serializable{
     /*-----------------------------------------------------------*/
     //Aquí termina  toda la logica necesaria para los barridos, slider    
     /*-----------------------------------------------------------*/
+    /*-----------------------------------------------------------*/
+    //Aquí empieza toda la logia del formulario dinamico  
+    /*-----------------------------------------------------------*/
+    
+     @EJB
+    private RespuestaFacadeLocal FCDEResp;
+    private List<DynamicField> listCmps;
+    private Map<String, Object> mapa;
+    @EJB
+    private OpcionFacadeLocal FCDEOpci;
+     @EJB
+     private PreguntaFacadeLocal FCDEPreg;
+     @EJB
+     private SeccionFacadeLocal FCDESecc;    
+     
+    private List<Opcion> listOpci;
+    private List<Pregunta> listPreg;
+    private List<Seccion> listSecc;
+    
+     //Bean de session
+    @Inject
+    private LoginBean logiBean; 
     
     
+   
+    public Map<String, Object> getMapa() {
+        return mapa;
+    }
+
+    public void setMapa(Map<String, Object> mapa) {
+        this.mapa = mapa;
+    }
+    
+    public void initDina()
+    {
+        try {
+             
+            this.listCmps = new ArrayList<>();
+            this.mapa = new HashMap<>();
+            this.VeriRole();
+          
+            //Agrega un elemento
+            consTodoDina();
+           
+            
+            for(Opcion temp : this.listOpci)
+            {
+                String codiDina = String.format("Dina%s", String.valueOf(temp.getCodiOpci()));
+                /*codigo y respuesta xd*/
+                this.mapa.put(codiDina, null);
+                Map<Object, Object> listOpciTemp = null;
+                if(temp.getCodiEstr().getTipoEstr().equals("SELECT") || temp.getCodiEstr().getTipoEstr().equals("SELECTMANYCHECKBOX"))
+                {
+                    listOpciTemp = new HashMap<>();
+                    for(OpcionRespuesta tempOR : temp.getOpcionRespuestaList())
+                    {
+                        if(tempOR.getEstaOpci() == 1)
+                        {
+                            listOpciTemp.put(tempOR.getCodiOpciResp(),tempOR.getDescOpci());
+                        }
+                    }
+                }
+                System.out.println(codiDina);
+                this.listCmps.add(new DynamicField(temp.getTituOpci(), codiDina, listOpciTemp, temp.getCodiEstr().getTipoEstr(),temp.getCodiPreg()));
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error en init :"+e.getMessage());
+        }
+    }
+    
+    
+    public void consTodoDina()
+    {
+        try
+        {
+            this.listOpci= FCDEOpci.findAll();
+            this.listPreg = FCDEPreg.findAll();
+            this.listSecc=FCDESecc.findAll();
+           
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+            
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    public void guarDina()
+    {
+         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+       
+        try
+        {            
+            Beca objeBecaLoca;
+                        
+            //if(this.objeBecaBean.getCarnet()!=null)
+            //{
+                objeBecaLoca = this.objeBeca;
+            //}
+            /*else
+            {
+                objeBecaLoca = objeBecaBean;
+                objeBecaLoca.setObjeSoli(objeSoli);
+                objeBecaLoca.setCarnet(logiBean.getObjeUsua().getAcceUsua());
+                if(objeBecaLoca.consW())
+                {
+                    objeBecaLoca.getObjeSoli().setCodiEmpr(new Empresa(1));
+                    if(objeBecaLoca.guar())
+                    {
+                        objeSoli = FCDESoli.findLast();
+                    }
+                }
+                else
+                {
+                    objeSoli = FCDESoli.findCarnet(logiBean.getObjeUsua().getAcceUsua());
+                }
+            }*/
+            /*Crear la nuva solicitud*/
+                      
+            for(DynamicField temp:this.listCmps)
+            {
+                String valor = "";
+                Integer codiDinaDb = Integer.parseInt(temp.getFieldKey().replace("Dina", ""));
+                if(temp.getType().equals("SELECTMANYCHECKBOX"))
+                {
+                    String respArray = "";
+                    for(Object tempResp : (Object[])this.mapa.get(temp.getFieldKey()))
+                    {
+                        int codigoOpcionRespuesta = Integer.parseInt(String.valueOf(tempResp));
+                        respArray = respArray + "-" + tempResp;
+                        Respuesta respuesta = new Respuesta( objeSoli,new Opcion(codiDinaDb),new OpcionRespuesta(codigoOpcionRespuesta),1);
+                        respuesta.setDescOpci("S/R");
+                        FCDEResp.create(respuesta);
+                    }
+                    respArray = respArray.trim();
+                    valor = "id: " + codiDinaDb + " === valor: " + respArray;
+                }
+                else
+                {
+                    String valorDb = this.mapa.get(temp.getFieldKey()).toString();                    
+                    Respuesta respuesta = new Respuesta(objeSoli,new Opcion(codiDinaDb),valorDb,1);
+                    FCDEResp.create(respuesta);
+                    valor = "id: " + codiDinaDb + " === valor: " + this.mapa.get(temp.getFieldKey());
+                }
+                System.err.println(valor);
+            }
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+            System.out.println("Error: "+ex.getMessage());
+            System.out.println("Error: "+getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
+  
+    
+    @SuppressWarnings("cast")
+    public void populateForm(ComponentSystemEvent event)
+    {
+        
+        try  
+        {
+            
+           HtmlForm form = (HtmlForm) event.getComponent();
+            for(Seccion seccion : this.listSecc)
+            {
+                form.getChildren().add(this.createUIOutput("<div class=\"panel panel-primary\">"));
+                form.getChildren().add(this.createUIOutput("<div class=\"panel-heading\">"));
+                form.getChildren().add(this.createUIOutput(seccion.getNombSecc()));
+                form.getChildren().add(this.createUIOutput("</div>"));
+                form.getChildren().add(this.createUIOutput(" <div class=\"panel-body\">"));         
+                form.getChildren().add(this.createUIOutput(" <h3>Indicaciones: "+seccion.getIndiSecc()+"</h3>"));       
+                form.getChildren().add(this.createUIOutput("<fieldset>"));
+                
+                    for(Pregunta pregunta :this.listPreg)
+                    {
+                        if(seccion.getCodiSecc() == pregunta.getCodiSecc().getCodiSecc())
+                        {
+
+                            form.getChildren().add(this.createUIOutput("<h3>"+pregunta.getDescPreg()+"</h3>"));
+                            for (DynamicField field : this.listCmps) //Recorre los elementos
+                            {
+                                if(Objects.equals(field.getId().getCodiPreg(), pregunta.getCodiPreg()))
+                                {
+                                    form.getChildren().add(this.createUIOutput("<div class=\"form-group\">"));
+                                    switch (field.getType())
+                                    {
+                                        case "TEXT":
+                                            //Crea el label
+                                            form.getChildren().add(this.getUIComponent(field, HtmlOutputLabel.COMPONENT_TYPE));
+                                            //Crea el input
+                                            form.getChildren().add(this.getUIComponent(field, HtmlInputText.COMPONENT_TYPE));
+                                            break;
+                                        case "TEXTAREA":
+                                            //Crea el label
+                                            form.getChildren().add(this.getUIComponent(field, HtmlOutputLabel.COMPONENT_TYPE));
+                                            //Crea el input
+                                            form.getChildren().add(this.getUIComponent(field, HtmlInputTextarea.COMPONENT_TYPE));
+                                            break;
+                                        case "SELECT":
+                                            //Crea el label
+                                            form.getChildren().add(this.getUIComponent(field, HtmlOutputLabel.COMPONENT_TYPE));
+                                            //Crea el select
+                                            form.getChildren().add(this.getUIComponent(field, HtmlSelectOneMenu.COMPONENT_TYPE));
+                                            break;
+                                        case "SELECTMANYCHECKBOX":
+                                            //Crea el label
+                                            form.getChildren().add(this.getUIComponent(field, HtmlOutputLabel.COMPONENT_TYPE));
+                                            //Crea el select
+                                            form.getChildren().add(this.getUIComponent(field, HtmlSelectManyCheckbox.COMPONENT_TYPE));
+                                            break;
+                                    }
+                                    form.getChildren().add(this.createUIOutput("</div>"));
+
+                                }
+
+                            }
+
+                        }
+                    }
+                form.getChildren().add(this.createUIOutput("</fieldset>"));
+                form.getChildren().add(this.createUIOutput("</div>"));
+                form.getChildren().add(this.createUIOutput("</div>"));
+            }
+            //Agregar los botones
+                UIComponent btonGroup = this.getUIButtons(form);
+                if(btonGroup != null)
+                {
+                    form.getChildren().add(btonGroup);
+                }
+        } 
+        catch (Exception e) {
+            System.out.println("Error populate:"+e.getMessage());
+        }
+          
+    }
+
+    private ValueExpression createValueExpression(String string, Class<String> aClass) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return context.getApplication().getExpressionFactory()
+                .createValueExpression(context.getELContext(), string, aClass);
+    }
+    
+    private UIOutput createUIOutput(String value)
+    {
+        UIOutput resp = new UIOutput();
+        resp.setRendererType("javax.faces.Text");
+        resp.setValue(value);
+        return resp;
+    }
+    
+    private UIComponent getUIButtons(HtmlForm form)
+    {
+        UIComponent resp = null;
+        for(UIComponent temp : form.getChildren())
+        {
+            if(temp.getId().equals("btonGroup"))
+            {
+                resp = temp;
+                break;
+            }
+        }
+        return resp;
+    }
+    
+    private UIComponent getUIComponent(DynamicField field, String type)
+    {
+        UIComponent resp = null;
+        Application app = FacesContext.getCurrentInstance().getApplication();
+        if(type.equals(HtmlOutputLabel.COMPONENT_TYPE))
+        {
+            HtmlOutputLabel label = (HtmlOutputLabel)app.createComponent(HtmlOutputLabel.COMPONENT_TYPE);
+            label.setFor(field.getFieldKey());
+            label.setValueExpression("value", createValueExpression(field.getLabel(), String.class));
+            resp = label;
+        }          
+        else if(type.equals(HtmlInputText.COMPONENT_TYPE))
+        {
+            HtmlInputText input = (HtmlInputText)app.createComponent(HtmlInputText.COMPONENT_TYPE);
+            input.setId(field.getFieldKey());
+            input.setValueExpression("value", createValueExpression("#{dinamicoBean.mapa['" + field.getFieldKey() + "']}", String.class));
+            input.setStyleClass("form-control");
+            resp = input;
+        }
+        
+        else if(type.equals(HtmlInputTextarea.COMPONENT_TYPE))
+        {
+            HtmlInputTextarea input = (HtmlInputTextarea)app.createComponent(HtmlInputTextarea.COMPONENT_TYPE);
+            input.setId(field.getFieldKey());
+            input.setValueExpression("value", createValueExpression("#{dinamicoBean.mapa['" + field.getFieldKey() + "']}", String.class));            
+            input.setStyleClass("form-control");
+            resp = input;
+        }
+         else if(type.equals(HtmlDataTable.COMPONENT_TYPE ))
+        {
+            
+        }     
+        else if(type.equals(HtmlSelectOneMenu.COMPONENT_TYPE))
+        {
+            HtmlSelectOneMenu input = (HtmlSelectOneMenu)app.createComponent(HtmlSelectOneMenu.COMPONENT_TYPE);
+            input.setId(field.getFieldKey());
+            input.setValueExpression("value", createValueExpression("#{dinamicoBean.mapa['" + field.getFieldKey() + "']}", String.class));
+            input.setStyleClass("form-control");
+            if(field.getFieldValue() != null)
+            {
+                UISelectItems objeItems = new UISelectItems();
+                List<SelectItem> listItems = new ArrayList<>();
+                SelectItem seleItem = new SelectItem();
+                seleItem.setValue(null);
+                seleItem.setLabel("Seleccione...");
+                listItems.add(seleItem);
+                for(Object entry : ((HashMap)field.getFieldValue()).entrySet())
+                {
+                    Map.Entry<Object, Object> item = (Map.Entry<Object, Object>)entry;
+                    seleItem = new SelectItem();
+                    seleItem.setValue(item.getKey());
+                    seleItem.setLabel((String)item.getValue());
+                    listItems.add(seleItem);
+                }
+                objeItems.setValue(listItems.toArray());
+                input.getChildren().add(objeItems);
+            }
+            resp = input;
+        }
+        else if(type.equals(HtmlSelectManyCheckbox.COMPONENT_TYPE))
+        {
+            HtmlSelectManyCheckbox input = (HtmlSelectManyCheckbox)app.createComponent(HtmlSelectManyCheckbox.COMPONENT_TYPE);
+            input.setId(field.getFieldKey());
+            input.setValueExpression("value", createValueExpression("#{dinamicoBean.mapa['" + field.getFieldKey() + "']}", String.class));
+            input.setStyleClass("form-control");
+            if(field.getFieldValue() != null)
+            {
+                UISelectItems objeItems = new UISelectItems();
+                List<SelectItem> listItems = new ArrayList<>();
+//                SelectItem seleItem;
+                for(Object entry : ((HashMap)field.getFieldValue()).entrySet())
+                {
+                    Map.Entry<Object, Object> item = (Map.Entry<Object, Object>)entry;
+                    listItems.add(new SelectItem(item.getKey(), (String)item.getValue()));
+                }
+                objeItems.setValue(listItems);
+                input.getChildren().add(objeItems);
+            }
+            resp = input;
+        }
+        return resp;
+    }
+    
+    /*Para barridos */
+      private boolean TrabaSoci=false;
+    private boolean Alum=false;
+
+    public boolean isTrabaSoci() {
+        return TrabaSoci;
+    }
+
+    public void setTrabaSoci(boolean TrabaSoci) {
+        this.TrabaSoci = TrabaSoci;
+    }
+
+    public boolean isAlum() {
+        return Alum;
+    }
+
+    public void setAlum(boolean Alum) {
+        this.Alum = Alum;
+    }
+    
+    public void VeriRole()
+    {
+             List<UsuarioRol> lis = logiBean.getObjeUsua().getUsuarioRolList();
+             for(UsuarioRol temp: lis)
+             {                 
+                 if(temp.getCodiRole().getCodiRole() == 7)
+                 {
+                     /*alumnoo */
+                     this.Alum=true;
+                 }
+                 else if(temp.getCodiRole().getCodiRole() == 8)
+                 {
+                     /*trabajadora social*/
+                     this.TrabaSoci=false;
+                 }
+             }
+            
+    }
+     public boolean consIfCarnExis()
+    {       
+        return FCDEResp.ReadIfCarnExis(logiBean.getObjeUsua().getAcceUsua());
+    }
+    /*-----------------------------------------------------------*/
+    //Aquí termina toda la logia del formulario dinamico  
+    /*-----------------------------------------------------------*/
     public void persist(Object object) {
         try {
             utx.begin();

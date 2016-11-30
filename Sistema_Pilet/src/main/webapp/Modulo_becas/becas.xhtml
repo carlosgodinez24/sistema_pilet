@@ -135,7 +135,7 @@ and open the template in the editor.
             </style>
             <div class="row">
                 <h:panelGroup id="container">
-                    <ui:fragment id="FragTabl" rendered="#{becasBean.guardar==true and becasBean.showCarn==false}">
+                    <ui:fragment id="FragTabl" rendered="#{becasBean.guardar==true and becasBean.showCarn==false and dinamicoBean.alum==false}">
                         <fieldset>
                             <div class="col-md-12 col-xs-12">
                                 <div class="panel panel-default">
@@ -208,7 +208,7 @@ and open the template in the editor.
                             </div>
                         </fieldset>
                     </ui:fragment>
-                    <ui:fragment id="FragCarnet" rendered="#{becasBean.showCarn == true and becasBean.showFich == false and becasBean.showEmpr==false}">                    
+                    <ui:fragment id="FragCarnet" rendered="#{becasBean.showCarn == true and becasBean.showFich == false and becasBean.showEmpr==false and dinamicoBean.alum == false}">                    
                         <h:form class="form-horizontal">
                             <fieldset>
                                 <div class="col-md-12 col-xs-12">  
@@ -235,7 +235,7 @@ and open the template in the editor.
                             </fieldset>
                         </h:form>
                     </ui:fragment>
-                    <ui:fragment id="FragFicha" rendered="#{(becasBean.showFich  == true and becasBean.showEmpr==false) or becasBean.guardar==false}">                    
+                    <ui:fragment id="FragFicha" rendered="#{(becasBean.showFich  == true and becasBean.showEmpr==false) or (becasBean.guardar==false and becasBean.showSoci == false) or becasBean.consIfCarnExis() == true }">                    
                         <!-- oh aqui, es un modal, esta oculto. Aunque creo que es una practica mas amigable ponerlo fuera de contenedores. Porque el modal ya tiene su propio contenedor-->
                         <h:form class="form-horizontal">
                             <fieldset>
@@ -274,38 +274,44 @@ and open the template in the editor.
                                                     <h5>Matricula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
                                                     <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>
                                                     <h5>Patrocinador: #{becasBean.objeSoli.codiEmpr.nombEmpr}</h5> 
-                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{!becaSoliBean.guardar}">
+                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{becaSoliBean.guardar==false and dinamicoBean.alum == false}">
                                                         <p:ajax global="true" oncomplete="$('#CambPatr').modal('show');"/>
                                                         <i class="fa fa-edit"/> Cambiar de patrocinador
                                                     </h:commandLink>
                                                 </div>
                                             </div>						
                                             <div class="col-md-12 panelBottom btn-group">
-                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 4}">
+                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 4 and dinamicoBean.alum== false}">
                                                     <h:commandLink id="btonActi" class="btn btn-info" rendered="#{!becaSoliBean.detalle}">
                                                         <p:ajax listener="#{becasBean.reActi()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Activar
                                                     </h:commandLink>
                                                 </c:if>
-                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta gt 4}">
+                                                <c:if test="#{(becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta gt 4)and dinamicoBean.alum== false}">
                                                     <h:commandLink id="btondesa" class="btn btn-danger" >
                                                         <p:ajax global="true" oncomplete="$('#CancBeca').modal('show');"/>
                                                         <i class="fa fa-edit"/> Cancelar Beca
                                                     </h:commandLink>
                                                 </c:if>
-                                                <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta gt 4}">
+                                                <c:if test="#{(becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta gt 4)  and dinamicoBean.alum== false}">
                                                     <h:commandLink id="btonCambEsta" class="btn btn-default" >
                                                         <p:ajax global="true" oncomplete="$('#CambEsta').modal('show');"/>
                                                         <i class="fa fa-edit"/> Condicionar beca
                                                     </h:commandLink>
                                                 </c:if>
-                                                <c:if test="#{!becasBean.guardar}">
+                                                <c:if test="#{becasBean.guardar==false and  dinamicoBean.alum== false}">
                                                     <h:commandLink id="btonRegr" class="btn btn-primary" >
                                                         <p:ajax listener="#{becasBean.toogRegre()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Regresar
                                                     </h:commandLink>
                                                 </c:if>
-                                                <c:if test="#{becasBean.guardar}">
+                                                <c:if test="#{!becasBean.guardar}">
+                                                    <h:commandLink id="btonSoci" class="btn btn-primary pull-right" >
+                                                        <p:ajax listener="#{becasBean.toogSoci()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
+                                                        <i class="fa fa-edit"/> Ver Estudio Socieconomico
+                                                    </h:commandLink>
+                                                </c:if>
+                                                <c:if test="#{becasBean.guardar == true  and dinamicoBean.alum== false}">
                                                     <h:commandLink id="btonCarn" class="btn btn-lg btn-add-to-cart">
                                                         <p:ajax listener="#{becasBean.toogEmpr()}" process="@form"  update="@form :container" global="true"/>
                                                         Agregar nueva solicitud
@@ -323,13 +329,14 @@ and open the template in the editor.
 
                         </h:form>
                         <!-- Tabla de detalle-->
-                        <c:if test="#{!becasBean.guardar}">
+                        <c:if test="#{becasBean.guardar==false or becasBean.consIfCarnExis() == false }">
                             <div class="col-md-12 col-xs-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">Tipos de beca que posee este alumno</div>
                                     <div class="panel-body">
                                         <h:panelGroup id="ContDetalle">
                                             <div id="toolTablDetalle">
+                                                <ui:fragment id="fragFormDeta" rendered="#{!dinamicoBean.alum}">
                                                 <h:form>
                                                     <!--Form exclusivo para los remotos-->
                                                 
@@ -339,13 +346,14 @@ and open the template in the editor.
                                                                      oncomplete="$('#ModaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();" global="true" update=":container" />
                                                     <p:remoteCommand name="elimObjeDetalle" actionListener="#{detalleBecaBean.elim()}" update="@form :ContDetalle" 
                                                                      oncomplete="INIT_OBJE();" global="true"/>
-                                                    <h:commandLink id="btonNuev" class="btn btn-success">
+                                                    <h:commandLink id="btonNuev" class="btn btn-success" >
                                                         <p:ajax listener="#{detalleBecaBean.limpForm()}" update="@form :ContSegu :TablSegu :container"  global="true" 
                                                                 oncomplete="$('#ModaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();"/>
                                                         <i class="fa fa-plus"/> Agregar un  nuevo tipo de beca a este alumno
                                                     </h:commandLink>
 
                                                 </h:form>
+                                                </ui:fragment>
                                             </div>
                                             <h:dataTable pt:data-id="TablDetalle" id="TablDetalle" value="#{detalleBecaBean.listDetaBeca}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablDetalle"
@@ -388,6 +396,7 @@ and open the template in the editor.
                                     <div class="modal-dialog">
                                         <!-- Modal content-->
                                         <div class="modal-content">
+                                            
                                             <h:form id="FormRegi" class="form-horizontal">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
@@ -454,6 +463,7 @@ and open the template in the editor.
                                     <div class="panel-body">
                                         <h:panelGroup id="ContDocu">
                                             <div id="toolTablDocu">
+                                                <ui:fragment id="fragFormDocu" rendered="#{!dinamicoBean.alum}">
                                                 <h:form id="FormDocu" class="form-horizontal" enctype="multipart/form-data">
                                                     <!--Form exclusivo para los remotos-->
                                                     <p:remoteCommand name="consObjeDocu" actionListener="#{documentoBean.cons()}" update=":FormRegiDocu" 
@@ -470,6 +480,7 @@ and open the template in the editor.
                                                     </h:commandLink>
 
                                                 </h:form>
+                                                    </ui:fragment>
                                             </div>
                                             <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{documentoBean.listDocu}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablDocu"
@@ -624,6 +635,7 @@ and open the template in the editor.
                                 <div class="panel-body">
                                     <h:panelGroup id="ContSegu">
                                         <div id="toolTablSegu">
+                                            <ui:fragment id="fragFormSegu" rendered="#{!dinamicoBean.alum}">
                                             <h:form>
                                                 <!--Form exclusivo para los remotos-->
                                                 <p:remoteCommand name="consSeguObje" actionListener="#{seguimientoBean.cons()}" 
@@ -636,6 +648,7 @@ and open the template in the editor.
                                                     <i class="fa fa-plus"/> Agregar un nuevo seguimiento a este alumno
                                                 </h:commandLink>
                                             </h:form>
+                                                </ui:fragment>
                                         </div>
                                         <h:dataTable pt:data-id="TablSegu" id="TablSegu" value="#{seguimientoBean.listSegu}"
                                                      var="fila" class="boottable" pt:data-toolbar="#toolTablSegu"
@@ -930,6 +943,17 @@ and open the template in the editor.
                                 </div>
                             </fieldset>
                         </h:form>
+                    </ui:fragment>
+                    <ui:fragment id="FragEstuSoci" rendered="#{becasBean.showSoci==true or dinamicoBean.alum==true}">
+                        <h:form id="formDina">
+                            <f:event type="postAddToView" listener="#{becasBean.populateForm}" />
+                            <h:panelGroup id="btonGroup" styleClass="input-group-btn right" style="padding-top: 5px;">
+                                <h:commandLink id="btonGuar" class="btn btn-success btn-xs" rendered="true">
+                                    <p:ajax listener="#{becasBean.guarDina()}" process="@form" update="@form" />
+                                    <i class="fa fa-plus"/> Guardar
+                                </h:commandLink>
+                            </h:panelGroup>
+                        </h:form>                    
                     </ui:fragment>
                 </h:panelGroup>
             </div>
