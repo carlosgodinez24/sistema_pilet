@@ -33,8 +33,6 @@ public class PermisoRolBean implements Serializable{
     private LoginBean logiBean; 
     @Inject
     private GlobalAppBean globalAppBean;
-    @Inject
-    private EnvioCorreosBean mailBean;
     
     //Campos de la clase
     @EJB
@@ -190,7 +188,6 @@ public class PermisoRolBean implements Serializable{
                         }
                     }
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Permisos asignados con éxito')");
-                    this.mailBean.sendMail("cgodinez24001@gmail.com", "HOLA AMIGO, Una Ultima?", "Ya hoy si ya estuvo, ya aburrimos con esto...");
                     this.guardar = false;
                 }
                 else 
