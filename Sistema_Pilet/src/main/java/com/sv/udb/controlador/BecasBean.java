@@ -869,7 +869,6 @@ public class BecasBean implements Serializable{
             {
                 String codiDina = String.format("Dina%s", String.valueOf(temp.getCodiOpci()));
                 /*codigo y respuesta xd*/
-                this.mapa.put(codiDina, null);
                 Map<Object, Object> listOpciTemp = null;
                 if(temp.getCodiEstr().getTipoEstr().equals("SELECT") || temp.getCodiEstr().getTipoEstr().equals("SELECTMANYCHECKBOX"))
                 {
@@ -884,6 +883,7 @@ public class BecasBean implements Serializable{
                     //this.mapa.put(codiDina, new Object());
                 }
                 else{
+                    this.mapa.put(codiDina, "AAAA");
                     //this.mapa.put(codiDina, "Demo " + codiDina);
                 }
                 System.out.println("XXXXXXXXXXXXXXXXXXXX: " + codiDina);
@@ -1016,7 +1016,7 @@ public class BecasBean implements Serializable{
                 
                     for(Pregunta pregunta :this.listPreg)
                     {
-                        if(seccion.getCodiSecc() == pregunta.getCodiSecc().getCodiSecc())
+                        if(seccion.getCodiSecc().equals(pregunta.getCodiSecc().getCodiSecc()))
                         {
 
                             form.getChildren().add(this.createUIOutput("<h3>"+pregunta.getDescPreg()+"</h3>"));
@@ -1120,7 +1120,7 @@ public class BecasBean implements Serializable{
         {
             HtmlInputText input = (HtmlInputText)app.createComponent(HtmlInputText.COMPONENT_TYPE);
             input.setId(field.getFieldKey());
-            input.setValueExpression("value", createValueExpression("#{dinamicoBean.mapa['" + field.getFieldKey() + "']}", String.class));
+            input.setValueExpression("value", createValueExpression("#{becasBean.mapa['" + field.getFieldKey() + "']}", String.class));
             input.setStyleClass("form-control");
             resp = input;
         }
