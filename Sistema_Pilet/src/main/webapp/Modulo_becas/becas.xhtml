@@ -332,7 +332,7 @@ and open the template in the editor.
 
                         </h:form>
                         <!-- Tabla de detalle-->
-                        <c:if test="#{becasBean.guardar==false or becasBean.consIfCarnExis() == false or  becasBean.consIfCarnExis() == true }">
+                        <c:if test="#{becasBean.guardar==false  or  becasBean.consIfCarnExis() == true }">
                             <div class="col-md-12 col-xs-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">Tipos de beca que posee este alumno</div>
