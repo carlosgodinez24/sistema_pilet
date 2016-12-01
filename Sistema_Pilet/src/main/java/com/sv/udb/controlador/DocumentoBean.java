@@ -173,10 +173,13 @@ public class DocumentoBean implements Serializable{
        if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
             objeBeca = (BecasBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean");
             this.paBeca = true;
+            System.out.println("Dato en documentos: "+objeBeca.getObjeSoli().getCarnAlum());
         }
         if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean") != null) {
             objeEmpr = (EmpresaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean");
             this.paEmpresa= false;
+            System.out.println("Dato en documentos: "+objeEmpr.getObjeEmpr().getNombEmpr());
+       
         }    
          this.consTodo();
     }
@@ -259,8 +262,10 @@ public class DocumentoBean implements Serializable{
     {
         try
         {
+            /*
             if(this.objeBeca != null)
             {
+                System.out.println("Dato sobre solis en docu: "+this.objeBeca.getObjeSoli().getCarnAlum());
                  this.objeDocu.setCodiSoliBeca(this.objeBeca.getObjeSoli());
                   this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum().trim();
                   System.out.println(this.carnet);
@@ -270,7 +275,7 @@ public class DocumentoBean implements Serializable{
                 this.objeDocu.setCodiEmpr(this.objeEmpr.getObjeEmpr());
                 this.carnet  = objeDocu.getCodiEmpr().getNombEmpr().trim();
                 System.out.println(this.carnet);
-            }
+            }*/
             this.listDocu = FCDEDocu.findAll();
             this.listSoli = FCDESoli.findAllDocu();
             log.info("Documentos Consultados");
@@ -278,6 +283,7 @@ public class DocumentoBean implements Serializable{
         catch(Exception ex)
         {
             ex.printStackTrace();
+            System.out.println("Error en cons todo en docus: " +ex.getMessage());
             log.error(getRootCause(ex).getMessage());
         }
         finally

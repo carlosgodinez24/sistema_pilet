@@ -96,11 +96,18 @@ function INIT_OBJE_MODA()
     $("#FormRegi\\:fech").initDatePick();
     $("#FormRegi\\:fech2").initDatePick();
     
+    try{$("#FormRegiDocu\\:btonElimDocu").confirmation({container: '#FormRegiDocu'});}catch(err){}
      $("#FormSegu\\:fech").initDatePick();
     $("#FormSegu\\:fech2").initDatePick();
      $("#FormSegu\\:btonElim").confirmation({container: '#FormSegu'});
     $("#FormRegiSegu\\:fechFin").initDatePick();
     $("#FormRegiSegu\\:fechIni").initDatePick();
+    
+
+    try{$("#FormRegiDocu\\:btonElimDocu").confirmation({container: '#FormRegiDocu'});}catch(err){}
+
+    try{$("#FormRegiDocu\\:fech").initDatePick();}catch(err){}
+    
 }
 
 function INIT_OBJE_FINA(tipo)

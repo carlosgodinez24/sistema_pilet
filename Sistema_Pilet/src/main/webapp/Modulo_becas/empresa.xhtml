@@ -70,7 +70,7 @@ and open the template in the editor.
                                         <div id="toolTablRegi">
                                             <h:form>
                                                 <!--Form exclusivo para los remotos-->
-                                                 <p:remoteCommand name="elimObjeEmpr" actionListener="#{empresaBean.elim()}" oncomplete="INIT_OBJE();"  update="@form :ContRegi :TablRegi" 
+                                                 <p:remoteCommand name="elimObjeEmpr" actionListener="#{empresaBean.elim()}" oncomplete="INIT_OBJE();"  update="@form :ContRegi" 
                                                           global="true"/>
                                                 <p:remoteCommand name="consObje" actionListener="#{empresaBean.cons()}" oncomplete="INIT_OBJE();" update=":container"/>
                                                 <div class="btn-group">
@@ -482,7 +482,7 @@ and open the template in the editor.
                         <!-- tabla de documentos -->   
                             <div class="col-md-12 col-xs-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">Documentos que posee este alumno</div>
+                                    <div class="panel-heading">Documentos que posee esta empresa</div>
                                     <div class="panel-body">
                                         <h:panelGroup id="ContDocu">
                                             <div id="toolTablDocu">
@@ -498,7 +498,7 @@ and open the template in the editor.
                                                         <p:ajax listener="#{documentoBean.limpForm()}" update=":ContDocu" global="true" 
                                                                 oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE();" />
 
-                                                        <i class="fa fa-plus"/> Agregar un nuevo documento al alumno
+                                                        <i class="fa fa-plus"/> Agregar un nuevo documento a esta empresa
                                                     </h:commandLink>
 
                                                 </h:form>

@@ -251,7 +251,7 @@ and open the template in the editor.
                                 <ul class="treeview-menu">
                                     <li class="#{actiGrad}">
                                         <h:link outcome="/Modulo_becas/Grado" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/Grado.xhtml')}">
-                                            <i class="fa fa-user"></i> Grados
+                                            <i class="fa fa-archive"></i> Grados
                                         </h:link>
                                     </li>
                                 </ul>
@@ -261,14 +261,14 @@ and open the template in the editor.
                                 <ul class="treeview-menu">
                                     <li class="#{actiTipoBeca}">
                                         <h:link outcome="/Modulo_becas/tipo_beca" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_beca.xhtml')}">
-                                            <i class="fa fa-user"></i> Tipos de Beca
+                                            <i class="fa fa-archive"></i> Tipos de Beca
                                         </h:link>
                                     </li>
                                 </ul>
                                 <ul class="treeview-menu">
                                     <li class="#{actiTipoDocu}">
                                         <h:link outcome="/Modulo_becas/tipo_docu" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_docu.xhtml')}">
-                                            <i class="fa fa-user"></i> Tipos de Documentos
+                                            <i class="fa fa-archive"></i> Tipos de Documentos
                                         </h:link>
                                     </li>
                                 </ul>
@@ -276,14 +276,14 @@ and open the template in the editor.
                                  <ul class="treeview-menu">
                                     <li class="#{actiTipoEsta}">
                                         <h:link outcome="/Modulo_becas/tipo_esta" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_esta.xhtml')}">
-                                            <i class="fa fa-user"></i> Tipos de Estados
+                                            <i class="fa fa-archive"></i> Tipos de Estados
                                         </h:link>
                                     </li>
                                 </ul>
                                 <ul class="treeview-menu">
                                     <li class="#{actiTipoReti}">
                                         <h:link outcome="/Modulo_becas/tipo_reti" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_reti.xhtml')}">
-                                            <i class="fa fa-user"></i> Tipos de Retiros
+                                            <i class="fa fa-archive"></i> Tipos de Retiros
                                         </h:link>
                                     </li>
                                 </ul>
@@ -297,19 +297,12 @@ and open the template in the editor.
                                     </li>
                                 </ul>
                                 
-                            </li>                        
-                            <li class="treeview #{actiMenu3}">
-                            <a href="#">
-                                <i class="fa fa-dashboard"></i> <span>Transacciones</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
+                            
                             
                             <ul class="treeview-menu">
                                 <li class="#{actiEmpr}">
                                     <h:link outcome="/Modulo_becas/empresa" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/empresa.xhtml')}">
-                                        <i class="fa fa-user"></i> Empresa
+                                        <i class="fa fa-building-o"></i> Empresa
                                     </h:link>
                                 </li>
                             </ul>
@@ -319,31 +312,25 @@ and open the template in the editor.
                             <ul class="treeview-menu">
                                 <li class="#{actiTipoDona}">
                                     <h:link outcome="/Modulo_becas/tipo_dona" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_dona.xhtml')}">
-                                        <i class="fa fa-user"></i> Tipos de Donacion
+                                        <i class="fa fa-archive"></i> Tipos de Donacion
                                     </h:link>
                                 </li>
                             </ul>
                             <ul class="treeview-menu">
                                 <li class="#{actiTrans}">
                                     <h:link outcome="/Modulo_becas/transacciones" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/transacciones.xhtml')}">
-                                        <i class="fa fa-user"></i> Transacciones
+                                        <i class="fa fa-money"></i> Transacciones
                                     </h:link>
                                 </li>
                             </ul>                                
-                            </li>
-                        <li class="treeview #{actiMenu3}">
-                            <a href="#">
-                                <i class="fa fa-dashboard"></i> <span>Seguimientos</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
+                          
+                        
                             
                             
                               <ul class="treeview-menu">
                                 <li class="#{actiCale}">
                                     <h:link outcome="/Modulo_becas/Calendario" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/Calendario.xhtml')}">
-                                        <i class="fa fa-user"></i> Calendario
+                                        <i class="fa fa-calendar"></i> Calendario
                                     </h:link>
                                 </li>
                             </ul>
@@ -351,7 +338,7 @@ and open the template in the editor.
                          <ul class="treeview-menu">
                                 <li class="#{actiSegu}">
                                     <h:link outcome="/Modulo_becas/seguimiento" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/seguimiento.xhtml')}">
-                                        <i class="fa fa-user"></i> Seguimiento
+                                        <i class="fa fa-pencil"></i> Seguimiento
                                     </h:link>
                                 </li>
                             </ul>
@@ -361,13 +348,14 @@ and open the template in the editor.
                          <ul class="treeview-menu">
                                 <li class="#{actiTipoSegu}">
                                     <h:link outcome="/Modulo_becas/tipo_segu" rendered="#{globalAppBean.getEstaPermByName('/Modulo_becas/tipo_segu.xhtml')}">
-                                        <i class="fa fa-user"></i> Tipos de Seguimientos
+                                        <i class="fa fa-archive"></i> Tipos de Seguimientos
                                     </h:link>
                                 </li>
                             </ul>
                                 
-                            
-                        </li>
+                            </li>                        
+                          
+                        
                         
                         
                     </ui:fragment>

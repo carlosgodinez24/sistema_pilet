@@ -72,6 +72,7 @@ public class SeguimientoBean implements Serializable{
         this.guardar = true;
         if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
             objeBeca = (BecasBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean");
+            System.out.println("Dato de seuimeinto: "+objeBeca.getObjeSoli().getCarnAlum());
         }
         if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean") != null) {
             objeEmpr = (EmpresaBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("empresaBean");

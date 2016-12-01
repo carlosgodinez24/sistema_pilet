@@ -47,9 +47,10 @@ public class SolicitudBecaFacade extends AbstractFacade<SolicitudBeca> implement
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (SolicitudBeca)resu.get(0);
     }
+    @Override
     public SolicitudBeca findCarnet(String algo)
     {
-        Query q = getEntityManager().createNativeQuery("select * from solicitud_beca where solicitud_beca.carn_alum ="+algo, SolicitudBeca.class);
+        Query q = getEntityManager().createNativeQuery("select * from solicitud_beca where solicitud_beca.carn_alum ="+algo +" and  solicitud_beca.esta_soli_beca != 3 and  solicitud_beca.esta_soli_beca != 2", SolicitudBeca.class);
         List resu = q.getResultList();
         return resu.isEmpty() ? null : (SolicitudBeca)resu.get(0);
     }

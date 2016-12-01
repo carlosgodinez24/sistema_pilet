@@ -1228,6 +1228,11 @@ public class BecasBean implements Serializable{
     }
      public boolean consIfCarnExis()
     {       
+        if(FCDEResp.ReadIfCarnExis(logiBean.getObjeUsua().getAcceUsua()))
+        {
+                    this.objeSoli =FCDESoli.findCarnet(logiBean.getObjeUsua().getAcceUsua());
+                    this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());
+        }
         return FCDEResp.ReadIfCarnExis(logiBean.getObjeUsua().getAcceUsua());
     }
     /*-----------------------------------------------------------*/
