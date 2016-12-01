@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.TipoDonacionFacadeLocal;
 import com.sv.udb.modelo.TipoDonacion;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -86,6 +87,10 @@ public class TipoTipoDonacionBean implements Serializable {
             else
             {
                 FCDETipoDona.create(this.objeTipo);
+                 if(this.listTipo == null)
+                    {
+                        this.listTipo = new ArrayList<>();
+                    }
             this.listTipo.add(this.objeTipo);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");

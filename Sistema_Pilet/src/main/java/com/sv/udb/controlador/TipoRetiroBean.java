@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.TipoRetiroFacadeLocal;
 import com.sv.udb.modelo.TipoRetiro;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -84,7 +85,10 @@ public class TipoRetiroBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            
+            if(this.listTipoReti == null)
+            {
+            this.listTipoReti = new ArrayList();
+            }
             this.objeTipoReti.setEstaReti(1);
             FCDETipoReti.create(this.objeTipoReti);
             this.listTipoReti.add(this.objeTipoReti);

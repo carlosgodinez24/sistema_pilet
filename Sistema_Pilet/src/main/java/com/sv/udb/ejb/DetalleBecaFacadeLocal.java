@@ -26,6 +26,8 @@ public interface DetalleBecaFacadeLocal {
 
     List<DetalleBeca> findAll();
     
+    List<DetalleBeca> findByBeca(Object id);
+    
     List<DetalleBeca> findForCombo(Object id);
 
     List<DetalleBeca> findRange(int[] range);

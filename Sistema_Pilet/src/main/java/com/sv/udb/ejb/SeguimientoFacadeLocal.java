@@ -34,6 +34,12 @@ public interface SeguimientoFacadeLocal {
     
     List<Seguimiento> findBySoli();
     
+    List<Seguimiento> findByEmprInSpec(Object id);
+    
+    List<Seguimiento> findBySoliInSpec(Object id);
+        
+    List<Seguimiento> findByEmprU(int codi);
+    
     List<Seguimiento> findByAll();
     
     Seguimiento findByCodiSegu(Seguimiento codi);

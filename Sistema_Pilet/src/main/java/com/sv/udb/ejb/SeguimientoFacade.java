@@ -63,7 +63,24 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> implements Se
         List resu = q.getResultList();
         return resu.isEmpty() ? null : resu;
     }
+     @Override
+    public List<Seguimiento> findByEmprInSpec(Object id)
+    {
+        Query q = getEntityManager().createNativeQuery("select * from seguimiento where codi_empr = ?1", Seguimiento.class);
+        q.setParameter(1, id);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
     
+    @Override
+    public List<Seguimiento> findBySoliInSpec(Object id)
+    {
+        System.out.println("id facade: "+id);
+        Query q = getEntityManager().createNativeQuery("select * from seguimiento where codi_soli_beca = ?1", Seguimiento.class);
+        q.setParameter(1, id);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
     
     @Override
     public Seguimiento findByCodiSegu(Seguimiento codi) {
@@ -72,5 +89,13 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> implements Se
         Seguimiento resu = q.getSingleResult();
         return (resu == null) ? null : resu;
     }
-    
+ 
+    @Override
+    public List<Seguimiento> findByEmprU(int codi)
+    {
+        Query q = getEntityManager().createNativeQuery("select * from seguimiento where codi_empr = ?1", Seguimiento.class);
+        q.setParameter(1, codi); 
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
 }

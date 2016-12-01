@@ -25,15 +25,30 @@ and open the template in the editor.
         </ui:define>
         <!-- Elementos propios del boby -->
         <ui:define name="body">
-            <h:form id="formDina">
-                <f:event type="postAddToView" listener="#{dinamicoBean.populateForm}" />
-                <h:panelGroup id="btonGroup" styleClass="input-group-btn right" style="padding-top: 5px;">
-                    <h:commandLink id="btonGuar" class="btn btn-success btn-xs" rendered="true">
-                        <p:ajax listener="#{dinamicoBean.guar()}" process="@form" update="@form" />
-                        <i class="fa fa-plus"/> Guardar
-                    </h:commandLink>
-                </h:panelGroup>
-            </h:form>
+            
+            <ui:fragment id="fragDina" rendered="#{dinamicoBean.alum}">
+                
+                <ui:fragment id="fragFich" rendered="#{dinamicoBean.consIfCarnExis()}">
+                         Aqui debe de poner la ficha
+                </ui:fragment>
+                <ui:fragment id="fragCues" rendered="#{!dinamicoBean.consIfCarnExis()}">
+                          <h:form id="formDina">
+                            <f:event type="postAddToView" listener="#{dinamicoBean.populateForm}" />
+                            <h:panelGroup id="btonGroup" styleClass="input-group-btn right" style="padding-top: 5px;">
+                                <h:commandLink id="btonGuar" class="btn btn-success btn-xs" rendered="true">
+                                    <p:ajax listener="#{dinamicoBean.guar()}" process="@form" update="@form" />
+                                    <i class="fa fa-plus"/> Guardar
+                                </h:commandLink>
+                            </h:panelGroup>
+                        </h:form>
+                </ui:fragment>
+               
+            </ui:fragment>
+            <ui:fragment id="fragDina2" rendered="#{!dinamicoBean.alum}">
+                
+                Hola
+                       
+            </ui:fragment>
         </ui:define>
     </ui:composition>
 </html>
