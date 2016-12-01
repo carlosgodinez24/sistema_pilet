@@ -79,8 +79,6 @@ public class PermisoBean implements Serializable{
         this.guardar = guardar;
     }
     
-    
-    
     /**
      * Creates a new instance of PermisoBean
      */
@@ -107,8 +105,6 @@ public class PermisoBean implements Serializable{
         {
             this.listPerm = FCDEPermiso.findAll();
             this.listModu = FCDEPermiso.findAllModu();
-            //this.listPagi = FCDEPermiso.findPagiByModu(2);
-            //this.listAcci = FCDEPermiso.findAcciByPagi(17);
         }
         catch(Exception ex)
         {
