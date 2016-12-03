@@ -1,12 +1,12 @@
 package com.sv.udb.controlador;
-import com.sv.udb.ejb.AlumnovisitanteFacadeLocal;
 import com.sv.udb.ejb.VisitanteFacadeLocal;
-import com.sv.udb.modelo.Alumnovisitante;
 import com.sv.udb.modelo.Visitante;
 import com.sv.udb.utils.LOG4J;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -15,6 +15,22 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import org.primefaces.context.RequestContext;
 import org.apache.log4j.Logger;
+//LIBRERIAS PARA LEER EXCEL
+import java.io.File;  
+import java.io.FileInputStream;  
+import java.io.IOException;  
+import java.util.Iterator;  
+import javax.faces.application.FacesMessage;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+  
+import org.apache.poi.ss.usermodel.Cell;  
+import org.apache.poi.ss.usermodel.Row;  
+import org.apache.poi.ss.usermodel.Sheet;  
+import org.apache.poi.ss.usermodel.Workbook;  
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;  
+import org.primefaces.model.UploadedFile;
 
 /**
  * La clase visitantes
@@ -38,10 +54,15 @@ public class VisitantesBean implements Serializable{
     private LoginBean logiBean; 
     
     private List<Visitante> listVisi;
+    private List<Visitante> listVisiExce;
     private boolean guardar;
     
     private String cadeText="";
-
+    private Part file;
+    private LOG4J<VisitantesBean> lgs = new LOG4J<VisitantesBean>(VisitantesBean.class) {
+    };
+    private Logger log = lgs.getLog();
+    
     public String getCadeText() {
         return cadeText;
     }
@@ -49,10 +70,114 @@ public class VisitantesBean implements Serializable{
     public void setCadeText(String cadeText) {
         this.cadeText = cadeText;
     }
+
+    public Part getFile() {
+        return file;
+    }
+
+    public void setFile(Part file) {
+        this.file = file;
+    }
+
+    public List<Visitante> getListVisiExce() {
+        return listVisiExce;
+    }
     
-    private LOG4J<VisitantesBean> lgs = new LOG4J<VisitantesBean>(VisitantesBean.class) {
-    };
-    private Logger log = lgs.getLog();
+    private boolean valiDocuExce(){
+        boolean resp = false;
+        
+        return resp;
+    }
+    
+    public void setListVisiExce(){
+        RequestContext ctx = RequestContext.getCurrentInstance();
+        Visitante objeVisiTempExce = new Visitante();
+        try {
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            for(Part item : request.getParts())
+            {
+                if(item.getName().equals(file.getName()))
+                {
+                    //FileInputStream inputStream = new FileInputStream(file);
+                    String ext = file.getSubmittedFileName().trim();
+                    ext = ext.substring(ext.length()-4,ext.length());
+                    if(ext.equals("xlsx")){
+                        Workbook workbook = new XSSFWorkbook(file.getInputStream());
+                        Sheet sheet = workbook.getSheetAt(0);  
+                        Iterator<Row> iterator = sheet.iterator(); 
+                        int colums = sheet.getRow(0).getPhysicalNumberOfCells();
+                        if(sheet.getWorkbook().getNumberOfSheets() == 1){
+                            if(sheet.getPhysicalNumberOfRows() != 0){
+                                if(colums == 5){
+                                    while (iterator.hasNext()) {  
+                                        Row nextRow = iterator.next();
+                                        Iterator<Cell> cellIterator = nextRow.cellIterator();
+                                        while (cellIterator.hasNext()) {  
+                                            Cell cell = cellIterator.next();  
+                                            int columnIndex=cell.getColumnIndex();  
+                                            switch(columnIndex){
+                                                case 0://nombre
+                                                    objeVisiTempExce.setNombVisi(cell.getStringCellValue());
+                                                break;
+                                                case 1://apellido
+                                                    objeVisiTempExce.setApelVisi(cell.getStringCellValue());
+                                                break;
+                                                case 2://dui
+                                                    objeVisiTempExce.setDuiVisi(cell.getStringCellValue());
+                                                break;
+                                                case 3://telefono
+                                                    objeVisiTempExce.setTeleVisi(cell.getStringCellValue());
+                                                break;
+                                                case 4://correo
+                                                    objeVisiTempExce.setCorrVisi(cell.getStringCellValue());
+                                                    objeVisiTempExce.setTipoVisi(2);
+                                                    objeVisiTempExce.setEstaVisi(1);
+                                                    if(listVisiExce == null)listVisiExce = new ArrayList<Visitante>();
+                                                    listVisiExce.add(objeVisiTempExce);
+                                                break;
+
+                                            }
+                                        }
+                                        objeVisiTempExce = new Visitante();
+                                    }
+                                }else{
+                                    //validar 5 columnas
+                                     FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Formato del archivo incorrecto",  null));
+                                }
+                            }else{
+                                //validar que la pagina no este vacía
+                                FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La primera página de este archivo está vacía",  null));
+                            }
+                        }else{
+                            //validar una pagina
+                            FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solo se puede importar la primera hoja del archivo",  null));
+                        }
+                        // inputStream.close(); 
+                        workbook.close();
+                    }else{
+                        //validar que sea xlsx
+                        if(ext.equals(".xls")){
+                            FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Versión antigua no soportada, se requiere archivo .xlsx",  null));
+                        }else{
+                            FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tipo de documento incorrecto",  null));
+                        }
+                        
+                    }
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            java.util.logging.Logger.getLogger(VisitantesBean.class.getName()).log(Level.SEVERE, null, ex);
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar Documento')");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            java.util.logging.Logger.getLogger(VisitantesBean.class.getName()).log(Level.SEVERE, null, ex);
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar Documento')");
+        } catch (ServletException ex) {
+            java.util.logging.Logger.getLogger(VisitantesBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Documento Cargado con Éxito')");
+    }
     
     
     
@@ -94,18 +219,28 @@ public class VisitantesBean implements Serializable{
     @PostConstruct
     public void init()
     {
-        this.limpForm();
         
+        listVisiExce = new ArrayList<Visitante>();
+        this.limpForm();
         
     }
  //Limpiando el formulario   
     public void limpForm()
     {
         this.objeVisi = new Visitante();
+        listVisiExce.clear();
         this.guardar = true;   
         
     }
     
+    public void dropVisiDocuExce(Visitante obje){
+        if(listVisiExce == null) listVisiExce = new ArrayList<Visitante>();
+        if(listVisiExce.contains(obje)){
+            listVisiExce.remove(obje);
+            RequestContext ctx = RequestContext.getCurrentInstance();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Visitante Eliminado la lista')");
+        }
+    }
     
     public void consTodo()
     {
@@ -212,4 +347,6 @@ public class VisitantesBean implements Serializable{
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
         }
     }
+    
+    
 }
