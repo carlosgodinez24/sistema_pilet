@@ -89,6 +89,32 @@ public class VisitantesBean implements Serializable{
         return resp;
     }
     
+    public void impoListExce(int guarListVisiCita)
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance();
+        if(this.listVisiExce==null || this.listVisiExce.isEmpty() || this.listVisiExce.size()==0)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No hay nada que importar')");
+        }
+        else
+        {
+            int contGuar = 0;
+            for(Visitante objeVisiTemp: this.listVisiExce)
+            {
+                if(FCDEVisi.findByDuiVisi(objeVisiTemp.getDuiVisi())==null)
+                {
+                    FCDEVisi.create(objeVisiTemp);
+                    contGuar++;
+                    this.listVisi.add(objeVisi);
+                }
+            }
+            this.listVisiExce=new ArrayList<Visitante>();
+            if(contGuar==0) ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Ningún Visitante Guardado')");
+            if(contGuar == 1) ctx.execute("setMessage('MESS_SUCC', 'Atención', '1 Visitante Guardado')");
+            if(contGuar > 1) ctx.execute("setMessage('MESS_SUCC', 'Atención', '"+contGuar+" Visitantes Guardados')");
+        }
+    }
+    
     public void setListVisiExce(){
         RequestContext ctx = RequestContext.getCurrentInstance();
         Visitante objeVisiTempExce = new Visitante();
@@ -229,7 +255,7 @@ public class VisitantesBean implements Serializable{
     public void limpForm()
     {
         this.objeVisi = new Visitante();
-        listVisiExce.clear();
+        listVisiExce=new ArrayList<Visitante>();
         this.guardar = true;   
         
     }
