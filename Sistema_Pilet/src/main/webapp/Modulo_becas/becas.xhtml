@@ -205,6 +205,31 @@ and open the template in the editor.
                                                 </h:column>
                                             </h:dataTable>
                                         </h:panelGroup>
+                                        <h:form class="form-horizontal">
+                                        <p:dataGrid var="car" value="#{becasBean.listBeca}" columns="3" layout="grid"
+                                            rows="6" paginator="true" style="margin-top:20px" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16">
+
+                                            <f:facet name="header">
+                                                Becas
+                                            </f:facet>
+
+                                                    <p:panel header="#{car.codiSoliBeca.carnAlum}" style="text-align:center">
+                                                        <h:panelGrid columns="1" style="width:100%">
+                                                            <p:graphicImage value="#{globalAppBean.getImage('images/student.png')}" class="img-responsive media-object img-circle profile-img" style="margin-left: 30%; width: 100px; height: 100px;" alt="Alumno"/>
+                                                            <h:outputText value="Codigo: #{car.codiBeca}"  />
+                                                            <h:outputText value="Alumno: #{car.codiSoliBeca.nombAlum}" />
+                                                            <h:outputText value="Patrocinador: #{car.codiSoliBeca.codiEmpr.nombEmpr}" />
+                                                            <h:commandLink id="btonCarn" class="btn btn-default">
+                                                                <p:ajax listener="#{becasBean.cons(car.codiBeca)}" oncomplete="INIT_OBJE();" update="@form :container"
+                                                                     global="true"/>
+                                                                <i class="fa fa-search"/>
+                                                            </h:commandLink>
+                                                            
+                                                        </h:panelGrid>
+                                                    </p:panel>
+
+                                        </p:dataGrid>
+                                            </h:form>
                                     </div>
                                 </div>
                             </div>
