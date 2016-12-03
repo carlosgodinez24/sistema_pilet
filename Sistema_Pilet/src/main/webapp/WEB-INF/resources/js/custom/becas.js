@@ -102,7 +102,7 @@ function INIT_OBJE_MODA()
      $("#FormSegu\\:btonElim").confirmation({container: '#FormSegu'});
     $("#FormRegiSegu\\:fechFin").initDatePick();
     $("#FormRegiSegu\\:fechIni").initDatePick();
-    
+    $(".select").selectpicker();
 
     try{$("#FormRegiDocu\\:btonElimDocu").confirmation({container: '#FormRegiDocu'});}catch(err){}
 

@@ -164,7 +164,7 @@ and open the template in the editor.
             </div>
             <div class="row">
                 <!-- Modal -->
-                <div id="ModaForm" class="modal fade" role="dialog">
+                <div id="ModaForm" class="modal fade" role="dialog" onshow="INIT_OBJE();">
                     <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
@@ -178,14 +178,14 @@ and open the template in the editor.
                                         <h:inputHidden id="codi" value="#{transaccionBean.objeTran.codiTran}" />
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="emprDona" value="Empresa: "/>
-                                            <h:selectOneMenu id="emprDona"  value="#{transaccionBean.objeCombPadr1 }" class="form-control" pt:data-live-search="true">
+                                            <h:selectOneMenu id="emprDona"  value="#{transaccionBean.objeCombPadr1 }" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                 <p:ajax update="donaEntr" listener="#{transaccionBean.onEmpresaSelect()}" process="@this"/>  
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                           <h:outputLabel  for="donaEntr" value="Donación: "/>
-                                          <h:selectOneMenu id="donaEntr" value="#{transaccionBean.objeTran.codiDona }" class="form-control" pt:data-live-search="true">
+                                          <h:selectOneMenu id="donaEntr" value="#{transaccionBean.objeTran.codiDona }" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                               <f:selectItems value="#{transaccionBean.listHijo1}" var="lst" itemLabel="#{lst.nombDona}" itemValue="#{lst}"/>
                                               <p:ajax update="mont" listener="#{transaccionBean.onDonaSelec()}" process="@this"/>
                                               <f:converter converterId="PooConv"/>
@@ -248,7 +248,7 @@ and open the template in the editor.
             <!--COMIENZO PARA LAS SALIDAS-->
             <div class="row">
                 <!-- Modal -->
-                <div id="SaliForm" class="modal fade" role="dialog">
+                <div id="SaliForm" class="modal fade" role="dialog" onshow="INIT_OBJE_MODA_SALI();">
                     <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
@@ -262,14 +262,14 @@ and open the template in the editor.
                                         <h:inputHidden id="codiSali" value="#{transaccionBean.objeTran.codiTran}" />
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="becaAlum" value="Alumno "/>
-                                            <h:selectOneMenu id="becaAlum"  value="#{transaccionBean.objeCombPadr }" class="form-control" pt:data-live-search="true">
+                                            <h:selectOneMenu id="becaAlum"  value="#{transaccionBean.objeCombPadr }" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                 <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
                                                 <f:selectItems value="#{becasBean.listSoliActivos}" var="lst" itemLabel="#{lst.nombAlum}" itemValue="#{lst}"/>
                                                 <p:ajax update="becaSali" listener="#{transaccionBean.onDetalleSelect}" process="@this"/>  
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
                                           <h:outputLabel  for="becaSali" value="Beca "/>
-                                            <h:selectOneMenu id="becaSali" value="#{transaccionBean.objeTran.codiDetaBeca }" class="form-control" pt:data-live-search="true">
+                                            <h:selectOneMenu id="becaSali" value="#{transaccionBean.objeTran.codiDetaBeca }" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                 <f:selectItems value="#{transaccionBean.listHijo}" var="lst" itemLabel="#{lst.codiTipoBeca.nombTipoBeca}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>                                      

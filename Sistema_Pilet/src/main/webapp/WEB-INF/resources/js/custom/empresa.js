@@ -86,5 +86,5 @@ function INIT_OBJE_MODA()
     try{$("#FormRegi\\:fech2").initDatePick();}catch(err){}
     try{$("#FormSegu\\:fech").initDatePick();}catch(err){}
     try{$("#FormSegu\\:fech2").initDatePick();}catch(err){}
-  
+    $(".select").selectpicker();
 }
