@@ -137,6 +137,16 @@ public class BecasBean implements Serializable{
     private List<Seguimiento> listSegu;
     private List<Documento> listDocu;
     
+    private String buscBecaByAlum = "";//Alvin agrego esto para el buscador.
+
+    public String getBuscBecaByAlum() {
+        return buscBecaByAlum;
+    }
+
+    public void setBuscBecaByAlum(String buscBecaByAlum) {
+        this.buscBecaByAlum = buscBecaByAlum;
+    }
+            
     public String getCarnet() {
         return carnet;
     }
@@ -511,6 +521,32 @@ public class BecasBean implements Serializable{
     {
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
+        try
+        {           
+            this.objeSoli = FCDESoli.find(codi);
+            this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());            
+            listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getCodiSoliBeca().getCodiGrad().getNivelGrad());          
+            this.guardar = false;
+            this.carnet = objeSoli.getCarnAlum();
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
+                    String.format("%s", this.objeBeca.getCodiSoliBeca().getNombAlum()) + "')");
+            log.info("Beca Consultada");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    public void cons(int codi)
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        //int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
         {           
             this.objeSoli = FCDESoli.find(codi);

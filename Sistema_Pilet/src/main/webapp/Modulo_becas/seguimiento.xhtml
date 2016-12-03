@@ -116,7 +116,7 @@ Hecho por Fernando
             </div>
             <div class="row">
                 <!-- Modal -->
-                <div id="ModaForm" class="modal fade" role="dialog">
+                <div id="ModaForm" class="modal fade" role="dialog" onshow="INIT_OBJE();">
                     <div class="modal-dialog">
                         <!-- Modal content-->
                         <div class="modal-content">
@@ -130,7 +130,7 @@ Hecho por Fernando
                                         <h:inputHidden id="codi" value="#{seguimientoBean.objeSegu.codiSegu}" />
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="Tipo" value="Tipo Seguimiento: "/>
-                                            <h:selectOneMenu id="Tipo" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control" pt:data-live-search="true">
+                                            <h:selectOneMenu id="Tipo" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                 <f:selectItems value="#{tipoSeguBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoSegui}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
@@ -162,7 +162,7 @@ Hecho por Fernando
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="padr" value="Padre "/>
-                                            <h:selectOneMenu id="padr" value="#{seguimientoBean.objeSegu.padrSegu}" class="form-control" pt:data-live-search="true">
+                                            <h:selectOneMenu id="padr" value="#{seguimientoBean.objeSegu.padrSegu}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                 <f:selectItems value="#{seguimientoBean.listSegu}" var="lst" itemLabel="#{lst.nombSegu}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>

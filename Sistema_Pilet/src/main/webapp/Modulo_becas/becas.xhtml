@@ -205,6 +205,31 @@ and open the template in the editor.
                                                 </h:column>
                                             </h:dataTable>
                                         </h:panelGroup>
+                                        <h:form class="form-horizontal">
+                                        <p:dataGrid var="car" value="#{becasBean.listBeca}" columns="3" layout="grid"
+                                            rows="6" paginator="true" style="margin-top:20px" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="6,12,16">
+
+                                            <f:facet name="header">
+                                                Becas
+                                            </f:facet>
+
+                                                    <p:panel header="#{car.codiSoliBeca.carnAlum}" style="text-align:center">
+                                                        <h:panelGrid columns="1" style="width:100%">
+                                                            <p:graphicImage value="#{globalAppBean.getImage('images/student.png')}" class="img-responsive media-object img-circle profile-img" style="margin-left: 30%; width: 100px; height: 100px;" alt="Alumno"/>
+                                                            <h:outputText value="Codigo: #{car.codiBeca}"  />
+                                                            <h:outputText value="Alumno: #{car.codiSoliBeca.nombAlum}" />
+                                                            <h:outputText value="Patrocinador: #{car.codiSoliBeca.codiEmpr.nombEmpr}" />
+                                                            <h:commandLink id="btonCarn" class="btn btn-default">
+                                                                <p:ajax listener="#{becasBean.cons(car.codiBeca)}" oncomplete="INIT_OBJE();" update="@form :container"
+                                                                     global="true"/>
+                                                                <i class="fa fa-search"/>
+                                                            </h:commandLink>
+                                                            
+                                                        </h:panelGrid>
+                                                    </p:panel>
+
+                                        </p:dataGrid>
+                                            </h:form>
                                     </div>
                                 </div>
                             </div>
@@ -395,7 +420,7 @@ and open the template in the editor.
                             <!-- modal de detalle-->
                             <div class="row">
                                 <!-- Modal -->
-                                <div id="ModaForm" class="modal fade" role="dialog">
+                                <div id="ModaForm" class="modal fade" role="dialog" onshow="INIT_OBJE_MODA();">
                                     <div class="modal-dialog">
                                         <!-- Modal content-->
                                         <div class="modal-content">
@@ -408,9 +433,9 @@ and open the template in the editor.
                                                 <div class="modal-body" style="padding-top: 2px;">
                                                     <fieldset class="col-md-12">
                                                         <h:inputHidden id="codi" value="#{detalleBecaBean.objeDetaBeca.codiDetaBeca}" />
-                                                         <div class="form-group input-group-xs">
+                                                         <div class="input-group-xs">
                                                         <h:outputLabel  for="detaBeca" value="Tipo de beca: "/>
-                                                            <h:selectOneMenu id="detaBeca" value="#{detalleBecaBean.objeDetaBeca.codiTipoBeca}" class="form-control" pt:data-live-search="true">
+                                                            <h:selectOneMenu id="detaBeca" value="#{detalleBecaBean.objeDetaBeca.codiTipoBeca}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana" >
                                                                 <f:selectItems value="#{detalleBecaBean.listTipoBeca}" var="lst" itemLabel="#{lst.nombTipoBeca}" itemValue="#{lst}"/>
                                                                   <f:converter converterId="PooConv"/>
                                                               </h:selectOneMenu>                                      
@@ -547,7 +572,7 @@ and open the template in the editor.
                                                             </div>
                                                             <div class="form-group input-group-xs">
                                                                 <h:outputLabel  for="tipo" value="Tipo de documento"/>
-                                                                <h:selectOneMenu id="tipo" value="#{documentoBean.objeDocu.codiTipoDocu}" class="form-control" pt:data-live-search="true">
+                                                                <h:selectOneMenu id="tipo" value="#{documentoBean.objeDocu.codiTipoDocu}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                                     <f:selectItems value="#{tipoDocumentoBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDocu}" itemValue="#{lst}"/>
                                                                     <f:converter converterId="PooConv"/>
                                                                 </h:selectOneMenu>
@@ -716,7 +741,7 @@ and open the template in the editor.
                                                     <h:inputHidden id="codiSegu" value="#{seguimientoBean.objeSegu.codiSegu}" />
                                                     <div class="form-group input-group-xs">
                                                         <h:outputLabel  for="TipoSegu" value="Tipo Seguimiento: "/>
-                                                        <h:selectOneMenu id="TipoSegu" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control" pt:data-live-search="true">
+                                                        <h:selectOneMenu id="TipoSegu" value="#{seguimientoBean.objeSegu.codiTipoSegui}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                             <f:selectItems value="#{tipoSeguBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoSegui}" itemValue="#{lst}"/>
                                                             <f:converter converterId="PooConv"/>
                                                         </h:selectOneMenu>
@@ -802,7 +827,7 @@ and open the template in the editor.
                                                         <h:inputHidden id="codiBeca" value="#{becasBean.objeBeca.codiBeca}" />
                                                         <div class="form-group input-group-xs">
                                                         <h:outputLabel  for="Empr" value="Nuevo patrocinador: "/>
-                                                        <h:selectOneMenu id="Empr" value="#{becasBean.objeSoli.codiEmpr}" class="form-control" pt:data-live-search="true">
+                                                        <h:selectOneMenu id="Empr" value="#{becasBean.objeSoli.codiEmpr}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                             <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                             <f:converter converterId="PooConv"/>
                                                         </h:selectOneMenu>         
@@ -847,7 +872,7 @@ and open the template in the editor.
                                                         <h:inputHidden id="codiBeca" value="#{becasBean.objeBeca.codiBeca}" />
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="reti" value="Tipo de cancelación: "/>
-                                                            <h:selectOneMenu id="reti" value="#{becasBean.objeBeca.codiReti}" class="form-control" pt:data-live-search="true">
+                                                            <h:selectOneMenu id="reti" value="#{becasBean.objeBeca.codiReti}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                                 <f:selectItems value="#{tipoRetiBean.listTipoReti}" var="lst" itemLabel="#{lst.nombReti}" itemValue="#{lst}"/>
                                                                 <f:converter converterId="PooConv"/>
                                                             </h:selectOneMenu>         
@@ -892,7 +917,7 @@ and open the template in the editor.
                                                         <h:inputHidden id="codiBeca" value="#{becasBean.objeBeca.codiBeca}" />
                                                         <div class="form-group input-group-xs">
                                                         <h:outputLabel  for="tipoEsta" value="Nuevo estado: "/>
-                                                        <h:selectOneMenu id="tipoEsta" value="#{becasBean.objeBeca.codiTipoEsta}" class="form-control" pt:data-live-search="true">
+                                                        <h:selectOneMenu id="tipoEsta" value="#{becasBean.objeBeca.codiTipoEsta}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                             <f:selectItems value="#{tipoEstadoBean.listTipoEsta}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
                                                             <f:converter converterId="PooConv"/>
                                                         </h:selectOneMenu>         
@@ -932,7 +957,7 @@ and open the template in the editor.
                                                 <h:outputLabel  for="empresa" value="Seleccione la empresa que patrocinara al estudiante "/>
                                                 <div class="input-group col-xs-6">                                                    
                                                     <h:message for="empresa" errorClass="field-error" /> 
-                                                    <h:selectOneMenu id="empresa" value="#{becasBean.objeSoli.codiEmpr}" class="form-control input-lg" pt:data-live-search="true">                                                       
+                                                    <h:selectOneMenu id="empresa" value="#{becasBean.objeSoli.codiEmpr}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">                                                       
                                                         <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                         <f:converter converterId="PooConv"/>
                                                     </h:selectOneMenu>
