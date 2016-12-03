@@ -140,6 +140,7 @@ public class VisitantesBean implements Serializable{
                                         }
                                         objeVisiTempExce = new Visitante();
                                     }
+                                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Documento Cargado con Éxito')");
                                 }else{
                                     //validar 5 columnas
                                      FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Formato del archivo incorrecto",  null));
@@ -176,7 +177,7 @@ public class VisitantesBean implements Serializable{
         } catch (ServletException ex) {
             java.util.logging.Logger.getLogger(VisitantesBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Documento Cargado con Éxito')");
+        
     }
     
     
