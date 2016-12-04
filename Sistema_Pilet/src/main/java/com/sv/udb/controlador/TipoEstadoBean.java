@@ -9,6 +9,7 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.ejb.TipoEstadoFacadeLocal;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -96,15 +97,16 @@ public class TipoEstadoBean implements Serializable{
         {
             this.objeTipoEsta.setEstaTipoEsta(1);
             FCDETipo.create(this.objeTipoEsta);
+            if(listTipoEsta == null){listTipoEsta=new ArrayList();}
             this.listTipoEsta.add(this.objeTipoEsta);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Tipo Estado Guardado");
+            //log.info("Tipo Estado Guardado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -124,12 +126,12 @@ public class TipoEstadoBean implements Serializable{
             FCDETipo.edit(this.objeTipoEsta);
             this.listTipoEsta.add(this.objeTipoEsta); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Tipo Estado Modificado");
+            //log.info("Tipo Estado Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -150,17 +152,40 @@ public class TipoEstadoBean implements Serializable{
             FCDETipo.edit(this.objeTipoEsta);
             this.listTipoEsta.add(this.objeTipoEsta); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Tipo Estado Eliminado");
+           // log.info("Tipo Estado Eliminado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
             
         }
+    }
+     public void reActi()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            this.listTipoEsta.remove(this.objeTipoEsta); //Limpia el objeto viejo
+            this.objeTipoEsta.setEstaTipoEsta(1);
+            FCDETipo.edit(this.objeTipoEsta);
+            this.listTipoEsta.add(this.objeTipoEsta); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            //log.info("Tipo Estado Eliminado");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+           // log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+        
     }
     
     /**
@@ -172,12 +197,12 @@ public class TipoEstadoBean implements Serializable{
         {
             this.listTipoEsta = FCDETipo.findAllN();
             this.listTipoEstaAct = FCDETipo.findAllAct();
-            log.info("Tipo Estados Consultados");
+            //log.info("Tipo Estados Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -193,12 +218,12 @@ public class TipoEstadoBean implements Serializable{
         try
         {
             this.listTipoEstaIna = FCDETipo.findAllIna();
-            log.info("Tipo Estados Consultados");
+           // log.info("Tipo Estados Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -220,12 +245,12 @@ public class TipoEstadoBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeTipoEsta.getNombTipoEsta()) + "')");
-            log.info("Tipo Estado Consultado");
+           // log.info("Tipo Estado Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {

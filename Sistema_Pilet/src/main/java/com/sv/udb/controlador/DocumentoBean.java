@@ -216,12 +216,12 @@ public class DocumentoBean implements Serializable{
             //this.carnet = objeDocu.getCodiSoliBeca().getCarnAlum();
             //this.uploFile();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Documento Consultado");
+            //log.info("Documento Consultado");
         }
         catch (Exception e) 
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(e).getMessage());
+            //log.error(getRootCause(e).getMessage());
         }
         finally
         {
@@ -246,12 +246,12 @@ public class DocumentoBean implements Serializable{
             this.listDocu.remove(this.objeDocu); //Limpia el objeto viejo
             //this.listDocu.add(this.objeDocu); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Documento Modificado");
+            //log.info("Documento Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -278,13 +278,13 @@ public class DocumentoBean implements Serializable{
             }*/
             this.listDocu = FCDEDocu.findAll();
             this.listSoli = FCDESoli.findAllDocu();
-            log.info("Documentos Consultados");
+           // log.info("Documentos Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
             System.out.println("Error en cons todo en docus: " +ex.getMessage());
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -320,12 +320,12 @@ public class DocumentoBean implements Serializable{
             }
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDocu.getRutaDocu()) + "')");
-            log.info("Documento Consultado");
+            //log.info("Documento Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {

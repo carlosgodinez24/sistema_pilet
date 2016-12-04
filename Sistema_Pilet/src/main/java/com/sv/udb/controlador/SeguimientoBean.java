@@ -83,9 +83,11 @@ public class SeguimientoBean implements Serializable{
     
     public void limpForm()
     {
-        this.objeSegu.setFechFin(new Date());
-        this.objeSegu.setFechFin(new Date());
+        
         this.objeSegu = new Seguimiento();
+        this.objeSegu.setFechInicio(new Date());
+        this.objeSegu.setFechFin(new Date());
+     
         this.guardar = true;        
     }
     
@@ -116,12 +118,12 @@ public class SeguimientoBean implements Serializable{
             
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Seguimiento Guardado");
+          //  log.info("Seguimiento Guardado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -149,12 +151,12 @@ public class SeguimientoBean implements Serializable{
                 this.listSegu.add(this.objeSegu);
             
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Seguimiento Modificado");
+           // log.info("Seguimiento Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+          //  log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -182,12 +184,12 @@ public class SeguimientoBean implements Serializable{
             
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
-            log.info("Seguimiento Eliminado");
+          //  log.info("Seguimiento Eliminado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
-            log.error(getRootCause(ex).getMessage());
+          //  log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -210,12 +212,12 @@ public class SeguimientoBean implements Serializable{
                  
             }
             
-            log.info("Seguimientos Consultados");
+          //  log.info("Seguimientos Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+          //  log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -234,12 +236,12 @@ public class SeguimientoBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
             String.format("%s", this.objeSegu.getDescSegu()) + "')");
-            log.info("Seguimiento Consultado");
+          //  log.info("Seguimiento Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+         //   log.error(getRootCause(ex).getMessage());
         }
         finally
         {
