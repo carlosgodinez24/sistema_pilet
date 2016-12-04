@@ -129,7 +129,7 @@ public class TipoBecaBean implements Serializable{
                     this.listTipo.add(this.objeTipo);
                     this.limpForm();
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-                    log.info("Tipo Beca Guardado");
+                    //log.info("Tipo Beca Guardado");
                 }
             } else {
                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El descuento debe ser mayor a 0')"); 
@@ -139,7 +139,7 @@ public class TipoBecaBean implements Serializable{
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -192,7 +192,7 @@ public class TipoBecaBean implements Serializable{
                     FCDETipo.edit(this.objeTipo);
                     this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-                    log.info("Tipo Beca Modificado");
+                    //log.info("Tipo Beca Modificado");
                 }
             }
             else{
@@ -202,7 +202,7 @@ public class TipoBecaBean implements Serializable{
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -221,19 +221,42 @@ public class TipoBecaBean implements Serializable{
             this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
             this.objeTipo.setEstaTipoBeca(0);
             FCDETipo.edit(this.objeTipo);
-           // this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+            this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Tipo Beca Eliminado");
+           // log.info("Tipo Beca Eliminado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
             
         }
+    }
+     public void reActi()
+    {
+         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
+            this.objeTipo.setEstaTipoBeca(1);
+            FCDETipo.edit(this.objeTipo);
+           this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+           // log.info("Tipo Beca Eliminado");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            //log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+        
     }
     
     /**
@@ -243,13 +266,13 @@ public class TipoBecaBean implements Serializable{
     {
         try
         {
-            this.listTipo = FCDETipo.findAllActive();
-            log.info("Tipos de Becas Consultados");
+            this.listTipo = FCDETipo.findAll();
+            //log.info("Tipos de Becas Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -270,12 +293,12 @@ public class TipoBecaBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeTipo.getNombTipoBeca()) + "')");
-            log.info("Tipo Beca Consultado");
+            //log.info("Tipo Beca Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {

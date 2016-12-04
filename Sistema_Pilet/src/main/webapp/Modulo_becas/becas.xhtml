@@ -156,7 +156,8 @@ and open the template in the editor.
                                                     </div>
                                                 </h:form>
                                             </div>
-                                            <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{becasBean.listBeca}"
+                                            <!--
+                                            <h:dataTable pt:data-id="TablRegi" id="TablRegi"   value="#{becasBean.listBeca}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablRegi"
                                                          styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                          pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -204,6 +205,7 @@ and open the template in the editor.
                                                     <i/>Condicionado</h:panelGroup>
                                                 </h:column>
                                             </h:dataTable>
+                                            -->
                                         </h:panelGroup>
                                         <h:form class="form-horizontal">
                                         <p:dataGrid var="car" value="#{becasBean.listBeca}" columns="3" layout="grid"
@@ -219,6 +221,19 @@ and open the template in the editor.
                                                             <h:outputText value="Codigo: #{car.codiBeca}"  />
                                                             <h:outputText value="Alumno: #{car.codiSoliBeca.nombAlum}" />
                                                             <h:outputText value="Patrocinador: #{car.codiSoliBeca.codiEmpr.nombEmpr}" />
+                                                            <h:outputText value="Grado: #{car.codiSoliBeca.codiGrad.nombGrad}" />
+                                                            <h:outputText value="Estado: " />
+                                                            <h:panelGroup class="label label-success" rendered="#{car.codiTipoEsta.codiTipoEsta eq 1}">
+                                                                <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                            <h:panelGroup class="label label-info" rendered="#{car.codiTipoEsta.codiTipoEsta eq 3}">
+                                                                <i class="fa fa-unlock"/> Historial</h:panelGroup>
+                                                            <h:panelGroup class="label label-danger" rendered="#{car.codiTipoEsta.codiTipoEsta eq 2}">
+                                                                <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                                            <h:panelGroup class="label label-warning" rendered="#{car.codiTipoEsta.codiTipoEsta eq 4}">
+                                                                <i/> Evaluando</h:panelGroup>
+                                                            <h:panelGroup class="label label-warning" rendered="#{car.codiTipoEsta.codiTipoEsta gt 4}">
+                                                            <i/>Condicionado</h:panelGroup>
+                                                            <br/>
                                                             <h:commandLink id="btonCarn" class="btn btn-default">
                                                                 <p:ajax listener="#{becasBean.cons(car.codiBeca)}" oncomplete="INIT_OBJE();" update="@form :container"
                                                                      global="true"/>
@@ -244,8 +259,9 @@ and open the template in the editor.
                                         <div class="panel-body">
                                             <fieldset>                                
                                                 <h:outputLabel  for="carnet" value="Ingrese el carnet del alumno: "/>
+                                                 <h:message for="carnet" errorClass="field-error" />
                                                 <div class="input-group col-xs-3">                                                    
-                                                    <h:message for="carnet" errorClass="field-error" />
+                                                   
                                                     <h:inputText id="carnet" value="#{becasBean.carnet}" class="form-control  input-lg" required="true" requiredMessage="Debe Registrar El carnet"></h:inputText>
                                                     <span class="input-group-addon">
                                                         <h:commandLink id="btonCarn" class="btn btn-default">
@@ -302,7 +318,7 @@ and open the template in the editor.
                                                     <h5>Matricula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
                                                     <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>
                                                     <h5>Patrocinador: #{becasBean.objeSoli.codiEmpr.nombEmpr}</h5> 
-                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{becaSoliBean.guardar==false or dinamicoBean.alum == false}">
+                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{becasBean.guardar==false and becasBean.alum == false }">
                                                         <p:ajax global="true" oncomplete="$('#CambPatr').modal('show');"/>
                                                         <i class="fa fa-edit"/> Cambiar de patrocinador
                                                     </h:commandLink>
@@ -310,7 +326,7 @@ and open the template in the editor.
                                             </div>						
                                             <div class="col-md-12 panelBottom btn-group">
                                                 <c:if test="#{becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 2 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta == 4 and dinamicoBean.alum== false}">
-                                                    <h:commandLink id="btonActi" class="btn btn-info" rendered="#{!becaSoliBean.detalle}">
+                                                    <h:commandLink id="btonActi" class="btn btn-info" >
                                                         <p:ajax listener="#{becasBean.reActi()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Activar
                                                     </h:commandLink>
@@ -691,9 +707,10 @@ and open the template in the editor.
                                                 <f:facet name="header">Código</f:facet>
                                                 <h:outputText value="#{fila.codiSegu}"/>
                                             </h:column>
+                                            
                                             <h:column pt:data-sortable="true" pt:data-field="nomb">
-                                                <f:facet name="header">Fecha </f:facet>
-                                                 <h:outputText value="#{fila.fechSegu}">
+                                                <f:facet name="header">Tipo  </f:facet>
+                                                <h:outputText value="#{fila.codiTipoSegui.nombTipoSegui}">
                                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
                                                 </h:outputText>
                                             </h:column>
@@ -957,6 +974,7 @@ and open the template in the editor.
                                                 <h:outputLabel  for="empresa" value="Seleccione la empresa que patrocinara al estudiante "/>
                                                 <div class="input-group col-xs-6">                                                    
                                                     <h:message for="empresa" errorClass="field-error" /> 
+                                                   
                                                     <h:selectOneMenu id="empresa" value="#{becasBean.objeSoli.codiEmpr}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">                                                       
                                                         <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                         <f:converter converterId="PooConv"/>

@@ -133,12 +133,12 @@ public class DonacionBean implements Serializable{
             this.listDona.add(this.objeDona);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Donacion guardada");
+           // log.info("Donacion guardada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
+          //  log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -172,12 +172,12 @@ public class DonacionBean implements Serializable{
             this.limpForm();
             this.consTodo();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Donacion guardada");
+        //    log.info("Donacion guardada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar D')");
-            log.error(getRootCause(ex).getMessage());
+         //   log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -216,12 +216,12 @@ public class DonacionBean implements Serializable{
             this.listDona.add(this.objeDona); //Agrega el objeto modificado
             this.consTodo();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Donacion Modificada");
+        //    log.info("Donacion Modificada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+         //   log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -242,12 +242,12 @@ public class DonacionBean implements Serializable{
             this.consTodo();
            //this.listDona.add(this.objeDona); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
-            log.info("Donacion Eliminada");
+       //     log.info("Donacion Eliminada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
-            log.error(getRootCause(ex).getMessage());
+        //    log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -260,9 +260,9 @@ public class DonacionBean implements Serializable{
         try
         {
             //aqui va consulta personalizada
-            this.listDona = FCDEDona.findAllActive();
+            this.listDona = FCDEDona.findAll();
             this.listDonaEmpr = FCDEDona.findDona(objeEmpr.getObjeEmpr().getCodiEmpr());
-            log.info("Donaciones Consultadas");
+        //    log.info("Donaciones Consultadas");
         }
         catch(Exception ex)
         {
@@ -286,12 +286,12 @@ public class DonacionBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDona.getMontTot()) + "')");
-            log.info("Donacion Consultada");
+        //    log.info("Donacion Consultada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+        //    log.error(getRootCause(ex).getMessage());
         }
         finally
         {

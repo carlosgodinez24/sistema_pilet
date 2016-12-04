@@ -103,12 +103,12 @@ public class EmpresaBean implements Serializable{
             this.guardar = false;
             this.showEmpr = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Empresa Guardada");
+            //log.info("Empresa Guardada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -125,12 +125,12 @@ public class EmpresaBean implements Serializable{
             FCDEEmpr.edit(this.objeEmpr);
             this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Empresa Modificada");
+            //log.info("Empresa Modificada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -149,12 +149,12 @@ public class EmpresaBean implements Serializable{
             FCDEEmpr.edit(this.objeEmpr);
             //this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Empresa Eliminada");
+            //log.info("Empresa Eliminada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -166,13 +166,13 @@ public class EmpresaBean implements Serializable{
     {
         try
         {
-            this.listEmpr = FCDEEmpr.findAllActive();
-            log.info("Empresas Consultadas");
+            this.listEmpr = FCDEEmpr.findAll();
+           // log.info("Empresas Consultadas");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -190,12 +190,12 @@ public class EmpresaBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeEmpr.getNombEmpr()) + "')");
-            log.info("Empresa Consultada");
+            //log.info("Empresa Consultada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {

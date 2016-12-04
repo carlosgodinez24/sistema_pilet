@@ -41,7 +41,7 @@ public class DetalleBecaBean implements Serializable{
    
     private List<DetalleBeca> listDetaBeca;
     private boolean guardar;      
-    private static Logger log = Logger.getLogger(DetalleBean.class);
+    
 
     public DetalleBeca getObjeDetaBeca() {
         return objeDetaBeca;
@@ -148,7 +148,7 @@ public class DetalleBecaBean implements Serializable{
                         this.listDetaBeca.add(this.objeDetaBeca);
                         this.limpForm();
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-                        log.info("Detalle Guardado");
+                        //log.info("Detalle Guardado");
                     }
                 }
                 else
@@ -165,7 +165,7 @@ public class DetalleBecaBean implements Serializable{
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
             System.out.println(getRootCause(ex).getMessage());
-            log.error("Error en "+ getRootCause(ex).getMessage());
+            //log.error("Error en "+ getRootCause(ex).getMessage());
         }
         finally
         {
@@ -182,12 +182,12 @@ public class DetalleBecaBean implements Serializable{
             FCDEDetaBeca.edit(this.objeDetaBeca);
             this.listDetaBeca.add(this.objeDetaBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Detalle Modificado");
+            //log.info("Detalle Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -205,12 +205,12 @@ public class DetalleBecaBean implements Serializable{
             FCDEDetaBeca.edit(this.objeDetaBeca);
             this.listDetaBeca.add(this.objeDetaBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Detalle Modificado");
+            //log.info("Detalle Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -234,12 +234,12 @@ public class DetalleBecaBean implements Serializable{
             System.out.println("Codigo beca: "+ objeBeca.getObjeBeca().getCodiBeca());
             this.listDetaBeca = FCDEDetaBeca.findByBeca(objeBeca.getObjeBeca().getCodiBeca());            
             listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getObjeBeca().getCodiSoliBeca().getCodiGrad().getNivelGrad());
-            log.info("Detalles Consultados");
+            //log.info("Detalles Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -259,12 +259,12 @@ public class DetalleBecaBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDetaBeca.getCantMese()) + "')");
-            log.info("Detalle Consultado");
+            //log.info("Detalle Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {

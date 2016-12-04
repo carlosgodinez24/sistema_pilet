@@ -318,18 +318,19 @@ public class BecasBean implements Serializable{
                     }
                     this.listBeca.add(objeBeca);
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-                    log.info("Beca Guardada");
+                    //log.info("Beca Guardada");
                     this.guardar = false;
                     objeSoli =FCDESoli.findLast();
                     objeBeca=FCDEBeca.findLast();
                     respGuar = true;
+                    this.toogEmpr();
             
             }
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
             respGuar = false;
         }
         finally
@@ -413,14 +414,14 @@ public class BecasBean implements Serializable{
             this.listBeca.add(objeBeca);//lo agrega a la lista
             this.consTodo();//consulta los registros con estado diferente a 3
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Solicitud Modificada");
+           // log.info("Solicitud Modificada");
             //Enviar al método de las modificaciones en las otra tablas
             this.cambios(objeBeca2.getCodiBeca(), 1);
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -461,13 +462,13 @@ public class BecasBean implements Serializable{
             this.objeBeca2.setFechBaja(null);
             FCDEBeca.create(objeBeca2);     
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
-            log.info("Beca reactivada");
+            //log.info("Beca reactivada");
             this.consTodo();
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -502,13 +503,13 @@ public class BecasBean implements Serializable{
             FCDEDetaBeca.desa_deta(this.objeBeca.getCodiBeca());
             this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca desactivada')");
-            log.info("Beca desactivada");
+            //log.info("Beca desactivada");
             this.consTodo();
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -530,12 +531,12 @@ public class BecasBean implements Serializable{
             this.carnet = objeSoli.getCarnAlum();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeBeca.getCodiSoliBeca().getNombAlum()) + "')");
-            log.info("Beca Consultada");
+            //log.info("Beca Consultada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -548,7 +549,8 @@ public class BecasBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         //int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjePara"));
         try
-        {           
+        {      
+            System.out.println("Codigo de beca: "+codi);
             this.objeSoli = FCDESoli.find(codi);
             this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());            
             listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getCodiSoliBeca().getCodiGrad().getNivelGrad());          
@@ -556,12 +558,12 @@ public class BecasBean implements Serializable{
             this.carnet = objeSoli.getCarnAlum();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeBeca.getCodiSoliBeca().getNombAlum()) + "')");
-            log.info("Beca Consultada");
+            //log.info("Beca Consultada");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -611,12 +613,12 @@ public class BecasBean implements Serializable{
             this.listSoliActivos = FCDESoli.findAllActivos();
             this.listBecaActivos = FCDEBeca.findAllActivos();
             this.listBecaDocu = FCDEBeca.findAllDocu();
-            log.info("Beca Consultadas");
+            //log.info("Beca Consultadas");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -682,6 +684,7 @@ public class BecasBean implements Serializable{
                 respFunc = false;
             }       
        }
+        System.out.println(guardar);
        return respFunc;
     }
     
@@ -756,7 +759,7 @@ public class BecasBean implements Serializable{
         }
         } catch (Exception ex) {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+           // log.error(getRootCause(ex).getMessage());
         }
     }
     
@@ -849,8 +852,8 @@ public class BecasBean implements Serializable{
        showFich=false;
        showEmpr=false;
        this.guardar=true;
-       this.objeBeca = new Beca();
-       this.objeSoli = new SolicitudBeca();
+       init();
+       this.limpForm();
     }
     
     /*-----------------------------------------------------------*/

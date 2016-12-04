@@ -61,6 +61,11 @@ and open the template in the editor.
         </style>
             <div class="row">
                 <h:panelGroup id="container">
+                    <h:form>
+                        <!--Form exclusivo para los remotos-->
+                        <p:remoteCommand name="elimObjeEmpr" actionListener="#{empresaBean.elim()}" oncomplete="INIT_OBJE();"
+                                         update=":ContRegi" global="true"/>
+                    </h:form>
                     <ui:fragment id="FragTabl" rendered="#{empresaBean.guardar==true and empresaBean.showEmpr==false}">
                         <div class="col-md-12 col-xs-12">
                             <div class="panel panel-default">
@@ -70,8 +75,7 @@ and open the template in the editor.
                                         <div id="toolTablRegi">
                                             <h:form>
                                                 <!--Form exclusivo para los remotos-->
-                                                 <p:remoteCommand name="elimObjeEmpr" actionListener="#{empresaBean.elim()}" oncomplete="INIT_OBJE();"  update="@form :ContRegi" 
-                                                          global="true"/>
+                                                 <button onclick="elimObjeEmpr(); return false;">Hola Mundo</button>
                                                 <p:remoteCommand name="consObje" actionListener="#{empresaBean.cons()}" oncomplete="INIT_OBJE();" update=":container"/>
                                                 <div class="btn-group">
                                                 <h:commandLink id="btonNuev" class="btn btn-success">
