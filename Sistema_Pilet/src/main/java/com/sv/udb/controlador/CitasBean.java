@@ -321,7 +321,12 @@ public class CitasBean implements Serializable{
     }
     
     //Switch para formularios
-    private boolean switFormCita=true;
+    private boolean switFormCita=false;
+    
+    public void toggSwitFormVisiExce()            
+    {
+        this.switFormVisiExce = !this.switFormVisiExce;
+    }
 
     public boolean getSwitFormCita() {
         return switFormCita;
@@ -334,8 +339,18 @@ public class CitasBean implements Serializable{
     public void toggSwitFormCita()
     {
         this.switFormCita = !this.switFormCita;
-        /*RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
-        ctx.execute("INIT_OBJE_TABL()");*/
+    }
+    
+    private boolean switFormVisiExce = false;
+    
+    
+
+    public boolean isSwitFormVisiExce() {
+        return switFormVisiExce;
+    }
+
+    public void setSwitFormVisiExce(boolean switFormVisiExce) {
+        this.switFormVisiExce = switFormVisiExce;
     }
     
     public CitasBean() {
