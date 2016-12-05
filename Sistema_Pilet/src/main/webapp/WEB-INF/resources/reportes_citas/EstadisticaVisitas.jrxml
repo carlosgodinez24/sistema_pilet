@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstadisticaVisitas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="37bc6ce8-4f3d-456a-8354-532c0ac9e9fd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="16"/>
 	<parameter name="fech_inic_cita_nuev" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -18,7 +18,7 @@
      when 12 then 'DICIEMBRE' END AS MES
 FROM
      `cita` cita INNER JOIN `cambio_cita` cambio_cita ON cita.`codi_cita` = cambio_cita.`codi_cita`
-WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{fech_inic_cita_nuev} or DATE(`cambio_cita`.`fech_fin_cita_nuev`)=$P{fech_fin_cita_nuev}) GROUP BY  MONTH(cambio_cita.`fech_inic_cita_nuev`)]]>
+WHERE cita.`tipo_cita` = 2 AND ((DATE(`cambio_cita`.`fech_inic_cita_nuev`) BETWEEN  $P{fech_inic_cita_nuev} AND $P{fech_fin_cita_nuev}) or (DATE(`cambio_cita`.`fech_fin_cita_nuev`) BETWEEN $P{fech_inic_cita_nuev}  AND $P{fech_fin_cita_nuev})) GROUP BY  MONTH(cambio_cita.`fech_inic_cita_nuev`)]]>
 	</queryString>
 	<field name="CANTIDAD" class="java.lang.Long"/>
 	<field name="MES" class="java.lang.String"/>
@@ -36,7 +36,7 @@ WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{f
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ESTADISTICAS DE VISITAS POR AÑO]]></text>
+				<text><![CDATA[ESTADISTICAS DE VISITAS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="337" y="54" width="116" height="28" uuid="a48b0b45-a0ef-45b6-9e16-3de7561aff6b"/>
@@ -83,7 +83,7 @@ WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{f
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="14" isBold="true"/>
+					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[MES]]></text>
 			</staticText>
@@ -97,30 +97,16 @@ WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{f
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="14" isBold="true"/>
+					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="30" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<textField>
-				<reportElement x="85" y="0" width="201" height="30" uuid="1219d4f9-6166-4570-a663-851b29fbc806"/>
-				<box leftPadding="0">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{MES}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="286" y="0" width="197" height="30" uuid="998cbff4-9dc7-4538-abe6-1b9e2c3572e1"/>
+				<reportElement x="286" y="0" width="197" height="19" uuid="998cbff4-9dc7-4538-abe6-1b9e2c3572e1"/>
 				<box leftPadding="0">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -132,6 +118,20 @@ WHERE cita.`tipo_cita` = 2 AND (DATE(`cambio_cita`.`fech_inic_cita_nuev`) = $P{f
 					<font fontName="Calibri" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="85" y="0" width="201" height="19" uuid="1219d4f9-6166-4570-a663-851b29fbc806"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MES}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

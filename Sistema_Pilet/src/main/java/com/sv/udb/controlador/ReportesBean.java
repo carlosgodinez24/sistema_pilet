@@ -21,7 +21,9 @@ import com.sv.udb.ejb.CambiocitaFacadeLocal;
 import com.sv.udb.modelo.Cambiocita;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import javax.annotation.ManagedBean;
 
 /**
  *
@@ -53,6 +55,13 @@ public class ReportesBean implements Serializable {
     }
 
     public Date getFechNuevCita() {
+        if(this.fechNuevCita == null)
+        {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, -15);
+            this.fechNuevCita = c.getTime();
+        }
         return fechNuevCita;
     }
 
@@ -61,6 +70,13 @@ public class ReportesBean implements Serializable {
     }
 
     public Date getFechFinCita() {
+        if(this.fechFinCita == null)
+        {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, 15);
+            this.fechFinCita = c.getTime();
+        }
         return fechFinCita;
     }
 
@@ -69,6 +85,13 @@ public class ReportesBean implements Serializable {
     }
 
     public Date getFechNuevVisi() {
+        if(this.fechNuevVisi == null)
+        {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, -15);
+            this.fechNuevVisi = c.getTime();
+        }
         return fechNuevVisi;
     }
 
@@ -77,6 +100,13 @@ public class ReportesBean implements Serializable {
     }
 
     public Date getFechFinVisi() {
+        if(this.fechFinVisi == null)
+        {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            c.add(Calendar.DATE, 15);
+            this.fechFinVisi = c.getTime();
+        }
         return fechFinVisi;
     }
 

@@ -47,9 +47,11 @@ and open the template in the editor.
                     <div class="panel panel-default">
                         <div class="panel-heading">Reportes control de citas</div>
                         <div class="panel-body">                            
-                            <h:form id="FormVisorPdfJs"> 
+                            
                                 <p:accordionPanel activeIndex="-1">
+                                     
                                     <p:tab title="Estadisticas citas">
+                                        <h:form id="FormVisorPdfJs">
                                         <h:panelGrid columns="10" cellpadding="10">
                                             <p>Entre las fechas:</p>
                                             <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
@@ -67,16 +69,20 @@ and open the template in the editor.
                                                 </h:inputText> 
                                             </div>
                                             <div style="display: inline-block; vertical-align: top; height: 40px;" class="input-group col-xs-6">
-                                                <h:commandLink id="btonASABER" class="btn btn-success" >
-                                                    <p:ajax oncomplete="PF('ModaRepo').show();" process="@form" listener="#{reportesBean.procCita()}"  update=":ModaRepoView"  global="true"/>
-                                                    Generar reporte
+                                                <h:commandLink id="btonRepoCita" class="btn btn-success">
+                                                    <p:ajax listener="#{reportesBean.procCita()}" process="@form" update=":ModaRepoView" global="true" 
+                                                        oncomplete="PF('ModaRepo').show();"/>
+                                                <i class="fa fa-plus"/> Nuevo
                                                 </h:commandLink>
                                             </div>
                                         </h:panelGrid>
+                                        </h:form>
                                     </p:tab> 
+                                    
 
                                     
                                     <p:tab title="Estadisticas visitas">
+                                        <h:form id="formVisia">
                                         <h:panelGrid columns="10" cellpadding="10">
                                             <p>Entre las fechas:</p>
                                             <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
@@ -100,9 +106,10 @@ and open the template in the editor.
                                                 </h:commandLink>
                                             </div>
                                         </h:panelGrid>
+                                            </h:form>
                                     </p:tab>
+                                    
                                 </p:accordionPanel>
-                            </h:form>
                         </div>
                     </div>
                 </div>

@@ -21,6 +21,8 @@ import com.sv.udb.utils.pojos.DatosUsuariosByCrit;
 import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
 import com.sv.udb.utils.pojos.WSconsEmplByCodi;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -41,6 +44,14 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.context.RequestContext;
 
  /**
@@ -321,13 +332,9 @@ public class CitasBean implements Serializable{
     }
     
     //Switch para formularios
-    private boolean switFormCita=false;
+    private boolean switFormCita=true;
+    private boolean subSwitFormCita=false;
     
-    public void toggSwitFormVisiExce()            
-    {
-        this.switFormVisiExce = !this.switFormVisiExce;
-    }
-
     public boolean getSwitFormCita() {
         return switFormCita;
     }
@@ -335,22 +342,28 @@ public class CitasBean implements Serializable{
     public void setSwitFormCita(boolean switFormCita) {
         this.switFormCita = switFormCita;
     }
+
+    public boolean isSubSwitFormCita() {
+        return subSwitFormCita;
+    }
+
+    public void setSubSwitFormCita(boolean subSwitFormCita) {
+        this.subSwitFormCita = subSwitFormCita;
+    }
+    
+    
     
     public void toggSwitFormCita()
     {
         this.switFormCita = !this.switFormCita;
+        /*RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        ctx.execute("INIT_OBJE_TABL()");*/
     }
-    
-    private boolean switFormVisiExce = false;
-    
-    
-
-    public boolean isSwitFormVisiExce() {
-        return switFormVisiExce;
-    }
-
-    public void setSwitFormVisiExce(boolean switFormVisiExce) {
-        this.switFormVisiExce = switFormVisiExce;
+    public void toggSubSwitFormCita()
+    {
+        this.subSwitFormCita = !this.subSwitFormCita;
+        /*RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        ctx.execute("INIT_OBJE_TABL()");*/
     }
     
     public CitasBean() {
@@ -2157,4 +2170,156 @@ public class CitasBean implements Serializable{
         return String.valueOf(new WebServicesBean().consEmplByUser(acce).getCodi());
     }
     
+    private List<Visitante> listVisiExce;
+    private Part file;
+
+    public Part getFile() {
+        return file;
+    }
+
+    public void setFile(Part file) {
+        this.file = file;
+    }
+    
+    
+
+    public List<Visitante> getListVisiExce() {
+        return listVisiExce;
+    }
+
+    public void setListVisiExce(List<Visitante> listVisiExce) {
+        this.listVisiExce = listVisiExce;
+    }
+    
+    public void impoListExce()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance();
+        if(this.listVisiExce==null || this.listVisiExce.isEmpty() || this.listVisiExce.size()==0)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No hay nada que importar')");
+        }
+        else
+        {
+            int contGuar = 0;
+            for(Visitante objeVisiTemp: this.listVisiExce)
+            {
+                if(FCDEVisi.findByDuiVisi(objeVisiTemp.getDuiVisi())==null)
+                {
+                    FCDEVisi.create(objeVisiTemp);
+                    contGuar++;
+                    this.listVisiVisiTemp.add(objeVisiTemp);
+                }
+                else
+                {
+                    contGuar++;
+                    this.listVisiVisiTemp.add(FCDEVisi.findByDuiVisi(objeVisiTemp.getDuiVisi()));
+                }
+            }
+            this.toggSubSwitFormCita();
+            this.listVisiExce=new ArrayList<Visitante>();
+            if(contGuar==0) ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Ningún Visitante Asignado')");
+            if(contGuar == 1) ctx.execute("setMessage('MESS_SUCC', 'Atención', '1 Visitante Asignado')");
+            if(contGuar > 1) ctx.execute("setMessage('MESS_SUCC', 'Atención', '"+contGuar+" Visitantes Asignados')");
+        }
+    }
+    
+    public void dropVisiDocuExce(Visitante obje){
+        if(this.listVisiExce == null) this.listVisiExce = new ArrayList<Visitante>();
+        if(this.listVisiExce.contains(obje)){
+            this.listVisiExce.remove(obje);
+            RequestContext ctx = RequestContext.getCurrentInstance();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Visitante Eliminado la lista')");
+        }
+    }
+    
+    public void setListVisiExce(){
+        RequestContext ctx = RequestContext.getCurrentInstance();
+        Visitante objeVisiTempExce = new Visitante();
+        try {
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            for(Part item : request.getParts())
+            {
+                if(item.getName().equals(file.getName()))
+                {
+                    //FileInputStream inputStream = new FileInputStream(file);
+                    String ext = file.getSubmittedFileName().trim();
+                    ext = ext.substring(ext.length()-4,ext.length());
+                    if(ext.equals("xlsx")){
+                        Workbook workbook = new XSSFWorkbook(file.getInputStream());
+                        Sheet sheet = workbook.getSheetAt(0);  
+                        Iterator<Row> iterator = sheet.iterator(); 
+                        int colums = sheet.getRow(0).getPhysicalNumberOfCells();
+                        if(sheet.getWorkbook().getNumberOfSheets() == 1){
+                            if(sheet.getPhysicalNumberOfRows() != 0){
+                                if(colums == 5){
+                                    while (iterator.hasNext()) {  
+                                        Row nextRow = iterator.next();
+                                        Iterator<Cell> cellIterator = nextRow.cellIterator();
+                                        while (cellIterator.hasNext()) {  
+                                            Cell cell = cellIterator.next();  
+                                            int columnIndex=cell.getColumnIndex();  
+                                            switch(columnIndex){
+                                                case 0://nombre
+                                                    objeVisiTempExce.setNombVisi(cell.getStringCellValue());
+                                                break;
+                                                case 1://apellido
+                                                    objeVisiTempExce.setApelVisi(cell.getStringCellValue());
+                                                break;
+                                                case 2://dui
+                                                    objeVisiTempExce.setDuiVisi(cell.getStringCellValue());
+                                                break;
+                                                case 3://telefono
+                                                    objeVisiTempExce.setTeleVisi(cell.getStringCellValue());
+                                                break;
+                                                case 4://correo
+                                                    objeVisiTempExce.setCorrVisi(cell.getStringCellValue());
+                                                    objeVisiTempExce.setTipoVisi(2);
+                                                    objeVisiTempExce.setEstaVisi(1);
+                                                    if(listVisiExce == null)listVisiExce = new ArrayList<Visitante>();
+                                                    listVisiExce.add(objeVisiTempExce);
+                                                break;
+
+                                            }
+                                        }
+                                        objeVisiTempExce = new Visitante();
+                                    }
+                                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Documento Cargado con Éxito')");
+                                }else{
+                                    //validar 5 columnas
+                                     FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Formato del archivo incorrecto",  null));
+                                }
+                            }else{
+                                //validar que la pagina no este vacía
+                                FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La primera página de este archivo está vacía",  null));
+                            }
+                        }else{
+                            //validar una pagina
+                            FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Solo se puede importar la primera hoja del archivo",  null));
+                        }
+                        // inputStream.close(); 
+                        workbook.close();
+                    }else{
+                        //validar que sea xlsx
+                        if(ext.equals(".xls")){
+                            FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Versión antigua no soportada, se requiere archivo .xlsx",  null));
+                        }else{
+                            FacesContext.getCurrentInstance().addMessage("FormImpoExce:file", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tipo de documento incorrecto",  null));
+                        }
+                        
+                    }
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            java.util.logging.Logger.getLogger(VisitantesBean.class.getName()).log(Level.SEVERE, null, ex);
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar Documento')");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            java.util.logging.Logger.getLogger(VisitantesBean.class.getName()).log(Level.SEVERE, null, ex);
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar Documento')");
+        } catch (ServletException ex) {
+            java.util.logging.Logger.getLogger(VisitantesBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }
