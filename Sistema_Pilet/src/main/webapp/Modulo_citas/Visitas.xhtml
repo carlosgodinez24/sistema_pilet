@@ -159,14 +159,14 @@ and open the template in the editor.
                                     <h4>Mostrar Registros</h4>
                                     <p>Entre las fechas:</p>
                                         <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
-                                            <h:message for="fechInicBusc" errorClass="field-error" />
-                                            <h:inputText id="fechInicBusc" value="#{citasBean.fechInicBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
+                                            <h:message for="fechXD" errorClass="field-error" />
+                                            <h:inputText id="fechXD" value="#{citasBean.fechInicBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText> 
                                         </div>
                                         <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
-                                            <h:message for="fechaFinaBusc" errorClass="field-error" />
-                                            <h:inputText id="fechaFinaBusc" value="#{citasBean.fechFinaBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
+                                            <h:message for="fechxd2" errorClass="field-error" />
+                                            <h:inputText id="fechxd2" value="#{citasBean.fechFinaBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText> 
                                         </div>       
@@ -201,20 +201,25 @@ and open the template in the editor.
                                         <h:panelGroup rendered="#{citasBean.switFormCita}">
                                             <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
                                         </h:panelGroup>
-                                        <h:panelGroup rendered="#{!citasBean.switFormCita}">
+                                        <h:panelGroup rendered="#{!citasBean.switFormCita and !citasBean.subSwitFormCita}">
                                             <h:form>
-                                                    <h:commandLink class="close">
-                                                        <p:ajax listener="#{citasBean.toggSwitFormCita()}" process="@this" update="@form :FormRegi :paneTabl :tablPart :paneClose" oncomplete="INIT_OBJE_MODA(); INIT_OBJE_CITA();" global="true"/>
-                                                            <i class="fa fa-times"/>
-                                                    </h:commandLink>
-                                                </h:form>
+                                                <h:commandLink class="close">
+                                                    <p:ajax listener="#{citasBean.toggSwitFormCita()}" process="@this" update="@form :FormRegi :paneTabl :tablPart :paneClose" oncomplete="INIT_OBJE_MODA(); INIT_OBJE_CITA();" global="true"/>
+                                                        <i class="fa fa-times"/>
+                                                </h:commandLink>
+                                            </h:form>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{!citasBean.switFormCita and citasBean.subSwitFormCita}">
+                                            <h:form>
+                                                <h:commandLink class="close">
+                                                    <p:ajax listener="#{citasBean.toggSubSwitFormCita()}" process="@this" update="@form :FormRegi :paneTabl :tablPart :paneClose :pnlExcel" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA(); INIT_OBJE_TABL();" global="true"/>
+                                                        <i class="fa fa-times"/>
+                                                </h:commandLink>
+                                            </h:form>
                                         </h:panelGroup>
                                     </h:panelGroup>
                                     <h4 class="modal-title">Visita</h4>
                                 </div>
-                            
-                                
-                            
                                 <h:panelGroup id="tablPart">
                                     <h:panelGroup rendered="#{citasBean.switFormCita}">
                                         <h:form>
@@ -283,24 +288,15 @@ and open the template in the editor.
                                             </h:dataTable>
                                         </div>
                                     </h:panelGroup>
-                                    <h:panelGroup rendered="#{citasBean.switFormCita and citasBean.switFormVisiExce}">
-                                    </h:panelGroup>
                                 </h:panelGroup>
-                            
-                                <h:panelGroup id="paneImpoExce" class="form-horizontal">
-                                    <ui:fragment id="FragImpoExce" rendered="#{citasBean.switFormVisiExce}">
-                                        <h1>EXCEL</h1>
-                                    </ui:fragment>
-                                </h:panelGroup>
-                                
                                 <h:form id="FormRegi" class="form-horizontal">
-                                    <ui:fragment id="FragForm" rendered="#{citasBean.switFormCita}">    
+                                    <ui:fragment id="FragForm" rendered="#{citasBean.switFormCita}">
                                         <div class="modal-body" style="padding-top: 2px;">                                    
                                             <h:inputHidden id="codi" value="#{citasBean.objeCita.codiCita}" />
                                             <h:panelGroup rendered="#{citasBean.programar}">
                                                 
                                                 <h:commandLink id="btonMostBusc" class="btn btn-default btn-sm">
-                                                    <p:ajax listener="#{citasBean.toggSwitFormCita()}" process="@this,btonMostBusc" update="@form :paneTabl :paneImpoExce :tablPart :paneClose" global="true" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA(); INIT_OBJE_TABL();"/>
+                                                    <p:ajax listener="#{citasBean.toggSwitFormCita()}" process="@this,btonMostBusc" update="@form :paneTabl :tablPart :paneClose" global="true" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA(); INIT_OBJE_TABL();"/>
                                                     <i class="fa fa-search"/> Editar Participantes ...
                                                 </h:commandLink>
                                                 <br/>
@@ -406,8 +402,29 @@ and open the template in the editor.
                                         </div>
                                     </ui:fragment>
                                 </h:form>
+                                <h:panelGroup id="pnlExcel">
+                                    <h:panelGroup rendered="#{!citasBean.switFormCita and citasBean.subSwitFormCita}">
+                                        <div class="modal-body">
+                                            COSAS DE EXCEL
+                                        </div>
+                                        <div class="modal-footer">
+                                            <h:form>
+                                                <h:commandLink id="btonMostForm" class="btn btn-default btn-sm">
+                                                    <p:ajax listener="#{citasBean.toggSubSwitFormCita()}" process="@this,btonMostForm" update=":paneTabl :tablPart :pnlExcel :paneClose" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA(); INIT_OBJE_TABL();" global="true"/>
+                                                        <i class="fa fa-search"/> Volver a edición de participantes ...
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+                                    </h:panelGroup>
+                                </h:panelGroup>
                                 <h:panelGroup id="paneTabl" class="form-horizontal">
-                                    <ui:fragment id="FragBusc" rendered="#{!citasBean.switFormCita}">
+                                    <ui:fragment id="FragBusc" rendered="#{!citasBean.switFormCita and !citasBean.subSwitFormCita}">
+                                        <h:form class="modal-body">
+                                            <h:commandLink id="btnSubwitch" class="btn btn-default btn-sm" rendered="#{citasBean.programar}" style="float: right;">
+                                                <p:ajax listener="#{citasBean.toggSubSwitFormCita()}" process="@this" update=":paneTabl :tablPart :pnlExcel :paneClose" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA();" />
+                                                <i class="fa fa-file-text-o"/> Importar Excel de Visitantes
+                                            </h:commandLink>
+                                        </h:form>
                                         <div class="modal-body" style="padding-top: 2px;">
                                             <br/>
                                             <h:panelGroup rendered="#{citasBean.isGrouVisi}">
@@ -417,20 +434,13 @@ and open the template in the editor.
                                                 <h4 style="">Seleccionar Visitantes:</h4>
                                             </h:panelGroup>
                                             <h:form>
-                                                
-                                                <h:commandLink id="btonMostForm2" class="btn btn-success btn-sm">
-                                                    <p:ajax listener="#{citasBean.toggSwitFormVisiExce()}" process="@this,btonMostForm2" update="@form :FormRegi :paneTabl :tablPart :paneClose" oncomplete="INIT_OBJE_MODA(); INIT_OBJE_CITA();" global="true"/>
-                                                        <i class="fa fa-file-text-o"/> Agregar desde Excel
-                                                </h:commandLink>
-                                                
                                                 <div class="cutom_search">
                                                     <h:inputText id="cadeText" value="#{visitantesBean.cadeText}" class="form-control cutom_search_text" />
                                                     <h:commandLink id="btonBusc" class="btn btn-success cutom_search_button">
                                                         <p:ajax  process="cadeText" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" update="@form :ContRegi :TablVisi"  global="true" />
                                                         <i class="fa fa-search"/>
-                                                    </h:commandLink>                                                    
+                                                    </h:commandLink>
                                                 </div>
-
                                             </h:form>
 
                                             <h:dataTable pt:data-id="TablVisi" id="TablVisi" value="#{visitantesBean.listVisi}"
@@ -467,8 +477,6 @@ and open the template in the editor.
                                                      </h:panelGroup>
                                                 </h:column>
                                              </h:dataTable>
-                                            
-                                            
                                             <hr/>
                                             <h:panelGroup rendered="#{citasBean.isGrouVisi}">
                                                 <h4 style="">Encargado de Grupo:</h4>

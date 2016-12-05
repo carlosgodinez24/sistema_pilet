@@ -321,13 +321,9 @@ public class CitasBean implements Serializable{
     }
     
     //Switch para formularios
-    private boolean switFormCita=false;
+    private boolean switFormCita=true;
+    private boolean subSwitFormCita=false;
     
-    public void toggSwitFormVisiExce()            
-    {
-        this.switFormVisiExce = !this.switFormVisiExce;
-    }
-
     public boolean getSwitFormCita() {
         return switFormCita;
     }
@@ -335,22 +331,28 @@ public class CitasBean implements Serializable{
     public void setSwitFormCita(boolean switFormCita) {
         this.switFormCita = switFormCita;
     }
+
+    public boolean isSubSwitFormCita() {
+        return subSwitFormCita;
+    }
+
+    public void setSubSwitFormCita(boolean subSwitFormCita) {
+        this.subSwitFormCita = subSwitFormCita;
+    }
+    
+    
     
     public void toggSwitFormCita()
     {
         this.switFormCita = !this.switFormCita;
+        /*RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        ctx.execute("INIT_OBJE_TABL()");*/
     }
-    
-    private boolean switFormVisiExce = false;
-    
-    
-
-    public boolean isSwitFormVisiExce() {
-        return switFormVisiExce;
-    }
-
-    public void setSwitFormVisiExce(boolean switFormVisiExce) {
-        this.switFormVisiExce = switFormVisiExce;
+    public void toggSubSwitFormCita()
+    {
+        this.subSwitFormCita = !this.subSwitFormCita;
+        /*RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        ctx.execute("INIT_OBJE_TABL()");*/
     }
     
     public CitasBean() {
