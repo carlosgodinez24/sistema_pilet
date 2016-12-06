@@ -538,6 +538,7 @@ public class BecasBean implements Serializable{
             listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getCodiSoliBeca().getCodiGrad().getNivelGrad());          
             this.guardar = false;
             this.carnet = objeSoli.getCarnAlum();
+            initDina();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeBeca.getCodiSoliBeca().getNombAlum()) + "')");
             //log.info("Beca Consultada");
@@ -907,11 +908,20 @@ public class BecasBean implements Serializable{
             this.listCmps = new ArrayList<>();
             this.mapa = new HashMap<>();
             this.VeriRole();
-          
-            //Agrega un elemento
             consTodoDina();          
+            createMap();
             
-            for(Opcion temp : this.listOpci)
+           
+            
+        } catch (Exception e) {
+            System.out.println("Error en init :"+e.getMessage());
+        }
+    }
+    
+    public void createMap()
+    {
+        try {
+             for(Opcion temp : this.listOpci)
             {
                 String codiDina = String.format("Dina%s", String.valueOf(temp.getCodiOpci()));
                 /*codigo y respuesta xd*/
@@ -926,22 +936,43 @@ public class BecasBean implements Serializable{
                             listOpciTemp.put(tempOR.getCodiOpciResp(),tempOR.getDescOpci());
                         }
                     }
-                    //this.mapa.put(codiDina, new Object());
+                    if(listResp != null)
+                    {
+                        for(Respuesta tempRe : listResp)
+                        {
+                            if(Objects.equals(tempRe.getCodiOpci().getCodiOpci(), temp.getCodiOpci()))
+                            {
+                                
+                                this.mapa.put(codiDina, tempRe.getCodiOpciResp());
+                            }
+                        }
+                        
+                    }
+                   // this.mapa.put(codiDina, new Object());
                 }
-                else{
-                    //this.mapa.put(codiDina, "AAAA");
+                else
+                {
+                    if(listResp != null)
+                    {
+                        for(Respuesta tempRe : listResp)
+                        {
+                            if(tempRe.getCodiOpci().getCodiOpci()==temp.getCodiOpci())
+                            {
+                                this.mapa.put(codiDina, tempRe.getDescOpci());
+                            }
+                        }
+                        
+                    }
+                    
                     //this.mapa.put(codiDina, "Demo " + codiDina);
                 }
                 
                 this.listCmps.add(new DynamicField(temp.getTituOpci(), codiDina, listOpciTemp, temp.getCodiEstr().getTipoEstr(),temp.getCodiPreg()));
             }
-            
         } catch (Exception e) {
-            System.out.println("Error en init :"+e.getMessage());
+            System.err.println("Error en createMap "+e.getMessage());
         }
     }
-    
-    
     public void consTodoDina()
     {
         try
@@ -952,6 +983,7 @@ public class BecasBean implements Serializable{
             if(objeSoli.getCodiSoliBeca() != null)
             {
                 this.listResp = FCDEResp.findAll(objeSoli.getCodiSoliBeca());
+                System.out.println("Este alumnazo si tiene estudio :3");
             }
             
         }
@@ -972,6 +1004,7 @@ public class BecasBean implements Serializable{
        
         try
         {
+            
             if(this.carnet==null)            
             {
                carnet=logiBean.getObjeUsua().getAcceUsua();                               
@@ -1271,6 +1304,10 @@ public class BecasBean implements Serializable{
                     this.carnet = logiBean.getObjeUsua().getAcceUsua();
                     this.objeSoli =FCDESoli.findCarnet(carnet);
                     this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());
+                }
+                else
+                {
+                    resp=false;
                 }
                     
                     

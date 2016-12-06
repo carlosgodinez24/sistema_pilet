@@ -1011,9 +1011,11 @@ and open the template in the editor.
                         <h:form id="formDina">
                             <f:event type="postAddToView" listener="#{becasBean.populateForm}" />
                             <h:panelGroup id="btonGroup" styleClass="input-group-btn right" style="padding-top: 5px;">
-                                <h:commandLink id="btonGuar" class="btn btn-success btn-xs" rendered="true">
+                                <h:commandLink id="btonGuar" class="btn btn-success btn-xs" rendered="${becasBean.alum==true}">
                                     <p:ajax listener="#{becasBean.guarDina()}" process="@form" update="@form" />
+                                   
                                     <i class="fa fa-plus"/> Guardar
+                                  
                                 </h:commandLink>
                             </h:panelGroup>
                         </h:form>                    
