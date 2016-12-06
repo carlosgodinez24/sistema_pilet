@@ -14,6 +14,14 @@
         <param-value>poo</param-value>
     </context-param>
     <context-param>  
+        <param-name>sendmail.USER</param-name>  
+        <param-value>sistemas.pilet@gmail.com</param-value>  
+    </context-param>
+    <context-param>  
+        <param-name>sendmail.PASSWORD</param-name>  
+        <param-value>$ricaldone2016</param-value>  
+    </context-param>
+    <context-param>  
         <param-name>webservices.URL</param-name>  
         <param-value>http://localhost:27435/WebService/MiServicio</param-value>  
     </context-param>
