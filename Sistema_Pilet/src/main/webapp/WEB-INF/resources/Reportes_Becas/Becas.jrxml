@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GeneralBecas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="521e6a01-b8f9-4148-92ce-7650312f8d18">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Becas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c92363c5-7b6c-481d-b512-45e33f6cfeb1">
+	<property name="ireport.zoom" value="1.331000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="56"/>
 	<queryString>
-		<![CDATA[SELECT b.codi_beca, sb.carn_alum, sb.nomb_alum, e.nomb_empr AS 'Patrocinador' FROM beca b INNER JOIN solicitud_beca sb ON b.codi_soli_beca = sb.codi_soli_beca INNER JOIN empresa e ON sb.codi_empr = e.codi_empr WHERE sb.esta_soli_beca = 1]]>
+		<![CDATA[SELECT b.codi_beca, sb.carn_alum, sb.nomb_alum, tb.nomb_tipo_beca FROM beca b INNER JOIN solicitud_beca sb ON b.codi_soli_beca = sb.codi_soli_beca INNER JOIN detalle_beca db ON b.codi_beca = db.codi_beca INNER JOIN tipo_beca tb ON db.codi_tipo_beca = tb.codi_tipo_beca WHERE sb.esta_soli_beca = 1]]>
 	</queryString>
 	<field name="codi_beca" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -15,21 +15,56 @@
 	<field name="nomb_alum" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="Patrocinador" class="java.lang.String"/>
+	<field name="nomb_tipo_beca" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="60" splitType="Stretch">
+		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="1" y="0" width="572" height="51" uuid="a31eafb3-0e4d-4c58-a8ab-62d0f96804a0"/>
+				<reportElement x="153" y="-36" width="143" height="20" uuid="ce28f351-2d43-4249-9bec-c5b32aac09c2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[carn_alum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="-36" width="143" height="20" uuid="a562d316-1d1c-4e49-a762-be5e467d44ed"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[nomb_alum]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="-36" width="143" height="20" uuid="66000c13-12e9-4bb9-9406-2265fd188be0"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[nomb_tipo_beca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="75" y="0" width="497" height="62" uuid="e797918d-6cba-4b0f-a257-96486ce6b675"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="24" isBold="true"/>
+					<font size="24"/>
 				</textElement>
-				<text><![CDATA[Reporte Becas General]]></text>
+				<text><![CDATA[Becas y Tipos de becas de alumnos]]></text>
 			</staticText>
 			<image>
-				<reportElement x="15" y="0" width="86" height="59" uuid="2f5dd7ab-ec58-42c9-ba17-0a68779ac682"/>
+				<reportElement x="0" y="3" width="59" height="59" uuid="6d1b4ef9-e750-48f0-bcf1-df5fb51fb8ac"/>
 				<imageExpression><![CDATA["/home/eduardo/NetBeansProjects/sistema_pilet/Sistema_Pilet/src/main/webapp/WEB-INF/resources/images/ITR.png"]]></imageExpression>
 			</image>
 		</band>
@@ -37,7 +72,7 @@
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="373" y="15" width="185" height="20" uuid="adc34c58-e003-4d15-b2fb-717aa3e5c67e"/>
+				<reportElement x="403" y="0" width="169" height="20" uuid="a5eb23eb-4591-4845-b38a-b7e5f93c23ea"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
@@ -45,7 +80,7 @@
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="15" y="0" width="53" height="20" backcolor="#CCCCCC" uuid="029bb351-3c56-417d-a4af-b16fb2f26398"/>
+				<reportElement x="0" y="0" width="47" height="20" uuid="e634ef15-9637-416d-8a50-3c7adc259027"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -57,7 +92,7 @@
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="68" y="0" width="77" height="20" backcolor="#CCCCCC" uuid="185eb7b0-0113-4d43-a2e5-73c959a8ac61"/>
+				<reportElement x="47" y="0" width="143" height="20" uuid="264da432-fc0e-4fa2-81ca-2206f3589a1f"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -66,10 +101,10 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Carnet]]></text>
+				<text><![CDATA[Carnet Alumno]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="145" y="0" width="192" height="20" backcolor="#CCCCCC" uuid="cf98046f-a691-48dd-b82f-cfae38087092"/>
+				<reportElement x="190" y="0" width="196" height="20" uuid="075cf3a7-7589-41ee-8efe-06b9a4a9ba98"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -81,7 +116,7 @@
 				<text><![CDATA[Nombre Alumno]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="337" y="0" width="221" height="20" backcolor="#CCCCCC" uuid="f6373805-4057-4a22-b028-b870974d98a0"/>
+				<reportElement x="386" y="0" width="186" height="20" uuid="c38e78f8-b74d-4c80-8733-fd2c800039c6"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -90,14 +125,14 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Patrocinador]]></text>
+				<text><![CDATA[Tipo de Beca]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="125" splitType="Stretch">
 			<textField>
-				<reportElement x="15" y="0" width="53" height="20" uuid="af5a3f4d-1538-4933-a45e-96d056c1f8ad"/>
+				<reportElement x="0" y="0" width="47" height="20" uuid="80502753-b2ed-48dd-b126-7e39fb482281"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -109,7 +144,7 @@
 				<textFieldExpression><![CDATA[$F{codi_beca}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="68" y="0" width="77" height="20" uuid="39f076d8-f208-4b01-aef6-fa3ba085aec1"/>
+				<reportElement x="47" y="0" width="143" height="20" uuid="eb4f8fde-1eae-4a80-b06e-063a40d535f2"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -121,7 +156,7 @@
 				<textFieldExpression><![CDATA[$F{carn_alum}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="145" y="0" width="192" height="20" uuid="c5a9ce26-ed79-4fa4-9a43-b4dc33e0af51"/>
+				<reportElement x="190" y="0" width="196" height="20" uuid="e0231043-0916-45f2-b00b-a8469f588353"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -133,7 +168,7 @@
 				<textFieldExpression><![CDATA[$F{nomb_alum}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="337" y="0" width="221" height="20" uuid="6b67fa9d-9e1f-4cfa-9190-290e46953855"/>
+				<reportElement x="386" y="0" width="186" height="20" uuid="ca4670fa-89e3-4950-add1-b3d1d60b9364"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -142,22 +177,22 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{Patrocinador}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nomb_tipo_beca}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="44" splitType="Stretch"/>
+		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="21" splitType="Stretch">
+		<band height="54" splitType="Stretch">
 			<textField>
-				<reportElement x="450" y="0" width="80" height="20" uuid="c6d16332-1c09-4427-a773-4f12b2a2a2c1"/>
+				<reportElement x="452" y="34" width="80" height="20" uuid="2d2ab6d0-326c-4b65-963e-e57c5524a26b"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="532" y="0" width="40" height="20" uuid="13635430-54af-4c13-afc6-536ea1bbf38a"/>
+				<reportElement x="532" y="34" width="40" height="20" uuid="2c5207f1-830e-45aa-851b-ff1a9155d5dd"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>

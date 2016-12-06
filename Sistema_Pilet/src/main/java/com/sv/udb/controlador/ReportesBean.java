@@ -5,12 +5,15 @@
  */
 package com.sv.udb.controlador;
 
+import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.Empresa;
 import com.sv.udb.utils.Conexion;
 import java.io.Serializable;
 import java.sql.Connection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.view.ViewScoped;
@@ -35,6 +38,17 @@ public class ReportesBean implements Serializable{
     }
     
     private Empresa objeEmpr;
+    private Beca objeBeca;
+    private Date fech;
+    private int Mes;
+
+    public int getMes() {
+        return Mes;
+    }
+
+    public void setMes(int Mes) {
+        this.Mes = Mes;
+    }
 
     public Empresa getObjeEmpr() {
         return objeEmpr;
@@ -43,11 +57,35 @@ public class ReportesBean implements Serializable{
     public void setObjeEmpr(Empresa objeEmpr) {
         this.objeEmpr = objeEmpr;
     }
+
+    public Beca getObjeBeca() {
+        return objeBeca;
+    }
+
+    public void setObjeBeca(Beca objeBeca) {
+        this.objeBeca = objeBeca;
+    }
+
+    public Date getFech() {
+        return fech;
+    }
+
+    public void setFech(Date fech) {
+        this.fech = fech;
+    }
     
     
     /**
      * Creates a new instance of ReportesBean
      */
+    
+    @PostConstruct
+    public void init()
+    {
+        this.objeEmpr = new Empresa();
+        this.objeBeca = new Beca();
+    }
+    
     public ReportesBean() {
     }
     
@@ -86,6 +124,92 @@ public class ReportesBean implements Serializable{
             Map params = new HashMap(); //Mapa de parámetros
             params.put("Empresa", objeEmpr.getCodiEmpr());
             String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/EmpresasBecas.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
+    public void GeneBeca() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/GeneralBecas.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
+    public void GeneBecaOtro() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/Becas.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
+    public void BecaOtro() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            params.put("Beca", objeBeca.getCodiBeca());
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/BecasFiltro.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
+    public void BecaMes() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            params.put("Mes", Mes);
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/BecasMes.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
+    public void MontAlum() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/MontoAlumno.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
+    public void MontEven() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/MontoEventos.jasper");
             this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
         } catch (Exception ex) {
