@@ -5,11 +5,15 @@
  */
 package com.sv.udb.ejb;
 
+import com.sv.udb.modelo.Pregunta;
 import com.sv.udb.modelo.Respuesta;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -44,6 +48,15 @@ public class RespuestaFacade extends AbstractFacade<Respuesta> implements Respue
         System.out.println(respuesta);
         return resp;
        
+    }
+    
+    
+     @Override
+     public List<Respuesta> findAll(int codigo) {
+        
+        Query q = getEntityManager().createNativeQuery("select * from respuesta  where respuesta.codi_soli_beca ="+codigo, Respuesta.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
     }
     
 }

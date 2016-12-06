@@ -20,6 +20,7 @@ import com.sv.udb.ejb.TipoBecaFacadeLocal;
 import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.DetalleBeca;
 import com.sv.udb.modelo.Documento;
+import com.sv.udb.modelo.Empresa;
 import com.sv.udb.modelo.Grado;
 import com.sv.udb.modelo.Opcion;
 import com.sv.udb.modelo.OpcionRespuesta;
@@ -417,6 +418,10 @@ public class BecasBean implements Serializable{
            // log.info("Solicitud Modificada");
             //Enviar al método de las modificaciones en las otra tablas
             this.cambios(objeBeca2.getCodiBeca(), 1);
+            ctx.execute("$('#CambEsta').modal('hide');");
+            ctx.execute("$('#CambPatr').modal('hide');");
+            //Recarga
+             ctx.execute("window.location.reload(true);" );
         }
         catch(Exception ex)
         {
@@ -445,7 +450,7 @@ public class BecasBean implements Serializable{
             TipoEstado esta = new TipoEstado();
             esta.setCodiTipoEsta(3);
             this.objeBeca.setCodiTipoEsta(esta);
-            System.out.println(objeBeca.getCodiSoliBeca().getNombAlum());
+           objeBeca.setRetiBeca("Proceso de evaluación completado.Beca activada");
             FCDEBeca.edit(objeBeca);                          
             this.objeSoli2.setEstaSoliBeca(1);            
             TipoRetiro reti = new TipoRetiro();
@@ -459,7 +464,9 @@ public class BecasBean implements Serializable{
             FCDESoli.create(objeSoli2);
             this.objeSoli2 = FCDESoli.findLast();
             this.objeBeca2.setCodiSoliBeca(objeSoli2);
+            this.objeBeca2.setFechInic(new Date());
             this.objeBeca2.setFechBaja(null);
+            
             FCDEBeca.create(objeBeca2);     
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca Reactivada')");
             //log.info("Beca reactivada");
@@ -503,6 +510,8 @@ public class BecasBean implements Serializable{
             FCDEDetaBeca.desa_deta(this.objeBeca.getCodiBeca());
             this.listBeca.add(this.objeBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Beca desactivada')");
+            //recarga
+            ctx.execute("window.location.reload(true);" );
             //log.info("Beca desactivada");
             this.consTodo();
         }
@@ -562,7 +571,8 @@ public class BecasBean implements Serializable{
         }
         catch(Exception ex)
         {
-            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            System.out.println("Error en consultar por codigo. Por la nueva forma de ver becas xd");
+            //ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar por codigo')");
             //log.error(getRootCause(ex).getMessage());
         }
         finally
@@ -570,23 +580,7 @@ public class BecasBean implements Serializable{
             
         }
     }
-    public boolean cons(SolicitudBeca obje)
-    {
-        boolean variable=false;
-        try
-        {
-           SolicitudBeca s = new SolicitudBeca();
-            s = FCDESoli.find(obje);
-            if(s!=null)
-            {variable=true;}
-           
-        }
-        catch(Exception ex)
-        {
-            
-        }
-        return variable;
-    }
+  
     
     public boolean cons(String obje)
     {
@@ -608,6 +602,12 @@ public class BecasBean implements Serializable{
     {
         try
         {
+            if(listSoli==null){listSoli= new ArrayList();}
+            if(listBeca==null){listBeca=new ArrayList();}
+             if(listSoliActivos==null){listSoliActivos= new ArrayList();}
+            if(listBecaActivos==null){listBecaActivos=new ArrayList();}
+             if(listBecaDocu==null){listBecaDocu= new ArrayList();}
+             
             this.listSoli = FCDESoli.findAll();
             this.listBeca = FCDEBeca.findAllH();
             this.listSoliActivos = FCDESoli.findAllActivos();
@@ -684,7 +684,6 @@ public class BecasBean implements Serializable{
                 respFunc = false;
             }       
        }
-        System.out.println(guardar);
        return respFunc;
     }
     
@@ -730,11 +729,11 @@ public class BecasBean implements Serializable{
                     }
                     if (!listSegu.isEmpty()) {
                         System.out.println("Si tiene seguimientos");
-                        /*//Seguimientos
+                        
                         for (Seguimiento temp : listSegu) {
                             temp.setCodiSoliBeca(this.objeBeca.getCodiSoliBeca());
                             FCDESegu.edit(temp);
-                        }*/
+                        }
                     }
                     else
                     {
@@ -848,12 +847,16 @@ public class BecasBean implements Serializable{
     }
     public void toogRegre()
     {
+         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
        showCarn=false;   
        showFich=false;
        showEmpr=false;
        this.guardar=true;
        init();
        this.limpForm();
+       
+       //recarga
+       ctx.execute("window.location.reload(true);" );
     }
     
     /*-----------------------------------------------------------*/
@@ -867,6 +870,8 @@ public class BecasBean implements Serializable{
     private RespuestaFacadeLocal FCDEResp;
     private List<DynamicField> listCmps;
     private Map<String, Object> mapa;
+    
+      
     @EJB
     private OpcionFacadeLocal FCDEOpci;
      @EJB
@@ -877,6 +882,9 @@ public class BecasBean implements Serializable{
     private List<Opcion> listOpci;
     private List<Pregunta> listPreg;
     private List<Seccion> listSecc;
+    
+     private List<Respuesta> listResp;
+    
     
      //Bean de session
     @Inject
@@ -901,8 +909,7 @@ public class BecasBean implements Serializable{
             this.VeriRole();
           
             //Agrega un elemento
-            consTodoDina();
-           
+            consTodoDina();          
             
             for(Opcion temp : this.listOpci)
             {
@@ -922,10 +929,10 @@ public class BecasBean implements Serializable{
                     //this.mapa.put(codiDina, new Object());
                 }
                 else{
-                    this.mapa.put(codiDina, "AAAA");
+                    //this.mapa.put(codiDina, "AAAA");
                     //this.mapa.put(codiDina, "Demo " + codiDina);
                 }
-                System.out.println("XXXXXXXXXXXXXXXXXXXX: " + codiDina);
+                
                 this.listCmps.add(new DynamicField(temp.getTituOpci(), codiDina, listOpciTemp, temp.getCodiEstr().getTipoEstr(),temp.getCodiPreg()));
             }
             
@@ -939,10 +946,14 @@ public class BecasBean implements Serializable{
     {
         try
         {
-            this.listOpci= FCDEOpci.findAll();
-            this.listPreg = FCDEPreg.findAll();
-            this.listSecc=FCDESecc.findAll();
-           
+            this.listOpci= FCDEOpci.findAllActive();
+            this.listPreg = FCDEPreg.findAllActive();
+            this.listSecc=FCDESecc.findAllActive();
+            if(objeSoli.getCodiSoliBeca() != null)
+            {
+                this.listResp = FCDEResp.findAll(objeSoli.getCodiSoliBeca());
+            }
+            
         }
         catch(Exception ex)
         {
@@ -961,64 +972,47 @@ public class BecasBean implements Serializable{
        
         try
         {
-            for (Map.Entry<String, Object> entry : this.mapa.entrySet())
+            if(this.carnet==null)            
             {
-                System.err.println(String.format("Key: %s, value: %s", entry.getKey(), entry.getValue()));
+               carnet=logiBean.getObjeUsua().getAcceUsua();                               
+                if(this.consW())
+                {
+                    this.objeSoli.setCodiEmpr(new Empresa(1));
+                    this.guar();
+                }
             }
-//            Beca objeBecaLoca;
-//                        
-//            //if(this.objeBecaBean.getCarnet()!=null)
-//            //{
-//                objeBecaLoca = this.objeBeca;
-//            //}
-//            /*else
-//            {
-//                objeBecaLoca = objeBecaBean;
-//                objeBecaLoca.setObjeSoli(objeSoli);
-//                objeBecaLoca.setCarnet(logiBean.getObjeUsua().getAcceUsua());
-//                if(objeBecaLoca.consW())
-//                {
-//                    objeBecaLoca.getObjeSoli().setCodiEmpr(new Empresa(1));
-//                    if(objeBecaLoca.guar())
-//                    {
-//                        objeSoli = FCDESoli.findLast();
-//                    }
-//                }
-//                else
-//                {
-//                    objeSoli = FCDESoli.findCarnet(logiBean.getObjeUsua().getAcceUsua());
-//                }
-//            }*/
-//            /*Crear la nuva solicitud*/
-//                      
-//            for(DynamicField temp:this.listCmps)
-//            {
-//                String valor = "";
-//                Integer codiDinaDb = Integer.parseInt(temp.getFieldKey().replace("Dina", ""));
-//                if(temp.getType().equals("SELECTMANYCHECKBOX"))
-//                {
-//                    String respArray = "";
-//                    for(Object tempResp : (Object[])this.mapa.get(temp.getFieldKey()))
-//                    {
-//                        int codigoOpcionRespuesta = Integer.parseInt(String.valueOf(tempResp));
-//                        respArray = respArray + "-" + tempResp;
-//                        Respuesta respuesta = new Respuesta( objeSoli,new Opcion(codiDinaDb),new OpcionRespuesta(codigoOpcionRespuesta),1);
-//                        respuesta.setDescOpci("S/R");
-//                        FCDEResp.create(respuesta);
-//                    }
-//                    respArray = respArray.trim();
-//                    valor = "id: " + codiDinaDb + " === valor: " + respArray;
-//                }
-//                else
-//                {
-//                    String valorDb = this.mapa.get(temp.getFieldKey()).toString();                    
-//                    Respuesta respuesta = new Respuesta(objeSoli,new Opcion(codiDinaDb),valorDb,1);
-//                    FCDEResp.create(respuesta);
-//                    valor = "id: " + codiDinaDb + " === valor: " + this.mapa.get(temp.getFieldKey());
-//                }
-//                System.err.println(valor);
-//            }
+            /*Crear la nuva solicitud*/                      
+            for(DynamicField temp:this.listCmps)
+            {
+                String valor = "";
+                Integer codiDinaDb = Integer.parseInt(temp.getFieldKey().replace("Dina", ""));
+                if(temp.getType().equals("SELECTMANYCHECKBOX"))
+                {
+                    String respArray = "";
+                    for(Object tempResp : (Object[])this.mapa.get(temp.getFieldKey()))
+                    {
+                        int codigoOpcionRespuesta = Integer.parseInt(String.valueOf(tempResp));
+                        respArray = respArray + "-" + tempResp;
+                        Respuesta respuesta = new Respuesta( objeSoli,new Opcion(codiDinaDb),new OpcionRespuesta(codigoOpcionRespuesta),1);
+                        respuesta.setDescOpci("S/R");
+                        FCDEResp.create(respuesta);
+                    }
+                    respArray = respArray.trim();
+                    valor = "id: " + codiDinaDb + " === valor: " + respArray;
+                    //System.out.println(valor);
+                }
+                else
+                {
+                    String valorDb = this.mapa.get(temp.getFieldKey()).toString();                    
+                    Respuesta respuesta = new Respuesta(objeSoli,new Opcion(codiDinaDb),valorDb,1);
+                    FCDEResp.create(respuesta);
+                    valor = "id: " + codiDinaDb + " === valor: " + this.mapa.get(temp.getFieldKey());
+                    //System.out.println(valor);
+                }               
+            }
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            //Recarga
+            ctx.execute("window.location.reload(true);" );
         }
         catch(Exception ex)
         {
@@ -1168,7 +1162,7 @@ public class BecasBean implements Serializable{
         {
             HtmlInputTextarea input = (HtmlInputTextarea)app.createComponent(HtmlInputTextarea.COMPONENT_TYPE);
             input.setId(field.getFieldKey());
-            input.setValueExpression("value", createValueExpression("#{dinamicoBean.mapa['" + field.getFieldKey() + "']}", String.class));            
+            input.setValueExpression("value", createValueExpression("#{becasBean.mapa['" + field.getFieldKey() + "']}", String.class));            
             input.setStyleClass("form-control");
             resp = input;
         }
@@ -1180,7 +1174,7 @@ public class BecasBean implements Serializable{
         {
             HtmlSelectOneMenu input = (HtmlSelectOneMenu)app.createComponent(HtmlSelectOneMenu.COMPONENT_TYPE);
             input.setId(field.getFieldKey());
-            input.setValueExpression("value", createValueExpression("#{dinamicoBean.mapa['" + field.getFieldKey() + "']}", String.class));
+            input.setValueExpression("value", createValueExpression("#{becasBean.mapa['" + field.getFieldKey() + "']}", String.class));
             input.setStyleClass("form-control");
             if(field.getFieldValue() != null)
             {
@@ -1207,7 +1201,7 @@ public class BecasBean implements Serializable{
         {
             HtmlSelectManyCheckbox input = (HtmlSelectManyCheckbox)app.createComponent(HtmlSelectManyCheckbox.COMPONENT_TYPE);
             input.setId(field.getFieldKey());
-            input.setValueExpression("value", createValueExpression("#{dinamicoBean.mapa['" + field.getFieldKey() + "']}", String.class));
+            input.setValueExpression("value", createValueExpression("#{becasBean.mapa['" + field.getFieldKey() + "']}", String.class));
             input.setStyleClass("form-control");
             if(field.getFieldValue() != null)
             {
@@ -1266,13 +1260,28 @@ public class BecasBean implements Serializable{
             
     }
      public boolean consIfCarnExis()
-    {       
-        if(FCDEResp.ReadIfCarnExis(logiBean.getObjeUsua().getAcceUsua()))
-        {
-                    this.objeSoli =FCDESoli.findCarnet(logiBean.getObjeUsua().getAcceUsua());
+    {   
+        boolean resp=false;
+        try {
+            resp= FCDEResp.ReadIfCarnExis(logiBean.getObjeUsua().getAcceUsua());
+            
+                if(FCDESoli.findCarnet(logiBean.getObjeUsua().getAcceUsua())!=null)
+                {
+                    
+                    this.carnet = logiBean.getObjeUsua().getAcceUsua();
+                    this.objeSoli =FCDESoli.findCarnet(carnet);
                     this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());
+                }
+                    
+                    
+           
+            
+        } catch (Exception e) {
+            
+            System.out.println("Error en consIfCarnExis" +e.getMessage());
         }
-        return FCDEResp.ReadIfCarnExis(logiBean.getObjeUsua().getAcceUsua());
+        
+        return resp;
     }
     /*-----------------------------------------------------------*/
     //Aquí termina toda la logia del formulario dinamico  

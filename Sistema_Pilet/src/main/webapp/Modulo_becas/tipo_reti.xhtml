@@ -172,7 +172,7 @@ and open the template in the editor.
                                                     </h:outputLink>
                                                </c:if>
                                                 
-                                                <c:if test="#{tipoRetiBean.objeTipoReti.estaReti == 0}">
+                                                <c:if test="#{tipoRetiBean.objeTipoReti.estaReti == 0 and tipoRetiBean.guardar == false}">
                                                     <h:commandLink id="btonActi" class="btn btn-info" >
                                                         <p:ajax listener="#{tipoRetiBean.reActi()}" process="@form"  update=":FormRegi :ContRegi" 
                                                          oncomplete="INIT_OBJE();" />

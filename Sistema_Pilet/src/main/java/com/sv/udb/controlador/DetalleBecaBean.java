@@ -82,10 +82,11 @@ public class DetalleBecaBean implements Serializable{
     {
         this.objeDetaBeca = new DetalleBeca();       
         this.guardar = true;                
-          if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
+        if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
+            System.out.println("Entro en el init de detalle beca");
             objeBeca = (BecasBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean");
         }
-          this.consTodo();
+        this.consTodo();
     }
     
     public void limpForm()
@@ -148,6 +149,7 @@ public class DetalleBecaBean implements Serializable{
                         this.listDetaBeca.add(this.objeDetaBeca);
                         this.limpForm();
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+                        ctx.execute("$('#ModaForm').modal('hide');");
                         //log.info("Detalle Guardado");
                     }
                 }
@@ -182,6 +184,7 @@ public class DetalleBecaBean implements Serializable{
             FCDEDetaBeca.edit(this.objeDetaBeca);
             this.listDetaBeca.add(this.objeDetaBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            ctx.execute("$('#ModaForm').modal('hide');");
             //log.info("Detalle Modificado");
         }
         catch(Exception ex)
@@ -205,6 +208,30 @@ public class DetalleBecaBean implements Serializable{
             FCDEDetaBeca.edit(this.objeDetaBeca);
             this.listDetaBeca.add(this.objeDetaBeca); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            ctx.execute("$('#ModaForm').modal('hide');");
+            //log.info("Detalle Modificado");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            //log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    public void reActi()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            this.objeDetaBeca.setEstaDetaBeca(1);
+            this.listDetaBeca.remove(this.objeDetaBeca); //Limpia el objeto viejo
+            FCDEDetaBeca.edit(this.objeDetaBeca);
+            this.listDetaBeca.add(this.objeDetaBeca); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            ctx.execute("$('#ModaForm').modal('hide');");
             //log.info("Detalle Modificado");
         }
         catch(Exception ex)

@@ -26,6 +26,9 @@ public interface OpcionFacadeLocal {
 
     List<Opcion> findAll();
 
+    List<Opcion> findAllActive();
+    
+    
     List<Opcion> findRange(int[] range);
 
     int count();

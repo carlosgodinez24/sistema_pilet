@@ -118,6 +118,8 @@ public class SeguimientoBean implements Serializable{
             
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+             ctx.execute("$('#ModaSeguForm').modal('hide');");
+            
           //  log.info("Seguimiento Guardado");
         }
         catch(Exception ex)
