@@ -262,42 +262,43 @@ and open the template in the editor.
                         <h:panelGroup id="ContEmpre">
                         <h:form class="form-horizontal">
                             <fieldset>
-                                <div class="col-md-12">  
-                                    <div class="panel panel-default  panel--styled">
-                                        <div class="panel-body">
-                                            <div class="col-md-12 panelTop">	
-                                                <div class="col-md-4">	
-                                                   <!--  <img class="img-responsive media-object img-circle profile-img" src="http://simpleicon.com/wp-content/uploads/building-3.png" alt=""/> -->
-                                                   
-                                                   <p:graphicImage value="#{globalAppBean.getImage('images/building.png')}" width="350px" class="img-responsive media-object img-circle profile-img" alt="Empresa"/>
-                                                </div>
-                                                <div class="col-md-8">	
-                                                    <h2 class="media-heading"> #{empresaBean.objeEmpr.nombEmpr}</h2>
-                                                    <c:if test="#{!empresaBean.guardar}">
-                                                        <h3 class="media-heading">Estado:</h3>
-                                                        <h:panelGroup class="label label-success" rendered="#{empresaBean.objeEmpr.estaEmpr == 1}">
-                                                            <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                                        <h:panelGroup class="label label-danger" rendered="#{empresaBean.objeEmpr.estaEmpr == 2}">
-                                                            <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
-                                                    </c:if>
-                                                    <div class="job">Direccion: #{empresaBean.objeEmpr.direEmpr}</div>
-                                                    <div class="job">Email: #{empresaBean.objeEmpr.emaiEmpr}</div>                                                            
-                                                    <div class="job">Encargado: #{empresaBean.objeEmpr.encaEmpr}</div>
-                                                    <h5>Monto: <span class="itemPrice">$#{empresaBean.objeEmpr.montEmpr}</span></h5>                                                    
-                                                </div>
-                                            </div>
-                                             <div class="col-md-12 panelBottom btn-group">
-                                                 <c:if test="#{!empresaBean.guardar}">
-                                                    <h:commandLink id="btonActi" class="btn btn-info" >
-                                                        <p:ajax update=":FormRegi" global="true" 
-                                                         oncomplete="$('#ModaForm').modal('show');INIT_OBJE();INIT_OBJE_MODA();"/>
-                                                        <i class="fa fa-edit"/> Modificar
-                                                    </h:commandLink>
-                                                </c:if>
-                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <center><h3>#{empresaBean.objeEmpr.nombEmpr}</h3></center>
+                                <p:panelGrid columns="2" layout="grid" style="margin-left: 5%; margin-right: 5%;">
+                                    <f:facet name="header">
+                                        <center><p:graphicImage value="#{globalAppBean.getImage('images/building.png')}" width="150px" class="img-responsive media-object img-circle profile-img" alt="Empresa"/></center>
+                                    </f:facet>
+
+                                    
+                                    <c:if test="#{!empresaBean.guardar}">
+                                        <h:outputText value="Estado:" />
+                                        <h:panelGroup class="label label-success" rendered="#{empresaBean.objeEmpr.estaEmpr == 1}">
+                                            <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                        <h:panelGroup class="label label-danger" rendered="#{empresaBean.objeEmpr.estaEmpr == 2}">
+                                            <i class="fa fa-unlock"/> Inactivo</h:panelGroup>
+                                    </c:if>
+                                    <h:outputText value="Direccion:" />
+                                    <h:outputText value="#{empresaBean.objeEmpr.direEmpr}" />
+
+                                    <h:outputText value="Email:" />
+                                    <h:outputText value="#{empresaBean.objeEmpr.emaiEmpr}" />
+
+                                    <h:outputText value="Encargado:" />
+                                    <h:outputText value="#{empresaBean.objeEmpr.encaEmpr}" />
+
+                                    <h:outputText value="Monto:" />
+                                    <h:outputText value="$#{empresaBean.objeEmpr.montEmpr}" />
+                                    <f:facet name="footer">
+                                        <h:commandLink id="btonRegr" class="btn btn-primary pull-left" style="color: white;">
+                                            <p:ajax listener="#{empresaBean.toogRegr()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
+                                            <i class="fa fa-edit"/> Regresar
+                                        </h:commandLink>
+                                        <h:commandLink id="btonActi" class="btn btn-info pull-right" style="color: white;">
+                                                <p:ajax update=":FormRegi" global="true" 
+                                                 oncomplete="$('#ModaForm').modal('show');INIT_OBJE();INIT_OBJE_MODA();"/>
+                                                <i class="fa fa-edit"/> Modificar
+                                        </h:commandLink><br/><br/>
+                                    </f:facet>
+                                </p:panelGrid><br/>
                             </fieldset>
                         </h:form>
                             </h:panelGroup>

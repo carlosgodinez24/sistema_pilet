@@ -58,49 +58,128 @@ and open the template in the editor.
         </style>
             <div class="row">
                 <div class="col-md-12 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Reportes Becas</div>
+                    <div class="panel panel-primary" style="margin-right: 2%;">
+                        <div class="panel-heading">Reportes Empresas</div>
                         <div class="panel-body">                            
                             <h:form id="FormVisorPdfJs"> 
-                                <p:accordionPanel activeIndex="-1">
-                                    <p:tab title="Reportes Empresas" >
-                                        <div class="ui-g-4">
-                                            <h:commandLink id="btonSABER" class="btn btn-warning" style="margin-right: 5%;" >
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER" class="btn btn-warning btn-lg" role="button" style="margin-right: 5%;" >
                                                 <p:ajax oncomplete="PF('ModaRepo').show();" process="@form" listener="#{reportesBean.procVisi()}"  update=":ModaRepoView"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
                                                 Reporte de Empresas y <br/>
                                                 sus donaciones Activas
-                                            </h:commandLink>
+                                            </h:commandLink></center>
                                         </div>
-                                        <div class="ui-g-4">
-                                            <h:commandLink id="btonSABER2" class="btn btn-warning" >
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER2" class="btn btn-warning btn-lg" role="button" >
                                                 <p:ajax oncomplete="PF('ModaRepo2').show();" process="@form" listener="#{reportesBean.emprInac()}"  update=":ModaRepoView2"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
                                                 Reporte de Empresas y <br/>
                                                 sus donaciones Canceladas
-                                            </h:commandLink>
+                                            </h:commandLink></center>
                                         </div>
-                                        <div class="ui-g-4">
-                                            <h:selectOneMenu id="detaBeca" value="#{reportesBean.objeEmpr.codiEmpr}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir una empresa" >
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER3" class="btn btn-warning btn-lg" role="button">
+                                                <p:ajax oncomplete="PF('ModaRepo3').show();" process="@form" listener="#{reportesBean.EmprBeca()}"  update=":ModaRepoView3"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
+                                                Reporte de Empresas 
+                                                y sus becados
+                                            </h:commandLink></center><br/><br/><br/>
+                                            <h:selectOneMenu id="detaBeca" value="#{reportesBean.objeEmpr}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir una empresa" >
                                                 <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                 <f:converter converterId="PooConv"/>
                                             </h:selectOneMenu>
-                                            <h:commandLink id="btonSABER3" class="btn btn-warning" style="margin-left: 5%;">
-                                                <p:ajax oncomplete="PF('ModaRepo3').show();" process="@form" listener="#{reportesBean.emprBeca()}"  update=":ModaRepoView3"  global="true"/>
-                                                Reporte de Empresas y sus becados
-                                            </h:commandLink>
                                         </div>
-                                        
-                                    </p:tab>
-                                    <p:tab title="Reportes Becas">
-                                        
-                                    </p:tab>
-                                    <p:tab title="Godfather Part III">
-                                        <p:panelGrid columns="2">
-                                            <h:outputText value="asdasda"></h:outputText>
-                                            <h:outputText value="asdasda"></h:outputText>
-                                        </p:panelGrid>
-                                    </p:tab>
-                                </p:accordionPanel>
-                                </h:form>
+                                    </div>
+                                </div>    
+                            </h:form>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary" style="margin-right: 2%;">
+                        <div class="panel-heading">Reportes Becas</div>
+                        <div class="panel-body">
+                            <h:form id="FormVisorPdfJs2"> 
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER4" class="btn btn-warning btn-lg" role="button">
+                                                <p:ajax oncomplete="PF('ModaRepo4').show();" process="@form" listener="#{reportesBean.GeneBeca()}"  update=":ModaRepoView4"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
+                                                Reporte de Becas
+                                            </h:commandLink></center>
+                                        </div>
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER5" class="btn btn-warning btn-lg" role="button">
+                                                <p:ajax oncomplete="PF('ModaRepo5').show();" process="@form" listener="#{reportesBean.GeneBecaOtro()}"  update=":ModaRepoView5"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
+                                                Reporte de Becas y tipos <br/>
+                                                de becas general
+                                            </h:commandLink></center>
+                                        </div>
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER6" class="btn btn-warning btn-lg" role="button">
+                                                <p:ajax oncomplete="PF('ModaRepo6').show();" process="@form" listener="#{reportesBean.BecaOtro()}"  update=":ModaRepoView6"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
+                                                Reporte de Becas y tipos 
+                                                de becas <br/>por alumno
+                                            </h:commandLink></center><br/><br/><br/>
+                                            <h:selectOneMenu id="detaBeca2" value="#{reportesBean.objeBeca}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir una empresa" >
+                                                <f:selectItems value="#{becasBean.listBecaActivos}" var="lst" itemLabel="#{lst.codiSoliBeca.nombAlum}" itemValue="#{lst}"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </h:form>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary" style="margin-right: 2%;">
+                        <div class="panel-heading">Reportes Transacciones</div>
+                        <div class="panel-body">
+                            <h:form id="FormVisorPdfJs3"> 
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER7" class="btn btn-warning btn-lg" role="button">
+                                                <p:ajax oncomplete="PF('ModaRepo7').show();" process="@form" listener="#{reportesBean.BecaMes()}"  update=":ModaRepoView7"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
+                                                Becas por mes
+                                            </h:commandLink></center><br/><br/><br/>
+                                            <h:selectOneMenu id="mes" value="#{reportesBean.mes}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir una empresa" >
+                                                <f:selectItem itemLabel="Enero" itemValue="1"/>
+                                                <f:selectItem itemLabel="Febrero" itemValue="2"/>
+                                                <f:selectItem itemLabel="Marzo" itemValue="3"/>
+                                                <f:selectItem itemLabel="Abril" itemValue="4"/>
+                                                <f:selectItem itemLabel="Mayo" itemValue="5"/>
+                                                <f:selectItem itemLabel="Junio" itemValue="6"/>
+                                                <f:selectItem itemLabel="Julio" itemValue="7"/>
+                                                <f:selectItem itemLabel="Agosto" itemValue="8"/>
+                                                <f:selectItem itemLabel="Septiembre" itemValue="9"/>
+                                                <f:selectItem itemLabel="Octubre" itemValue="10"/>
+                                                <f:selectItem itemLabel="Noviembre" itemValue="11"/>
+                                                <f:selectItem itemLabel="Diciembre" itemValue="12"/>
+                                                <f:converter converterId="PooConv"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER8" class="btn btn-warning btn-lg" role="button">
+                                                <p:ajax oncomplete="PF('ModaRepo8').show();" process="@form" listener="#{reportesBean.MontAlum()}"  update=":ModaRepoView8"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
+                                                Montos pagados por alumno
+                                            </h:commandLink></center>
+                                        </div>
+                                        <div class="col-lg-4" style="margin-top: 15px;">
+                                            <center><h:commandLink id="btonSABER9" class="btn btn-warning btn-lg" role="button">
+                                                <p:ajax oncomplete="PF('ModaRepo9').show();" process="@form" listener="#{reportesBean.MontEven()}"  update=":ModaRepoView9"  global="true"/>
+                                                <span class="fa fa-file"></span><br/>
+                                                Montos por eventos
+                                            </h:commandLink></center>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </h:form>
                         </div>
                     </div>
                 </div>
@@ -123,6 +202,48 @@ and open the template in the editor.
                 <p:dialog header="" widgetVar="ModaRepo3" minHeight="40" width="1000px" style="z-index: 9999999;">
                     <h:panelGroup id="ModaRepoView3">
                         <cs:PdfViewer id="pdfViewer3" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
+                    </h:panelGroup>
+                </p:dialog>
+            </div>
+            <div class="row">
+                <p:dialog header="" widgetVar="ModaRepo4" minHeight="40" width="1000px" style="z-index: 9999999;">
+                    <h:panelGroup id="ModaRepoView4">
+                        <cs:PdfViewer id="pdfViewer4" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
+                    </h:panelGroup>
+                </p:dialog>
+            </div>
+            <div class="row">
+                <p:dialog header="" widgetVar="ModaRepo5" minHeight="40" width="1000px" style="z-index: 9999999;">
+                    <h:panelGroup id="ModaRepoView5">
+                        <cs:PdfViewer id="pdfViewer5" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
+                    </h:panelGroup>
+                </p:dialog>
+            </div>
+            <div class="row">
+                <p:dialog header="" widgetVar="ModaRepo6" minHeight="40" width="1000px" style="z-index: 9999999;">
+                    <h:panelGroup id="ModaRepoView6">
+                        <cs:PdfViewer id="pdfViewer6" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
+                    </h:panelGroup>
+                </p:dialog>
+            </div>
+            <div class="row">
+                <p:dialog header="" widgetVar="ModaRepo7" minHeight="40" width="1000px" style="z-index: 9999999;">
+                    <h:panelGroup id="ModaRepoView7">
+                        <cs:PdfViewer id="pdfViewer7" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
+                    </h:panelGroup>
+                </p:dialog>
+            </div>
+            <div class="row">
+                <p:dialog header="" widgetVar="ModaRepo8" minHeight="40" width="1000px" style="z-index: 9999999;">
+                    <h:panelGroup id="ModaRepoView8">
+                        <cs:PdfViewer id="pdfViewer8" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
+                    </h:panelGroup>
+                </p:dialog>
+            </div>
+            <div class="row">
+                <p:dialog header="" widgetVar="ModaRepo9" minHeight="40" width="1000px" style="z-index: 9999999;">
+                    <h:panelGroup id="ModaRepoView9">
+                        <cs:PdfViewer id="pdfViewer9" value="#{reportesBean.docuRepo}" width="100%" height="500px"/>
                     </h:panelGroup>
                 </p:dialog>
             </div>

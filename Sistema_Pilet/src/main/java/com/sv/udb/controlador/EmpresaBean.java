@@ -226,4 +226,11 @@ public class EmpresaBean implements Serializable{
         this.showEmpr = !this.showEmpr;
         this.limpForm();
     }
+    
+    public void toogRegr()
+    {
+        this.showEmpr = false;
+        this.guardar = true;
+        this.limpForm();
+    }
 }
