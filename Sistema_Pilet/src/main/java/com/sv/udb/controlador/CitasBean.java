@@ -128,6 +128,7 @@ public class CitasBean implements Serializable{
     private boolean ignoHoraDisp;
     private boolean isGrouVisi;
     private boolean LugaEven;
+    private boolean motiUrge;
     private String nombProf;
     private boolean ignoExceHora;
     private boolean isUsuaDoce;
@@ -170,6 +171,14 @@ public class CitasBean implements Serializable{
     
     public void setListCambCita(List<Cambiocita> listCambCita) {
         this.listCambCita = listCambCita;
+    }
+
+    public boolean isMotiUrge() {
+        return motiUrge;
+    }
+
+    public void setMotiUrge(boolean motiUrge) {
+        this.motiUrge = motiUrge;
     }
     
     
@@ -793,6 +802,7 @@ public class CitasBean implements Serializable{
         try
         {
             this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(this.objeCita.getCodiUsua());
+            setUrgeCita();
         }
         catch(Exception ex)
         {
@@ -854,6 +864,13 @@ public class CitasBean implements Serializable{
             ex.printStackTrace();
         }
     }
+     
+     public void setUrgeCita(){
+         if(motiUrge){
+             FacesContext.getCurrentInstance().addMessage("FormRegi:moti", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Especificar Urgencia, y Sugerir Horario",  null));
+         }
+     }
+     
     //LOG: cita solicitada por visitante
       /**
  * Metodo para solicitar visitas 
@@ -986,7 +1003,7 @@ public class CitasBean implements Serializable{
             {
                 switch(acci){
                     case 1:
-                        if(!listHoraCitaDoce.isEmpty()){
+                        if(!listHoraCitaDoce.isEmpty() && !motiUrge){
                             FacesContext.getCurrentInstance().addMessage("FormRegi:hora", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe Seleccionar una horario Disponible",  null));
                         }else{
                             val = true;

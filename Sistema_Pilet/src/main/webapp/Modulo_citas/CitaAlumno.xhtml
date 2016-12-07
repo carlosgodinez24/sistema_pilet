@@ -188,17 +188,26 @@ and open the template in the editor.
                                                 <h:inputText id="nombProf" value="#{citasBean.nombProf}" class="form-control disabled" disabled="true"/>
                                             </div>
                                         </h:panelGroup>
-                                        
                                         <div class="input-group col-xs-12">
-                                            
-                                            <h:outputLabel  for="hora" value="Horario comunmente disponible"/>
-                                            <h:message for="hora" errorClass="field-error" />
-                                            <h:selectOneMenu id="hora" value="#{citasBean.horaSeleSoliCita}" class="form-control select" pt:data-live-search="true">
-                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{citasBean.listHoraCitaDoce}" var="lstHora" itemLabel="#{lstHora.diaDisp} #{lstHora.fecha} de (#{lstHora.horaInic} a #{lstHora.horaFina})" itemValue="#{lstHora}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
+                                            <br/>
+                                            <h:outputText value="Motivo Urgente: " style="font-weight: bold;" />
+                                            <p:selectBooleanCheckbox value="#{citasBean.motiUrge}">
+                                                <p:ajax process="@this" oncomplete="INIT_OBJE_MODA();" update="@form" listener="#{citasBean.setUrgeCita()}" />
+                                            </p:selectBooleanCheckbox>
+                                            <br/><br/>
                                         </div>
+                                        <h:panelGroup rendered="#{!citasBean.motiUrge}">
+                                            <div class="input-group col-xs-12">
+
+                                                <h:outputLabel  for="hora" value="Horario comunmente disponible"/>
+                                                <h:message for="hora" errorClass="field-error" />
+                                                <h:selectOneMenu id="hora" value="#{citasBean.horaSeleSoliCita}" class="form-control select" pt:data-live-search="true">
+                                                    <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                    <f:selectItems value="#{citasBean.listHoraCitaDoce}" var="lstHora" itemLabel="#{lstHora.diaDisp} #{lstHora.fecha} de (#{lstHora.horaInic} a #{lstHora.horaFina})" itemValue="#{lstHora}"/>
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </h:panelGroup>
                                         
                                         <h:panelGroup rendered="#{citasBean.programar}">
                                             <div class="input-group col-xs-12">
