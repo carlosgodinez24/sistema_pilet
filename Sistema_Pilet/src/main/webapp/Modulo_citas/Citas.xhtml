@@ -53,6 +53,8 @@ and open the template in the editor.
                                                          oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA(); INIT_OBJE_CITA(); INIT_OBJE_TABL();" global="true"/>
                                         <p:remoteCommand name="consObjeAlum" actionListener="#{citasBean.setAlumn()}" update=":formCmbVisi" 
                                                          oncomplete="INIT_OBJE_TABL(); INIT_OBJE_MODA(); INIT_OBJE_CITA();" global="true"/>
+                                        <p:remoteCommand name="elimObje" actionListener="#{citasBean.cambCita(0, true)}" update=":FormRegi :ContRegi :tablPart" 
+                                                         oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA();" global="true"/>
                                         <h:commandLink id="btonNuev" class="btn btn-success">
                                             <p:ajax listener="#{citasBean.limpForm()}" update=":FormRegi :tablPart :paneClose :paneTabl" global="true" 
                                                     oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA; INIT_OBJE_CITA(); INIT_OBJE_TABL();"/>
@@ -394,6 +396,13 @@ and open the template in the editor.
                                                     <p:ajax listener="#{citasBean.progCitaUsua(true)}" process="@form" update="@form :ContRegi :tablPart" oncomplete="INIT_OBJE(); INIT_OBJE_MODA(); INIT_OBJE_CITA();" />
                                                     <i class="fa fa-plus"/> Programar
                                                 </h:commandLink>
+                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{citasBean.objeCita.estaCita eq 2}" value="#" pt:data-placement="left"
+                                                              pt:data-toggle="confirmation" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                    <i class="fa fa-times"/> Cancelar
+                                                </h:outputLink>
                                             </div>
                                         </div>
                                     </div>
