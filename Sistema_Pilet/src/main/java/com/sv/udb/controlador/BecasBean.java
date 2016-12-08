@@ -17,6 +17,7 @@ import com.sv.udb.ejb.SeccionFacadeLocal;
 import com.sv.udb.ejb.SeguimientoFacadeLocal;
 import com.sv.udb.ejb.SolicitudBecaFacadeLocal;
 import com.sv.udb.ejb.TipoBecaFacadeLocal;
+import com.sv.udb.ejb.UsuarioRolFacadeLocal;
 import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.DetalleBeca;
 import com.sv.udb.modelo.Documento;
@@ -84,6 +85,8 @@ import org.primefaces.model.StreamedContent;
 @Named(value = "becasBean")
 @ViewScoped
 public class BecasBean implements Serializable{
+
+   
     
     
     @PersistenceContext(unitName = "PILETPU")
@@ -104,6 +107,8 @@ public class BecasBean implements Serializable{
     private TipoBecaFacadeLocal FCDETipoBeca;
     @EJB
     private DetalleBecaFacadeLocal FCDEDetaBeca;
+     @EJB
+    private UsuarioRolFacadeLocal UsuarioRolFCDE;
     private List<TipoBeca> listTipoBeca;
 
     public List<TipoBeca> getListTipoBeca() {
@@ -833,7 +838,8 @@ public class BecasBean implements Serializable{
      @EJB
      private PreguntaFacadeLocal FCDEPreg;
      @EJB
-     private SeccionFacadeLocal FCDESecc;    
+     private SeccionFacadeLocal FCDESecc;
+     
      
     private List<Opcion> listOpci;
     private List<Pregunta> listPreg;
@@ -1208,24 +1214,25 @@ public class BecasBean implements Serializable{
         this.Alum = Alum;
     }
     
-//    public void VeriRole()
-//    {
-//             List<UsuarioRol> lis = logiBean.getObjeUsua().getUsuarioRolList();
-//             for(UsuarioRol temp: lis)
-//             {                 
-//                 if(temp.getCodiRole().getCodiRole() == 7)
-//                 {
-//                     /*alumnoo */
-//                     this.Alum=true;
-//                 }
-//                 else if(temp.getCodiRole().getCodiRole() == 8)
-//                 {
-//                     /*trabajadora social*/
-//                     this.TrabaSoci=false;
-//                 }
-//             }
-//            
-//    }
+    public void VeriRole()
+    {
+            
+             List<UsuarioRol> lis = UsuarioRolFCDE.findByUsua(logiBean.getObjeUsua());
+             for(UsuarioRol temp: lis)
+             {                 
+                 if(temp.getCodiRole().getCodiRole() == 7)
+                 {
+                     /*alumnoo */
+                     this.Alum=true;
+                 }
+                 else if(temp.getCodiRole().getCodiRole() == 8)
+                 {
+                     /*trabajadora social*/
+                     this.TrabaSoci=false;
+                 }
+             }
+            
+    }
      public boolean consIfCarnExis()
     {       
         if(FCDEResp.ReadIfCarnExis(logiBean.getObjeUsua().getAcceUsua()))
