@@ -53,6 +53,7 @@ public class LoginBean implements Serializable {
     private String usua;
     private String cont;
     private String imagPerf;
+    private List<String> listPerm;//Lista de Notificaciones
     private List<Notificacion> listNoti;//Lista de Notificaciones
     private static int codiEmplSesi;
 
@@ -121,9 +122,14 @@ public class LoginBean implements Serializable {
     public static void setCodiEmplSesi(int codiEmplSesi) {
         LoginBean.codiEmplSesi = codiEmplSesi;
     }
-    
-    
-    
+
+    public List<String> getListPerm() {
+        return listPerm;
+    }
+
+    public void setListPerm(List<String> listPerm) {
+        this.listPerm = listPerm;
+    }
     
     /**
      * Método que crea la sesión
@@ -148,6 +154,7 @@ public class LoginBean implements Serializable {
                     this.imagPerf = "images/userDemo.png";
                     //Llenar lista de notificaciones.... puede salir de la DB
                     this.listNoti = FCDENoti.findByUsua(this.objeUsua.getCodiUsua());
+                    this.listPerm = FCDEUsua.findAllPermByAcce(objeUsua.getAcceUsua());
                     //Redireccionar
                     facsCtxt.getExternalContext().redirect(globalAppBean.getUrl("index.xhtml"));
                 }

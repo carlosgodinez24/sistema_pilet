@@ -27,6 +27,8 @@ public interface UsuarioFacadeLocal {
     Usuario findByAcce(Object acce);
     
     boolean findPermByAcceAndDire(Object acce, Object path);
+    
+    List<String> findAllPermByAcce(Object acce);
 
     List<Usuario> findAll();
 

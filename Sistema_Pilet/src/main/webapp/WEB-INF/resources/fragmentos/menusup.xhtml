@@ -32,10 +32,10 @@ and open the template in the editor.
                             <li class="dropdown notifications-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell-o"></i>
-                                    <span id="spanNoti" class="label label-warning">#{loginBean.contNoti}</span>
+                                    <span id="spanNoti" class="label label-warning">#{loginBean.listNoti.size()}</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="header">#{loginBean.contNoti} notificaciones</li>
+                                    <li class="header">#{loginBean.listNoti.size()} notificaciones</li>
                                     <li>
                                         <ul id="resultado" class="menu">
                                             <h:form>
