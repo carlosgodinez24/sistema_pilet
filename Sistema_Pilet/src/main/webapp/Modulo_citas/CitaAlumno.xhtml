@@ -52,6 +52,8 @@ and open the template in the editor.
                                                     oncomplete="$('#ModaFormRegi').modal('show'); INIT_OBJE_MODA();"/>
                                             <i class="fa fa-plus"/> Solicitar
                                         </h:commandLink>
+                                        <p:remoteCommand name="elimObje" actionListener="#{citasBean.cambCita(0, true)}" update=":FormRegi :ContRegi" 
+                                                         oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" global="true"/>
                                     </h:form>
                                 </div>
                                 <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{citasBean.consListCambCitaVisiAlum()}"
@@ -128,13 +130,13 @@ and open the template in the editor.
                                     <h4>Mostrar Registros</h4>
                                     <p>Entre las fechas:</p>
                                         <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
-                                            <h:message for="fech" errorClass="field-error" />
+                                            <h:message for="fechXD" errorClass="field-error" />
                                             <h:inputText id="fechXD" value="#{citasBean.fechInicBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText> 
                                         </div>
                                         <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
-                                            <h:message for="fech" errorClass="field-error" />
+                                            <h:message for="fechxd2" errorClass="field-error" />
                                             <h:inputText id="fechxd2" value="#{citasBean.fechFinaBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:inputText> 
@@ -186,17 +188,26 @@ and open the template in the editor.
                                                 <h:inputText id="nombProf" value="#{citasBean.nombProf}" class="form-control disabled" disabled="true"/>
                                             </div>
                                         </h:panelGroup>
-                                        
                                         <div class="input-group col-xs-12">
-                                            
-                                            <h:outputLabel  for="hora" value="Horario comunmente disponible"/>
-                                            <h:message for="hora" errorClass="field-error" />
-                                            <h:selectOneMenu id="hora" value="#{citasBean.horaSeleSoliCita}" class="form-control select" pt:data-live-search="true">
-                                                <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
-                                                <f:selectItems value="#{citasBean.listHoraCitaDoce}" var="lstHora" itemLabel="#{lstHora.diaDisp} #{lstHora.fecha} de (#{lstHora.horaInic} a #{lstHora.horaFina})" itemValue="#{lstHora}"/>
-                                                <f:converter converterId="PooConv"/>
-                                            </h:selectOneMenu>
+                                            <br/>
+                                            <h:outputText value="Motivo Urgente: " style="font-weight: bold;" />
+                                            <p:selectBooleanCheckbox value="#{citasBean.motiUrge}">
+                                                <p:ajax process="@this" oncomplete="INIT_OBJE_MODA();" update="@form" listener="#{citasBean.setUrgeCita()}" />
+                                            </p:selectBooleanCheckbox>
+                                            <br/><br/>
                                         </div>
+                                        <h:panelGroup rendered="#{!citasBean.motiUrge}">
+                                            <div class="input-group col-xs-12">
+
+                                                <h:outputLabel  for="hora" value="Horario comunmente disponible"/>
+                                                <h:message for="hora" errorClass="field-error" />
+                                                <h:selectOneMenu id="hora" value="#{citasBean.horaSeleSoliCita}" class="form-control select" pt:data-live-search="true">
+                                                    <f:selectItem pt:data-hidden="true" itemLabel="Seleccione..."/>
+                                                    <f:selectItems value="#{citasBean.listHoraCitaDoce}" var="lstHora" itemLabel="#{lstHora.diaDisp} #{lstHora.fecha} de (#{lstHora.horaInic} a #{lstHora.horaFina})" itemValue="#{lstHora}"/>
+                                                    <f:converter converterId="PooConv"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </h:panelGroup>
                                         
                                         <h:panelGroup rendered="#{citasBean.programar}">
                                             <div class="input-group col-xs-12">
@@ -230,11 +241,11 @@ and open the template in the editor.
                                                     <p:ajax listener="#{citasBean.soliCitaVisi()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
                                                     <i class="fa fa-plus"/> Solicitar
                                                 </h:commandLink>
-                                                <h:commandLink id="btonSoliRepro" class="btn btn-warning" rendered="#{citasBean.reprogramar || (citasBean.objeCita.estaCita eq '4')}">
+                                                <h:commandLink id="btonSoliRepro" class="btn btn-warning" rendered="#{(citasBean.reprogramar and citasBean.objeCita.estaCita ne '0') || (citasBean.objeCita.estaCita eq '4')}">
                                                     <p:ajax listener="#{citasBean.soliCambCita(1)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
                                                     <i class="fa fa-calendar-o"/> Solicitar Reprogramación
                                                 </h:commandLink>
-                                                <h:commandLink id="btonSoliCance" class="btn btn-danger" rendered="#{citasBean.reprogramar|| (citasBean.objeCita.estaCita eq '4')}">
+                                                <h:commandLink id="btonSoliCance" class="btn btn-danger" rendered="#{(citasBean.reprogramar and citasBean.objeCita.estaCita ne '0') || (citasBean.objeCita.estaCita eq '4')}">
                                                     <p:ajax listener="#{citasBean.soliCambCita(2)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
                                                     <i class="fa fa-trash-o"/> Solicitar Cancelación
                                                 </h:commandLink>
@@ -242,6 +253,13 @@ and open the template in the editor.
                                                     <p:ajax listener="#{citasBean.soliCambCita(2)}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE(); INIT_OBJE_MODA();" />
                                                     <i class="fa fa-trash-o"/> Cambiar Motivo de cancelación
                                                 </h:commandLink>
+                                                <h:outputLink id="btonElim" class="btn btn-danger" rendered="#{citasBean.confirmar}" value="#" pt:data-placement="left"
+                                                              pt:data-toggle="confirmation" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
+                                                              pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
+                                                              pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
+                                                              pt:data-on-confirm="elimObje"><!--data-on-confirm = nombre del comando remoto de eliminar (sin paréntesis)-->
+                                                    <i class="fa fa-times"/> Cancelar
+                                                </h:outputLink>
                                             </div>
                                         </div>
                                 </div>

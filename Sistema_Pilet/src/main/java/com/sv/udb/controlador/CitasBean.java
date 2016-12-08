@@ -128,6 +128,7 @@ public class CitasBean implements Serializable{
     private boolean ignoHoraDisp;
     private boolean isGrouVisi;
     private boolean LugaEven;
+    private boolean motiUrge;
     private String nombProf;
     private boolean ignoExceHora;
     private boolean isUsuaDoce;
@@ -170,6 +171,14 @@ public class CitasBean implements Serializable{
     
     public void setListCambCita(List<Cambiocita> listCambCita) {
         this.listCambCita = listCambCita;
+    }
+
+    public boolean isMotiUrge() {
+        return motiUrge;
+    }
+
+    public void setMotiUrge(boolean motiUrge) {
+        this.motiUrge = motiUrge;
     }
     
     
@@ -793,6 +802,7 @@ public class CitasBean implements Serializable{
         try
         {
             this.listHoraDisp = FCDEHoraDisp.findByCodiUsua(this.objeCita.getCodiUsua());
+            setUrgeCita();
         }
         catch(Exception ex)
         {
@@ -854,6 +864,13 @@ public class CitasBean implements Serializable{
             ex.printStackTrace();
         }
     }
+     
+     public void setUrgeCita(){
+         if(motiUrge){
+             FacesContext.getCurrentInstance().addMessage("FormRegi:moti", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Especificar Urgencia, y Sugerir Horario",  null));
+         }
+     }
+     
     //LOG: cita solicitada por visitante
       /**
  * Metodo para solicitar visitas 
@@ -919,6 +936,9 @@ public class CitasBean implements Serializable{
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             if(valiDatoCitaVisi(acci) || acci == 2){
                 switch(acci){
+                    case 0:
+                        objeCita.setEstaCita(0);
+                    break;
                     case 1:
                         objeCambCita.setFechInicCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
                         objeCambCita.setFechFinCitaNuev(sdf.parse(this.horaSeleSoliCita.getFecha()));
@@ -946,6 +966,11 @@ public class CitasBean implements Serializable{
                 listCitaAlum.add(objeCita);
 
                 switch(acci){
+                    case 0:
+                        log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha cancelado la solicitud ");
+                        ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Solicitud Cancelada'); $('#ModaFormRegi').modal('hide');");
+                        this.limpForm();
+                    break;
                     case 1:
                         log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha solicitado reprogramacion ");
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reprogramación Solicitada'); $('#ModaFormRegi').modal('hide');");
@@ -978,7 +1003,7 @@ public class CitasBean implements Serializable{
             {
                 switch(acci){
                     case 1:
-                        if(!listHoraCitaDoce.isEmpty()){
+                        if(!listHoraCitaDoce.isEmpty() && !motiUrge){
                             FacesContext.getCurrentInstance().addMessage("FormRegi:hora", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe Seleccionar una horario Disponible",  null));
                         }else{
                             val = true;
@@ -1298,8 +1323,8 @@ public class CitasBean implements Serializable{
         switch(this.objeCita.getEstaCita()){
             //cuando una cita está por ser programada
             case 0:
-                this.reprogramar = false;
-                this.confirmar = true;
+                this.reprogramar = true;
+                this.confirmar = false;
                 this.programar = false;
                 break;
             //cuando una cita está solicitada
@@ -1633,7 +1658,7 @@ public class CitasBean implements Serializable{
     private boolean valiDatoCambCita(int acci) throws ParseException{
         boolean vali = false;
         DateFormat formatter = new SimpleDateFormat("hh:mm a");
-        //si no es nulo ó se esta solicitando cancelación ó se esta rechazando
+        //si no es nulo ó se esta solicitando cancelación ó se esta rechazando ó cancelando
         if(objeCita.getCodiUbic() != null || (acci == 1 && objeCita.getEstaCita() == 5) || acci == 2){
             //si no es nulo ó se esta solicitando cancelación  ó se esta rechazando
             if((motivo != null && !motivo.trim().equals("")) || (acci == 1 && objeCita.getEstaCita() == 5) || acci == 2){
@@ -1658,14 +1683,17 @@ public class CitasBean implements Serializable{
     }
     
     //LOG: cambio de cita realizado
-    //confirmar(1), rechazar(2), Reprogramar(3) cita
+    //confirmar(1), rechazar(2), Reprogramar(3), Cancelar(0) cita
     public void cambCita(int acci, boolean padre){
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         
         try
         {
-            if(valiDatoCambCita(acci)){
+            if(valiDatoCambCita(acci) || acci == 0){
                 switch(acci){
+                    case 0:
+                        objeCita.setEstaCita(0);
+                    break;
                     case 1:
                         //confirmar cancelación
                         if(objeCita.getEstaCita() == 5){
@@ -1729,6 +1757,11 @@ public class CitasBean implements Serializable{
                 }
                 */
                 switch(acci){
+                    case 0:
+                        log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha cancelado la cita ");
+                        ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Cancelada'); $('#ModaFormRegi').modal('hide');");
+                        this.limpForm();
+                    break;
                     case 1:
                         log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha confirmado cita ");
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Confirmada'); $('#ModaFormRegi').modal('hide');");
@@ -2099,33 +2132,52 @@ public class CitasBean implements Serializable{
  * En este metodo se hara el cambio de visita (Por fechas y horas)
      * @exception Error al realizar la operacion         
      * @since incluido desde la version 1.0
+     * @param acci cambio que se realiza (reprogramar ó cancelar)
      */
     //LOG: cambio a visita realizado (reprogramada)
-    public void cambVisi(){
+    // esta: (1) reprogramar, (2) cancelar
+    public void cambVisi(int acci){
         RequestContext ctx = RequestContext.getCurrentInstance();
         
         try
         {
-            if(valiDatoProgVisi()){
-                objeCita.setEstaCita(2);
+            if(valiDatoProgVisi() || acci == 2){
+                    switch(acci){
+                        case 1:
+                            objeCita.setEstaCita(2);
+                        break;
+                        case 2:
+                            objeCita.setEstaCita(0);
+                        break;
+                    }
+                    //listCambCita.remove(objeCambCita);
                     listVisiUsua.remove(objeCita);
 
                     DateFormat df = new SimpleDateFormat("hh:mm a");
-
-                    objeCambCita.setFechCambCita(new Date());
-                    objeCambCita.setFechInicCitaNuev(fechSoliCita);
-                    objeCambCita.setFechFinCitaNuev(fechSoliCita2);
                     objeCambCita.setHoraCambCita(df.format(new Date()));
-                    objeCambCita.setHoraInicCitaNuev(FechInic);
-                    objeCambCita.setHoraFinCitaNuev(FechFina);
+                    
+                    objeCambCita.setFechCambCita(new Date());
+                    if(acci ==1){
+                        objeCambCita.setFechInicCitaNuev(fechSoliCita);
+                        objeCambCita.setFechFinCitaNuev(fechSoliCita2);
+                        objeCambCita.setHoraInicCitaNuev(FechInic);
+                        objeCambCita.setHoraFinCitaNuev(FechFina);
+                        objeCambCita.setMotiCambCita(motivo);
+                    }
                     objeCambCita.setCodiCita(objeCita);
-                    objeCambCita.setMotiCambCita(motivo);
                     objeCambCita.setEstaCambCita(objeCita.getEstaCita());
                     FCDECita.edit(objeCita);
                     FCDECambCita.create(objeCambCita);
                     listVisiUsua.add(objeCita);
                     log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha reprogramada la cita ");
-                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Cita Reprogramada'); $('#ModaFormRegi').modal('hide');");
+                    switch(acci){
+                        case 1:
+                            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Visita Reprogramada'); $('#ModaFormRegi').modal('hide');");
+                        break;
+                        case 2:
+                            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Visita Cancelada'); $('#ModaFormRegi').modal('hide');");
+                        break;
+                    }
                     estaCita();
                     limpForm();
             }
