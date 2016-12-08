@@ -7,8 +7,11 @@ package com.sv.udb.controlador;
 import com.sv.udb.controlador.VisitantesBean;
 import com.sv.udb.ejb.CambiocitaFacadeLocal;
 import com.sv.udb.ejb.CitaFacadeLocal;
+import com.sv.udb.ejb.VisitanteFacadeLocal;
+import com.sv.udb.ejb.VisitantecitaFacadeLocal;
 import com.sv.udb.modelo.Cambiocita;
 import com.sv.udb.modelo.Cita;
+import com.sv.udb.modelo.Visitante;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -91,6 +94,8 @@ public class CalendarioBean implements Serializable{
     private CitaFacadeLocal FCDECita;
     @EJB
     private CambiocitaFacadeLocal FCDECambCita;
+    @EJB
+    private VisitanteFacadeLocal FCDEVisitante;
     
     public CalendarioBean() {
     }
@@ -144,7 +149,6 @@ public class CalendarioBean implements Serializable{
                 evt.setData(objeCambCita);
                 evt.setDescription(obj.getCodiUbic().getNombUbic());
                 
-                System.out.println(objeCambCita.getFechInicCitaNuev()+"");
                 this.objeCale.addEvent(evt);
              }
         }catch(Exception e){
@@ -169,7 +173,22 @@ public class CalendarioBean implements Serializable{
         }
         return objeCambCita;
     }
-     
+    
+    private List<Visitante> ListVisi;
+
+    public List<Visitante> getListVisi() {
+        if(this.objeCambCita!=null)
+        {
+            this.ListVisi = new ArrayList<Visitante>();
+            ListVisi = FCDEVisitante.findByCita(this.objeCambCita.getCodiCita());
+        }
+        return ListVisi;
+    }
+
+    public void setListVisi(List<Visitante> ListVisi) {
+        this.ListVisi = ListVisi;
+    }
+       
     /**
      * Mètodo para obtener la fecha
      */
@@ -181,7 +200,6 @@ public class CalendarioBean implements Serializable{
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
                 fecha = sdf.parse(date);
-                System.out.println(fecha);
             } catch (Exception e) {
                 fecha = null;
             }

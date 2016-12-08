@@ -24,12 +24,16 @@
 		</box>
 	</style>
 	<subDataset name="Table Dataset 1" uuid="cc15ba02-8895-4143-b52a-1c90165a9900"/>
-	<parameter name="anioCitas" class="java.lang.String">
+	<parameter name="fech_inic_cita_nuev" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fech_fin_cita_nuev" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT count(`cambio_cita`.`codi_camb_cita`) AS CANTIDAD, case `cambio_cita`.`esta_camb_cita` WHEN 1 then 'Solicitada' WHEN 2 THEN 'Programada' WHEN 3 THEN 'Rechazada' WHEN 6 THEN 'Finalizada' END as ESTADO FROM `cambio_cita`
-WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or `cambio_cita`.`esta_camb_cita`= 3 or `cambio_cita`.`esta_camb_cita`= 6) AND (YEAR(`cambio_cita`.`fech_inic_cita_nuev`) = $P{anioCitas} or YEAR(`cambio_cita`.`fech_fin_cita_nuev`)=$P{anioCitas}) GROUP BY `cambio_cita`.`esta_camb_cita`]]>
+		<![CDATA[SELECT count(`cambio_cita`.`codi_camb_cita`) AS CANTIDAD,
+case `cambio_cita`.`esta_camb_cita`WHEN 0 THEN 'Cancelada' WHEN 1 THEN 'Solicitada' WHEN 2 THEN 'Programada' WHEN 3 THEN 'Rechazada' WHEN 4 THEN 'Reprogramación Solicitada' WHEN 5 THEN 'Cancelación Solicitada' WHEN 6 THEN 'Finalizada' END as ESTADO FROM `cambio_cita`
+WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or `cambio_cita`.`esta_camb_cita`= 3 or `cambio_cita`.`esta_camb_cita`= 6) AND ((DATE(`cambio_cita`.`fech_inic_cita_nuev`) between $P{fech_inic_cita_nuev} and $P{fech_fin_cita_nuev}) or (DATE(`cambio_cita`.`fech_fin_cita_nuev`) between $P{fech_inic_cita_nuev} and $P{fech_fin_cita_nuev}))  GROUP BY `cambio_cita`.`esta_camb_cita`]]>
 	</queryString>
 	<field name="CANTIDAD" class="java.lang.Long"/>
 	<field name="ESTADO" class="java.lang.String"/>
@@ -46,7 +50,7 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 	<title>
 		<band height="103" splitType="Stretch">
 			<image>
-				<reportElement x="18" y="0" width="161" height="78" uuid="66d08cda-7299-4323-9713-7efede6314cb"/>
+				<reportElement x="18" y="9" width="161" height="78" uuid="66d08cda-7299-4323-9713-7efede6314cb"/>
 				<imageExpression><![CDATA["ricaldone.png"]]></imageExpression>
 			</image>
 			<staticText>
@@ -54,14 +58,35 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ESTADISTICAS DE CITA POR AÑO]]></text>
+				<text><![CDATA[ESTADÍSTICAS DE CITAS]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="296" y="51" width="132" height="27" uuid="a725eb0a-0cc3-496c-9d3b-dd82a41c0a61"/>
-				<textElement>
+			<staticText>
+				<reportElement x="124" y="59" width="116" height="28" uuid="4ff984d9-9db8-4727-a4af-9290ce7e76f1"/>
+				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{anioCitas}]]></textFieldExpression>
+				<text><![CDATA[Fecha inicio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="240" y="59" width="93" height="28" uuid="1ed62972-d3bc-45bb-9f81-8d56e4cfa2b6"/>
+				<textElement>
+					<font fontName="Calibri" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fech_inic_cita_nuev}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="59" width="116" height="28" uuid="2c9c9184-fb3a-4028-a385-2d2a3756424d"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha final:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="449" y="59" width="93" height="28" uuid="78a6c3b3-1712-425c-8971-d2780307aae7"/>
+				<textElement>
+					<font fontName="Calibri" size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fech_fin_cita_nuev}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -79,8 +104,8 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="16" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CANTIDAD DE CITAS]]></text>
 			</staticText>
@@ -93,17 +118,17 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="16" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CLASIFICACIÓN]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="33" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement style="table" x="124" y="0" width="162" height="33" backcolor="#F7F7F7" uuid="dd6c0a64-ff87-4e1a-bafa-0351dbf1a749"/>
+				<reportElement style="table" x="124" y="0" width="162" height="23" backcolor="#F7F7F7" uuid="dd6c0a64-ff87-4e1a-bafa-0351dbf1a749"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -111,13 +136,13 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="16" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="16" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="table" x="286" y="0" width="158" height="33" backcolor="#F7F7F7" uuid="097b0d4a-004e-4c6a-829b-db68d6445ace"/>
+				<reportElement style="table" x="286" y="0" width="158" height="23" backcolor="#F7F7F7" uuid="097b0d4a-004e-4c6a-829b-db68d6445ace"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -125,8 +150,8 @@ WHERE(`cambio_cita`.`esta_camb_cita`= 1 or `cambio_cita`.`esta_camb_cita`= 2 or 
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="16" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="16" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ESTADO}]]></textFieldExpression>
 			</textField>

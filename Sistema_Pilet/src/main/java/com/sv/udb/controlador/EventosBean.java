@@ -39,6 +39,8 @@ public class EventosBean implements Serializable{
     @Inject
     private LoginBean logiBean;  
     
+    @Inject
+    private GlobalAppBean globalAppBean;
     
     @EJB
     private EventoFacadeLocal FCDEEven;    
@@ -66,6 +68,8 @@ public class EventosBean implements Serializable{
     public boolean isGuardar() {
         return guardar;
     }
+    
+  
     
     @PostConstruct
     public void init()
@@ -126,6 +130,7 @@ public class EventosBean implements Serializable{
                 FCDEEven.create(this.objeEven);
                 if(listEven == null)listEven = new ArrayList<Evento>();
                 this.listEven.add(this.objeEven);
+                //globalAppBean.addNotificacion(this.logiBean.getObjeUsua().getCodiUsua(), "SE HA GUARDADO UN EVENTO"  , "Modulo citas", "");
                 log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Eventos"+"-"+"Se ha agregado un evento con codigo: " + objeEven.getCodiEvent());
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                 limpForm();
