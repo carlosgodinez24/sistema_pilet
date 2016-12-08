@@ -195,6 +195,7 @@ public class TipoEstadoBean implements Serializable{
     {
         try
         {
+         
             this.listTipoEsta = FCDETipo.findAllN();
             this.listTipoEstaAct = FCDETipo.findAllAct();
             //log.info("Tipo Estados Consultados");

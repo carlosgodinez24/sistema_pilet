@@ -180,7 +180,8 @@ public class TipoDocumentoBean implements Serializable{
     {
         try
         {
-            this.listTipo = FCDETipo.findAll();
+            listTipo = FCDETipo.findAllActive();
+            //this.listTipo = FCDETipo.findAll();
             //log.info("Tipos de Documentos Consultados");
         }
         catch(Exception ex)

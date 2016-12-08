@@ -443,7 +443,7 @@ and open the template in the editor.
                                             <h:form id="FormRegi" class="form-horizontal">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"/></button>
-                                                    <h4 class="modal-title">Gestión de Detalle Beca</h4>
+                                                    <h4 class="modal-title">Gestión de tipo de beca</h4>
                                                 </div>
                                                 <div class="modal-body" style="padding-top: 2px;">
                                                     <fieldset class="col-md-12">
@@ -593,7 +593,7 @@ and open the template in the editor.
                                                    
                                                             <div class="form-group input-group-xs">
                                                                 <h:outputLabel  for="fech" value="Fecha "/>
-                                                                <h:inputText id="fech" value="#{becasBean.objeDocu.fechDocu}" class="form-control">
+                                                                <h:inputText id="fech" disabled="true" value="#{becasBean.objeDocu.fechDocu}" class="form-control">
                                                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                                                 </h:inputText>
                                                                 <h:message for="fech" errorClass="field-error" />
@@ -944,7 +944,7 @@ and open the template in the editor.
                                                         <div class="form-group input-group-xs">
                                                         <h:outputLabel  for="tipoEsta" value="Nuevo estado: "/>
                                                         <h:selectOneMenu id="tipoEsta" value="#{becasBean.objeBeca.codiTipoEsta}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
-                                                            <f:selectItems value="#{tipoEstadoBean.listTipoEsta}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
+                                                            <f:selectItems value="#{tipoEstadoBean.listTipoEstaAct}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst}"/>
                                                             <f:converter converterId="PooConv"/>
                                                         </h:selectOneMenu>         
                                                         <h:message for="tipoEsta" errorClass="field-error" />

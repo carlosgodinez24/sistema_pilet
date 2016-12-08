@@ -505,7 +505,7 @@ and open the template in the editor.
                                                         <p:ajax listener="#{empresaBean.limpFormDocu()}" update=":ContDocu" global="true" 
                                                                 oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE();" />
 
-                                                        <i class="fa fa-plus"/> Agregar un nuevo documento al alumno
+                                                        <i class="fa fa-plus"/> Agregar un nuevo documento a esta empresa
                                                     </h:commandLink>
 
                                                 </h:form>
@@ -566,7 +566,7 @@ and open the template in the editor.
                                                    
                                                             <div class="form-group input-group-xs">
                                                                 <h:outputLabel  for="fech" value="Fecha "/>
-                                                                <h:inputText id="fech" value="#{empresaBean.objeDocu.fechDocu}" class="form-control">
+                                                                <h:inputText id="fech" disabled="true"  value="#{empresaBean.objeDocu.fechDocu}" class="form-control">
                                                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                                                 </h:inputText>
                                                                 <h:message for="fech" errorClass="field-error" />

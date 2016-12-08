@@ -209,7 +209,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fech" value="Fecha Entrada "/>
                                             <h:message for="fech" errorClass="field-error" />
-                                            <h:inputText id="fech" value="#{transaccionBean.objeTran.fechTran}" class="form-control">
+                                            <h:inputText id="fech"  disabled="true"  value="#{transaccionBean.objeTran.fechTran}" class="form-control">
                                                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                             </h:inputText>
                                         </div>
@@ -290,7 +290,7 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="fechSali" value="Fecha Entrada "/>
                                             <h:message for="fechSali" errorClass="field-error" />
-                                            <h:inputText id="fechSali" value="#{transaccionBean.objeTran.fechTran}" class="form-control">
+                                            <h:inputText id="fechSali"  disabled="true"  value="#{transaccionBean.objeTran.fechTran}" class="form-control">
                                                 <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                             </h:inputText>
                                         </div>

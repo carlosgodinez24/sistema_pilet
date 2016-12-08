@@ -188,7 +188,8 @@ public class TipoRetiroBean implements Serializable{
     {
         try
         {
-            this.listTipoReti = FCDETipoReti.findAll();
+            this.listTipoReti = FCDETipoReti.findAllActive();
+            //this.listTipoReti = FCDETipoReti.findAll();
             //log.info("Tipos de Becas Consultados");
         }
         catch(Exception ex)
