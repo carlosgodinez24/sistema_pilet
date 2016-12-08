@@ -26,8 +26,6 @@ $(document).ready(function() {
         $("#TablRegi").bootstrapTable('uncheckAll');
         $("[data-id='chck']").bootstrapToggle();
     });
-
-    
     INIT_OBJE();
     $("#TablRegi1").initBootTableRole();
     $("[data-id='chck']").bootstrapToggle();
@@ -44,7 +42,6 @@ function RECA()
 {
     $("[data-id='chck']").bootstrapToggle();
 }
-
 
 function INIT_OBJE_MODA()
 {

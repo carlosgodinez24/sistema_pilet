@@ -37,7 +37,10 @@ public class RolBean implements Serializable {
 
     //Bean de session
     @Inject
-    private LoginBean logiBean; 
+    private LoginBean logiBean;
+    
+    @Inject
+    private EnvioCorreosBean correosBean;
     //Campos de la clase
     @EJB
     private RolFacadeLocal FCDERoles;
