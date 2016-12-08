@@ -190,10 +190,12 @@ and open the template in the editor.
                                         </h:panelGroup>
                                         <div class="input-group col-xs-12">
                                             <br/>
-                                            <h:outputText value="Motivo Urgente: " style="font-weight: bold;" />
+                                            <h:outputText value="Solicitar en otra fecha y hora: " style="font-weight: bold;" />
                                             <p:selectBooleanCheckbox value="#{citasBean.motiUrge}">
                                                 <p:ajax process="@this" oncomplete="INIT_OBJE_MODA();" update="@form" listener="#{citasBean.setUrgeCita()}" />
                                             </p:selectBooleanCheckbox>
+                                            <br/>
+                                            <h:outputText value="Esperar respuesta del docente, pueda que no esté disponible" />
                                             <br/><br/>
                                         </div>
                                         <h:panelGroup rendered="#{!citasBean.motiUrge}">

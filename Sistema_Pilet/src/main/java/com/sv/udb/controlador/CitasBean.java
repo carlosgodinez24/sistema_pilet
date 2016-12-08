@@ -867,7 +867,7 @@ public class CitasBean implements Serializable{
      
      public void setUrgeCita(){
          if(motiUrge){
-             FacesContext.getCurrentInstance().addMessage("FormRegi:moti", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Especificar Urgencia, y Sugerir Horario",  null));
+             FacesContext.getCurrentInstance().addMessage("FormRegi:moti", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Especificar Urgencia, Motivo, y Horario Solicitado",  null));
          }
      }
      
