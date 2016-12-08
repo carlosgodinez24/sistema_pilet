@@ -26,20 +26,20 @@ and open the template in the editor.
                     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                         <span class="sr-only">Toggle navigation</span>
                     </a>
-
+                    <h:panelGroup id="paneNoti">
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
                             <li class="dropdown notifications-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell-o"></i>
-                                    <span id="spanNoti" class="label label-warning">#{loginBean.listNoti.size()}</span>
+                                    <span id="spanNoti" class="label label-warning">#{loginBean.contNoti}</span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li class="header">#{loginBean.listNoti.size()} notificaciones</li>
+                                    <li class="header">#{loginBean.contNoti} notificaciones</li>
                                     <li>
                                         <ul id="resultado" class="menu">
                                             <h:form>
-                                                <p:remoteCommand name="consNoti" actionListener="#{notificacionBean.cons()}" update=":FormNoti" 
+                                                <p:remoteCommand name="consNoti" actionListener="#{notificacionBean.cons()}" update=":FormNoti :paneNoti" 
                                                          oncomplete="$('#ModaFormNoti').modal('show');" global="true"/>
                                                 <ui:repeat var="noti" varStatus="status" value="#{loginBean.listNoti}">
                                                     <li>
@@ -100,6 +100,7 @@ and open the template in the editor.
                             </li>
                         </ul>
                     </div>
+                    </h:panelGroup>
                 </nav>
             </header>
         <script type="text/javascript">
