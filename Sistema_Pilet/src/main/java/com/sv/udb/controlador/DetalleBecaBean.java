@@ -13,6 +13,8 @@ import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.SolicitudBeca;
 import com.sv.udb.modelo.TipoBeca;
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -36,6 +38,7 @@ public class DetalleBecaBean implements Serializable{
     @EJB
     private DetalleBecaFacadeLocal FCDEDetaBeca;
     private DetalleBeca objeDetaBeca;
+   
     private List<DetalleBeca> listDetaBeca;
     private boolean guardar;      
     private static Logger log = Logger.getLogger(DetalleBean.class);
@@ -64,33 +67,7 @@ public class DetalleBecaBean implements Serializable{
         this.guardar = guardar;
     }
     
-    
-    //Manejo de combobox
-    private Beca objeCombPadr;
-    //private SolicitudBeca objeCombPadr;
-    private List<TipoBeca> listTipoBeca;
-
-    public Beca getObjeCombPadr() {
-        return objeCombPadr;
-    }
-
-    public void setObjeCombPadr(Beca objeCombPadr) {
-        this.objeCombPadr = objeCombPadr;
-    }
-    public List<TipoBeca> getListTipoBeca() {
-        return listTipoBeca;
-    }
-
-    public void setListTipoBeca(List<TipoBeca> listTipoBeca) {
-        this.listTipoBeca = listTipoBeca;
-    }
-    
-    public void onAlumBecaSelect(){
-        
-        listTipoBeca = FCDETipoBeca.findTipos(objeCombPadr.getCodiSoliBeca().getCodiGrad().getNivelGrad());
-    }
-    
-    DetalleBeca vali;
+  
     
     /**
      * Creates a new instance of DetalleBecaBean
@@ -98,23 +75,17 @@ public class DetalleBecaBean implements Serializable{
     public DetalleBecaBean() {
     }
     
+    private BecasBean objeBeca;
+     
     @PostConstruct
     public void init()
     {
-        this.objeDetaBeca = new DetalleBeca();
-        this.vali = new DetalleBeca();
-        this.guardar = true;
-        this.consTodo();
-        
-        if( FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean") != null)
-        {
-            BecaSoliBean asd = (BecaSoliBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becaSoliBean");
-           Beca a = new Beca();
-         
-            this.objeDetaBeca.setCodiBeca(asd.getObjeBeca());
-            System.out.println(this.objeDetaBeca.getCodiBeca().getCodiBeca());
+        this.objeDetaBeca = new DetalleBeca();       
+        this.guardar = true;                
+          if (FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean") != null) {
+            objeBeca = (BecasBean) FacesContext.getCurrentInstance().getViewRoot().getViewMap().get("becasBean");
         }
-         
+          this.consTodo();
     }
     
     public void limpForm()
@@ -125,58 +96,13 @@ public class DetalleBecaBean implements Serializable{
     
     public void guar()
     {
-        boolean guardarDeta;
+         boolean guardarDeta;
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-//            if (this.objeDetaBeca.getCantMese() > 0) {
-//                //Proceso normal
-//                switch (this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca()) {
-//                    case 1:
-//                        //Matricula
-//                        if (this.objeDetaBeca.getCantMese() > 1) {
-//                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar matrícula más de una vez')");
-//                            guardarDeta = false;
-//                        } else {
-//                            guardarDeta = true;
-//                        }
-//                        break;
-//                    case 2:
-//                        //Mensualidad
-//                        if (this.objeDetaBeca.getCantMese() > 11) {
-//                            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No se puede entregar más de 11 mensualidades')");
-//                            guardarDeta = false;
-//                        } else {
-//                            guardarDeta = true;
-//                        }
-//                        break;
-//                    case 3:
-//                        guardarDeta = true;
-//                        break;
-//                    default:
-//                        guardarDeta = false;
-//                        break;
-//                }
-//                if (guardarDeta) {
-//                    
-//                      this.objeDetaBeca.setCodiBeca(objeCombPadr);
-//                      this.objeDetaBeca.setEstaDetaBeca(1);
-//                      this.FCDEDetaBeca.create(objeDetaBeca);
-//                      this.listDetaBeca.add(this.objeDetaBeca);
-//                      this.limpForm();
-////                    System.out.println("AQUIIIIIIIIII "+this.objeCombPadr.getCodiBeca());
-////                    this.objeDetaBeca.setEstaDetaBeca(1);
-////                    FCDEDetaBeca.create(this.objeDetaBeca);
-////                    this.listDetaBeca.add(this.objeDetaBeca);
-////                    this.limpForm();
-//                    ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-//                    log.info("Detalle Guardado");
-//                }
-//            } else {
-//                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'La cantidad de meses no puede ser 0')");
-//            }
             if (this.objeDetaBeca.getCantMese() > 0) 
-            {
+            {        
+                System.out.println(this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca());
                 switch (this.objeDetaBeca.getCodiTipoBeca().getTipoTipoBeca()) {
                     case 1:
                         //Matricula
@@ -203,43 +129,37 @@ public class DetalleBecaBean implements Serializable{
                         guardarDeta = false;
                         break;
                 }
-                System.out.println(guardarDeta);
-                System.out.println("AQUI VE"+this.objeCombPadr.getCodiBeca());
-                this.objeDetaBeca.setCodiBeca(objeCombPadr);
-                System.out.println("AQUI VE"+this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+                this.objeDetaBeca.setCodiBeca(this.objeBeca.getObjeBeca());
                 if (guardarDeta) {
-                    System.out.println("Resultadisimo:"+this.FCDEDetaBeca.validar(this.objeCombPadr.getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca()));
-                    int resuVali=this.FCDEDetaBeca.validar(this.objeCombPadr.getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
-                    System.out.println("Estoy apunto de entrar en una validación");
+                    int resuVali=this.FCDEDetaBeca.validar(this.objeBeca.getObjeBeca().getCodiBeca(), this.objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());                 
                     if(resuVali>= 1)
                     {
-                        System.out.println("Entro en la validacion");
                         ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El alumno ya tiene asignado este tipo de beca.')");
                     }
                     else
                     {
-                        System.out.println("Pase");
-                        this.objeDetaBeca.setCodiBeca(objeCombPadr);
+                        this.objeDetaBeca.setCodiBeca(this.objeBeca.getObjeBeca());
                         this.objeDetaBeca.setEstaDetaBeca(1);
                         this.FCDEDetaBeca.create(objeDetaBeca);
+                        if(this.listDetaBeca == null)
+                            {
+                                this.listDetaBeca = new ArrayList<>();
+                            }
                         this.listDetaBeca.add(this.objeDetaBeca);
                         this.limpForm();
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                         log.info("Detalle Guardado");
                     }
                 }
-//                this.objeDetaBeca.setCodiBeca(objeCombPadr);
-//                this.objeDetaBeca.setEstaDetaBeca(1);
-//                this.FCDEDetaBeca.create(objeDetaBeca);
-//                this.listDetaBeca.add(this.objeDetaBeca);
-//                this.limpForm(); 
+                else
+                {
+                    ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+                }
             }
             else 
             {
                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'La cantidad de meses no puede ser 0')");
             }
-                    
-            
         }
         catch(Exception ex)
         {
@@ -297,12 +217,23 @@ public class DetalleBecaBean implements Serializable{
             
         }
     }
+     private List<TipoBeca> listTipoBeca;
+
+    public List<TipoBeca> getListTipoBeca() {
+        return listTipoBeca;
+    }
+
+    public void setListTipoBeca(List<TipoBeca> listTipoBeca) {
+        this.listTipoBeca = listTipoBeca;
+    }
     
     public void consTodo()
     {
-        try
+        try          
         {
-            this.listDetaBeca = FCDEDetaBeca.findAll();
+            System.out.println("Codigo beca: "+ objeBeca.getObjeBeca().getCodiBeca());
+            this.listDetaBeca = FCDEDetaBeca.findByBeca(objeBeca.getObjeBeca().getCodiBeca());            
+            listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getObjeBeca().getCodiSoliBeca().getCodiGrad().getNivelGrad());
             log.info("Detalles Consultados");
         }
         catch(Exception ex)
@@ -323,6 +254,8 @@ public class DetalleBecaBean implements Serializable{
         try
         {
             this.objeDetaBeca = FCDEDetaBeca.find(codi);
+            System.out.println("Detalle:"+objeDetaBeca.getCodiTipoBeca().getCodiTipoBeca());
+           System.out.println("Meses"+objeDetaBeca.getCantMese());
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeDetaBeca.getCantMese()) + "')");

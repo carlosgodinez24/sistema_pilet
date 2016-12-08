@@ -32,6 +32,23 @@ public class BecaFacade extends AbstractFacade<Beca> implements BecaFacadeLocal 
     }
     
     @Override
+    public Beca findLast()
+    {
+        Query q = getEntityManager().createNativeQuery("select * from beca order by beca.fech_inic DESC limit 1", Beca.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (Beca)resu.get(0);
+    }
+    
+    @Override
+    public Beca findBeca(Object id)
+    {
+        Query q = getEntityManager().createNativeQuery("select * from beca where codi_beca = ?1", Beca.class);
+        q.setParameter(1, id);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (Beca)resu.get(0);
+    }
+    
+    @Override
     public Beca findSoli(Object id)
     {
         Query q = getEntityManager().createNativeQuery("SELECT * FROM beca where codi_soli_beca = ?1", Beca.class);
