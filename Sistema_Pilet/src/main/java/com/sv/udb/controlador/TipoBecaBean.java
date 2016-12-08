@@ -131,6 +131,11 @@ public class TipoBecaBean implements Serializable{
                     ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                     //log.info("Tipo Beca Guardado");
                 }
+                else
+                {
+                     ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Hubo un problema en guardar el tipo de beca)"); 
+                }
+                
             } else {
                 ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El descuento debe ser mayor a 0')"); 
             }

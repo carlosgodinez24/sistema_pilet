@@ -75,7 +75,7 @@ and open the template in the editor.
                                         <div id="toolTablRegi">
                                             <h:form>
                                                 <!--Form exclusivo para los remotos-->
-                                                 <button onclick="elimObjeEmpr(); return false;">Hola Mundo</button>
+                                                 <!-- <button onclick="elimObjeEmpr(); return false;">Hola Mundo</button> -->
                                                 <p:remoteCommand name="consObje" actionListener="#{empresaBean.cons()}" oncomplete="INIT_OBJE();" update=":container"/>
                                                 <div class="btn-group">
                                                 <h:commandLink id="btonNuev" class="btn btn-success">
@@ -344,11 +344,11 @@ and open the template in the editor.
                                             </h:column>
                                             <h:column pt:data-sortable="true">
                                                 <f:facet name="header">Plazo Donacion</f:facet>
-                                                <h:outputText value="#{fila.plazDona}"/>
+                                                <h:outputText value="#{fila.plazDona} Meses"/>
                                             </h:column>
                                             <h:column pt:data-sortable="true">
                                                 <f:facet name="header">Cantidad cuota</f:facet>
-                                                <h:outputText value="#{fila.cantCuot}"/>
+                                                <h:outputText value="$#{fila.cantCuot}"/>
                                             </h:column>
                                             <h:column pt:data-sortable="true">
                                                 <f:facet name="header">Monto Total</f:facet>
@@ -356,7 +356,7 @@ and open the template in the editor.
                                             </h:column>
                                             <h:column pt:data-sortable="true">
                                                 <f:facet name="header">Monto pendiente</f:facet>
-                                                <h:outputText value="#{fila.montPend}"/>
+                                                <h:outputText value="$#{fila.montPend}"/>
                                             </h:column>
                                             <h:column pt:data-sortable="true">
                                                 <f:facet name="header">Tipo de donación</f:facet>
@@ -409,24 +409,24 @@ and open the template in the editor.
                                                             <h:inputText id="nombDona" value="#{donacionBean.objeDona.nombDona}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs">
-                                                            <h:outputLabel  for="mens" value="Plazo Donacion"/>
+                                                            <h:outputLabel  for="mens" value="Plazo Donacion (Meses)"/>
                                                             <h:message for="mens" errorClass="field-error" />
                                                             <h:inputText id="mens" value="#{donacionBean.objeDona.plazDona}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="cant" value="Cantidad cuota"/>
                                                             <h:message for="cant" errorClass="field-error" />
-                                                            <h:inputText id="cant" value="#{donacionBean.objeDona.cantCuot}" class="form-control" />
+                                                            $<h:inputText id="cant" value="#{donacionBean.objeDona.cantCuot}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="mont" value="Monto total"/>
                                                             <h:message for="mont" errorClass="field-error" />
-                                                            <h:inputText  disabled="true" id="mont" value="#{donacionBean.objeDona.montTot}" class="form-control" />
+                                                            <h:inputText  disabled="true" id="mont" value="$#{donacionBean.objeDona.montTot}" class="form-control" />
                                                         </div>
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="montp" value="Monto pendiente"/>
                                                             <h:message for="montp" errorClass="field-error" />
-                                                            <h:inputText disabled="true" id="montp" value="#{donacionBean.objeDona.montPend}" class="form-control" />
+                                                            <h:inputText disabled="true" id="montp" value="$#{donacionBean.objeDona.montPend}" class="form-control" />
                                                         </div>                                                        
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="fech" value="Fecha Inicio "/>
@@ -484,31 +484,34 @@ and open the template in the editor.
                            
                         </div>
                         
-                        <!-- tabla de documentos -->   
+                        
+                            <!-- tabla de documentos -->   
                             <div class="col-md-12 col-xs-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">Documentos que posee esta empresa</div>
+                                    <div class="panel-heading">Documentos que posee este alumno</div>
                                     <div class="panel-body">
                                         <h:panelGroup id="ContDocu">
                                             <div id="toolTablDocu">
+                                               
                                                 <h:form id="FormDocu" class="form-horizontal" enctype="multipart/form-data">
                                                     <!--Form exclusivo para los remotos-->
-                                                    <p:remoteCommand name="consObjeDocu" actionListener="#{documentoBean.cons()}" update=":FormRegiDocu" 
+                                                    <p:remoteCommand name="consObjeDocu" actionListener="#{empresaBean.consDocu()}" update=":FormRegiDocu" 
                                                                      oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE(); INIT_OBJE_MODA();" global="true"/>
-                                                    <p:remoteCommand name="elimObjeDocu" actionListener="#{documentoBean.elim()}" update="@form :ContDocu" 
+                                                    <p:remoteCommand name="elimObjeDocu" actionListener="#{empresaBean.elimDocu()}" update="@form :ContDocu" 
                                                                      oncomplete="INIT_OBJE();" global="true">
 
                                                     </p:remoteCommand>
-                                                    <h:commandLink id="btonNuevDocu" class="btn btn-success">
-                                                        <p:ajax listener="#{documentoBean.limpForm()}" update=":ContDocu" global="true" 
+                                                    <h:commandLink id="btonNuev" class="btn btn-success">
+                                                        <p:ajax listener="#{empresaBean.limpFormDocu()}" update=":ContDocu" global="true" 
                                                                 oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE();" />
 
-                                                        <i class="fa fa-plus"/> Agregar un nuevo documento a esta empresa
+                                                        <i class="fa fa-plus"/> Agregar un nuevo documento al alumno
                                                     </h:commandLink>
 
                                                 </h:form>
+                                             
                                             </div>
-                                            <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{documentoBean.listDocu}"
+                                            <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{empresaBean.listDocuDocu}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablDocu"
                                                          styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                          pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -557,46 +560,46 @@ and open the template in the editor.
                                                     <h4 class="modal-title">Gestión documento</h4>
                                                 </div>
                                                 <div class="modal-body" style="padding-top: 2px;">
-                                                    <ui:fragment id="FragBusc" rendered="#{!documentoBean.showImag}">
+                                                    <ui:fragment id="FragBusc" rendered="#{!empresaBean.showImag}">
                                                         <fieldset class="col-md-12">
-                                                            <h:inputHidden id="codi" value="#{documentoBean.objeDocu.codiDocu}" />
+                                                            <h:inputHidden id="codi" value="#{empresaBean.objeDocu.codiDocu}" />
                                                    
                                                             <div class="form-group input-group-xs">
                                                                 <h:outputLabel  for="fech" value="Fecha "/>
-                                                                <h:inputText id="fech" value="#{documentoBean.objeDocu.fechDocu}" class="form-control">
+                                                                <h:inputText id="fech" value="#{empresaBean.objeDocu.fechDocu}" class="form-control">
                                                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                                                 </h:inputText>
                                                                 <h:message for="fech" errorClass="field-error" />
                                                             </div>
                                                             <div class="form-group input-group-xs">
                                                                 <h:outputLabel  for="tipo" value="Tipo de documento"/>
-                                                                <h:selectOneMenu id="tipo" value="#{documentoBean.objeDocu.codiTipoDocu}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
+                                                                <h:selectOneMenu id="tipo" value="#{empresaBean.objeDocu.codiTipoDocu}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                                     <f:selectItems value="#{tipoDocumentoBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDocu}" itemValue="#{lst}"/>
                                                                     <f:converter converterId="PooConv"/>
                                                                 </h:selectOneMenu>
                                                                 <h:message for="tipo" errorClass="field-error" />           
                                                             </div>
                                                             <div class="form-group input-group-xs">
-                                                                <c:if test="#{documentoBean.guardar}">
+                                                                <c:if test="#{empresaBean.guardarDocumento}">
                                                                     <h:outputLabel  for="file" value="Selecciona tu archivo"/>
-                                                                    <h:inputFile pt:data-id="file" value="#{documentoBean.file}" pt:multiple="true"/>
+                                                                    <h:inputFile pt:data-id="file" value="#{empresaBean.file}" pt:multiple="true"/>
                                                                 </c:if>
                                                             </div>
 
                                                         </fieldset>
                                                     </ui:fragment>
-                                                    <ui:fragment id="FragGrad" rendered="#{documentoBean.showImag}">
-                                                        <c:if test="#{!documentoBean.imagen}">
+                                                    <ui:fragment id="FragGrad" rendered="#{empresaBean.showImag}">
+                                                        <c:if test="#{!empresaBean.imagen}">
                                                             <div>
                                                                 <h:panelGroup>
-                                                                    <h:graphicImage height="500px" class="img-responsive" value="/images/?img=#{documentoBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
+                                                                    <h:graphicImage height="500px" class="img-responsive" value="/images/?img=#{empresaBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
                                                                 </h:panelGroup>
                                                             </div>
                                                         </c:if>
-                                                        <c:if test="#{documentoBean.imagen}">
+                                                        <c:if test="#{empresaBean.imagen}">
                                                             <div>
                                                                 <h:panelGroup>
-                                                                    <cs:PdfViewer id="demo" value="#{documentoBean.esto}" width="100%" height="500px"/>                                                                                                                                                                              
+                                                                    <cs:PdfViewer id="demo" value="#{empresaBean.esto}" width="100%" height="500px"/>                                                                                                                                                                              
                                                                 </h:panelGroup>
                                                             </div>
                                                         </c:if>
@@ -607,25 +610,25 @@ and open the template in the editor.
                                                     <div class="input-group-btn right" style="padding-top: 5px;">
                                                         <div class="btn-group">
                                                             <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                                <p:ajax listener="#{documentoBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                                <p:ajax listener="#{empresaBean.limpFormDocu()}" process="@form" update="@form" global="true"/>
                                                                 <i class="fa fa-mail-forward"/> Cerrar
                                                             </h:commandLink>
 
-                                                            <c:if test="#{documentoBean.guardar}">
-                                                                <h:commandLink id="btonSubira" class="btn btn-success btn-md" actionListener="#{documentoBean.guar()}">
+                                                            <c:if test="#{empresaBean.guardarDocumento}">
+                                                                <h:commandLink id="btonSubira" class="btn btn-success btn-md" actionListener="#{empresaBean.guarDocu()}">
                                                                     <f:ajax execute="@all" render="@form :ContDocu" onevent="INIT_OBJE" />
                                                                     <i class="fa fa-cloud-upload"/> Subir
                                                                 </h:commandLink>
                                                             </c:if>
 
-                                                            <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==false}">
+                                                            <c:if test="#{empresaBean.guardarDocumento == false and empresaBean.showImag==false}">
                                                                 <h:commandLink id="btonMostBusc" class="btn btn-default btn-md">
-                                                                    <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
-                                                                    <i class="fa fa-chevron-down"/> Ver #{documentoBean.tokens}
+                                                                    <p:ajax listener="#{empresaBean.toogImag()}" process="@this" update="@form" global="true"/>
+                                                                    <i class="fa fa-chevron-down"/> Ver #{empresaBean.tokens}
                                                                 </h:commandLink>
 
 
-                                                                <h:outputLink id="btonElimDocu" class="btn btn-danger" rendered="#{!documentoBean.guardar}" value="#" pt:data-placement="left"
+                                                                <h:outputLink id="btonElimDocu" class="btn btn-danger" rendered="#{!empresaBean.guardarDocumento}" value="#" pt:data-placement="left"
                                                                               pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                                               pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
@@ -635,10 +638,10 @@ and open the template in the editor.
 
                                                             </c:if>
 
-                                                            <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==true}">
+                                                            <c:if test="#{empresaBean.guardarDocumento == false and empresaBean.showImag==true}">
                                                                 <h:commandLink id="btonOculEsta" class="btn btn-default btn-md">
 
-                                                                    <p:ajax listener="#{documentoBean.toogImag}" oncomplete="INIT_OBJE_FILE();" process="@this" update="@form" global="true"/>
+                                                                    <p:ajax listener="#{empresaBean.toogImag}" oncomplete="INIT_OBJE_FILE();" process="@this" update="@form" global="true"/>
                                                                     <i class="fa fa-undo"/> Regresar
                                                                 </h:commandLink>
                                                             </c:if>

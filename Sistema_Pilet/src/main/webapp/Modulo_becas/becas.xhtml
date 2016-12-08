@@ -522,14 +522,14 @@ and open the template in the editor.
                                                 <ui:fragment id="fragFormDocu" rendered="#{!becasBean.alum}">
                                                 <h:form id="FormDocu" class="form-horizontal" enctype="multipart/form-data">
                                                     <!--Form exclusivo para los remotos-->
-                                                    <p:remoteCommand name="consObjeDocu" actionListener="#{documentoBean.cons()}" update=":FormRegiDocu" 
+                                                    <p:remoteCommand name="consObjeDocu" actionListener="#{becasBean.consDocu()}" update=":FormRegiDocu" 
                                                                      oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE(); INIT_OBJE_MODA();" global="true"/>
-                                                    <p:remoteCommand name="elimObjeDocu" actionListener="#{documentoBean.elim()}" update="@form :ContDocu" 
+                                                    <p:remoteCommand name="elimObjeDocu" actionListener="#{becasBean.elimDocu()}" update="@form :ContDocu" 
                                                                      oncomplete="INIT_OBJE();" global="true">
 
                                                     </p:remoteCommand>
                                                     <h:commandLink id="btonNuev" class="btn btn-success">
-                                                        <p:ajax listener="#{documentoBean.limpForm()}" update=":ContDocu" global="true" 
+                                                        <p:ajax listener="#{becasBean.limpFormDocu()}" update=":ContDocu" global="true" 
                                                                 oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE();" />
 
                                                         <i class="fa fa-plus"/> Agregar un nuevo documento al alumno
@@ -538,7 +538,7 @@ and open the template in the editor.
                                                 </h:form>
                                                     </ui:fragment>
                                             </div>
-                                            <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{documentoBean.listDocu}"
+                                            <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{becasBean.listDocuDocu}"
                                                          var="fila" class="boottable" pt:data-toolbar="#toolTablDocu"
                                                          styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
                                                          pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
@@ -587,46 +587,46 @@ and open the template in the editor.
                                                     <h4 class="modal-title">Gestión documento</h4>
                                                 </div>
                                                 <div class="modal-body" style="padding-top: 2px;">
-                                                    <ui:fragment id="FragBusc" rendered="#{!documentoBean.showImag}">
+                                                    <ui:fragment id="FragBusc" rendered="#{!becasBean.showImag}">
                                                         <fieldset class="col-md-12">
-                                                            <h:inputHidden id="codi" value="#{documentoBean.objeDocu.codiDocu}" />
+                                                            <h:inputHidden id="codi" value="#{becasBean.objeDocu.codiDocu}" />
                                                    
                                                             <div class="form-group input-group-xs">
                                                                 <h:outputLabel  for="fech" value="Fecha "/>
-                                                                <h:inputText id="fech" value="#{documentoBean.objeDocu.fechDocu}" class="form-control">
+                                                                <h:inputText id="fech" value="#{becasBean.objeDocu.fechDocu}" class="form-control">
                                                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
                                                                 </h:inputText>
                                                                 <h:message for="fech" errorClass="field-error" />
                                                             </div>
                                                             <div class="form-group input-group-xs">
                                                                 <h:outputLabel  for="tipo" value="Tipo de documento"/>
-                                                                <h:selectOneMenu id="tipo" value="#{documentoBean.objeDocu.codiTipoDocu}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
+                                                                <h:selectOneMenu id="tipo" value="#{becasBean.objeDocu.codiTipoDocu}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
                                                                     <f:selectItems value="#{tipoDocumentoBean.listTipo}" var="lst" itemLabel="#{lst.nombTipoDocu}" itemValue="#{lst}"/>
                                                                     <f:converter converterId="PooConv"/>
                                                                 </h:selectOneMenu>
                                                                 <h:message for="tipo" errorClass="field-error" />           
                                                             </div>
                                                             <div class="form-group input-group-xs">
-                                                                <c:if test="#{documentoBean.guardar}">
+                                                                <c:if test="#{becasBean.guardarDocumento}">
                                                                     <h:outputLabel  for="file" value="Selecciona tu archivo"/>
-                                                                    <h:inputFile pt:data-id="file" value="#{documentoBean.file}" pt:multiple="true"/>
+                                                                    <h:inputFile pt:data-id="file" value="#{becasBean.file}" pt:multiple="true"/>
                                                                 </c:if>
                                                             </div>
 
                                                         </fieldset>
                                                     </ui:fragment>
-                                                    <ui:fragment id="FragGrad" rendered="#{documentoBean.showImag}">
-                                                        <c:if test="#{!documentoBean.imagen}">
+                                                    <ui:fragment id="FragGrad" rendered="#{becasBean.showImag}">
+                                                        <c:if test="#{!becasBean.imagen}">
                                                             <div>
                                                                 <h:panelGroup>
-                                                                    <h:graphicImage height="500px" class="img-responsive" value="/images/?img=#{documentoBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
+                                                                    <h:graphicImage height="500px" class="img-responsive" value="/images/?img=#{becasBean.objeDocu.rutaDocu}" />                                                                                                                                                                         
                                                                 </h:panelGroup>
                                                             </div>
                                                         </c:if>
-                                                        <c:if test="#{documentoBean.imagen}">
+                                                        <c:if test="#{becasBean.imagen}">
                                                             <div>
                                                                 <h:panelGroup>
-                                                                    <cs:PdfViewer id="demo" value="#{documentoBean.esto}" width="100%" height="500px"/>                                                                                                                                                                              
+                                                                    <cs:PdfViewer id="demo" value="#{becasBean.esto}" width="100%" height="500px"/>                                                                                                                                                                              
                                                                 </h:panelGroup>
                                                             </div>
                                                         </c:if>
@@ -637,25 +637,25 @@ and open the template in the editor.
                                                     <div class="input-group-btn right" style="padding-top: 5px;">
                                                         <div class="btn-group">
                                                             <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
-                                                                <p:ajax listener="#{documentoBean.limpForm()}" process="@form" update="@form" global="true"/>
+                                                                <p:ajax listener="#{becasBean.limpFormDocu()}" process="@form" update="@form" global="true"/>
                                                                 <i class="fa fa-mail-forward"/> Cerrar
                                                             </h:commandLink>
 
-                                                            <c:if test="#{documentoBean.guardar}">
-                                                                <h:commandLink id="btonSubira" class="btn btn-success btn-md" actionListener="#{documentoBean.guar()}">
+                                                            <c:if test="#{becasBean.guardarDocumento}">
+                                                                <h:commandLink id="btonSubira" class="btn btn-success btn-md" actionListener="#{becasBean.guarDocu()}">
                                                                     <f:ajax execute="@all" render="@form :ContDocu" onevent="INIT_OBJE" />
                                                                     <i class="fa fa-cloud-upload"/> Subir
                                                                 </h:commandLink>
                                                             </c:if>
 
-                                                            <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==false}">
+                                                            <c:if test="#{becasBean.guardarDocumento == false and becasBean.showImag==false}">
                                                                 <h:commandLink id="btonMostBusc" class="btn btn-default btn-md">
-                                                                    <p:ajax listener="#{documentoBean.toogImag()}" process="@this" update="@form" global="true"/>
-                                                                    <i class="fa fa-chevron-down"/> Ver #{documentoBean.tokens}
+                                                                    <p:ajax listener="#{becasBean.toogImag()}" process="@this" update="@form" global="true"/>
+                                                                    <i class="fa fa-chevron-down"/> Ver #{becasBean.tokens}
                                                                 </h:commandLink>
 
 
-                                                                <h:outputLink id="btonElimDocu" class="btn btn-danger" rendered="#{!documentoBean.guardar}" value="#" pt:data-placement="left"
+                                                                <h:outputLink id="btonElimDocu" class="btn btn-danger" rendered="#{!becasBean.guardarDocumento}" value="#" pt:data-placement="left"
                                                                               pt:data-toggle="confirmat ion" pt:data-btn-ok-label="Sí" pt:data-btn-ok-icon="fa fa-times"
                                                                               pt:data-btn-ok-class="btn-danger btn-xs" pt:data-btn-cancel-label="No" pt:data-btn-cancel-icon="fa fa-mail-forward"
                                                                               pt:data-btn-cancel-class="btn-default btn-xs" pt:data-title="¿Esta seguro que desea eliminar?"
@@ -665,10 +665,10 @@ and open the template in the editor.
 
                                                             </c:if>
 
-                                                            <c:if test="#{documentoBean.guardar == false and documentoBean.showImag==true}">
+                                                            <c:if test="#{becasBean.guardarDocumento == false and becasBean.showImag==true}">
                                                                 <h:commandLink id="btonOculEsta" class="btn btn-default btn-md">
 
-                                                                    <p:ajax listener="#{documentoBean.toogImag}" oncomplete="INIT_OBJE_FILE();" process="@this" update="@form" global="true"/>
+                                                                    <p:ajax listener="#{becasBean.toogImag}" oncomplete="INIT_OBJE_FILE();" process="@this" update="@form" global="true"/>
                                                                     <i class="fa fa-undo"/> Regresar
                                                                 </h:commandLink>
                                                             </c:if>

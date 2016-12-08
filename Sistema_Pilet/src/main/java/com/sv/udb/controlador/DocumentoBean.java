@@ -41,6 +41,7 @@ import org.primefaces.context.RequestContext;
 @Named(value = "documentoBean")
 @ViewScoped
 public class DocumentoBean implements Serializable{
+    
     @EJB
     private DocumentoFacadeLocal FCDEDocu;
     private Documento objeDocu;
@@ -277,7 +278,6 @@ public class DocumentoBean implements Serializable{
                 System.out.println(this.carnet);
             }*/
             this.listDocu = FCDEDocu.findAll();
-            this.listSoli = FCDESoli.findAllDocu();
            // log.info("Documentos Consultados");
         }
         catch(Exception ex)
