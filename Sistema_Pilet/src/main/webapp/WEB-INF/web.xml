@@ -15,9 +15,7 @@
     </context-param>
     <context-param>  
         <param-name>sendmail.USER</param-name>  
-        <param-value>sistemas.pilet@gmail.com</param-value>  
-        <param-name>webservices.URL</param-name>  
-        <param-value>http://www.opensv.tk:8080/WebService/MiServicio</param-value>  
+        <param-value>sistemas.pilet@gmail.com</param-value>           
     </context-param>
     <context-param>  
         <param-name>sendmail.PASSWORD</param-name>  
@@ -27,13 +25,9 @@
         <param-name>webservices.URL</param-name>  
         <param-value>http://www.opensv.tk:8080/WebService/MiServicio</param-value>  
     </context-param>
-    <context-param>  
-        <param-name>sendmail.USER</param-name>  
-        <param-value>sistemas.pilet@gmail.com</param-value>  
-    </context-param>
-    <context-param>  
-        <param-name>sendmail.PASSWORD</param-name>  
-        <param-value>$ricaldone2016</param-value>  
+     <context-param>  
+        <param-name>docBecas.URL</param-name>  
+        <param-value>C:/Users/Ariel/Desktop/becas/</param-value>
     </context-param>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
