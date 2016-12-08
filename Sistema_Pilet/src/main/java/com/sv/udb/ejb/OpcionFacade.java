@@ -35,6 +35,13 @@ public class OpcionFacade extends AbstractFacade<Opcion> implements OpcionFacade
         super(Opcion.class);
     }
 
+    @Override
+    public Opcion findLast()
+    {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM `opcion` ORDER BY codi_opci DESC LIMIT 1", Opcion.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (Opcion)resu.get(0);
+    }
     
     @Override
     public List<Opcion> findAllActive() {

@@ -30,7 +30,13 @@ public class PreguntaFacade extends AbstractFacade<Pregunta> implements Pregunta
         return em;
     }
     
-    
+    @Override
+    public Pregunta findLast()
+    {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM `pregunta` ORDER BY codi_preg DESC LIMIT 1", Pregunta.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (Pregunta)resu.get(0);
+    }
        
     
     @Override
