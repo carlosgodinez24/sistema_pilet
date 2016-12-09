@@ -51,7 +51,7 @@ and open the template in the editor.
                 <div class="col-md-12 col-xs-12">
                     <div class="panel panel-default">
 
-                        <p:schedule  timeFormat="hh:mm a" resizable="false" displayEventEnd="true" draggable="false" value="#{calendarioBean.objeCale}" clientTimeZone="local" locale="es" columnFormat="dddd DD/MM">
+                        <p:schedule  timeFormat="hh:mm a" resizable="false" displayEventEnd="true" draggable="false" value="#{calendarioBean.lazyEventModel}" clientTimeZone="local" locale="es" columnFormat="dddd DD/MM">
                             <p:ajax event="eventSelect" listener="#{calendarioBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                         </p:schedule>
 
