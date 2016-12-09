@@ -80,6 +80,10 @@ and open the template in the editor.
                                         <f:facet name="header">Código</f:facet>
                                         <h:outputText value="#{fila.codiSoli}"/>
                                     </h:column>
+                                    <h:column pt:data-sortable="true" pt:data-field="encargado">
+                                        <f:facet name="header">Encargado</f:facet>
+                                        <h:outputText value="#{usuarioBean.consNomb(fila.codiEnca)}"/>   
+                                    </h:column>
                                     <h:column pt:data-sortable="true" pt:data-field="depa">
                                         <f:facet name="header">Departamento</f:facet>
                                         <h:outputText value="#{fila.codiDepa.nombDepa}"/>   
@@ -271,6 +275,7 @@ and open the template in the editor.
                                             <h:outputLabel  for="punt" value="Puntuación: "/> 
                                             <h:message for="punt" errorClass="field-error" />
                                             <p:rating id="punt" value="#{evaluacionResolucionesBean.objeEvalReso.puntEvalReso}" class="form-control" />
+                                            <p>✰Malo, ✰✰Regular, ✰✰✰Bueno, ✰✰✰✰Muy Bueno, ✰✰✰✰Exelente</p>
                                         </div>
                                     </fieldset>
                                 </div>
@@ -278,8 +283,12 @@ and open the template in the editor.
                                     <div class="input-group-btn right" style="padding-top: 5px;">
                                         <div class="btn-group">
                                             <h:commandLink id="btonGuar" class="btn btn-success" pt:data-dismiss="modal">
-                                                <p:ajax listener="#{evaluacionResolucionesBean.guar(resolucionSolicitudBean.consReso(solicitudesBean.objeSoli.codiSoli))}" process="@form" update="@form :TablEval" global="true"/>
+                                                <p:ajax listener="#{evaluacionResolucionesBean.guar(resolucionSolicitudBean.consReso(solicitudesBean.objeSoli.codiSoli),false)}" process="@form" update="@form :TablEval" global="true"/>
                                                 <i class="fa fa-plus"/> Enviar evaluación
+                                            </h:commandLink>
+                                            <h:commandLink id="btonGuar2" class="btn btn-warning" pt:data-dismiss="modal">
+                                                <p:ajax listener="#{evaluacionResolucionesBean.guar(resolucionSolicitudBean.consReso(solicitudesBean.objeSoli.codiSoli),true)}" process="@form" update="@form :TablEval" global="true"/>
+                                                <i class="fa fa-plus"/> Enviar evaluación y reenviar solicitud
                                             </h:commandLink>
                                             <h:commandLink id="btonCanc" class="btn btn-default" pt:data-dismiss="modal">
                                                 <p:ajax listener="#{evaluacionResolucionesBean.limpForm()}" process="@form" update="@form" global="true"/>
