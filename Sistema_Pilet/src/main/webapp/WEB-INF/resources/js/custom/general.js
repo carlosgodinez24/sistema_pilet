@@ -49,9 +49,15 @@ function INIT_OBJE()
     INIT_OBJE_MODA();
 }
 
+function ESTO()
+{
+    $(".select").selectpicker();
+}
+
 function INIT_OBJE_MODA()
 {
     $("#FormRegi\\:btonElim").confirmation({container: '#FormRegi'});
      $("#FormRegi\\:fech").initDatePick();
      $("#FormRegi\\:fech2").initDatePick();
+     $(".select").selectpicker(); 
 }

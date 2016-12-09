@@ -36,6 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Respuesta.findByEstaResp", query = "SELECT r FROM Respuesta r WHERE r.estaResp = :estaResp")})
 public class Respuesta implements Serializable {
 
+  
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -160,5 +162,7 @@ public class Respuesta implements Serializable {
     public String toString() {
         return "com.sv.udb.modelo.Respuesta[ codiResp=" + codiResp + " ]";
     }
+
+ 
     
 }

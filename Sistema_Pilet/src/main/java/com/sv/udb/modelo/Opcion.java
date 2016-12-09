@@ -41,6 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Opcion.findByEstaOpci", query = "SELECT o FROM Opcion o WHERE o.estaOpci = :estaOpci")})
 public class Opcion implements Serializable {
 
+  
+
     @OneToMany(mappedBy = "codiOpci", fetch = FetchType.EAGER)
     private List<OpcionRespuesta> opcionRespuestaList;
 
@@ -174,5 +176,6 @@ public class Opcion implements Serializable {
     public void setOpcionRespuestaList(List<OpcionRespuesta> opcionRespuestaList) {
         this.opcionRespuestaList = opcionRespuestaList;
     }
+
     
 }

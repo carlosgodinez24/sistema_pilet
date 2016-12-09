@@ -73,6 +73,7 @@ public class BecaFacade extends AbstractFacade<Beca> implements BecaFacadeLocal 
         return resu.isEmpty() ? null : resu;
     }
     
+    
     @Override
     public List<Beca> findAllHisto()
     {

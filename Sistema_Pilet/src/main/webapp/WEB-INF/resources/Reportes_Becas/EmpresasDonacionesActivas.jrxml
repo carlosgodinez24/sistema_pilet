@@ -32,8 +32,8 @@
 				<text><![CDATA[Empresas y donaciones activas]]></text>
 			</staticText>
 			<image>
-				<reportElement x="21" y="4" width="60" height="50" uuid="ad43bd19-eafc-4944-a6a7-5b302cfeddbc"/>
-				<imageExpression><![CDATA["C:\\Users\\Ariel\\Documents\\NetBeansProjects\\sistema_pilet\\Sistema_Pilet\\src\\main\\webapp\\WEB-INF\\resources\\images\\ITR.png"]]></imageExpression>
+				<reportElement x="0" y="4" width="60" height="50" uuid="7b9befa2-a41b-4866-b704-a61694c3b77a"/>
+				<imageExpression><![CDATA["ITR.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

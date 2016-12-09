@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -7,6 +7,7 @@ package com.sv.udb.ejb;
 
 import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.SolicitudBeca;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -61,5 +62,22 @@ public class SolicitudBecaFacade extends AbstractFacade<SolicitudBeca> implement
         Query q = getEntityManager().createNativeQuery("SELECT * FROM solicitud_beca WHERE esta_soli_beca != 3 and esta_soli_beca != 2", SolicitudBeca.class);
         List resu = q.getResultList();
         return resu.isEmpty() ? null : resu;
+    }
+    
+    
+    
+    
+    @Override
+     public void updateAll(int idNuevo,int idViejo)
+     {
+        String query = "update seguimiento set seguimiento.codi_soli_beca = "+idNuevo+"  where seguimiento.codi_soli_beca = "+idViejo;
+        Query q = getEntityManager().createNativeQuery(query);
+        q.executeUpdate();
+         System.out.println("Query en soli: "+query);
+        
+        query = "update documento set documento.codi_soli_beca = "+idNuevo+" where documento.codi_soli_beca = "+idViejo;
+        q = getEntityManager().createNativeQuery(query);
+        q.executeUpdate();
+       
     }
 }

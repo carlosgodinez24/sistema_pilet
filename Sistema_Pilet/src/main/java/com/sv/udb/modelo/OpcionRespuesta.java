@@ -6,6 +6,7 @@
 package com.sv.udb.modelo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,6 +40,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "OpcionRespuesta.findByEstaOpci", query = "SELECT o FROM OpcionRespuesta o WHERE o.estaOpci = :estaOpci")})
 public class OpcionRespuesta implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "esta_opci")
+    private int estaOpci;
+    @OneToMany(mappedBy = "codiOpciResp", fetch = FetchType.EAGER)
+    private List<Respuesta> respuestaList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,8 +59,6 @@ public class OpcionRespuesta implements Serializable {
     @Size(max = 50)
     @Column(name = "desc_opci")
     private String descOpci;
-    @Column(name = "esta_opci")
-    private Integer estaOpci;
     @JoinColumn(name = "codi_opci", referencedColumnName = "codi_opci")
     @ManyToOne(fetch = FetchType.EAGER)
     private Opcion codiOpci;
@@ -126,6 +135,20 @@ public class OpcionRespuesta implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.OpcionRespuesta[ codiOpciResp=" + codiOpciResp + " ]";
+    }
+
+
+    public void setEstaOpci(int estaOpci) {
+        this.estaOpci = estaOpci;
+    }
+
+    @XmlTransient
+    public List<Respuesta> getRespuestaList() {
+        return respuestaList;
+    }
+
+    public void setRespuestaList(List<Respuesta> respuestaList) {
+        this.respuestaList = respuestaList;
     }
     
 }

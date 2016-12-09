@@ -86,12 +86,12 @@ public class TipoDocumentoBean implements Serializable{
             this.listTipo.add(this.objeTipo);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
-            log.info("Tipo Documento Guardado");
+            //log.info("Tipo Documento Guardado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -111,12 +111,12 @@ public class TipoDocumentoBean implements Serializable{
             FCDETipo.edit(this.objeTipo);
             this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Tipo Documento Modificado");
+            //log.info("Tipo Documento Modificado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -135,20 +135,43 @@ public class TipoDocumentoBean implements Serializable{
             this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
             this.objeTipo.setEstaTipoDocu(0);
             FCDETipo.edit(this.objeTipo);
-           // this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+            this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            log.info("Tipo Documento Eliminado");
+            //log.info("Tipo Documento Eliminado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
             
         }
     }
+    public void reActi()
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {
+            this.listTipo.remove(this.objeTipo); //Limpia el objeto viejo
+            this.objeTipo.setEstaTipoDocu(1);
+            FCDETipo.edit(this.objeTipo);
+            this.listTipo.add(this.objeTipo); //Agrega el objeto modificado
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            //log.info("Tipo Documento Eliminado");
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            //log.error(getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
     
     /**
      * Metodo que consulta todos los registros de la tabla Tipo Documento
@@ -157,13 +180,14 @@ public class TipoDocumentoBean implements Serializable{
     {
         try
         {
-            this.listTipo = FCDETipo.findAllActive();
-            log.info("Tipos de Documentos Consultados");
+            listTipo = FCDETipo.findAllActive();
+            //this.listTipo = FCDETipo.findAll();
+            //log.info("Tipos de Documentos Consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -184,12 +208,12 @@ public class TipoDocumentoBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeTipo.getNombTipoDocu()) + "')");
-            log.info("Tipo Documento Consultado");
+            //log.info("Tipo Documento Consultado");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
-            log.error(getRootCause(ex).getMessage());
+            //log.error(getRootCause(ex).getMessage());
         }
         finally
         {

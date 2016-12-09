@@ -27,6 +27,8 @@ public interface RespuestaFacadeLocal {
     boolean ReadIfCarnExis(String carnet);
     
     List<Respuesta> findAll();
+    
+    List<Respuesta> findAll(int codigo);
 
     List<Respuesta> findRange(int[] range);
 

@@ -75,6 +75,11 @@ function INIT_OBJE()
     INIT_OBJE_FILE();
     
 }
+
+function INIT_OBJE_DEMO()
+{
+    alert("ok");    
+}
 function INIT_OBJE_MODA()
 {
     try{$("#FormRegi\\:btonElim2").confirmation({container: '#FormRegi'});}catch(err){}
@@ -86,5 +91,5 @@ function INIT_OBJE_MODA()
     try{$("#FormRegi\\:fech2").initDatePick();}catch(err){}
     try{$("#FormSegu\\:fech").initDatePick();}catch(err){}
     try{$("#FormSegu\\:fech2").initDatePick();}catch(err){}
-  
+    $(".select").selectpicker();
 }

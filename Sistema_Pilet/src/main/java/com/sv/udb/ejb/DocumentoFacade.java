@@ -46,6 +46,7 @@ public class DocumentoFacade extends AbstractFacade<Documento> implements Docume
     
     @Override
     public List<Documento> findByEmpr(Object id) {
+        System.out.println("Codigo de la empresa :| "+id);
         String query="select * from documento where documento.codi_empr = ?1";
          Query q = getEntityManager().createNativeQuery(query,Documento.class);
         q.setParameter(1, id);

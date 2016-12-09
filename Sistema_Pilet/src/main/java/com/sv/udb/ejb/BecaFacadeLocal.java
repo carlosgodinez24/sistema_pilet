@@ -36,6 +36,7 @@ public interface BecaFacadeLocal {
     
     List<Beca> findAllActivos();
     
+    
     List<Beca> findAllDocu();
     
     List<Beca> findAllHisto();
