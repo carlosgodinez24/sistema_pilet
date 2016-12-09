@@ -35,6 +35,7 @@ import com.sv.udb.modelo.TipoEstado;
 import com.sv.udb.modelo.TipoRetiro;
 import com.sv.udb.modelo.UsuarioRol;
 import com.sv.udb.utils.Archivo;
+import com.sv.udb.utils.Conexion;
 import com.sv.udb.utils.DynamicField;
 import com.sv.udb.utils.pojos.DatosAlumnos;
 import java.io.BufferedInputStream;
@@ -47,6 +48,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.sql.Connection;
 import java.util.ArrayList;
 //import java.util.Base64;
 import java.util.Date;
@@ -88,6 +90,7 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
@@ -111,6 +114,9 @@ public class BecasBean implements Serializable{
     
     private static final long serialVersionUID = -5196715359527212082L;
     
+    @Inject
+    private GlobalAppBean globalAppBean; //Bean de aplicación (Instancia)
+    private byte[] docuRepo;
     
      @EJB
      private DocumentoFacadeLocal FCDEDocu;
@@ -282,6 +288,9 @@ public class BecasBean implements Serializable{
         return listSoliActivos;
     }
     
+    public byte[] getDocuRepo() {
+        return docuRepo;
+    }
     
     /**
      * Creates a new instance of BecaSoliBean
@@ -649,6 +658,22 @@ public class BecasBean implements Serializable{
             
         }
     }
+    
+    public void procVisi() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            params.put("Carnet", this.objeBeca.getCodiSoliBeca().getCarnAlum());
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/HistorialBeca.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
     public boolean consW()
     {
         boolean respFunc = false;

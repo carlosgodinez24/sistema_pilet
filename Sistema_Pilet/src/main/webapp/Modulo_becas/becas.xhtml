@@ -331,7 +331,7 @@ and open the template in the editor.
                                                         <i class="fa fa-edit"/> Activar
                                                     </h:commandLink>
                                                 </c:if>
-                                                <c:if test="#{(becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta gt 4)and becasBean.alum== false}">
+                                                <c:if test="#{(becasBean.objeBeca.codiTipoEsta.codiTipoEsta==1 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta==4 or becasBean.objeBeca.codiTipoEsta.codiTipoEsta gt 4)and becasBean.alum== false}">
                                                     <h:commandLink id="btondesa" class="btn btn-danger" >
                                                         <p:ajax global="true" oncomplete="$('#CancBeca').modal('show');"/>
                                                         <i class="fa fa-edit"/> Cancelar Beca
@@ -353,6 +353,12 @@ and open the template in the editor.
                                                     <h:commandLink id="btonSoci" class="btn btn-primary pull-right" >
                                                         <p:ajax listener="#{becasBean.toogSoci()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
                                                         <i class="fa fa-edit"/> Ver Estudio Socieconomico
+                                                    </h:commandLink>
+                                                </c:if>
+                                                <c:if test="#{!becasBean.guardar}">
+                                                    <h:commandLink id="btonRepo" class="btn btn-info pull-right" >
+                                                        <p:ajax oncomplete="PF('ModaRepo').show();" process="@form" listener="#{becasBean.procVisi()}"  update=":ModaRepoView"  global="true"/>
+                                                        <i class="fa fa-edit"/> Reporte Historial
                                                     </h:commandLink>
                                                 </c:if>
                                                 <c:if test="#{becasBean.guardar == true  and becasBean.alum== false}">
@@ -972,6 +978,13 @@ and open the template in the editor.
                             </div>
                             <!-- /Modal para condicionar/ cambiar de estados-->
                         </c:if>
+                        <div class="row">
+                            <p:dialog header="" widgetVar="ModaRepo" minHeight="40" width="1000px" style="z-index: 9999999;">
+                                <h:panelGroup id="ModaRepoView">
+                                    <cs:PdfViewer id="pdfViewer" value="#{becasBean.docuRepo}" width="100%" height="500px"/>
+                                </h:panelGroup>
+                            </p:dialog>
+                        </div>
                     </ui:fragment> <!--FIN DE LAS COSAS QUE PUEDEN GESTIONARSE DE LA FICHA DEL ALUMNO-->
                     <ui:fragment id="FragSeleEmpr" rendered="#{becasBean.showEmpr}">
                         <h:form class="form-horizontal">
