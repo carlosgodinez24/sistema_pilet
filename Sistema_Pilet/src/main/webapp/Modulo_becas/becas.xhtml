@@ -1018,7 +1018,14 @@ and open the template in the editor.
                                   
                                 </h:commandLink>
                             </h:panelGroup>
-                        </h:form>                    
+                            <h:commandLink id="btonSoci" class="btn btn-primary pull-right" >
+                                <p:ajax listener="#{becasBean.toogSoci()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
+                                <i class="fa fa-edit"/> Regresar
+                            </h:commandLink>
+                                               
+                        </h:form>      
+                        
+                                                    
                     </ui:fragment>
                 </h:panelGroup>
             </div>

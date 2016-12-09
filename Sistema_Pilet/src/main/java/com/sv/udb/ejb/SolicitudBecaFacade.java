@@ -79,5 +79,8 @@ public class SolicitudBecaFacade extends AbstractFacade<SolicitudBeca> implement
         q = getEntityManager().createNativeQuery(query);
         q.executeUpdate();
        
+         query = "update respuesta set respuesta.codi_soli_beca = "+idNuevo+" where respuesta.codi_soli_beca = "+idViejo;
+        q = getEntityManager().createNativeQuery(query);
+        q.executeUpdate();
     }
 }
