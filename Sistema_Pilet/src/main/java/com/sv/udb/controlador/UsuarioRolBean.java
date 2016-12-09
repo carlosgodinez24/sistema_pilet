@@ -109,7 +109,7 @@ public class UsuarioRolBean implements Serializable {
     {
         this.objeUsuaRole = new UsuarioRol();
         this.objeOldUsuaRole = new UsuarioRol();
-        this.guardar = true;        
+        this.guardar = true;
         
     }
     
@@ -179,6 +179,27 @@ public class UsuarioRolBean implements Serializable {
             }
             else
                ctx.execute("setMessage('MESS_WARN', 'Atención', 'Datos ya registrados')"); 
+        }
+        catch(Exception ex)
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+            log.error(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Error modificando Usuariorol: "+getRootCause(ex).getMessage());
+        }
+        finally
+        {
+            
+        }
+    }
+    
+    public void modiEsta(UsuarioRol obje)
+    {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try
+        {  
+                System.out.println(obje.getEstaUsuaRole());
+                FCDEUsuaRole.edit(obje);
+                log.info(logiBean.getObjeUsua().getCodiUsua()+"-"+"UsuarioRol"+"-"+"Usuariorol modificado: "+obje.getCodiUsuaRole());
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
         {
