@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EmpresasDonacionesCanceladas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0a46c3b0-4903-4ed4-b3fb-6314ef64792e">
 	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="238"/>
+	<property name="ireport.y" value="0"/>
 	<queryString>
 		<![CDATA[SELECT e.codi_empr, e.nomb_empr, d.mont_tot FROM empresa e INNER JOIN donacion d ON d.codi_empr = e.codi_empr WHERE d.esta_dona = 0]]>
 	</queryString>
@@ -29,7 +29,7 @@
 			</staticText>
 			<image>
 				<reportElement x="15" y="2" width="86" height="59" uuid="691cd493-4167-4d1d-8ff7-3bc075d7b9e2"/>
-				<imageExpression><![CDATA["/home/eduardo/NetBeansProjects/sistema_pilet/Sistema_Pilet/src/main/webapp/WEB-INF/resources/images/ITR.png"]]></imageExpression>
+				<imageExpression><![CDATA["ITR.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

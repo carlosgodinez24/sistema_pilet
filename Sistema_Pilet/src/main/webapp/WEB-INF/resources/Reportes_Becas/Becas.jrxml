@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Becas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c92363c5-7b6c-481d-b512-45e33f6cfeb1">
 	<property name="ireport.zoom" value="1.331000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="56"/>
+	<property name="ireport.y" value="0"/>
 	<queryString>
 		<![CDATA[SELECT b.codi_beca, sb.carn_alum, sb.nomb_alum, tb.nomb_tipo_beca FROM beca b INNER JOIN solicitud_beca sb ON b.codi_soli_beca = sb.codi_soli_beca INNER JOIN detalle_beca db ON b.codi_beca = db.codi_beca INNER JOIN tipo_beca tb ON db.codi_tipo_beca = tb.codi_tipo_beca WHERE sb.esta_soli_beca = 1]]>
 	</queryString>
@@ -65,7 +65,7 @@
 			</staticText>
 			<image>
 				<reportElement x="0" y="3" width="59" height="59" uuid="6d1b4ef9-e750-48f0-bcf1-df5fb51fb8ac"/>
-				<imageExpression><![CDATA["/home/eduardo/NetBeansProjects/sistema_pilet/Sistema_Pilet/src/main/webapp/WEB-INF/resources/images/ITR.png"]]></imageExpression>
+				<imageExpression><![CDATA["ITR.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

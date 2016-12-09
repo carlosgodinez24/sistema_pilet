@@ -27,7 +27,7 @@ import org.primefaces.context.RequestContext;
  */
 @Named(value = "reportesBean")
 @ViewScoped
-public class ReportesBean implements Serializable{
+public class ReportesBecasBean implements Serializable{
 
     @Inject
     private GlobalAppBean globalAppBean; //Bean de aplicación (Instancia)
@@ -86,7 +86,7 @@ public class ReportesBean implements Serializable{
         this.objeBeca = new Beca();
     }
     
-    public ReportesBean() {
+    public ReportesBecasBean() {
     }
     
     public void procVisi() {
