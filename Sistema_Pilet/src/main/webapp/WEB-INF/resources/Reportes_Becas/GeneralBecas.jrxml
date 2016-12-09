@@ -30,7 +30,7 @@
 			</staticText>
 			<image>
 				<reportElement x="15" y="0" width="86" height="59" uuid="2f5dd7ab-ec58-42c9-ba17-0a68779ac682"/>
-				<imageExpression><![CDATA["/home/eduardo/NetBeansProjects/sistema_pilet/Sistema_Pilet/src/main/webapp/WEB-INF/resources/images/ITR.png"]]></imageExpression>
+				<imageExpression><![CDATA["ITR.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
