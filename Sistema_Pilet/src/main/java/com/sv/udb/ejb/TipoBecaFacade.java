@@ -51,4 +51,13 @@ public class TipoBecaFacade extends AbstractFacade<TipoBeca> implements TipoBeca
         System.out.println(Arrays.toString(resu.toArray()));
         return resu.isEmpty() ? null : resu;
     }
+    
+    @Override
+    public TipoBeca findByName(String nombre)
+    {
+        Query q = getEntityManager().createNativeQuery("SELECT * FROM `tipo_beca` WHERE `nomb_tipo_beca` = ?1", TipoBeca.class);
+        q.setParameter(1, nombre);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : (TipoBeca)resu.get(0);
+    }
 }
