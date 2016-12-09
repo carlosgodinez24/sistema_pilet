@@ -4,6 +4,7 @@ import com.sv.udb.modelo.Alumnovisitante;
 import com.sv.udb.modelo.Beca_;
 import com.sv.udb.modelo.Cambiocita;
 import com.sv.udb.modelo.Cita;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -66,6 +67,20 @@ public class CambiocitaFacade extends AbstractFacade<Cambiocita> implements Camb
     }
     
     @Override
+    public List<Cambiocita> findCambioCitaCale(Date fechaInicial, Date fechaFinal, Integer codiUsua)
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        List<Cambiocita> resu;
+        String sql = "SELECT cc.* FROM cambio_cita cc, cita c WHERE c.tipo_cita != 2 AND cc.esta_camb_cita= 2 AND c.codi_cita = cc.codi_cita AND cc.codi_camb_cita in(SELECT MAX(codi_camb_cita) from cambio_cita, cita where cambio_cita.codi_cita = cita.codi_cita and codi_usua = ? and (fech_fin_cita_nuev between ? and ?) group by cita.codi_cita)  ORDER BY cc.codi_camb_cita DESC";
+        Query query = em.createNativeQuery(sql, Cambiocita.class);
+        query.setParameter(1, codiUsua);
+        query.setParameter(2, df.format(fechaInicial));
+        query.setParameter(3, df.format(fechaFinal));
+        resu =(List<Cambiocita>) query.getResultList();
+        return resu;
+    }
+    
+    @Override
     public List<Cambiocita> findCambioCitaByFechaAndUsua(Date fechaInicial, Date fechaFinal, Integer codiUsua, Integer estaCita, int tipoCita)
     {
         List<Cambiocita> resu;
@@ -100,6 +115,8 @@ public class CambiocitaFacade extends AbstractFacade<Cambiocita> implements Camb
         }
         return resu;
     }
+    
+    
     
     @Override
     public boolean findCambioCitaByParams(String fecha, String horaInic, String horaFin, Integer codiUsua)

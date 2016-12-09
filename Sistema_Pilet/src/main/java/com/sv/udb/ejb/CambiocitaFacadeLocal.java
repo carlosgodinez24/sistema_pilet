@@ -38,6 +38,8 @@ public interface CambiocitaFacadeLocal {
     
     List<Cambiocita> findCambioCitaByFechaAndUsua(Date fechaInicial, Date fechaFinal, Integer codiUsua, Integer estaCita, int tipoCita);
     
+    List<Cambiocita> findCambioCitaCale(Date fechaInicial, Date fechaFinal, Integer codiUsua);
+    
     List<Cambiocita> findCambioVisiByFech(Date fechaInicial, Date fechaFinal);
     
     List<Cambiocita> findCambioCitaByCarnAlum(Date fechaInicial, Date fechaFinal, String carnAlum);
