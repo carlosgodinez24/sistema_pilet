@@ -127,6 +127,7 @@ public class CitasBean implements Serializable{
     private boolean confirmar;
     private boolean programar;
     private boolean reprogramar;
+    private boolean finalizar;
     private boolean ignoHoraDisp;
     private boolean isGrouVisi;
     private boolean LugaEven;
@@ -181,6 +182,14 @@ public class CitasBean implements Serializable{
 
     public void setMotiUrge(boolean motiUrge) {
         this.motiUrge = motiUrge;
+    }
+
+    public boolean isFinalizar() {
+        return finalizar;
+    }
+
+    public void setFinalizar(boolean finalizar) {
+        this.finalizar = finalizar;
     }
     
     
@@ -1051,7 +1060,7 @@ public class CitasBean implements Serializable{
     }
     private int getDay(String dia){
         int ndia = 0;
-        String dias[] = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};
+        String dias[] = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
         for(int i = 0; i < dias.length; i++){
             if(dia.equals(dias[i])){ndia = i+1; break;}
         }
@@ -1686,19 +1695,25 @@ public class CitasBean implements Serializable{
     private boolean valiDatoCambCita(int acci) throws ParseException{
         boolean vali = false;
         DateFormat formatter = new SimpleDateFormat("hh:mm a");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         //si no es nulo ó se esta solicitando cancelación ó se esta rechazando ó cancelando
         if(objeCita.getCodiUbic() != null || (acci == 1 && objeCita.getEstaCita() == 5) || acci == 2){
             //si no es nulo ó se esta solicitando cancelación  ó se esta rechazando
             if((motivo != null && !motivo.trim().equals("")) || (acci == 1 && objeCita.getEstaCita() == 5) || acci == 2){
-                if(ignoHoraDisp){
-                    if(formatter.parse(FechFina).after(formatter.parse(FechInic))){
-                        vali = true;
+                //si la fecha es despues de "hoy"
+                if(!fechSoliCita.before(new Date()) || df.format(fechSoliCita).equals(df.format(new Date()))){
+                    if(ignoHoraDisp){
+                        if(formatter.parse(FechFina).after(formatter.parse(FechInic))){
+                            vali = true;
+                        }else{
+                            FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
+                            FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
+                        }
                     }else{
-                        FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
-                        FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "La hora de inicio no puede ser despues de la hora de fin",  null));
+                        vali = true;
                     }
                 }else{
-                    vali = true;
+                    FacesContext.getCurrentInstance().addMessage("FormRegi:fech", new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se puede programar una cita en una fecha que ya pasó",  null));
                 }
             }else{
                 FacesContext.getCurrentInstance().addMessage("FormRegi:descCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe Especificar El Motivo",  null));
@@ -2128,27 +2143,32 @@ public class CitasBean implements Serializable{
         try
         {
             if(listVisiVisiTemp.size() > 0){
-                System.out.println(fechSoliCita+" = "+fechSoliCita2);
-                //ambas fechas correctas
-                if(this.fechSoliCita2.after(this.fechSoliCita)){
-                    vali = true;
-                //el mismo dia
-                }else if(this.fechSoliCita2.equals(this.fechSoliCita)){
-                    //es el mismo dia, pero con hora correcta
-                    if(formatter.parse(this.FechFina).after(formatter.parse(this.FechInic))){
+                //System.out.println(fechSoliCita+" = "+fechSoliCita2);
+                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                if(!fechSoliCita.before(new Date()) || df.format(fechSoliCita).equals(df.format(new Date()))){
+                    //ambas fechas correctas
+                    if(this.fechSoliCita2.after(this.fechSoliCita)){
                         vali = true;
-                    //mismo dia con hora incorrecta
+                    //el mismo dia
+                    }else if(this.fechSoliCita2.equals(this.fechSoliCita)){
+                        //es el mismo dia, pero con hora correcta
+                        if(formatter.parse(this.FechFina).after(formatter.parse(this.FechInic))){
+                            vali = true;
+                        //mismo dia con hora incorrecta
+                        }else{
+                            FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hora Final no debe ser antes de la Inicial",  null));
+                            FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hora Final no debe ser antes de la Inicial",  null));
+                            FacesContext.getCurrentInstance().addMessage("FormRegiVisiCita:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Esa hora ya pasó",  null));
+                        }
+                    //ambas fechas incorrectas
+                    }else if(this.fechSoliCita2.before(this.fechSoliCita)){
+                        FacesContext.getCurrentInstance().addMessage("FormRegi:fechInic", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fecha Final no debe ser antes de la Inicial",  null));
+                        FacesContext.getCurrentInstance().addMessage("FormRegi:fechFina", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fecha Final no debe ser antes de la Inicial",  null));
                     }else{
-                        FacesContext.getCurrentInstance().addMessage("FormRegi:horaInicCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hora Final no debe ser antes de la Inicial",  null));
-                        FacesContext.getCurrentInstance().addMessage("FormRegi:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Hora Final no debe ser antes de la Inicial",  null));
-                        FacesContext.getCurrentInstance().addMessage("FormRegiVisiCita:horaFinaCita", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Esa hora ya pasó",  null));
+                        System.out.println("FUERA DE MI PODER");
                     }
-                //ambas fechas incorrectas
-                }else if(this.fechSoliCita2.before(this.fechSoliCita)){
-                    FacesContext.getCurrentInstance().addMessage("FormRegi:fechInic", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fecha Final no debe ser antes de la Inicial",  null));
-                    FacesContext.getCurrentInstance().addMessage("FormRegi:fechFina", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fecha Final no debe ser antes de la Inicial",  null));
                 }else{
-                    System.out.println("FUERA DE MI PODER");
+                    FacesContext.getCurrentInstance().addMessage("FormRegi:fech", new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se puede programar una visita en una fecha que ya pasó",  null));
                 }
             }else{
                 FacesContext.getCurrentInstance().addMessage("frmMensGlob:mensTabl", new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se a Registrado ningun visitante",  null));

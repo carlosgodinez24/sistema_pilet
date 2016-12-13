@@ -107,7 +107,7 @@ public class ExcepcionHorarioDisponibleBean implements Serializable{
      */
     private int getDay(String dia){
         int ndia = 0;
-        String dias[] = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};
+        String dias[] = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
         for(int i = 0; i < dias.length; i++){
             if(dia.equals(dias[i])){ndia = i+1; break;}
         }

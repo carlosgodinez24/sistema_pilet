@@ -158,8 +158,13 @@ public class VisitantesBean implements Serializable{
                                                     objeVisiTempExce.setCorrVisi(cell.getStringCellValue());
                                                     objeVisiTempExce.setTipoVisi(2);
                                                     objeVisiTempExce.setEstaVisi(1);
+                                                    objeVisiTempExce.setCodiVisi(nextRow.getRowNum());
                                                     if(listVisiExce == null)listVisiExce = new ArrayList<Visitante>();
-                                                    listVisiExce.add(objeVisiTempExce);
+                                                    if(objeVisiTempExce.getApelVisi() != null && objeVisiTempExce.getNombVisi()!= null){
+                                                        if(!objeVisiTempExce.getApelVisi().trim().equals("") && !objeVisiTempExce.getNombVisi().trim().equals("")){
+                                                            listVisiExce.add(objeVisiTempExce);
+                                                        }
+                                                    }
                                                 break;
 
                                             }
