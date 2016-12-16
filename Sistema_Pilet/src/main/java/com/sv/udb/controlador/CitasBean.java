@@ -17,6 +17,7 @@ import com.sv.udb.modelo.Visitantecita;
 import com.sv.udb.utils.HorarioCitas;
 import com.sv.udb.utils.LOG4J;
 import com.sv.udb.utils.pojos.DatosAlumnos;
+import com.sv.udb.utils.pojos.DatosFamilia;
 import com.sv.udb.utils.pojos.DatosUsuariosByCrit;
 import com.sv.udb.utils.pojos.WSconsAlumByDoce;
 import com.sv.udb.utils.pojos.WSconsDoceByAlum;
@@ -921,34 +922,36 @@ public class CitasBean implements Serializable{
                 objeVisiCita.setCodiVisi(alumVisiSelec.getCodiVisi());
                 objeVisiCita.setCarnAlum(String.valueOf(logiBean.getObjeUsua().getAcceUsua()));
                 FCDEVisiCita.create(objeVisiCita);
-                globalAppBean.addNotificacion(this.logiBean.getObjeUsua().getCodiUsua(), "SE HA GUARDADO UN EVENTO"  , "Modulo citas", "");
                 log.info(this.logiBean.getObjeUsua().getCodiUsua()+"-"+"Citas"+"-"+"Se ha solicitado la cita, espere por la respuesta");
                 ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Se ha solicitado la cita, espere por la respuesta.')");
                 
                 SimpleDateFormat sdfCita = new SimpleDateFormat("dd/MM/yyyy");
                 try
                 {
-                    new EnvioCorreosBean().sendMail(new WebServicesBean().consEmplPorCodi(objeVisiCita.getCodiCita().getCodiUsua()+"").getMail(),
-                    "Solicitud de Cita", "Se ha solicitado una cita para el día: " 
-                            + sdfCita.format(objeCambCita.getFechInicCitaNuev()) + " a las " 
-                            + objeCambCita.getHoraInicCitaNuev() + " en: " 
-                            + objeCambCita.getCodiCita().getCodiUbic().getNombUbic() +
-                            " con el visitante: " + objeVisiCita.getCodiVisi().getNombVisi() + " " + objeVisiCita.getCodiVisi().getApelVisi()
-                            + " Motivo: " + objeCita.getDescCita());
+                    String correo = new WebServicesBean().consEmplPorCodi(objeVisiCita.getCodiCita().getCodiUsua()+"").getMail();
+                    if(!correo.trim().equals(""))
+                    {
+                        new EnvioCorreosBean().sendMail(correo,
+                        "Solicitud de Cita", "Se ha solicitado una cita para el día: " 
+                                + sdfCita.format(objeCambCita.getFechInicCitaNuev()) + " a las " 
+                                + objeCambCita.getHoraInicCitaNuev() +
+                                " con el visitante: " + objeVisiCita.getCodiVisi().getNombVisi() + " " + objeVisiCita.getCodiVisi().getApelVisi()
+                                + " Motivo: " + objeCita.getDescCita());
+                    }
                 }
-                catch(Exception err){System.out.println("Error al enviar correo");}
+                catch(Exception err){System.out.println("Error al enviar correo"); err.printStackTrace();}
                 try
                 {
                     String acceUsua = new WebServicesBean().consEmplPorCodi(objeCambCita.getCodiCita().getCodiUsua()+"").getMail();
                     int codiUsuaCons = FCDEUsua.findByAcce(acceUsua).getCodiUsua();
+                    System.out.println("Codigo usuario " + codiUsuaCons);
                     globalAppBean.addNotificacion(codiUsuaCons, "Se ha solicitado una cita para el día: " 
                             + sdfCita.format(objeCambCita.getFechInicCitaNuev()) + " a las " 
-                            + objeCambCita.getHoraInicCitaNuev() + " en: " 
-                            + objeCambCita.getCodiCita().getCodiUbic().getNombUbic() 
+                            + objeCambCita.getHoraInicCitaNuev() 
                             + " con el visitante: " + objeVisiCita.getCodiVisi().getNombVisi() + " " + objeVisiCita.getCodiVisi().getApelVisi() +
                             " Motivo: " + objeCita.getDescCita(), "Citas y Visitas", null);
                 }
-                catch(Exception err) {System.out.println("Error al enviar notificación");} 
+                catch(Exception err) {System.out.println("Error al enviar notificación"); err.printStackTrace();} 
                 
                 this.limpForm();
             }
@@ -1617,10 +1620,52 @@ public class CitasBean implements Serializable{
     public void setAlumn(){
         String Carn = String.valueOf(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiObjeAlum"));
         if(Carn!=null){
+            System.out.println("CONSXD");
             this.carnAlum = Carn;
-            consListVisiAlum();
+            consListVisiAlumWS();
             RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Encargados Consultados')");
+        }
+        else
+        {
+            System.out.println("No cons :c");
+        }
+    }
+        
+    public void consListVisiAlumWS(){
+        try
+        {
+            if(carnAlum!=null){
+                listVisi = FCDEVisi.findByCarnAlum(carnAlum);
+                System.out.println("listVisi.size() " + listVisi.size());
+            }else{
+                listVisi = new ArrayList<Visitante>();
+            }
+            if(listVisi.size()==0)
+            {
+                for(DatosFamilia objeDatoFami: new WebServicesBean().consFamiPorAlum(this.carnAlum).getFami())
+                {
+                    Visitante objeVisi = new Visitante();
+                    objeVisi.setNombVisi(objeDatoFami.getNomb());
+                    objeVisi.setApelVisi(objeDatoFami.getApel());
+                    objeVisi.setCorrVisi(objeDatoFami.getMail());
+                    objeVisi.setTipoVisi(1);
+                    objeVisi.setEstaVisi(1);
+                    FCDEVisi.create(objeVisi);
+                    Alumnovisitante objeAlumVisi = new Alumnovisitante();
+                    objeAlumVisi.setCodiVisi(objeVisi);
+                    objeAlumVisi.setCarnAlum(this.carnAlum);
+                    objeAlumVisi.setPareAlumVisi(1);
+                    objeAlumVisi.setEstaAlumVisi(1);
+                    FCDEAlumnoVisitante.create(objeAlumVisi);
+                }
+            }
+            listVisi = FCDEVisi.findByCarnAlum(carnAlum);
+            consVisiCita(true);            
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
         }
     }
     
@@ -1839,16 +1884,18 @@ public class CitasBean implements Serializable{
                     SimpleDateFormat sdfCita = new SimpleDateFormat("dd/MM/yyyy");
                     try
                     {
-
-                        new EnvioCorreosBean().sendMail(objeVisiCitaLoca.getCodiVisi().getCorrVisi(),
-                        "Cambio de Cita", "Se ha"+ tipoCambio +"una cita para el día: " 
-                                + sdfCita.format(objeCambCita.getFechInicCitaNuev()) + " a las " 
-                                + objeCambCita.getHoraInicCitaNuev() + " en: " 
-                                + objeCambCita.getCodiCita().getCodiUbic().getNombUbic() +
-                                " con el empleado: " + new WebServicesBean().consEmplPorCodi(""+objeCita.getCodiUsua()).getNomb()
-                                + " Motivo: " + objeCita.getDescCita());
+                        if(!objeVisiCitaLoca.getCodiVisi().getCorrVisi().trim().equals(""))
+                        {                                                   
+                            new EnvioCorreosBean().sendMail(objeVisiCitaLoca.getCodiVisi().getCorrVisi(),
+                            "Cambio de Cita", "Se ha"+ tipoCambio +"una cita para el día: " 
+                                    + sdfCita.format(objeCambCita.getFechInicCitaNuev()) + " a las " 
+                                    + objeCambCita.getHoraInicCitaNuev() + " en: " 
+                                    + objeCambCita.getCodiCita().getCodiUbic().getNombUbic() +
+                                    " con el empleado: " + new WebServicesBean().consEmplPorCodi(""+objeCita.getCodiUsua()).getNomb()
+                                    + " Motivo: " + objeCita.getDescCita());
+                        }
                     }
-                    catch(Exception err){System.out.println("Error al enviar correo");}
+                    catch(Exception err){System.out.println("Error al enviar correo"); err.printStackTrace();}
                     try
                     {
                         int codiUsuaCons = FCDEUsua.findByAcce(objeVisiCitaLoca.getCarnAlum()).getCodiUsua();
@@ -1859,7 +1906,7 @@ public class CitasBean implements Serializable{
                                 + " con el empleado: " + new WebServicesBean().consEmplPorCodi(""+objeCita.getCodiUsua()).getNomb()+
                                 " Motivo: " + objeCita.getDescCita(), "Citas y Visitas", null);
                     }
-                    catch(Exception err) {System.out.println("Error al enviar notificación");}    
+                    catch(Exception err) {System.out.println("Error al enviar notificación");err.printStackTrace();}    
                 }
             }
         }

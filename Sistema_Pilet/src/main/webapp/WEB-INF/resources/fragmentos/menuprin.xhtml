@@ -30,6 +30,13 @@ and open the template in the editor.
                             <i class="fa fa-home"></i> <span>Principal</span>
                         </h:link>
                     </li>
+
+                    <li class="treeview #{actiCitaAlum}">
+                        <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
+                            <i class="fa fa-calendar"></i> Citas
+                        </h:link>
+                    </li>
+
                     <ui:fragment  rendered="#{globalAppBean.getEstaPermByName('/Modulo_usuarios')}">
                         <li class="treeview #{actiMenu1}">
                             <a href="#">
@@ -212,21 +219,7 @@ and open the template in the editor.
                                         <i class="fa fa-user"></i> Recepción
                                     </h:link>
                                 </li>
-                            </ul>
-                            <ul class="treeview-menu">
-                                <li class="#{actiCitaAlum}">
-                                    <h:link outcome="/Modulo_citas/CitaAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaAlumno.xhtml')}">
-                                        <i class="fa fa-calendar"></i> Cita Alumno
-                                    </h:link>
-                                </li>
-                            </ul>
-                            <ul class="treeview-menu">
-                                <li class="#{actiRegiReprAlum}">
-                                    <h:link outcome="/Modulo_citas/RegistrarseRepresentanteAlumno" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/RegistrarseRepresentanteAlumno.xhtml')}">
-                                        <i class="fa fa-user"></i> Representantes
-                                    </h:link>
-                                </li>
-                            </ul>
+                            </ul>                                                      
                             <ul class="treeview-menu">
                                 <li class="#{actiCitaRecep}">
                                     <h:link outcome="/Modulo_citas/CitaRecepcion" rendered="#{globalAppBean.getEstaPermByName('/Modulo_citas/CitaRecepcion.xhtml')}">

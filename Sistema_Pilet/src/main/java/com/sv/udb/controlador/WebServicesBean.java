@@ -13,6 +13,7 @@ import com.sv.udb.utils.pojos.DatosUsuariosByCrit;
 import com.sv.udb.utils.pojos.WSconsEmplByCodi;
 import com.sv.udb.utils.pojos.WSconsEmplByCrit;
 import com.sv.udb.utils.pojos.WSconsEmplByUser;
+import com.sv.udb.utils.pojos.WSconsFamAlum;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -127,7 +128,6 @@ public class WebServicesBean implements Serializable {
     public void setObjeWebServ(WSconsUsua objeWebServ) {
         this.objeWebServ = objeWebServ;
     }
-    
     
     /**
      * Creates a new instance of WebServicesBean
@@ -293,7 +293,29 @@ public class WebServicesBean implements Serializable {
         return this.objeWebServAlumByDoce;
     }
     
+    private WSconsFamAlum objeWSconsFamAlum;
     
+    public WSconsFamAlum consFamiPorAlum(String carnAlum)
+    {
+        FacesContext facsCtxt = FacesContext.getCurrentInstance();
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        Client client = ClientBuilder.newClient();
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL"); //Esta en el web.xml
+        url = String.format("%s/%s/%s", url, "consFamAlum", carnAlum);
+        WebTarget resource = client.target(url);
+        Invocation.Builder request = resource.request();
+        request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_TYPE.withCharset("utf-8"));
+        Response response = request.get();
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL)
+        {
+            this.objeWSconsFamAlum = response.readEntity(WSconsFamAlum.class); //La respuesta de captura en un pojo que esta en el paquete utils
+        }
+        else
+        {
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al procesar la consulta')");
+        }
+        return this.objeWSconsFamAlum;
+    }
     
     public WSconsDoceByAlum consDocePorAlum(String carnAlum)
     {

@@ -71,11 +71,11 @@ and open the template in the editor.
                                    <h:outputText value="#{fila.codiCita.codiCita}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="usuaCita">
-                                   <f:facet name="header">Citador</f:facet>
+                                   <f:facet name="header">Usuario</f:facet>
                                    <h:outputText value="#{webServicesBean.consEmplPorCodi(fila.codiCita.codiUsua.toString()).nomb}"/>   
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="contUsuaCita">
-                                   <f:facet name="header">Contactos del Citador</f:facet>
+                                   <f:facet name="header">Contactos del Usuario</f:facet>
                                    <h:panelGroup rendered="#{webServicesBean.consEmplPorCodi(fila.codiCita.codiUsua.toString()).mail != null}">
                                        <span class='fa fa-envelope'><h:outputText style="margin-left: 4px;font-family: calibri;" value="#{webServicesBean.consEmplPorCodi(fila.codiCita.codiUsua.toString()).mail}"/></span>
                                         
@@ -83,7 +83,7 @@ and open the template in the editor.
                                     </h:panelGroup> 
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="visi">
-                                   <f:facet name="header">Personas Citadas</f:facet>
+                                   <f:facet name="header">Representantes del Alumno</f:facet>
                                    <ui:repeat value="#{citasBean.listVisiCitaDepe}" var="lstCita">
                                         <h:panelGroup rendered="#{(lstCita.carnAlum.equals(loginBean.objeUsua.acceUsua))?true:false}"><!--PONER CONDICIONAL PARA QUE SOLO SE MUESTREN REPRESENTANTES DE ESTE ALUMNO-->
                                             <span class="fa fa-user" style="margin-right: 5px;"></span><h:outputText value="#{lstCita.codiVisi.nombVisi} #{lstCita.codiVisi.apelVisi}"/>
@@ -99,7 +99,7 @@ and open the template in the editor.
                                    <h:outputText value="#{citasBean.objeCambCitaDepe.horaInicCitaNuev} a #{citasBean.objeCambCitaDepe.horaFinCitaNuev}"/>
                                </h:column>
                                <h:column pt:data-sortable="true" pt:data-field="moti">
-                                   <f:facet name="header">Motivo ó Descripción</f:facet>
+                                   <f:facet name="header">Motivo o Descripción</f:facet>
                                    <span style="font-weight: bold;">Motivo: </span><br/>
                                    <h:outputText value="#{fila.codiCita.descCita}"/>   
                                    <h:panelGroup rendered="#{citasBean.objeCambCitaDepe.motiCambCita ne null}">
@@ -126,28 +126,9 @@ and open the template in the editor.
                                             <i class="fa fa-calendar-o"/>Finalizada</h:panelGroup>
                                </h:column>
                             </h:dataTable>
-                                <h:form>
-                                    <h4>Mostrar Registros</h4>
-                                    <p>Entre las fechas:</p>
-                                        <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
-                                            <h:message for="fechXD" errorClass="field-error" />
-                                            <h:inputText id="fechXD" value="#{citasBean.fechInicBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:inputText> 
-                                        </div>
-                                        <div style="display: inline-block; height: 40px;" class="input-group col-xs-4">
-                                            <h:message for="fechxd2" errorClass="field-error" />
-                                            <h:inputText id="fechxd2" value="#{citasBean.fechFinaBusq}" class="form-control datepicker" required="true" requiredMessage="Debe Seleccionar una Fecha">
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:inputText> 
-                                        </div>       
-                                    <div style="display: inline-block; vertical-align: top; height: 40px;" class="input-group col-xs-6">
-                                        <h:commandLink style="width: 50%" id="btonBusqParam" class="btn btn-success" >
-                                                    <p:ajax  process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
-                                                    Buscar
-                                                </h:commandLink>
-                                        </div>
-                                </h:form>
+                                
+                                
+                                
                             </h:panelGroup>
                         </div>
                     </div>
