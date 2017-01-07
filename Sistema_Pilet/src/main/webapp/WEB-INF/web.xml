@@ -23,7 +23,7 @@
     </context-param>
     <context-param>  
         <param-name>webservices.URL</param-name>  
-        <param-value>http://www.opensv.tk:8080/WebService/MiServicio</param-value> 
+        <param-value>http://localhost:8080/WebService/MiServicio</param-value>  
     </context-param>
      <context-param>  
         <param-name>docBecas.URL</param-name>  

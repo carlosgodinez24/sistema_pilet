@@ -677,9 +677,12 @@ public class BecasBean implements Serializable{
     public boolean consW()
     {
         boolean respFunc = false;
+         FacesContext facsCtxt = FacesContext.getCurrentInstance();
         RequestContext ctx = RequestContext.getCurrentInstance();
         Client client = ClientBuilder.newClient();
-        String url = String.format("http://www.opensv.tk:8080/WebService/MiServicio/consAlum/%s", this.carnet.trim());        
+        String url = facsCtxt.getExternalContext().getInitParameter("webservices.URL") +"/consAlum/"+ this.carnet.trim();        
+        
+        
        if(this.cons(carnet.trim()))
        {           
              ctx.execute("setMessage('MESS_ERRO', 'Atención', 'El Alumno ya se encuentra')");
