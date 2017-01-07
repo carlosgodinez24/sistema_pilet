@@ -859,7 +859,7 @@ and open the template in the editor.
                                                         <h:inputHidden id="codiBeca" value="#{becasBean.objeBeca.codiBeca}" />
                                                         <div class="form-group input-group-xs">
                                                         <h:outputLabel  for="Empr" value="Nuevo patrocinador: "/>
-                                                        <h:selectOneMenu id="Empr" value="#{becasBean.objeSoli.codiEmpr}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
+                                                        <h:selectOneMenu id="Empr" value="#{becasBean.objeSoli.codiEmpr}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir una empresa">
                                                             <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
                                                             <f:converter converterId="PooConv"/>
                                                         </h:selectOneMenu>         
@@ -904,7 +904,7 @@ and open the template in the editor.
                                                         <h:inputHidden id="codiBeca" value="#{becasBean.objeBeca.codiBeca}" />
                                                         <div class="form-group input-group-xs">
                                                             <h:outputLabel  for="reti" value="Tipo de cancelación: "/>
-                                                            <h:selectOneMenu id="reti" value="#{becasBean.objeBeca.codiReti}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
+                                                            <h:selectOneMenu id="reti" value="#{becasBean.objeBeca.codiReti}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un tipo de retiro">
                                                                 <f:selectItems value="#{tipoRetiBean.listTipoReti}" var="lst" itemLabel="#{lst.nombReti}" itemValue="#{lst}"/>
                                                                 <f:converter converterId="PooConv"/>
                                                             </h:selectOneMenu>         

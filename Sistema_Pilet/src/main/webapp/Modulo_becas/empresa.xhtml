@@ -314,11 +314,15 @@ and open the template in the editor.
                                                                  oncomplete="$('#ModaDonaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();" global="true" update=":container"/>
                                                 <p:remoteCommand name="elimObje" actionListener="#{donacionBean.elim()}" update="@form :ContDona :TablDona"
                                                                  oncomplete="INIT_OBJE();" global="true"/>
-                                                <h:commandLink id="btonNuevDona" class="btn btn-success">
+                                                
+                                                <h:panelGroup  rendered="#{empresaBean.objeEmpr.estaEmpr eq '1'}">
+                                                    <h:commandLink id="btonNuevDona" class="btn btn-success">
                                                     <p:ajax listener="#{donacionBean.limpForm()}" update=":FormDona" global="true" 
                                                             oncomplete="$('#ModaDonaForm').modal('show');"/>
-                                                    <i class="fa fa-plus"/> Agregar una nueva donación a esta empresa
+                                                    <i class="fa fa-plus"/> Agregar nueva donación a esta empresa
                                                 </h:commandLink>
+                                                </h:panelGroup>
+                                                
                                             </h:form>
                                         </div>
                                         <h:dataTable pt:data-id="TablDona" id="TablDona" value="#{donacionBean.listDonaEmpr}"

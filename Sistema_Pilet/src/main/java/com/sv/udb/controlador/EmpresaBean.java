@@ -193,7 +193,8 @@ public class EmpresaBean implements Serializable{
     {
         try
         {
-            this.listEmpr = FCDEEmpr.findAll();
+           // this.listEmpr = FCDEEmpr.findAll();
+            this.listEmpr = FCDEEmpr.findAllActive();
            // log.info("Empresas Consultadas");
         }
         catch(Exception ex)
