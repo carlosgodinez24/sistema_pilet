@@ -171,12 +171,20 @@ public class EmpresaBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listEmpr.remove(this.objeEmpr); //Limpia el objeto viejo
-            this.objeEmpr.setEstaEmpr(0);
-            FCDEEmpr.edit(this.objeEmpr);
-            //this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
-            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
-            //log.info("Empresa Eliminada");
+            int vali = FCDEEmpr.validar(this.objeEmpr.getCodiEmpr());
+            if(vali > 0)
+            {
+                ctx.execute("setMessage('MESS_ERRO', 'Atención', 'No puede eliminar la empresa si tiene becados o donaciones activas.')");
+            }
+            else
+            {
+                this.listEmpr.remove(this.objeEmpr); //Limpia el objeto viejo
+                this.objeEmpr.setEstaEmpr(0);
+                FCDEEmpr.edit(this.objeEmpr);
+                //this.listEmpr.add(this.objeEmpr); //Agrega el objeto modificado
+                ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+                //log.info("Empresa Eliminada");
+            }
         }
         catch(Exception ex)
         {

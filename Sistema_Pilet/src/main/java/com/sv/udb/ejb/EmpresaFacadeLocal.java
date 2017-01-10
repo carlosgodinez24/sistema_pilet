@@ -33,4 +33,5 @@ public interface EmpresaFacadeLocal {
 
     int count();
     
+    int validar(int codi_empr);
 }

@@ -41,4 +41,13 @@ public class EmpresaFacade extends AbstractFacade<Empresa> implements EmpresaFac
         return resu.isEmpty() ? null : resu;
     }
     
+    @Override
+    public int validar(int codi_empr)
+    {
+        String consulta = "SELECT COUNT(*) FROM empresa e INNER JOIN solicitud_beca sb ON sb.codi_empr = e.codi_empr INNER JOIN donacion d ON d.codi_empr = e.codi_empr WHERE d.esta_dona = 1 AND sb.esta_soli_beca != 2 AND sb.esta_soli_beca != 3 AND sb.esta_soli_beca != 4 AND e.codi_empr = ?1";
+        Query q = getEntityManager().createNativeQuery(consulta);
+        q.setParameter(1, codi_empr);
+        //Object resu = q.getSingleResult().getClass().getCanonicalName();
+        return Integer.parseInt(String.valueOf(q.getSingleResult()));
+    }
 }

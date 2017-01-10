@@ -314,14 +314,16 @@ and open the template in the editor.
                                                     <div class="job">Especialidad: #{becasBean.objeSoli.espeAlum}</div>
                                                     <div class="job">Grupo: #{becasBean.objeSoli.grupAlum}</div>
                                                     <div class="job">Sección academica:   #{becasBean.objeSoli.seccAcad}</div>
-                                                    <div class="job">Seccion tecnica :  #{becasBean.objeSoli.seccTecn}</div>
-                                                    <h5>Matricula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
+                                                    <div class="job">Sección técnica :  #{becasBean.objeSoli.seccTecn}</div>
+                                                    <h5>Matrícula: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.matrGrad}</span></h5>
                                                     <h5>Mensualidad: <span class="itemPrice">$#{becasBean.objeSoli.codiGrad.mensGrad}</span></h5>
                                                     <h5>Patrocinador: #{becasBean.objeSoli.codiEmpr.nombEmpr}</h5> 
-                                                    <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{becasBean.guardar==false and becasBean.alum == false }">
-                                                        <p:ajax global="true" oncomplete="$('#CambPatr').modal('show');"/>
-                                                        <i class="fa fa-edit"/> Cambiar de patrocinador
-                                                    </h:commandLink>
+                                                    <c:if test="#{becasBean.objeSoli.estaSoliBeca != 2 and becasBean.objeSoli.estaSoliBeca != 3 and becasBean.objeSoli.estaSoliBeca != 4 }">
+                                                        <h:commandLink id="btonModi" class="btn btn-primary" rendered="#{becasBean.guardar==false and becasBean.alum == false }">
+                                                            <p:ajax global="true" oncomplete="$('#CambPatr').modal('show');"/>
+                                                            <i class="fa fa-edit"/> Cambiar de patrocinador
+                                                        </h:commandLink>
+                                                    </c:if>
                                                 </div>
                                             </div>						
                                             <div class="col-md-12 panelBottom btn-group">
@@ -363,7 +365,7 @@ and open the template in the editor.
                                                 </c:if>
                                                 <c:if test="#{becasBean.guardar == true  and becasBean.alum== false}">
                                                     <h:commandLink id="btonCarn" class="btn btn-lg btn-add-to-cart">
-                                                        <p:ajax listener="#{becasBean.toogEmpr()}" process="@form"  update="@form :container" global="true"/>
+                                                        <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" global="true"/>
                                                         Agregar nueva solicitud
                                                         <i class="fa fa-plus"/>
                                                     </h:commandLink>
@@ -378,65 +380,70 @@ and open the template in the editor.
                             </fieldset>
                         </h:form>
                         <!-- Tabla de detalle-->
-                        <c:if test="#{becasBean.guardar==false  or  becasBean.consIfCarnExis() == true }">
-                            <div class="col-md-12 col-xs-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">Tipos de beca que posee este alumno</div>
-                                    <div class="panel-body">
-                                        <h:panelGroup id="ContDetalle">
-                                            <div id="toolTablDetalle">
-                                                <ui:fragment id="fragFormDeta" rendered="#{!becasBean.alum}">
-                                                <h:form>
-                                                    <!--Form exclusivo para los remotos-->
-                                                
+                        <c:if test="#{becasBean.guardar==false  or  becasBean.consIfCarnExis() == true}">
+                            <h:panelGroup rendered="#{becasBean.objeSoli.estaSoliBeca != 4 and becasBean.objeSoli.estaSoliBeca != 3 and becasBean.objeSoli.estaSoliBeca != 2}">
+                            
+                                <div class="col-md-12 col-xs-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">Tipos de beca que posee este alumno</div>
+                                        <div class="panel-body">
+                                            <h:panelGroup id="ContDetalle">
+                                                <div id="toolTablDetalle">
+                                                    <ui:fragment id="fragFormDeta" rendered="#{!becasBean.alum}">
+                                                    <h:form>
+                                                        <!--Form exclusivo para los remotos-->
 
-                                                    <!--Form exclusivo para los remotos-->
-                                                    <p:remoteCommand name="consObjeDetalle" actionListener="#{detalleBecaBean.cons()}"  
-                                                                     oncomplete="$('#ModaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();" global="true" update=":container" />
-                                                    <p:remoteCommand name="elimObjeDetalle" actionListener="#{detalleBecaBean.elim()}" update="@form :ContDetalle" 
-                                                                     oncomplete="INIT_OBJE();" global="true"/>
-                                                    <h:commandLink id="btonNuev" class="btn btn-success" >
-                                                        <p:ajax listener="#{detalleBecaBean.limpForm()}" update="@form :ContSegu :TablSegu :container"  global="true" 
-                                                                oncomplete="$('#ModaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();"/>
-                                                        <i class="fa fa-plus"/> Agregar un  nuevo tipo de beca a este alumno
-                                                    </h:commandLink>
 
-                                                </h:form>
-                                                </ui:fragment>
-                                            </div>
-                                            <h:dataTable pt:data-id="TablDetalle" id="TablDetalle" value="#{detalleBecaBean.listDetaBeca}"
-                                                         var="fila" class="boottable" pt:data-toolbar="#toolTablDetalle"
-                                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
-                                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
-                                                         pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
-                                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
-                                                         pt:data-single-select="true">                                
-                                                <h:column pt:data-field="state" pt:data-checkbox="true">
-                                                </h:column>
-                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idTipoBeca">
-                                                    <f:facet name="header">Código</f:facet>
-                                                    <h:outputText value="#{fila.codiDetaBeca}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Tipo Beca</f:facet>
-                                                    <h:outputText value="#{fila.codiTipoBeca.nombTipoBeca}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Meses</f:facet>
-                                                    <h:outputText value="#{fila.cantMese}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true">
-                                                    <f:facet name="header">Estado</f:facet> 
-                                                    <h:panelGroup class="label label-success" rendered="#{fila.estaDetaBeca eq '1'}">
-                                                        <i class="fa fa-unlock"/> Activo</h:panelGroup>
-                                                    <h:panelGroup class="label label-danger" rendered="#{fila.estaDetaBeca ne '1'}">
-                                                        <i class="fa fa-lock"/> Inactivo</h:panelGroup>
-                                                </h:column>
-                                            </h:dataTable>
-                                        </h:panelGroup>
+                                                        <!--Form exclusivo para los remotos-->
+                                                        <p:remoteCommand name="consObjeDetalle" actionListener="#{detalleBecaBean.cons()}"  
+                                                                         oncomplete="$('#ModaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();" global="true" update=":container" />
+                                                        <p:remoteCommand name="elimObjeDetalle" actionListener="#{detalleBecaBean.elim()}" update="@form :ContDetalle" 
+                                                                         oncomplete="INIT_OBJE();" global="true"/>
+                                                        <h:commandLink id="btonNuev" class="btn btn-success" >
+                                                            <p:ajax listener="#{detalleBecaBean.limpForm()}" update="@form :ContSegu :TablSegu :container"  global="true" 
+                                                                    oncomplete="$('#ModaForm').modal('show'); INIT_OBJE(); INIT_OBJE_MODA();"/>
+                                                            <i class="fa fa-plus"/> Agregar un  nuevo tipo de beca a este alumno
+                                                        </h:commandLink>
+
+                                                    </h:form>
+                                                    </ui:fragment>
+                                                </div>
+                                                <h:dataTable pt:data-id="TablDetalle" id="TablDetalle" value="#{detalleBecaBean.listDetaBeca}"
+                                                             var="fila" class="boottable" pt:data-toolbar="#toolTablDetalle"
+                                                             styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
+                                                             pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
+                                                             pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
+                                                             pt:data-click-to-select="true"  pt:data-select-item-name="radio"
+                                                             pt:data-single-select="true">                                
+                                                    <h:column pt:data-field="state" pt:data-checkbox="true">
+                                                    </h:column>
+                                                    <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idTipoBeca">
+                                                        <f:facet name="header">Código</f:facet>
+                                                        <h:outputText value="#{fila.codiDetaBeca}"/>
+                                                    </h:column>
+                                                    <h:column pt:data-sortable="true">
+                                                        <f:facet name="header">Tipo Beca</f:facet>
+                                                        <h:outputText value="#{fila.codiTipoBeca.nombTipoBeca}"/>
+                                                    </h:column>
+                                                    <h:column pt:data-sortable="true">
+                                                        <f:facet name="header">Meses</f:facet>
+                                                        <h:outputText value="#{fila.cantMese}"/>
+                                                    </h:column>
+                                                    <h:column pt:data-sortable="true">
+                                                        <f:facet name="header">Estado</f:facet> 
+                                                        <h:panelGroup class="label label-success" rendered="#{fila.estaDetaBeca eq '1'}">
+                                                            <i class="fa fa-unlock"/> Activo</h:panelGroup>
+                                                        <h:panelGroup class="label label-danger" rendered="#{fila.estaDetaBeca ne '1'}">
+                                                            <i class="fa fa-lock"/> Inactivo</h:panelGroup>
+                                                    </h:column>
+                                                </h:dataTable>
+                                            </h:panelGroup>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                           
+                                
+                            </h:panelGroup>
                             <!-- /tabla de detalle --> 
                             <!-- modal de detalle-->
                             <div class="row">
@@ -693,7 +700,7 @@ and open the template in the editor.
                            
                         <div class="col-md-12 col-xs-12">
                             <div class="panel panel-default">
-                                <div class="panel-heading">Bitacoras de este alumno</div>
+                                <div class="panel-heading">Bitácoras de este alumno</div>
                                 <div class="panel-body">
                                     <h:panelGroup id="ContSegu">
                                         <div id="toolTablSegu">
@@ -986,39 +993,7 @@ and open the template in the editor.
                             </p:dialog>
                         </div>
                     </ui:fragment> <!--FIN DE LAS COSAS QUE PUEDEN GESTIONARSE DE LA FICHA DEL ALUMNO-->
-                    <ui:fragment id="FragSeleEmpr" rendered="#{becasBean.showEmpr}">
-                        <h:form class="form-horizontal">
-                            <fieldset>
-                                <div class="col-md-12 col-xs-12">  
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">Nueva solicitud</div>
-                                        <div class="panel-body">
-                                            <fieldset>                                
-                                                <h:outputLabel  for="empresa" value="Seleccione la empresa que patrocinara al estudiante "/>
-                                                <div class="input-group col-xs-6">                                                    
-                                                    <h:message for="empresa" errorClass="field-error" /> 
-                                                   
-                                                    <h:selectOneMenu id="empresa" value="#{becasBean.objeSoli.codiEmpr}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">                                                       
-                                                        <f:selectItems value="#{empresaBean.listEmpr}" var="lst" itemLabel="#{lst.nombEmpr}" itemValue="#{lst}"/>
-                                                        <f:converter converterId="PooConv"/>
-                                                    </h:selectOneMenu>
-                                                    <c:if test="#{becasBean.guardar}">
-                                                        <span class="input-group-addon">
-                                                            <h:commandLink id="btonCarn" class="btn btn-default">
-                                                                <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" global="true"/>
-                                                                <i class="fa fa-plus"/>
-                                                            </h:commandLink>
-                                                        </span>
-
-                                                    </c:if>
-                                                </div>                                                                            
-                                            </fieldset>                               
-                                        </div>
-                                    </div>   
-                                </div>
-                            </fieldset>
-                        </h:form>
-                    </ui:fragment>
+                    
                     <ui:fragment id="FragEstuSoci" rendered="#{ (becasBean.consIfCarnExis() == false) and (becasBean.showSoci==true or becasBean.alum==true)  }">
                       
                         <h:form id="formDina">
