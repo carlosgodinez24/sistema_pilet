@@ -566,7 +566,7 @@ public class BecasBean implements Serializable{
         {           
             this.objeSoli = FCDESoli.find(codi);
             this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());            
-            listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getCodiSoliBeca().getCodiGrad().getNivelGrad());          
+            listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getCodiSoliBeca().getCodiGrad().getCodiGrad());          
             this.guardar = false;
             this.carnet = objeSoli.getCarnAlum();
             initDina();
@@ -595,7 +595,7 @@ public class BecasBean implements Serializable{
             System.out.println("Codigo de beca: "+codi);
             this.objeSoli = FCDESoli.find(codi);
             this.objeBeca = FCDEBeca.findSoli(objeSoli.getCodiSoliBeca());            
-            listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getCodiSoliBeca().getCodiGrad().getNivelGrad());          
+            listTipoBeca = FCDETipoBeca.findTipos(objeBeca.getCodiSoliBeca().getCodiGrad().getCodiGrad());          
             this.guardar = false;
             this.carnet = objeSoli.getCarnAlum();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 

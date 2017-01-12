@@ -98,7 +98,7 @@ public class TipoBecaBean implements Serializable{
                     switch (this.objeTipo.getTipoTipoBeca()) {
                         case 1:
                             //Matricula
-                            matr = this.FCDEGrado.findMatrLimit(this.objeTipo.getNivelTipoBeca());
+                            matr = this.FCDEGrado.findMatrLimit(this.objeTipo.getGradTipoBeca().getCodiGrad());
                             //Objeto 1: matricula, objeto 2: monto de la beca
                             //Resultado 0 son iguales 
                             //Resultado 1 el primero es mayor que el segundo
@@ -111,7 +111,7 @@ public class TipoBecaBean implements Serializable{
                             break;
                         case 2:
                             //Mensualidad
-                            mens = this.FCDEGrado.findMensLimit(this.objeTipo.getNivelTipoBeca());
+                            mens = this.FCDEGrado.findMensLimit(this.objeTipo.getGradTipoBeca().getCodiGrad());
                             if (mens.compareTo(this.objeTipo.getDescTipoBeca()) == 0 || mens.compareTo(this.objeTipo.getDescTipoBeca()) == 1) {
                                 guarTipo = true;
                             } else {
@@ -133,10 +133,6 @@ public class TipoBecaBean implements Serializable{
                         this.limpForm();
                         ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
                         //log.info("Tipo Beca Guardado");
-                    }
-                    else
-                    {
-                         ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Hubo un problema en guardar el tipo de beca)"); 
                     }
 
                 } else {
@@ -174,7 +170,7 @@ public class TipoBecaBean implements Serializable{
                 switch (this.objeTipo.getTipoTipoBeca()) {
                     case 1:
                         //Matricula
-                        matr = this.FCDEGrado.findMatrLimit(this.objeTipo.getNivelTipoBeca());
+                        matr = this.FCDEGrado.findMatrLimit(this.objeTipo.getGradTipoBeca().getCodiGrad());
                         //Objeto 1: matricula, objeto 2: monto de la beca
                         //Resultado 0 son iguales 
                         //Resultado 1 el primero es mayor que el segundo
@@ -187,7 +183,7 @@ public class TipoBecaBean implements Serializable{
                         break;
                     case 2:
                         //Mensualidad
-                        mens = this.FCDEGrado.findMensLimit(this.objeTipo.getNivelTipoBeca());
+                        mens = this.FCDEGrado.findMensLimit(this.objeTipo.getGradTipoBeca().getCodiGrad());
                         if (mens.compareTo(this.objeTipo.getDescTipoBeca()) == 0 || mens.compareTo(this.objeTipo.getDescTipoBeca()) == 1) {
                             guarTipo = true;
                         } else {
