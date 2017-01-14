@@ -278,7 +278,8 @@ and open the template in the editor.
                             </fieldset>
                         </h:form>
                     </ui:fragment>
-                    <ui:fragment id="FragFicha"  rendered="#{(becasBean.showFich  == true and becasBean.showEmpr==false) or (becasBean.guardar==false and becasBean.showSoci == false) or becasBean.consIfCarnExis() == true }">
+                    <ui:fragment id="FragFicha"  rendered="#{(becasBean.showFich  == true and becasBean.showEmpr==false) or (becasBean.guardar==false and becasBean.showSoci == false) }">
+                        <!-- <ui:fragment id="FragFicha"  rendered="{(becasBean.showFich  == true and becasBean.showEmpr==false) or (becasBean.guardar==false and becasBean.showSoci == false) or becasBean.consIfCarnExis() == true }"> -->
                         <!-- oh aqui, es un modal, esta oculto. Aunque creo que es una practica mas amigable ponerlo fuera de contenedores. Porque el modal ya tiene su propio contenedor-->
                         <h:form class="form-horizontal">
                             <fieldset>
@@ -380,7 +381,8 @@ and open the template in the editor.
                             </fieldset>
                         </h:form>
                         <!-- Tabla de detalle-->
-                        <c:if test="#{becasBean.guardar==false  or  becasBean.consIfCarnExis() == true}">
+                        <c:if test="#{becasBean.guardar==false}">
+                        <!-- <c:if test="{becasBean.guardar==false  or  becasBean.consIfCarnExis() == true}"> -->
                             <h:panelGroup rendered="#{becasBean.objeSoli.estaSoliBeca != 4 and becasBean.objeSoli.estaSoliBeca != 3 and becasBean.objeSoli.estaSoliBeca != 2}">
                             
                                 <div class="col-md-12 col-xs-12">
@@ -994,12 +996,12 @@ and open the template in the editor.
                         </div>
                     </ui:fragment> <!--FIN DE LAS COSAS QUE PUEDEN GESTIONARSE DE LA FICHA DEL ALUMNO-->
                     
-                    <ui:fragment id="FragEstuSoci" rendered="#{ (becasBean.consIfCarnExis() == false) and (becasBean.showSoci==true or becasBean.alum==true)  }">
-                      
+                    <!-- <ui:fragment id="FragEstuSoci" rendered="{ (becasBean.consIfCarnExis() == false) and (becasBean.showSoci==true or becasBean.alum==true)  }"> -->
+                    <ui:fragment id="FragEstuSoci" rendered="#{ becasBean.showSoci==true  }">   
                         <h:form id="formDina">
                             <f:event type="postAddToView" listener="#{becasBean.populateForm}" />
                             <h:panelGroup id="btonGroup" styleClass="input-group-btn right" style="padding-top: 5px;">
-                                <h:commandLink id="btonGuar" class="btn btn-success btn-xs" rendered="${becasBean.alum==true}">
+                                <h:commandLink id="btonGuar" class="btn btn-success btn-xs" >
                                     <p:ajax listener="#{becasBean.guarDina()}" process="@form" update="@form" />
                                    
                                     <i class="fa fa-plus"/> Guardar

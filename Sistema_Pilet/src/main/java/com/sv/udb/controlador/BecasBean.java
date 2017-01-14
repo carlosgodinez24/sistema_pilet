@@ -396,7 +396,18 @@ public class BecasBean implements Serializable{
                 case 1:
                     tipo = "[Cambio de empresa patrocinador]";
                     //Empresa antigua
-                    anti = "[" + this.objeSoli2.getCodiEmpr().getNombEmpr() + "]";
+                    //validación por si no tenía empresa antigua 
+                    if(this.objeSoli2.getCodiEmpr()==null)
+                    {
+                          anti = "[Sin Empresa]";
+                    }
+                    else
+                    {
+                          anti = "[" + this.objeSoli2.getCodiEmpr().getNombEmpr() + "]";
+                    }
+                    
+                    
+                  
                     //Empresa nueva
                     nuev = "[" + this.objeSoli.getCodiEmpr().getNombEmpr() + "]";
                     tipoEsta = this.objeBeca2.getCodiTipoEsta().getCodiTipoEsta();
@@ -1012,23 +1023,30 @@ public class BecasBean implements Serializable{
                                     {
                                         
                                         checkBox += tempRe.getCodiOpciResp().getDescOpci()+",";
+                                        
                                     }
                                 }
                                
-                               String[] Arreglo  = checkBox.split(",");
-                               String[] ids = {"1", "2"}; 
-                               String[] keys = {"Descripcion 1", "Descripcion 2"}; 
-                               Map<String, String> map = new HashMap<String, String>();
-                                map.put("1", "Descripcion 1");	
-                                map.put("2", "Descripcion 2");	
+//                               String[] Arreglo  = checkBox.split(",");
+//                               String[] ids = {"1", "2"}; 
+//                               String[] keys = {"Descripcion 1", "Descripcion 2"}; 
+//                               Map<String, String> map = new HashMap<String, String>();
+//                                map.put("1", "Descripcion 1");	
+//                                map.put("2", "Descripcion 2");	
+//                                map.put("3", "Descripcion 3");	
                                 
 //                                Map<String[], String[]> map = new HashMap<String[], String[]>();
 //                                map.put(ids, keys);	
-                                
+//                                
 //                                Map<String, Object[]> map = new HashMap<String, Object[]>();                               
 //                                map.put(codiDina, keys);
-                               
-                               this.mapa.put(codiDina,ids);
+                                List<SelectItem> children = new ArrayList<SelectItem>();  
+                                children.add(new SelectItem("1", "Descripcion 1"));  
+                                children.add(new SelectItem("2", "Descripcion 2"));
+                                children.add(new SelectItem("3", "Descripcion 3"));
+                       
+                                    this.mapa.put(codiDina,children);
+                             
                         }
                         else                                        
                         {
@@ -1380,9 +1398,10 @@ public class BecasBean implements Serializable{
                 String usuario = logiBean.getObjeUsua().getAcceUsua();
                  Pattern pat = Pattern.compile("^20.*");
                     Matcher mat = pat.matcher(usuario);
-                    if (mat.matches()) {
-                     resp= FCDEResp.ReadIfCarnExis(usuario);  
-                      if(FCDESoli.findCarnet(usuario)!=null)
+                    if (mat.matches()) 
+                    {
+                        resp= FCDEResp.ReadIfCarnExis(usuario);  
+                        if(FCDESoli.findCarnet(usuario)!=null)
                         {
 
                             this.carnet = logiBean.getObjeUsua().getAcceUsua();
@@ -1393,14 +1412,11 @@ public class BecasBean implements Serializable{
                         {
                             resp=false;
                         }
-                    } else {
+                    } else 
+                    {
                         System.out.println("NO");
                     }
                           
-               
-                    
-                    
-           
             
         } catch (Exception e) {
             
