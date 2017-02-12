@@ -7,43 +7,34 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Owner
+ * @author Ariel
  */
 @Entity
 @Table(name = "grado", catalog = "sistemas_pilet", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Grado.findAll", query = "SELECT g FROM Grado g"),
-    @NamedQuery(name = "Grado.findByCodiGrad", query = "SELECT g FROM Grado g WHERE g.codiGrad = :codiGrad"),
-    @NamedQuery(name = "Grado.findByNombGrad", query = "SELECT g FROM Grado g WHERE g.nombGrad = :nombGrad"),
-    @NamedQuery(name = "Grado.findByMensGrad", query = "SELECT g FROM Grado g WHERE g.mensGrad = :mensGrad"),
-    @NamedQuery(name = "Grado.findByEstaGrad", query = "SELECT g FROM Grado g WHERE g.estaGrad = :estaGrad"),
-    @NamedQuery(name = "Grado.findByMatrGrad", query = "SELECT g FROM Grado g WHERE g.matrGrad = :matrGrad"),
-    @NamedQuery(name = "Grado.findByNivelGrad", query = "SELECT g FROM Grado g WHERE g.nivelGrad = :nivelGrad")})
+    @NamedQuery(name = "Grado.findAll", query = "SELECT g FROM Grado g")
+    , @NamedQuery(name = "Grado.findByCodiGrad", query = "SELECT g FROM Grado g WHERE g.codiGrad = :codiGrad")
+    , @NamedQuery(name = "Grado.findByNombGrad", query = "SELECT g FROM Grado g WHERE g.nombGrad = :nombGrad")
+    , @NamedQuery(name = "Grado.findByMensGrad", query = "SELECT g FROM Grado g WHERE g.mensGrad = :mensGrad")
+    , @NamedQuery(name = "Grado.findByEstaGrad", query = "SELECT g FROM Grado g WHERE g.estaGrad = :estaGrad")
+    , @NamedQuery(name = "Grado.findByMatrGrad", query = "SELECT g FROM Grado g WHERE g.matrGrad = :matrGrad")})
 public class Grado implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codiGrad", fetch = FetchType.LAZY)
-    private List<SolicitudBeca> solicitudBecaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,10 +58,6 @@ public class Grado implements Serializable {
     @NotNull
     @Column(name = "matr_grad")
     private BigDecimal matrGrad;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "nivel_grad")
-    private int nivelGrad;
 
     public Grado() {
     }
@@ -79,12 +66,11 @@ public class Grado implements Serializable {
         this.codiGrad = codiGrad;
     }
 
-    public Grado(Integer codiGrad, String nombGrad, BigDecimal mensGrad, BigDecimal matrGrad, int nivelGrad) {
+    public Grado(Integer codiGrad, String nombGrad, BigDecimal mensGrad, BigDecimal matrGrad) {
         this.codiGrad = codiGrad;
         this.nombGrad = nombGrad;
         this.mensGrad = mensGrad;
         this.matrGrad = matrGrad;
-        this.nivelGrad = nivelGrad;
     }
 
     public Integer getCodiGrad() {
@@ -127,14 +113,6 @@ public class Grado implements Serializable {
         this.matrGrad = matrGrad;
     }
 
-    public int getNivelGrad() {
-        return nivelGrad;
-    }
-
-    public void setNivelGrad(int nivelGrad) {
-        this.nivelGrad = nivelGrad;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -158,15 +136,6 @@ public class Grado implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Grado[ codiGrad=" + codiGrad + " ]";
-    }
-
-    @XmlTransient
-    public List<SolicitudBeca> getSolicitudBecaList() {
-        return solicitudBecaList;
-    }
-
-    public void setSolicitudBecaList(List<SolicitudBeca> solicitudBecaList) {
-        this.solicitudBecaList = solicitudBecaList;
     }
     
 }

@@ -43,7 +43,10 @@ public class TipoBecaFacade extends AbstractFacade<TipoBeca> implements TipoBeca
     
     @Override
     public List<TipoBeca> findTipos(Object id)  {        
-        String consulta = "SELECT t.codi_tipo_beca, t.nomb_tipo_beca, t.desc_tipo_beca, t.esta_tipo_beca, t.tipo_tipo_beca, t.nivel_tipo_beca FROM tipo_beca t, grado g WHERE t.nivel_tipo_beca = ?1 AND t.nivel_tipo_beca = g.nivel_grad GROUP BY t.codi_tipo_beca";
+        String consulta = "SELECT t.codi_tipo_beca, t.nomb_tipo_beca, t.desc_tipo_beca, t.esta_tipo_beca,"
+                + " t.tipo_tipo_beca, t.nivel_tipo_beca "
+                + "FROM tipo_beca t, grado g WHERE t.nivel_tipo_beca = ?1"
+                + " AND t.nivel_tipo_beca = g.nivel_grad GROUP BY t.grad_tipo_beca";
         Query q = getEntityManager().createNativeQuery(consulta, TipoBeca.class);           
         //Query q = getEntityManager().createNativeQuery("select * from detalle_beca", DetalleBeca.class);           
         q.setParameter(1, id);
