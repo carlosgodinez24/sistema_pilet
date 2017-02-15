@@ -12,6 +12,10 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    
+    
+    
+    
     <ui:composition template="../WEB-INF/resources/fragmentos/comun.xhtml">
         <!-- Título de la página -->
         <ui:param name="pageTitl" value="::: Página Tipo Beca :::"/>
@@ -93,8 +97,12 @@ and open the template in the editor.
                                         <h:outputText value="#{fila.nombTipoBeca}"/>   
                                     </h:column>
                                     <h:column pt:data-align="right" pt:data-sortable="true">
-                                        <f:facet name="header">Descuento:</f:facet>
+                                        <f:facet name="header">Descuento</f:facet>
                                         <h:outputText value="#{fila.descTipoBeca}"/>
+                                    </h:column>
+                                    <h:column pt:data-align="right" pt:data-sortable="true">
+                                        <f:facet name="header">Grado</f:facet>
+                                        <h:outputText value="#{fila.gradTipoBeca.nombGrad}"/>
                                     </h:column>
                                     <h:column pt:data-sortable = "true">
                                         <f:facet name="header">Tipo</f:facet>
@@ -106,13 +114,8 @@ and open the template in the editor.
                                         Otro</h:panelGroup>
                                     </h:column>
                                     <h:column pt:data-sortable = "true">
-                                        <f:facet name="header">Nivel</f:facet>
-                                        <h:panelGroup class="label label-info" rendered="#{fila.nivelTipoBeca eq '1'}">
-                                        Tercer ciclo</h:panelGroup>
-                                        <h:panelGroup class="label label-info" rendered="#{fila.nivelTipoBeca eq '2'}">
-                                        1º y 2º año</h:panelGroup>
-                                        <h:panelGroup class="label label-info" rendered="#{fila.nivelTipoBeca eq '3'}">
-                                        3ºaño</h:panelGroup>
+                                        <f:facet name="header">Grado al que aplica</f:facet>
+                                        <!--COSAS PARA IDENTIFICAR EL GRADO-->
                                     </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Estado de registro</f:facet> 
@@ -150,26 +153,26 @@ and open the template in the editor.
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="desc" value="Descuento:$ "/>
                                             <h:message for="desc" errorClass="field-error" />
-                                            <h:inputText id="descCita"  value="#{tipoBecaBean.objeTipo.descTipoBeca}" class="form-control"/>
+                                            <h:inputText id="desc"  value="#{tipoBecaBean.objeTipo.descTipoBeca}" class="form-control"/>
+                                        </div>
+                                        <div class="form-group input-group-xs">
+                                        <h:outputLabel  for="gradBeca" value="Grado: "/>
+                                        <h:selectOneMenu id="gradBeca" value="#{tipoBecaBean.objeTipo.gradTipoBeca}" class="form-control select" pt:data-live-search="true" validatorMessage="Debe seleccionar un grado" >
+                                            <f:selectItems value="#{gradoBean.listGrad}" var="lst" itemLabel="#{lst.nombGrad}" itemValue="#{lst}"/>
+                                            <f:converter converterId="PooConv"/>
+                                        </h:selectOneMenu>                                      
+                                        <h:message for="gradBeca" errorClass="field-error" />
                                         </div>
                                         <div class="form-group input-group-xs">
                                             <h:outputLabel  for="tipo" value="Descuento: "/>
                                             <h:message for="tipo" errorClass="field-error" />
-                                            <h:selectOneRadio value="#{tipoBecaBean.objeTipo.tipoTipoBeca}">
+                                            <h:selectOneRadio id="tipo" value="#{tipoBecaBean.objeTipo.tipoTipoBeca}">
                                                 <f:selectItem itemValue="1" itemLabel="Matrícula" />
                                                 <f:selectItem itemValue="2" itemLabel="Mensualidad" />
                                                 <f:selectItem itemValue="3" itemLabel="Otro" />
                                             </h:selectOneRadio>
                                         </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="nive" value="Nivel: "/>
-                                            <h:message for="nive" errorClass="field-error" />
-                                            <h:selectOneRadio value="#{tipoBecaBean.objeTipo.nivelTipoBeca}">
-                                                <f:selectItem itemValue="1" itemLabel="Tercer ciclo" />
-                                                <f:selectItem itemValue="2" itemLabel="1º y 2º año" />
-                                                <f:selectItem itemValue="3" itemLabel="3º año" />
-                                            </h:selectOneRadio>
-                                        </div>
+                                        
                                     </fieldset>
                                 </div>
                                 <div class="modal-footer">

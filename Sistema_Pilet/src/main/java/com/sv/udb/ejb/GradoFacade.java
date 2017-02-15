@@ -33,7 +33,7 @@ public class GradoFacade extends AbstractFacade<Grado> implements GradoFacadeLoc
     
     @Override
     public BigDecimal findMatrLimit(Object id){
-        String query = "SELECT MAX(g.matr_grad) FROM grado g WHERE g.nivel_grad = ?1";
+        String query = "SELECT g.matr_grad FROM grado g WHERE g.codi_grad = ?1";
         Query q = getEntityManager().createNativeQuery(query);
         q.setParameter(1, id);
         BigDecimal montMatr = (BigDecimal) q.getSingleResult();
@@ -42,7 +42,7 @@ public class GradoFacade extends AbstractFacade<Grado> implements GradoFacadeLoc
     
     @Override
     public BigDecimal findMensLimit(Object id){
-        String query = "SELECT MAX(g.mens_grad) FROM grado g WHERE g.nivel_grad = ?1";
+        String query = "SELECT g.mens_grad FROM grado g WHERE g.codi_grad = ?1";
         Query q = getEntityManager().createNativeQuery(query);
         q.setParameter(1, id);
         BigDecimal montMens = (BigDecimal) q.getSingleResult();

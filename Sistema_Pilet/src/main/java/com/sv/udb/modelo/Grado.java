@@ -7,18 +7,23 @@ package com.sv.udb.modelo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,6 +40,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Grado.findByEstaGrad", query = "SELECT g FROM Grado g WHERE g.estaGrad = :estaGrad")
     , @NamedQuery(name = "Grado.findByMatrGrad", query = "SELECT g FROM Grado g WHERE g.matrGrad = :matrGrad")})
 public class Grado implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gradTipoBeca", fetch = FetchType.LAZY)
+    private List<TipoBeca> tipoBecaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -136,6 +144,15 @@ public class Grado implements Serializable {
     @Override
     public String toString() {
         return "com.sv.udb.modelo.Grado[ codiGrad=" + codiGrad + " ]";
+    }
+
+    @XmlTransient
+    public List<TipoBeca> getTipoBecaList() {
+        return tipoBecaList;
+    }
+
+    public void setTipoBecaList(List<TipoBeca> tipoBecaList) {
+        this.tipoBecaList = tipoBecaList;
     }
     
 }

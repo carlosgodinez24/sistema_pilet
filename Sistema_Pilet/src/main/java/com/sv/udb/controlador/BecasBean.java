@@ -394,12 +394,28 @@ public class BecasBean implements Serializable{
             this.objeBeca2 = FCDEBeca.findSoli(this.objeSoli2.getCodiSoliBeca());
             switch (num) {
                 case 1:
-                    tipo = "[Cambio de empresa patrocinador]";
+                    if(this.objeSoli2.getCodiEmpr() ==null)
+                    {
+                        tipo = "[asignación de empresa]";
+                    //Empresa antigua
+                    anti = "[Ninguna]";
+                    //Empresa nueva
+                    nuev = "[" + this.objeSoli.getCodiEmpr().getNombEmpr() + "]";
+                    tipoEsta = this.objeBeca2.getCodiTipoEsta().getCodiTipoEsta();
+                    
+                    }
+                    else
+                    {
+                        tipo = "[Cambio de empresa patrocinador]";
                     //Empresa antigua
                     anti = "[" + this.objeSoli2.getCodiEmpr().getNombEmpr() + "]";
                     //Empresa nueva
                     nuev = "[" + this.objeSoli.getCodiEmpr().getNombEmpr() + "]";
                     tipoEsta = this.objeBeca2.getCodiTipoEsta().getCodiTipoEsta();
+                    
+                    
+                    }
+                    
                     break;
                 case 2:
                     System.out.println("Estado: " + this.objeBeca.getCodiTipoEsta().getNombTipoEsta());

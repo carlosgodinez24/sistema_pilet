@@ -99,15 +99,6 @@ and open the template in the editor.
                                         <f:facet name="header">Mensualidad</f:facet>
                                         <h:outputText value="#{fila.mensGrad}"/>
                                     </h:column>
-                                    <h:column pt:data-sortable = "true">
-                                        <f:facet name="header">Nivel</f:facet>
-                                        <h:panelGroup class="label label-info" rendered="#{fila.nivelGrad eq '1'}">
-                                        Tercer ciclo</h:panelGroup>
-                                        <h:panelGroup class="label label-info" rendered="#{fila.nivelGrad eq '2'}">
-                                        1º y 2º año</h:panelGroup>
-                                        <h:panelGroup class="label label-info" rendered="#{fila.nivelGrad eq '3'}">
-                                        3ºaño</h:panelGroup>
-                                    </h:column>
                                     <h:column pt:data-sortable="true">
                                         <f:facet name="header">Estado</f:facet> 
                                         <h:panelGroup class="label label-success" rendered="#{fila.estaGrad eq '1'}">
@@ -150,15 +141,6 @@ and open the template in the editor.
                                             <h:outputLabel  for="mens" value="Mensualidad: "/>
                                             <h:message for="mens" errorClass="field-error" />
                                             <h:inputText id="mens" value="#{gradoBean.objeGrad.mensGrad}" class="form-control" />
-                                        </div>
-                                        <div class="form-group input-group-xs">
-                                            <h:outputLabel  for="nive" value="Nivel: "/>
-                                            <h:message for="nive" errorClass="field-error" />
-                                            <h:selectOneRadio value="#{gradoBean.objeGrad.nivelGrad}">
-                                                <f:selectItem itemValue="1" itemLabel="Tercer ciclo" />
-                                                <f:selectItem itemValue="2" itemLabel="1º y 2º año" />
-                                                <f:selectItem itemValue="3" itemLabel="3º año" />
-                                            </h:selectOneRadio>
                                         </div>
                                     </fieldset>
                                 </div>
