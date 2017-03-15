@@ -131,7 +131,17 @@ public class BecasBean implements Serializable{
      @EJB
     private UsuarioRolFacadeLocal UsuarioRolFCDE;
     private List<TipoBeca> listTipoBeca;
+    private int tipoEstadoPadre;
 
+    public int getTipoEstadoPadre() {
+        return tipoEstadoPadre;
+    }
+
+    public void setTipoEstadoPadre(int tipoEstadoPadre) {
+        this.tipoEstadoPadre = tipoEstadoPadre;
+    }
+
+    
     public List<TipoBeca> getListTipoBeca() {
         return listTipoBeca;
     }
@@ -308,7 +318,18 @@ public class BecasBean implements Serializable{
         initDina();
         initDocu();
     }
-    
+    public void refresh(){
+        
+        
+        if(tipoEstadoPadre !=0)
+        {
+            listBecaDocu = FCDEBeca.findByState(this.tipoEstadoPadre);
+        }
+        else
+        {
+            listBecaDocu = FCDEBeca.findAllDocu();
+        }
+    }
     public void limpForm()
     {
         this.objeBeca = new Beca();  

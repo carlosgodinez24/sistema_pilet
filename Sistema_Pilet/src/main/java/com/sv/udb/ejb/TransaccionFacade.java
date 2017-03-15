@@ -5,6 +5,7 @@
  */
 package com.sv.udb.ejb;
 
+import com.sv.udb.modelo.Beca;
 import com.sv.udb.modelo.Transaccion;
 import java.math.BigDecimal;
 import java.util.List;
@@ -58,4 +59,14 @@ public class TransaccionFacade extends AbstractFacade<Transaccion> implements Tr
         BigDecimal montDona = (BigDecimal) q.getSingleResult();
         return montDona;
     }
+
+    @Override
+    public List<Transaccion> findByState(int state) {
+       Query q = getEntityManager().createNativeQuery("select * from transaccion where tipo_tran ="+state, Transaccion.class);
+        List resu = q.getResultList();
+        return resu.isEmpty() ? null : resu;
+    }
+    
+    
+    
 }

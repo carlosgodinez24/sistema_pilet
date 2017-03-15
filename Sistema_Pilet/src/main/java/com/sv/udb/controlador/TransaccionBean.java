@@ -52,6 +52,29 @@ public class TransaccionBean implements Serializable{
     private Transaccion objeTran;
     private List<Transaccion> listTran;
     
+    private int tipoEstadoPadre;
+
+    public int getTipoEstadoPadre() {
+        return tipoEstadoPadre;
+    }
+
+    public void setTipoEstadoPadre(int tipoEstadoPadre) {
+        this.tipoEstadoPadre = tipoEstadoPadre;
+    }
+    
+    public void refresh()
+    {
+        if(tipoEstadoPadre !=0)
+        {
+            listTran = FCDETran.findByState(tipoEstadoPadre);
+        }
+        else
+        {
+            listTran = FCDETran.findAll();
+        }
+        
+    }
+    
      //para el combo box de salidas
     private SolicitudBeca objeCombPadr;
     private List<DetalleBeca> listHijo;

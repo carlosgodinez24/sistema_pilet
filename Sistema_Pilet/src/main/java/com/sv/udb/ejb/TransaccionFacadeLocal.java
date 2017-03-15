@@ -28,7 +28,7 @@ public interface TransaccionFacadeLocal {
     Transaccion findLast();
 
     List<Transaccion> findAll();
-    
+    List<Transaccion> findByState(int state);
     BigDecimal findMonto(Object id);
     
     BigDecimal findMontoDona(Object id);

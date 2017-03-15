@@ -143,17 +143,31 @@ and open the template in the editor.
                                     <div class="panel-body">
                                         <h:panelGroup id="ContRegi">
                                             <div id="toolTablRegi">
-                                                <h:form>
+                                                <h:form >
+                                                   
                                                     <!--Form exclusivo para los remotos-->
                                                     <p:remoteCommand name="consObje" actionListener="#{becasBean.cons()}" oncomplete="INIT_OBJE();" update="@form :container"
                                                                      global="true"/>
 
-                                                    <div class="btn-group">
+                                                    <div class="btn-group" >
                                                         <h:commandLink id="btonTabl" class="btn btn-success">
                                                             <p:ajax listener="#{becasBean.toogCarn()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
                                                             <i class="fa fa-plus"/> Agregar una nueva solicitud de beca
-                                                        </h:commandLink>
+                                                        </h:commandLink>   
+                                                         <div class="btn pull-right" >
+                                                        
+                                                            <h:selectOneMenu id="filtrar" value="#{becasBean.tipoEstadoPadre}"  class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
+                                                                <p:ajax listener="#{becasBean.refresh()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" />
+                                                                <f:selectItem itemValue="0"  itemLabel="Todos" />
+                                                                <f:selectItems value="#{tipoEstadoBean.listTipoEstaTODO}" var="lst" itemLabel="#{lst.nombTipoEsta}" itemValue="#{lst.codiTipoEsta}"/>
+                                                            <f:converter converterId="PooConv"/>
+                                                        </h:selectOneMenu>
+                                                        
                                                     </div>
+                                                    </div>
+                                                   
+                                                    
+                                                 
                                                 </h:form>
                                             </div>
                                             
@@ -369,6 +383,8 @@ and open the template in the editor.
                                                         <p:ajax listener="#{becasBean.guar()}" process="@form" update="@form :container" oncomplete="INIT_OBJE();" global="true"/>
                                                         Agregar nueva solicitud
                                                         <i class="fa fa-plus"/>
+                                                        
+                                                          
                                                     </h:commandLink>
                                                 </c:if>
 
