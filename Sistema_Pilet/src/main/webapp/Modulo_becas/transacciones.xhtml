@@ -84,7 +84,18 @@ and open the template in the editor.
                                                         oncomplete="$('#SaliForm').modal('show');"/>
                                                 <i class="fa fa-plus"/> Nueva Salida
                                             </h:commandLink>
+                                            <div class="btn" >
+                                                        
+                                                            <h:selectOneMenu id="filtrar" value="#{transaccionBean.tipoEstadoPadre}"  class="form-control select" pt:data-live-search="true" validatorMessage="Debe Elegir un Dia de la Semana">
+                                                                <p:ajax listener="#{transaccionBean.refresh()}" process="@form" update="@form :ContRegi" oncomplete="INIT_OBJE();" />
+                                                                <f:selectItem itemValue="0"  itemLabel="Todos" />
+                                                                <f:selectItem itemValue="1"  itemLabel="Entrada" />
+                                                                <f:selectItem itemValue="2"  itemLabel="Salida" />                                                             
+                                                        </h:selectOneMenu>
+                                                        
+                                                    </div>
                                          </div>
+                                        
                                     </h:form>
                                 </div>
                                 <h:dataTable pt:data-id="TablRegi" id="TablRegi" value="#{transaccionBean.listTran}"

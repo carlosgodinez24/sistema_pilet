@@ -19,18 +19,13 @@ public interface TipoEstadoFacadeLocal {
     void create(TipoEstado tipoEstado);
 
     void edit(TipoEstado tipoEstado);
-
     void remove(TipoEstado tipoEstado);
-
     TipoEstado find(Object id);
-
-    List<TipoEstado> findAll();
-    
-    List<TipoEstado> findAllN();
-    
+    List<TipoEstado> findAll();    
+    List<TipoEstado> findAllN();    
     List<TipoEstado> findAllIna();
-            List<TipoEstado> findAllAct();
-
+    List<TipoEstado> findAllAct();
+    List<TipoEstado> findTODO();
     List<TipoEstado> findRange(int[] range);
 
     int count();

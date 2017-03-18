@@ -33,10 +33,19 @@ public class TipoEstadoBean implements Serializable{
     private List<TipoEstado> listTipoEsta;
     private List<TipoEstado> listTipoEstaIna;
     private List<TipoEstado> listTipoEstaAct;
+     private List<TipoEstado> listTipoEstaTODO;
     private boolean guardar;   
     private static Logger log = Logger.getLogger(TipoEstadoBean.class);
     public TipoEstado getObjeTipoEsta() {
         return objeTipoEsta;
+    }
+
+    public List<TipoEstado> getListTipoEstaTODO() {
+        return listTipoEstaTODO;
+    }
+
+    public void setListTipoEstaTODO(List<TipoEstado> listTipoEstaTODO) {
+        this.listTipoEstaTODO = listTipoEstaTODO;
     }
 
     public List<TipoEstado> getListTipoEstaAct() {
@@ -198,6 +207,7 @@ public class TipoEstadoBean implements Serializable{
          
             this.listTipoEsta = FCDETipo.findAllN();
             this.listTipoEstaAct = FCDETipo.findAllAct();
+             this.listTipoEstaTODO = FCDETipo.findTODO();
             //log.info("Tipo Estados Consultados");
         }
         catch(Exception ex)
