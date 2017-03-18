@@ -363,6 +363,10 @@ and open the template in the editor.
                                                         <p:ajax oncomplete="PF('ModaRepo').show();" process="@form" listener="#{becasBean.procVisi()}"  update=":ModaRepoView"  global="true"/>
                                                         <i class="fa fa-edit"/> Reporte Historial
                                                     </h:commandLink>
+                                                    <h:commandLink id="btonRepo2" class="btn btn-info pull-right" >
+                                                        <p:ajax oncomplete="PF('ModaRepo2').show();" process="@form" listener="#{becasBean.procRepo()}"  update=":ModaRepoView2"  global="true"/>
+                                                        <i class="fa fa-edit"/> Reporte Montos de Alumno
+                                                    </h:commandLink>
                                                 </c:if>
                                                 <c:if test="#{becasBean.guardar == true  and becasBean.alum== false}">
                                                     <h:commandLink id="btonCarn" class="btn btn-lg btn-add-to-cart">
@@ -527,67 +531,6 @@ and open the template in the editor.
                             </div>
                             <!-- /modal de detalle -->
 
-                            <!-- tabla de documentos -->   
-                            <div class="col-md-12 col-xs-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">Documentos que posee este alumno</div>
-                                    <div class="panel-body">
-                                        <h:panelGroup id="ContDocu">
-                                            <div id="toolTablDocu">
-                                                <ui:fragment id="fragFormDocu" rendered="#{!becasBean.alum}">
-                                                <h:form id="FormDocu" class="form-horizontal" enctype="multipart/form-data">
-                                                    <!--Form exclusivo para los remotos-->
-                                                    <p:remoteCommand name="consObjeDocu" actionListener="#{becasBean.consDocu()}" update=":FormRegiDocu" 
-                                                                     oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE(); INIT_OBJE_MODA();" global="true"/>
-                                                    <p:remoteCommand name="elimObjeDocu" actionListener="#{becasBean.elimDocu()}" update="@form :ContDocu" 
-                                                                     oncomplete="INIT_OBJE();" global="true">
-
-                                                    </p:remoteCommand>
-                                                    <h:commandLink id="btonNuev" class="btn btn-success">
-                                                        <p:ajax listener="#{becasBean.limpFormDocu()}" update=":ContDocu" global="true" 
-                                                                oncomplete="$('#ModaDocuForm').modal('show');INIT_OBJE();" />
-
-                                                        <i class="fa fa-plus"/> Agregar un nuevo documento al alumno
-                                                    </h:commandLink>
-
-                                                </h:form>
-                                                    </ui:fragment>
-                                            </div>
-                                            <h:dataTable pt:data-id="TablDocu" id="TablDocu" value="#{becasBean.listDocuDocu}"
-                                                         var="fila" class="boottable" pt:data-toolbar="#toolTablDocu"
-                                                         styleClass="table-hover table-bordered table-condensed table-striped table-responsive"
-                                                         pt:data-show-refresh="false" pt:data-show-toggle="false" pt:data-show-columns="false" 
-                                                         pt:data-search="true" pt:data-pagination="true" pt:data-page-list="[5, 10, 20, 50]"
-                                                         pt:data-click-to-select="true"  pt:data-select-item-name="radio"
-                                                         pt:data-single-select="true">                                
-                                                <h:column pt:data-field="state" pt:data-checkbox="true">
-                                                </h:column>
-                                                <h:column pt:data-align="right" pt:data-sortable="true" pt:data-field="idDocu">
-                                                    <f:facet name="header">Código</f:facet>
-                                                    <h:outputText value="#{fila.codiDocu}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true"  pt:data-field="tipoDocu">
-                                                    <f:facet name="header">Tipo documento</f:facet>
-                                                    <h:outputText value="#{fila.codiTipoDocu.nombTipoDocu}"/>
-                                                </h:column>
-                                                <h:column pt:data-sortable="true" pt:data-field="fechDocu">
-                                                    <f:facet name="header">Fecha </f:facet>
-                                                    <h:outputText value="#{fila.fechDocu}">
-                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
-                                                    </h:outputText>
-                                                </h:column>
-
-                                                <h:column pt:data-sortable="true" pt:data-field="ruta">
-                                                    <f:facet name="header">Ruta </f:facet>
-                                                    <h:outputText value="#{fila.rutaDocu}">
-                                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-6"/>
-                                                    </h:outputText>
-                                                </h:column>
-                                            </h:dataTable>
-                                        </h:panelGroup>
-                                    </div>
-                                </div>
-                            </div>
                             <!-- /tabla de documentos --> 
                             <!-- modal de documentos-->
                             <div class="row">
@@ -991,6 +934,13 @@ and open the template in the editor.
                             <p:dialog header="" widgetVar="ModaRepo" minHeight="40" width="1000px" style="z-index: 9999999;">
                                 <h:panelGroup id="ModaRepoView">
                                     <cs:PdfViewer id="pdfViewer" value="#{becasBean.docuRepo}" width="100%" height="500px"/>
+                                </h:panelGroup>
+                            </p:dialog>
+                        </div>
+                        <div class="row">
+                            <p:dialog header="" widgetVar="ModaRepo2" minHeight="40" width="1000px" style="z-index: 9999999;">
+                                <h:panelGroup id="ModaRepoView2">
+                                    <cs:PdfViewer id="pdfViewer2" value="#{becasBean.docuRepo}" width="100%" height="500px"/>
                                 </h:panelGroup>
                             </p:dialog>
                         </div>

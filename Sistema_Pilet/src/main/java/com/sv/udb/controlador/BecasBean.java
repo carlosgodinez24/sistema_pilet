@@ -690,6 +690,21 @@ public class BecasBean implements Serializable{
         }
     }
     
+    public void procRepo() {
+        RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
+        try {
+            Connection cn = new Conexion().getCn(); //La conexión
+            Map params = new HashMap(); //Mapa de parámetros
+            params.put("Carnet", this.objeBeca.getCodiSoliBeca().getCarnAlum());
+            String pathRepo = globalAppBean.getResourcePath("Reportes_Becas/MontosAlumno.jasper");
+            this.docuRepo = JasperRunManager.runReportToPdf(pathRepo, params, cn);
+            ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Reporte cargado correctamente')");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al cargar reporte ')");
+        }
+    }
+    
     public boolean consW()
     {
         boolean respFunc = false;
