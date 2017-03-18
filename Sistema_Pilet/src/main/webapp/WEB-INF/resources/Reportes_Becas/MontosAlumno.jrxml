@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MontosAlumno" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ed5f199a-ce52-450d-be97-afd883c66ed4">
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Carnet" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Total" class="java.lang.String">
+		<defaultValueExpression><![CDATA["SELECT SUM(t.mont_tran) FROM transaccion t INNER JOIN detalle_beca db on db.codi_deta_beca = t.codi_deta_beca INNER JOIN beca b on b.codi_beca = db.codi_beca INNER JOIN solicitud_beca sb on sb.codi_soli_beca = b.codi_soli_beca INNER JOIN tipo_beca tb on tb.codi_tipo_beca = db.codi_tipo_beca WHERE t.tipo_tran = 2 and sb.carn_alum = " + $P{Carnet}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT sb.carn_alum AS 'Carnet', sb.nomb_alum AS 'Nombre', t.mont_tran AS 'Monto transaccion', t.fech_tran AS 'Fecha', tb.nomb_tipo_beca AS 'Tipo Beca' FROM transaccion t INNER JOIN detalle_beca db on db.codi_deta_beca = t.codi_deta_beca INNER JOIN beca b on b.codi_beca = db.codi_beca INNER JOIN solicitud_beca sb on sb.codi_soli_beca = b.codi_soli_beca INNER JOIN tipo_beca tb on tb.codi_tipo_beca = db.codi_tipo_beca WHERE t.tipo_tran = 2 and sb.carn_alum = $P{Carnet}]]>
+	</queryString>
+	<field name="Carnet" class="java.lang.String"/>
+	<field name="Nombre" class="java.lang.String"/>
+	<field name="Monto transaccion" class="java.math.BigDecimal"/>
+	<field name="Fecha" class="java.sql.Timestamp"/>
+	<field name="Tipo Beca" class="java.lang.String"/>
+	<variable name="SUM(t.mont_tran)_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="94" height="79" uuid="82355670-d8e2-4859-ae98-f383afbed0d2"/>
+				<imageExpression><![CDATA["ITR.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="94" y="0" width="461" height="79" uuid="e756ebfb-c04f-4d68-83cc-7af9fd51c53c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Montos por alumno]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="21" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="381" y="0" width="174" height="20" uuid="fc3863d4-5b90-4e9d-a63f-325965ff223a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="f069fca1-482f-49ba-808c-49c8146f69fe"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Carnet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="181" height="20" uuid="c6c1fe52-3703-4a5e-a09f-bac41edd13bf"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="0" width="100" height="20" uuid="13874af1-b511-4513-98a3-0b676938353f"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Monto transaccion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="0" width="74" height="20" uuid="a1676099-10a5-4fc3-8005-3fab74b3e914"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="0" width="100" height="20" uuid="81c11338-5643-4eca-b3e1-27b51350cee0"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Tipo Beca]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="cfd1c7ef-81a0-462f-8501-0a85aad79a81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Carnet}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="181" height="20" uuid="ab9fe879-ad12-470b-8b07-6a315fe4b99e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00">
+				<reportElement x="455" y="0" width="100" height="20" uuid="38d60b4c-aa1c-4601-9a00-b38230dc4ffd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Monto transaccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="281" y="0" width="74" height="20" uuid="576345f0-9e47-4cbe-9d82-b58a5a768d62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="355" y="0" width="100" height="20" uuid="495d2111-7121-4862-85dd-31415475e1e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Tipo Beca}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="446" y="4" width="100" height="20" uuid="78e632d1-2a46-4b75-bf30-54ea2e66d5f9"/>
+				<textFieldExpression><![CDATA[$P{Total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="435" y="0" width="80" height="20" uuid="f0bccced-650a-457f-8519-25b86278903f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="20" uuid="8ee1d62a-2286-440b-b0aa-230a27a19130"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch"/>
+	</summary>
+</jasperReport>

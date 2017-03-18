@@ -27,7 +27,7 @@
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="112" height="79" uuid="f4b3c91f-25fc-4dbb-aabc-f9cc3abb5a8d"/>
-				<imageExpression><![CDATA["/home/eduardo/NetBeansProjects/sistema_pilet/Sistema_Pilet/src/main/webapp/WEB-INF/resources/Reportes_Becas/ITR.png"]]></imageExpression>
+				<imageExpression><![CDATA["ITR.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

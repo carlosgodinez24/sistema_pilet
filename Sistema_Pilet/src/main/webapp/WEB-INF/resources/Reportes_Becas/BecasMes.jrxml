@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BecasMes" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="915a24f8-9af3-436a-a997-132b59978a02">
 	<property name="ireport.zoom" value="1.331000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="56"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="Mes" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -19,7 +19,7 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="143" y="0" width="429" height="48" uuid="457c0998-90ee-43a5-8ed7-cb677db20b7d"/>
+				<reportElement x="-48" y="-164" width="429" height="48" uuid="457c0998-90ee-43a5-8ed7-cb677db20b7d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="24"/>
 				</textElement>
